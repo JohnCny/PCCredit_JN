@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.LocalImageDao" >
+  <resultMap id="BaseResultMap" type="com.cardpay.pccredit.intopieces.web.LocalImageForm" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CUSTOMER_ID" property="customerId" jdbcType="VARCHAR" />
+    <result column="CHINESE_NAME" property="customerName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="APPLICATION_ID" property="applicationId" jdbcType="VARCHAR" />
+    <result column="ATTACHMENT" property="attachment" jdbcType="VARCHAR" />
+    <result column="URI" property="uri" jdbcType="VARCHAR" />
+    <result column="CREATED_TIME" property="createdTime" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="findByProductAndCustomer" resultMap="BaseResultMap">
+      SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		    select t.*,bci.chinese_name,pa.product_name
+		    from local_image t
+		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
+		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
+		    where 
+		    product_id=#{productId} and customer_id=#{customerId}
+		    
+		    <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+  </select>
+  <select id="findCountByProductAndCustomer" resultType="int">
+    select count(0) from local_image
+    where 
+    product_id=#{productId} and customer_id=#{customerId}
+  </select>
+  <select id="findAllByProductAndCustomer" resultType="com.cardpay.pccredit.intopieces.model.LocalImage">
+      select t.*
+	    from local_image t
+	    where 
+	    product_id=#{productId} and customer_id=#{customerId}
+  </select>
+  <select id="findById" resultType="com.cardpay.pccredit.intopieces.model.LocalImage">
+      select t.*
+	    from local_image t
+	    where 
+	    id=#{id}
+  </select>
+  <select id="findByApplication" resultMap="BaseResultMap">
+    SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		    select t.*,bci.chinese_name,pa.product_name
+    from local_image t
+		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
+		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
+		    where application_id=#{applicationId}
+		    
+		    <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+  </select>
+  <select id="findCountByApplication" resultType="int">
+    select count(0) from local_image
+    where application_id=#{applicationId}
+  </select>
+  
+  
+  <delete id="deleteByProductIdAndCustomerId">
+   	delete LOCAL_EXCEL t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </delete>
+  
+  
+  <update id="updateCustomerInfoStatus">
+		update customer_application_info  set status = 'audit' where id =#{appId}
+  </update>
+  
+  <!--查询建议-->
+  <select id="findJy" resultType="com.cardpay.pccredit.intopieces.model.Dzjy">
+     select * from TY_DZ_MODEL_JY t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+   <!--查询基本状况-->
+  <select id="findDzjbzk" resultType="com.cardpay.pccredit.intopieces.model.Dzjbzk">
+     select * from TY_DZ_MODEL_JBZK t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+   <!--查询经营状态-->
+  <select id="findDzjyzt" resultType="com.cardpay.pccredit.intopieces.model.Dzjyzt">
+     select * from TY_DZ_MODEL_JYZT t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+   <!--查询生存状态-->
+  <select id="findDcsczt" resultType="com.cardpay.pccredit.intopieces.model.Dcsczt">
+     select * from TY_DZ_MODEL_SCZT t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+   <!--查询道德品质-->
+  <select id="findDcddpz" resultType="com.cardpay.pccredit.intopieces.model.Dcddpz">
+     select * from TY_DZ_MODEL_DDPZ t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+  <!-- 查询利润简表 -->
+  <select id="findDclrjb" resultType="com.cardpay.pccredit.intopieces.model.Dclrjb">
+     select * from TY_DZ_MODEL_LRJB t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+   <!-- 查询标准利润表 -->
+   <select id="findDcbzlr" resultType="com.cardpay.pccredit.intopieces.model.Dcbzlr">
+     select * from TY_DZ_MODEL_BZLR t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+  <!-- 查询流水分析表 -->
+   <select id="findDclsfx" resultType="com.cardpay.pccredit.intopieces.model.Dclsfx">
+     select * from TY_DZ_MODEL_LSFX t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
+  </select>
+  
+</mapper>
