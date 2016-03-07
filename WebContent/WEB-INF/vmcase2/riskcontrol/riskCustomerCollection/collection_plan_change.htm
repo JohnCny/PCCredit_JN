@@ -37,7 +37,7 @@
               <td><select name="collectionMethod" id="collectionMethod" >
               #customerInfo($request.getAttribute("collectionMethodList"),$!collectionplan.collectionMethod)
               </select></td>
-              <td><input type="text" name="collectionStartTime" hidden="hidden" value="-1" /></td>
+              <!-- <td><input type="text" name="collectionStartTime" hidden="hidden" value="-1" /></td> -->
             </tr>
           </table>
         </div>
@@ -54,9 +54,37 @@
 	window.top.currentWindow.setLayout(layout);
 			
 	#set ($formName = "'#id_module_form'")
-	#validator($formName)
-	$(document).ready(function() {		
-		#parse("common/part_change.js")
+	#parse ("/riskcontrol/riskCustomerCollection/collection_plan_validation.js")
+	$(document).ready(function() {
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+	   	       var url = "${modulePath}/update.json";
+				$.ajax({
+					url : url,
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							topWin.Dialog.message("保存成功！");
+							window.location.href="${modulePath}/browse.page" ;
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+				});
+					
+			}else{
+				submitFlag = 0;
+			}
+	    });
 	});
 	</script>
 </body>

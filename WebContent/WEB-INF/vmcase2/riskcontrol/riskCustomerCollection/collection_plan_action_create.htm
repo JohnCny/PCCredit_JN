@@ -68,9 +68,8 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#validator($formName)
 	$(document).ready(function() {	
-		$("#id_save_button").click(function() {
+	/* 	$("#id_save_button").click(function() {
 	        if ($($formName).valid()) {
 	          var formjson = $($formName).serialize();
 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
@@ -85,7 +84,41 @@
 	            }
 	          });
 	        }
-		});
+		}); */
+		
+		$("#id_save_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				var formjson = $($formName).serialize();
+				$.ajax({
+					url : $($formName).attr("action"),
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							var url = "";
+			            	if(data.message == 'continuecollection' || data.message == 'repaymentcommitments'){
+			            		url = "${modulePath}/browse.page?recordId="+data.recordId;
+			            	}else{
+			            		url = "${modulePath}/display.page?id="+data.id+"&recordId="+data.recordId;
+			            	}
+			            	navigateTo(url);
+						}
+						else{
+							topWin.Dialog.message(data.message);
+					    }
+						submitFlag = 0;
+					}
+				});
+					
+			}else{
+				submitFlag = 0;
+			}
+	    });
 	});
 	OpenPromiseDate();
 	function OpenPromiseDate(){
