@@ -25,8 +25,6 @@
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
                   	#dict("intopieces_decision",$!customerApplicationInfo.status)
                   </select></td>
-              <td  class="titlefc3"><label id ="reason" for=reason>拒绝原因:</label></td>
-              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!customerApplicationInfo.decisionRefusereason</textarea></td>
             </tr>
             <tr>
 			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
@@ -61,6 +59,11 @@
                   	#dict("USERS","")
                   </select>
               </td>
+            </tr>
+            
+            <tr style="display :none">
+              <td  class="titlefc3"><label id ="reason" for=reason>拒绝原因:</label></td>
+              <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!customerApplicationInfo.decisionRefusereason</textarea></td>
             </tr>
             <tr>
           </table>
@@ -170,6 +173,7 @@
 			var status = $("select[name=status]").val();
 			if( status == "approved"){
 				$("tr:eq(2)").show();
+				$("tr:eq(6)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -180,6 +184,7 @@
 			
 			if( status == "refuse"){
 				$("tr:eq(2)").hide();
+				$("tr:eq(6)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}

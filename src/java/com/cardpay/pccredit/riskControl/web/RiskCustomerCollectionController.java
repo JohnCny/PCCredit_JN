@@ -158,7 +158,7 @@ public class RiskCustomerCollectionController extends BaseController{
 	@JRadOperation(JRadOperation.CREATE)
 	public JRadReturnMap insert(@ModelAttribute RiskCustomerCollectionPlanForm form, HttpServletRequest request) {
 		boolean flag = riskCustomerCollectionService.checkCollectionPlan(form.getCustomerId(),form.getProductId(),RiskCustomerCollectionEndResultEnum.collection,RiskCustomerCollectionEndResultEnum.repaymentcommitments);
-		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), form);
+		JRadReturnMap returnMap = new JRadReturnMap();//WebRequestHelper.requestValidation(getModuleName(), form);
 		if(!flag){
 			if (returnMap.isSuccess()) {
 				try {
@@ -197,7 +197,7 @@ public class RiskCustomerCollectionController extends BaseController{
 	@RequestMapping(value = "update.json")
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap update(@ModelAttribute RiskCustomerCollectionPlanForm form, HttpServletRequest request) {
-		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), form);
+		JRadReturnMap returnMap = new JRadReturnMap();//WebRequestHelper.requestValidation(getModuleName(), form);
 		if (returnMap.isSuccess()) {
 			try {
 				String createWay = riskCustomerCollectionService.findRiskCustomerCollectionPlanById(form.getId()).getCreateWay();
@@ -252,7 +252,7 @@ public class RiskCustomerCollectionController extends BaseController{
 	@RequestMapping(value = "insertAction.json")
 	@JRadOperation(JRadOperation.CREATE)
 	public JRadReturnMap insertAction(@ModelAttribute RiskCustomerCollectionPlansActionForm form, HttpServletRequest request) {
-		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), form);
+		JRadReturnMap returnMap = new JRadReturnMap();//WebRequestHelper.requestValidation(getModuleName(), form);
 		if (returnMap.isSuccess()) {
 			try {
 				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
@@ -378,7 +378,7 @@ public class RiskCustomerCollectionController extends BaseController{
 	@RequestMapping(value = "updateAction.json")
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap updateAction(@ModelAttribute RiskCustomerCollectionPlansActionForm form, HttpServletRequest request) {
-		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), form);
+		JRadReturnMap returnMap = new JRadReturnMap();//WebRequestHelper.requestValidation(getModuleName(), form);
 		if (returnMap.isSuccess()) {
 			try {
 				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
