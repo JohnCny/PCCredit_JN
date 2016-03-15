@@ -534,11 +534,12 @@ public class MaintenanceController extends BaseController{
 		String customerId = ids.split("@")[0];
 		String productId =  ids.split("@")[1];
 		filter.setRequest(request);
-		filter.setCustomerId(customerId);
-		filter.setProductId(productId);
+//		filter.setCustomerId(customerId);
+//		filter.setProductId(productId);
 		String appId = maintenanceService.getAppId(customerId, productId);
-		QueryResult<MaintenanceForm> result = maintenanceService.findMaintenancePlansByFilter(filter);
-		JRadPagedQueryResult<MaintenanceForm> pagedResult = new JRadPagedQueryResult<MaintenanceForm>(filter, result);
+		filter.setAppId(appId);
+		QueryResult<MaintenanceWeb> result = maintenanceService.findMaintenanceWebPlansByFilter(filter);
+		JRadPagedQueryResult<MaintenanceWeb> pagedResult = new JRadPagedQueryResult<MaintenanceWeb>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("appId", appId);
 		return mv;
