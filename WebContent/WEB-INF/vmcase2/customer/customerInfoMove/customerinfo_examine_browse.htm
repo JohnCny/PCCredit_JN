@@ -12,7 +12,7 @@
   
         <div class="search_tag">#i18n("label.browse.filter")</div>
         <div class="search">
-          <form id="submitForm" action="${contextPath}/customer/basiccustomerinforMove/browse.page">
+          <form id="submitForm" action="${contextPath}/customer/basiccustomerinforMove/examineBrowse.page">
             <ul>
               <li>
                 <span>客户名称：<input type="text" name="chineseName" value="$!result.filter.chineseName" /></span>
@@ -109,7 +109,7 @@
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
-	url = "${modulePath}/browse.page";
+	url = "${modulePath}/examineBrowse.page";
 	$(document).ready(function() {
 		var opsObj = new Object();
 		opsObj.formObj = $("#submitForm");
@@ -117,7 +117,7 @@
 		opsObj.displayUrl = "${modulePath}/display.page";
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.deleteUrl = "${modulePath}/delete.json";
-		opsObj.browseUrl = "${modulePath}/browse.page";
+		opsObj.browseUrl = "${modulePath}/examineBrowse.page";
 		prepareOperations(opsObj);
 		
 		$("#id_yes_button").click(function() {
