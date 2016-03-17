@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.report.dao.CustomerTransferFlowDao">
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.report.model.CustomerMoveForm">
+		<result property="customerId" column="customer_id" />
+		<result property="approveId" column="approve_id" />
+		<result property="moveId" column="move_id" />
+		<result property="status" column="status" />
+		<result property="approveGh" column="approve_gh" />
+		<result property="approveName" column="approve_name" />
+		<result property="moveGh" column="move_gh" />
+		<result property="moveName" column="move_name" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="certiCode" column="CARD_ID" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
+	
+	<select id="findCustomerTransferList" resultMap="ResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select move.*,base.CHINESE_NAME,base.CARD_ID from TY_CUSTOMER_MOVE move,
+					 			   BASIC_CUSTOMER_INFORMATION base 
+					  WHERE 1=1 and base.ID = move.CUSTOMER_ID and move.status ='2'
+					<if test="certiCode != null and certiCode != '' ">
+						AND base.CARD_ID=#{certiCode}
+					</if>
+					 
+					<if test="customerName != null and customerName != '' ">
+						AND base.CHINESE_NAME=#{customerName}
+					</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findCustomerMoveCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
+		 select count(*) from TY_CUSTOMER_MOVE move,
+					 	      BASIC_CUSTOMER_INFORMATION base
+		 WHERE 1=1 and base.ID = move.CUSTOMER_ID and move.status ='2'
+		<if test="certiCode != null and certiCode != '' ">
+			AND base.CARD_ID=#{certiCode}
+		</if>
+					 
+		<if test="customerName != null and customerName != '' ">
+		    AND base.CHINESE_NAME=#{customerName}
+		</if>
+	</select>
+	
+	
+	<select id="getCustomerMovelList" resultMap="ResultMap"
+			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
+ 		select move.*,base.CHINESE_NAME,base.CARD_ID,ROWNUM row_index from TY_CUSTOMER_MOVE move,
+					 			   BASIC_CUSTOMER_INFORMATION base 
+					  WHERE 1=1 and base.ID = move.CUSTOMER_ID and move.status ='2'
+					<if test="certiCode != null and certiCode != '' ">
+						AND base.CARD_ID=#{certiCode}
+					</if>
+					 
+					<if test="customerName != null and customerName != '' ">
+						AND base.CHINESE_NAME=#{customerName}
+					</if>
+
+ 	</select>
+	
+	
+</mapper>
