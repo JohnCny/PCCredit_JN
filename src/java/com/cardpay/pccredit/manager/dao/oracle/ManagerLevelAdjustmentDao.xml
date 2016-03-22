@@ -26,6 +26,16 @@
 		<result property="basePay" column="BASE_PAY" />
 	</resultMap>
 	
+	
+	<resultMap id="BatchResultMap" type="com.cardpay.pccredit.manager.model.BatchTask">
+		<result property="id" column="ID" />
+		<result property="batchCode" column="BATCH_CODE" />
+		<result property="batchName" column="BATCH_NAME" />
+		<result property="status" column="STATUS" />
+		<result property="createdTime" column="CREATED_TIME" />
+		<result property="modifiedTime" column="MODIFIED_TIME" />
+	</resultMap>
+	
 	<select id="findManagerLevelAdjustmentByFilter" resultMap="ResultMap" 
 		parameterType="com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter">
 		SELECT * FROM
@@ -71,6 +81,23 @@
 	
 	<select id="findAccountManagerByUserId" resultMap="AccountManagerParameterFormNewMap">
 		select * from account_manager_parameter t where t.user_id = #{userId}
+	</select>
+	
+	<!-- 批处理重跑 -->
+	<select id="findBatchListFilter" resultMap="BatchResultMap">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from t_batch_task
+  			<![CDATA[		
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findBatchCountFilter" resultType="int">
+		select count(*) from t_batch_task
 	</select>
 
 </mapper>

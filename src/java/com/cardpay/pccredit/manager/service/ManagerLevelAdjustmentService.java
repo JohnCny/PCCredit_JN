@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
 import com.cardpay.pccredit.manager.dao.ManagerLevelAdjustmentDao;
+import com.cardpay.pccredit.manager.filter.BatchRunFilter;
 import com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.model.ManagerLevelAdjustment;
 import com.cardpay.pccredit.manager.model.ManagerMonthTargetData;
 import com.cardpay.pccredit.manager.web.ManagerLevelAdjustmentForm;
@@ -94,5 +96,18 @@ public class ManagerLevelAdjustmentService {
 		accountManagerParameter.setModifiedTime(new Date());
 		accountManagerParameter.setLevelInformation(managerLevelAdjustment.getAdjustAfterLevel());
 		commonDao.updateObject(accountManagerParameter);
+	}
+	
+	
+	/**
+	 * 批处理重跑分页查询
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<BatchTask> findBatchFilter(BatchRunFilter filter) {
+		List<BatchTask> list = managerLevelAdjustmentDao.findBatchListFilter(filter);
+		int size = managerLevelAdjustmentDao.findBatchCountFilter(filter);
+		QueryResult<BatchTask> qs = new QueryResult<BatchTask>(size, list);
+		return qs;
 	}
 }

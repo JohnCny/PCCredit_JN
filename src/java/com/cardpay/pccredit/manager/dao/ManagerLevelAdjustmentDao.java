@@ -3,8 +3,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.manager.filter.BatchRunFilter;
 import com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.web.ManagerLevelAdjustmentForm;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -46,4 +48,7 @@ public interface ManagerLevelAdjustmentDao {
 	 * @return 
 	 */
 	AccountManagerParameter findAccountManagerByUserId(@Param("userId") String userId);
+	
+	List<BatchTask> findBatchListFilter(BatchRunFilter filter);
+	int findBatchCountFilter(BatchRunFilter filter);
 }

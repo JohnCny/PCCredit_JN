@@ -377,4 +377,12 @@
 		<item name="28" title="朋友" />
 		<item name="29" title="企业关联客户" />
 	</dictionary>
+	
+	<dictionary name="status" title="批处理状态">
+		<item name="000" title="初始" />
+		<item name="001" title="失败" />
+		<item name="100" title="成功" />
+	</dictionary>
+	
+	
 </dictionaries>

@@ -76,5 +76,11 @@ public class AccountManagerParameterComdao {
 		
 		
 	}
+	
+	public void selectInfoTaskLog(){
+		Map<String, Object> params = new HashMap<String, Object>();
+		String sql = "insert into t_batch_task_log  (select * from t_batch_task)";
+		commonDao.queryBySql(CustomerManagerTarget.class, sql, params);
+	}
 
 }
