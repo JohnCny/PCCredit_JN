@@ -20,7 +20,7 @@
 <div class="content" style="background-color: #f5f5f5;">
   #set ($menuList = $session.getAttribute("menuList")) 
   #set($num=0)
-  <div class="left_nav" id="leftNav">
+  <div class="left_nav" id="leftNav" style="height: 500px;overflow:auto"> 
     <div class="sidebar">
       <ul class="sidelist">
         #foreach($menu in $!menuList) 
