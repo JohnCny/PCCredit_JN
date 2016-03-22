@@ -77,12 +77,34 @@
 	
 	
 	<!-- =========================================================== 系统定时触发器 ==================================================-->
-    
-    <!-- 客户经理周统计定时 -->
-    <bean id="statisticsWeekScheduleServicerJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<!-- task -->
+	<bean id="taskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
         <property name="targetObject">
-            <ref bean="statisticsScheduleService"/>
+            <ref bean="dailyReportScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>doTransferData</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="taskTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="taskJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 54 17 ? * *</value><!--时间定在第一个跑批前  -->
+        </property>
+    </bean>
+	<!-- task end-->
+    
+    <!-- 客户经理日报 -->
+    <bean id="dailyReportScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="dailyReportScheduleService"/>
         </property>
         <!-- 调用类中的方法 -->
         <property name="targetMethod">
@@ -90,16 +112,16 @@
         </property>
     </bean>
     <!-- 定义触发时间 -->
-    <bean id="statisticsWeekScheduleServicerTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <bean id="dailyReportScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail">
-            <ref bean="statisticsWeekScheduleServicerJob"/>
+            <ref bean="dailyReportScheduleJob"/>
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 54 16 ? * *</value>
+            <value>0 54 17 ? * *</value>
         </property>
     </bean>
-    <!-- 客户经理周统计定时  end -->
+    <!-- 客户经理日报  end -->
     
     <!--基本信息 start -->
     <bean id="addbaseJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -201,7 +223,8 @@
                  <ref bean="addRepayTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/> 
                  <ref bean="updateCustomerSalaryTigger"/> -->
-                 <ref bean="statisticsWeekScheduleServicerTrigger"/>
+                 <ref bean="taskTigger"/>
+                 <ref bean="dailyReportScheduleTigger"/>
             </list>
         </property>
     </bean>

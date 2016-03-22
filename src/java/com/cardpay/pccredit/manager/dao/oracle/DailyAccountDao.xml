@@ -37,7 +37,7 @@
 		AND D .WEEKLY_ID = w. ID
 		AND w.CUSTOMER_MANAGER_ID = s. ID
 		AND w.CUSTOMER_MANAGER_ID = #{loginId}
-		order by d.CREATED_TIME DESC
+		order by d.what_day ASC
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

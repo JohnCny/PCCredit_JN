@@ -44,6 +44,7 @@
 			 <menu id="092001" name="managerPromotionRule" title="客户经理绩效工资参数配置" url="/manager/managerPromotionRule/updatePerformance.page" img="" operations="browse|change|create"/>
 			 <menu id="092002" name="managersalary" title="客户经理工资信息列表" url="/manager/managersalary/browse.page" img="" operations="change|browse"/>
 			 <menu id="092003" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+			 <menu id="092004" name="batchrun" title="批处理重跑" url="/batch/returnrun/browse.page" img="" operations="display|browse"/>
 		</menu>
 		
 		<menu id="100000" name="report" title="报表统计" url="" img="images/icon_sys.gif" operations="">

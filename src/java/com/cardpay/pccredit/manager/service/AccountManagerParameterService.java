@@ -2,7 +2,9 @@ package com.cardpay.pccredit.manager.service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +17,7 @@ import com.cardpay.pccredit.manager.dao.AccountManagerParameterDao;
 import com.cardpay.pccredit.manager.dao.comdao.AccountManagerParameterComdao;
 import com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -519,4 +522,37 @@ public class AccountManagerParameterService {
 		String hierarchy = accountManagerParameter.getLevelInformation();
 		return accountManagerParameterComdao.getcustomerManagerTargetBymanagerIdDate(hierarchy, targetDate);
 	}
+	
+	/**
+	 * 记录批出日志流水
+	 */
+	public void insertBatchTaskFlow(String batch_code,String batch_name){
+		BatchTask task = new BatchTask();
+		task.setBatchCode(batch_code);
+		task.setBatchName(batch_name);
+		task.setStatus("000");
+		task.setCreatedBy("");
+		task.setCreatedTime(new Date());
+		commonDao.insertObject(task);
+	}
+	
+	public void updBatchTaskFlow(String status,String batchCode){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("status", status);
+		params.put("batchCode", batchCode);
+		String sql = "update t_batch_task set status = #{status},MODIFIED_TIME = sysdate where batch_code = #{batchCode}";
+		commonDao.queryBySql(BatchTask.class, sql, params);
+	}
+	
+	/**
+	 * 历史移交
+	 * @param batch_code
+	 * @param batch_name
+	 * @param status
+	 */
+	public void insertBatchTaskLogFlow(){
+		accountManagerParameterComdao.selectInfoTaskLog();
+	}
+	
+	
 }
