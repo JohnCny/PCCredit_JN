@@ -83,6 +83,7 @@
       <div class="pagebar">
         <div class="controlbtn">
       <!--   #btnpriv("reported") <a id="id_report_button" class="btn_g" href="javascript:void(0);" title="上报">#i18n("operation.reported")</a>#end -->
+      		<a id="id_remove_button" class="btn_g" href="javascript:void(0);" title="移除出风险名单">移除出风险名单</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -149,5 +150,33 @@
 			}
 		});
 	}
+	
+	//移出风险名单
+	 $("#id_remove_button").click(function() {
+			var url = "${modulePath}/removeRisk.json";
+			if ($(".checkbox :checked").length == 1) {
+				var id = $($(".checkbox :checked")[0]).attr("value");
+				Dialog.confirm("确定要处理吗？", "提示",
+		     		function() {
+		     			$.ajax({
+		      				url : url,
+		      				type : "get",
+		      				data : "id=" + id,//要发送的数据
+		      				success : function(data) {
+		      					if (data.success) {
+		      						topWin.Dialog.message("处理成功！");
+		      						window.location.reload(true);
+		      					}
+		      					else{
+		      						topWin.Dialog.message(data.message);
+		      				    }
+		      					submitFlag = 0;
+		      				}
+		      			});
+			 	});
+			} else {
+                Dialog.message("请选择记录");
+            } 
+     });
 </script>
 #parse ("common/iframe_page_footer.htm")
