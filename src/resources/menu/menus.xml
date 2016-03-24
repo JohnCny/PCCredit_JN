@@ -26,12 +26,13 @@
 			<menu id="070002" name="belongmap" title="客户经理从属设置" url="/manager/belongmap/browse.page" img="" operations="create|subturnother|delete|browse"/>
 			<menu id="070003" name="dailyaccount" title="客户经理日报" url="/manager/dailyaccount/browse.page" img="" operations="change|display|browse"/>
 			<menu id="070004" name="retraining" title="客户经理培训计划列表" url="/manager/retraining/browse.page" img="" operations="create|change|delete|display|browse"/>
-			<menu id="070005" name="trainmessage" title="培训通知" url="/notificationmessage/trainmessage/browse.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070005" name="trainmessage" title="培训通知" url="/notificationmessage/trainmessage/browse.page" img="" operations="checked|display|browse"/>		    
 		</menu>
 		
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
+			<menu id="080003" name="highriskcustomer" title="高风险客户名单" url="/riskcontrol/highriskcustomer/browse.page" img="" operations="display|browse"/>
 		</menu>
 		
 		
@@ -44,7 +45,6 @@
 			 <menu id="092001" name="managerPromotionRule" title="客户经理绩效工资参数配置" url="/manager/managerPromotionRule/updatePerformance.page" img="" operations="browse|change|create"/>
 			 <menu id="092002" name="managersalary" title="客户经理工资信息列表" url="/manager/managersalary/browse.page" img="" operations="change|browse"/>
 			 <menu id="092003" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
-			 <menu id="092004" name="batchrun" title="批处理重跑" url="/batch/returnrun/browse.page" img="" operations="display|browse"/>
 		</menu>
 		
 		<menu id="100000" name="report" title="报表统计" url="" img="images/icon_sys.gif" operations="">
@@ -56,6 +56,10 @@
 			<menu id="100060" name="overLoan"     title="逾期贷款统计报表 "     url="/overdue/loan/queryOverdueLoan.page" img="" operations="browse"/>
 			<menu id="100070" name="expectLoan"   title="预期还款贷款统计报表 "   url="/expect/loan/queryExpectLoan.page" img="" operations="browse"/>
 			<menu id="100080" name="creditFlow"   title="信贷流程统计报表 "      url="/credit/flow/queryCreditFlow.page" img="" operations="browse"/>
+		</menu>
+		
+		<menu id="102000" name="batchrunManagement" title="批处理管理" url="" img="images/icon_sys.gif" operations="">
+			 <menu id="102001" name="batchrun" title="批处理重跑" url="/batch/returnrun/browse.page" img="" operations="display|browse"/>
 		</menu>
 		
 		<menu id="103000" name="system" title="系统管理" url="" img="images/icon_sys.gif" operations="">

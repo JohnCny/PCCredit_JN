@@ -1,5 +1,10 @@
 package com.cardpay.pccredit.intopieces.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.customer.dao.CustomerInforDao;
+import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.LocalExcelDao;
@@ -34,6 +42,9 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
+import com.cardpay.pccredit.manager.model.BatchTask;
+import com.cardpay.pccredit.tools.DataFileConf;
+import com.cardpay.pccredit.tools.ImportBankDataFileTools;
 import com.cardpay.pccredit.tools.JXLReadExcel;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -55,6 +66,9 @@ public class AddIntoPiecesService {
 	
 	@Autowired
 	private CustomerInforService customerInforService;
+	
+	@Autowired
+	private CustomerInforDao customerInforDao;
 
 	
 	/* 查询调查报告信息 */
@@ -400,6 +414,33 @@ public class AddIntoPiecesService {
 	//update
 	public void updateDclsfx(Dclsfx lsfx){
 		commonDao.updateObject(lsfx);
+	}
+	
+	
+	//导入调查报告
+	public void importTxt(MultipartFile file) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Map<String, String> map = UploadFileTool.uploadTxtFileBySpring(file);
+		String fileName = map.get("fileName");
+		String url = map.get("url");
+		try{
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/batchTask.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseTextDataFile(url, confList,"");
+			for(Map<String, Object> mapList : datas){
+				BatchTask  task = new BatchTask();
+				task.setBatchCode(mapList.get("batchCode").toString());
+				task.setBatchName(mapList.get("batchName").toString());
+				task.setStatus(mapList.get("status").toString());
+				task.setCreatedTime(sdf.parse(mapList.get("createdTime").toString()));
+				commonDao.insertObject(task);
+				//customerInforDao.insertBatchTask(mapList);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

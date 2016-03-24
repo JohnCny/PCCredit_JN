@@ -1,31 +1,25 @@
-package com.cardpay.pccredit.tools;
+package com.cardpay.pccredit.toolsjn;
 
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
-
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-/**
- * 
- * @author hejia
- * @version 创建时间：2015年3月18日 下午4:57:44
- */
-public class CardFtpUtils {
-	public static String bank_ftp_host="10.2.1.5";// 制卡ftp地址
-	public static int bank_ftp_port=21;// 制卡ftp端口
-	public static String bank_ftp_username="xdls";// 制卡ftp用户名
-	public static String bank_ftp_password="xdls";// 制卡ftp密码
-	public static String bank_ftp_path="/xdls";// 制卡ftp文件目录
-	//public static String bank_ftp_down_path="/usr/local/tmp/";// 下载本地目录
-	public static String bank_ftp_down_path="E://aaaaaaa//";// 下载本地目录
-//	public static String bank_ftp_down_path="f:/";// 下载本地目录
-	public static String bank_ftp_privateKey="";// 密钥文件路径
-	public static String bank_ftp_passphrase="";// 密钥口令
+
+public class FtpUtils {
+	public static String bank_ftp_host="10.2.1.5";  			// ftp地址
+	public static int bank_ftp_port = 21;						// ftp端口
+	public static String bank_ftp_username="xdls";  			// ftp用户名
+	public static String bank_ftp_password="xdls";  			// ftp密码
+	public static String bank_ftp_path="/xdls";     			// ftp文件目录
+//public static String bank_ftp_down_path="/usr/local/tmp/";	// 下载本地目录
+	public static String bank_ftp_down_path="E://aaaaaaa//";    // 下载本地目录
+	public static String bank_ftp_privateKey="";			    // 密钥文件路径
+	public static String bank_ftp_passphrase="";				// 密钥口令
 	private ChannelSftp sftp = null;
 
 
@@ -57,7 +51,6 @@ public class CardFtpUtils {
 
 	/**
 	 * 获取ftp目录下制卡结果文件
-	 * 
 	 * @param directory
 	 * @return
 	 * @throws SftpException
@@ -81,22 +74,16 @@ public class CardFtpUtils {
 
 	/**
 	 * 下载文件
-	 * 
-	 * @param directory
-	 *            下载目录
-	 * 
-	 * @param downloadFile
-	 *            下载的文件
-	 * 
-	 * @param saveFile
-	 *            存在本地的路径
-	 * 
+	 * @param directory	            下载目录
+	 * @param downloadFile  下载的文件
+	 * @param saveFile 		存在本地的路径
 	 */
 	public boolean download(String directory, String downloadFile,
 			String saveFile) {
 		try {
 			if (sftp == null) {
-				connect(); // 如果没连接上sftp则连接
+			 //如果没连接上sftp则连接
+				connect(); 
 			}
 			sftp.cd(directory);
 			sftp.get(downloadFile, saveFile);

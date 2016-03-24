@@ -256,4 +256,7 @@ public interface CustomerInforDao {
 	
 	public List<TyRepayLsz>  findRepayLszList(CustomerInfoLszFilter filter);
 	public int  findRepayLszCountList(CustomerInfoLszFilter filter);
+	
+	
+	public int insertBatchTask(Map<String, Object> map);
 }

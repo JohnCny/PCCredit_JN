@@ -77,7 +77,7 @@
 	
 	
 	<!-- =========================================================== 系统定时触发器 ==================================================-->
-	<!-- task -->
+	<!-- 1.task -->
 	<bean id="taskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
         <property name="targetObject">
@@ -99,6 +99,29 @@
         </property>
     </bean>
 	<!-- task end-->
+	
+	<!-- 2.每日下载和解压数据 -->
+	<bean id="downAndtargzJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="odsTools"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>downloadFiles</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="downAndtargzScheduleTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="downAndtargzJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 15 16 ? * *</value><!--下午3点 -->
+        </property>
+    </bean>
+	<!-- 每日下载和解压数据 end-->
     
     <!-- 客户经理日报 -->
     <bean id="dailyReportScheduleJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -118,7 +141,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 54 17 ? * *</value>
+            <value>0 04 15 ? * *</value><!--时间定在周末  -->
         </property>
     </bean>
     <!-- 客户经理日报  end -->
@@ -222,9 +245,10 @@
                 <!--  <ref bean="addBaseTigger"/>
                  <ref bean="addRepayTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/> 
-                 <ref bean="updateCustomerSalaryTigger"/> -->
-                 <ref bean="taskTigger"/>
+                 <ref bean="updateCustomerSalaryTigger"/> 
+                 <ref bean="taskTigger"/>-->
                  <ref bean="dailyReportScheduleTigger"/>
+                 <ref bean="downAndtargzScheduleTigger"/>
             </list>
         </property>
     </bean>

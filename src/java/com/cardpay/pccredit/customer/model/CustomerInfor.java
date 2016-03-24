@@ -37,6 +37,8 @@ public class CustomerInfor extends BusinessModel{
 	private String customerBusinessAptitude;
 	private String tyCustomerId;
 	
+	private String spmc;
+	
 	private String tyUserId;
 	
 	public String getChineseName() {
@@ -190,6 +192,12 @@ public class CustomerInfor extends BusinessModel{
 	}
 	public void setTyUserId(String tyUserId) {
 		this.tyUserId = tyUserId;
+	}
+	public String getSpmc() {
+		return spmc;
+	}
+	public void setSpmc(String spmc) {
+		this.spmc = spmc;
 	}
 	
 }

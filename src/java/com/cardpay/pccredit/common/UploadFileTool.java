@@ -343,6 +343,38 @@ public class UploadFileTool {
 			e.printStackTrace();
 		}
 }
+	
+	public static Map<String, String> uploadTxtFileBySpring(MultipartFile file) {
+		String newFileName = null;
+		String fileName = null;
+		Map<String, String> map = new HashMap<String, String>();
+		String path = Constant.FILE_PATH  + File.separator;
+		File tempDir = new File(path);
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdirs();
+		}
+		try {
+			// 取得上传文件
+			if (file != null && !file.isEmpty()) {
+				fileName = file.getOriginalFilename();
+				File tempFile = new File(path
+						+ file.getOriginalFilename());
+				if (tempFile.exists()) {
+					newFileName = IDGenerator.generateID() + "."
+							+ file.getOriginalFilename().split("\\.")[1];
+				} else {
+					newFileName = file.getOriginalFilename();
+				}
+				File localFile = new File(path + newFileName);
+				file.transferTo(localFile);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("fileName", fileName);
+		map.put("url", path + newFileName);
+		return map;
+	}
 
 	
 
