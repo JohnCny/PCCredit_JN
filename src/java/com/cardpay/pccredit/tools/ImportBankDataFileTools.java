@@ -41,7 +41,7 @@ import com.wicresoft.util.date.DateHelper;
  */
 public class ImportBankDataFileTools {
 	// 分隔符
-	public static final String SPLITE_CHARS = ",";
+	public static final String SPLITE_CHARS = "@";
 	
 	public static final String DECIMAL = "DECIMAL";
 	public static final String VARCHAR = "VARCHAR";
@@ -487,6 +487,87 @@ public class ImportBankDataFileTools {
         }  
         return null;
     } 
+	
+	
+	public List<Map<String, Object>> parseTextDataFile(String fileName, List<DataFileConf> confList,String date) throws Exception{
+		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
+		FileInputStream fis = null;
+		InputStreamReader isr = null;
+		BufferedReader br = null;
+		String value = null;
+		try{
+			fis=new FileInputStream(fileName);
+		    isr=new InputStreamReader(fis, "utf-8");
+		    br = new BufferedReader(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
+		      
+			String line="", type = null, column = null;
+	        String[] dataArrs=null;
+	        Map<String, Object> map = null;
+	        int count=0;
+	        while ((line=br.readLine())!=null) {
+	        	count++;
+	        	//System.out.println(count);
+	        	dataArrs = StringUtils.splitPreserveAllTokens(line.replaceAll(SPLITE_CHARS, "±"),"±");
+	            map = new HashMap<String, Object>();
+	            boolean flag = true;
+	            for(DataFileConf dataFileConf : confList){
+	            	type = dataFileConf.getJdbcType();
+	            	column = dataFileConf.getColumn();
+	            	
+	            	if(dataFileConf.getIndex() >= 1){
+	            		value = dataArrs[dataFileConf.getIndex()-1].trim();
+	            	}
+	            	
+	            	if(DECIMAL.equals(type) || VARCHAR.equals(type)){
+						value = value.trim();
+						
+						/*if(DECIMAL.equals(type) || NumberUtils.isNumber(value)){
+							try {
+								value = NumberUtils.createBigDecimal(value).toString();
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								//e.printStackTrace();
+								log.error("处理数据出错，保留原值");
+							}
+						}*/
+											
+						if(DECIMAL.equals(type) && StringUtils.isNotEmpty(value) && !NumberUtils.isNumber(value)){
+							log.info(value + " is not number, line string : " + line);
+							flag = false;
+							break;
+						}
+	            	}else if(DATE_STRING.equals(type)){
+	            		value = value.replaceAll("-", "");
+	            	}else if(DATE_NOW.equals(type)){
+	            		value = DateHelper.getDateFormat(new Date(), dataFileConf.getStyle());
+	            	}
+	            	value=value.replaceAll(" ","");
+            		value=value.replace("\"", "");
+					map.put(SqlJavaNameUtil.getVariableName(column, false),value);
+	            }
+	            map.put("id", IDGenerator.generateID());
+	            map.put("createTime", date);
+	            if(flag){
+	            	datas.add(map);
+	            }
+	        }
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			if(br != null){
+				 br.close();
+			}
+			if(isr != null){
+				isr.close();
+			}
+			if(fis != null){
+				fis.close();
+			}
+		}
+		File file = new File(fileName);
+		file.delete();
+        return datas;
+	}
 }
 
 

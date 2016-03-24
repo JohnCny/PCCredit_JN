@@ -24,7 +24,8 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="20%" />
+              <col width="10%" />
+              <col width="10%" />
               <col width="20%" />
               <col width="20%" />
               <col width="20%" />
@@ -45,6 +46,8 @@
           <table>
             <colgroup>
               <col width="5%" />
+              <col width="10%" />
+              <col width="10%" />
               <col width="20%" />
               <col width="20%" />
               <col width="20%" />
@@ -54,6 +57,7 @@
             #foreach ($run in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!run.id" /></td>
+              <td nowrap="nowrap">$!{run.batchCode}</td>
               <td nowrap="nowrap">$!{run.batchName}</td>
               <td nowrap="nowrap">#dictVal("status", $!run.status)</td>
               <td nowrap="nowrap">
@@ -69,6 +73,9 @@
         </div>
       </div>
       <div class="pagebar">
+      	<div class="controlbtn">
+          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" title="导入">导入</a>
+        </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
@@ -107,5 +114,10 @@
       			});
 	 	});
    }
+	
+	$("#id_import_button").click(function() {
+            var url = "${contextPath}/batch/returnrun/reportImport.page";
+            window.location.href = url;
+    });
 </script>
 #parse ("common/iframe_page_footer.htm")

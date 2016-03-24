@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,11 +47,14 @@ public class DailyReportScheduleService {
 	
 	/**
 	 * 客户经理日报
+	 * 周六或周日生成下周的日报
 	 */
 	public void insertWeekSchedule(){
 	    log.info("【客户经理日报生成start】"+new Date()+"***********************************************");
 		try{
 			  Calendar nextdate=Calendar.getInstance(Locale.CHINA);
+			  //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			  //Date date = sdf.parse("20160320");
 			  nextdate.setTime(new Date());
 			  nextdate.add(Calendar.WEEK_OF_MONTH, 1);
 			  nextdate.set(Calendar.DAY_OF_WEEK, nextdate.getActualMinimum(Calendar.DAY_OF_WEEK));
@@ -64,9 +68,6 @@ public class DailyReportScheduleService {
 			 * 查找所有客户经理
 			 */
 			List<AccountManagerParameterForm> managerList=accountManagerParameterService.findAccountManagerParameterAll();
-			  /*//测试
-			  List<AccountManagerParameterForm> managerList = null;
-			  int j =  managerList.size();*/
 			for(AccountManagerParameterForm accountManagerParameterForm:managerList){
 				String title=accountManagerParameterForm.getDisplayName()+"("+startDate+"到"+endDate+")周报";
 				WeeklyAccountManager weeklyAccountManager=new WeeklyAccountManager();
@@ -94,15 +95,29 @@ public class DailyReportScheduleService {
 		log.info("【客户经理日报生成end】"+new Date()+"***********************************************");
 	}
 	
+	//upd
+		public void updBtachtask(String status,String batchCode){
+			DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
+			transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+			TransactionStatus one = txManager.getTransaction(transStatus);
+			try{
+				//upd task
+				accountManagerParameterService.updBatchTaskFlow(status,batchCode);
+				txManager.commit(one);
+			}catch (Exception e){
+				txManager.rollback(one);
+			}
+		}
+	
 	
 	
 	/**
 	 * 每日生成task,日终将数据移到历史表里
+	 * 
 	 */
 	public void doTransferData(){
 		log.info("【批处理task生成start】"+new Date()+"***********************************************");
-		
-		//转移数据到历史表t_batch_task_log
+		//将status-100数据移到历史表t_batch_task_log 
 		accountManagerParameterService.insertBatchTaskLogFlow();
 		
 		//清空表数据
@@ -110,37 +125,9 @@ public class DailyReportScheduleService {
 		commonDao.queryBySql(sql, null);
 		
 		//task
-		accountManagerParameterService.insertBatchTaskFlow("rb","日报");//初始
-		
+		//accountManagerParameterService.insertBatchTaskFlow("rb","日报");//初始
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}
 	
-	//upd
-	public void updBtachtask(String status,String batchCode){
-		DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
-		transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		TransactionStatus one = txManager.getTransaction(transStatus);
-		try{
-			//upd task
-			accountManagerParameterService.updBatchTaskFlow(status,batchCode);
-			txManager.commit(one);
-		}catch (Exception e){
-			txManager.rollback(one);
-		}
-	}
-	
-	//ins
-	/*public void insBtachtask(String batchCode,String batchName){
-		DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
-		transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-		TransactionStatus one = txManager.getTransaction(transStatus);
-		try{
-			//ins task
-			accountManagerParameterService.insertBatchTaskFlow(batchCode,batchName);
-			txManager.commit(one);
-		}catch (Exception e){
-			txManager.rollback(one);
-		}
-	}*/
 	
 }
