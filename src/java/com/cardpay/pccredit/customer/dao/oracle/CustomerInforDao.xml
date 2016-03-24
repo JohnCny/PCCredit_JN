@@ -919,4 +919,15 @@
 			         
 	</select>
 	
+	<insert id="insertBatchTask" parameterType="map">
+		INSERT INTO T_BATCH_TASK (ID,BATCH_CODE,BATCH_NAME,STATUS,CREATED_TIME
+		) values
+		(#{id,jdbcType=VARCHAR},
+		 #{batchCode,jdbcType=VARCHAR},
+		 #{batchName,jdbcType=VARCHAR},
+		 #{status,jdbcType=VARCHAR}, 
+		 #{createdTime,jdbcType=VARCHAR}
+		 )
+	</insert>
+	
 </mapper>
