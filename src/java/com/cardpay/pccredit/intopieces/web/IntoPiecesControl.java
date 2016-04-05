@@ -109,7 +109,7 @@ public class IntoPiecesControl extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,
 			HttpServletRequest request) {
-		filter.setRequest(request);
+	/*	filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 		//查询客户经理
@@ -131,7 +131,21 @@ public class IntoPiecesControl extends BaseController {
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);*/
+		
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		QueryResult<IntoPieces> result=null;
+		String userId = user.getId();
+		filter.setUserId(userId);
+		result = intoPiecesService.findintoPiecesByFilter(filter);
+		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
+				filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView(
+				"/intopieces/intopieces_customer_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
+
 
 		return mv;
 	}

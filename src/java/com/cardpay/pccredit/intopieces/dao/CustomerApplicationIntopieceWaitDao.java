@@ -3,6 +3,7 @@ package com.cardpay.pccredit.intopieces.dao;
 import java.util.List;
 
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
@@ -47,4 +48,8 @@ public interface CustomerApplicationIntopieceWaitDao {
 	public void autoAfterApplyTimeReleaseApply(String riskReviewProcessMaxDay);
 	
 	public List<CustomerApplicationIntopieceWaitForm> findNotEqualsActualAndFinalAmount();
+	
+	
+	public List<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecisionForm(IntoPiecesFilter filter);
+	public int findCustomerApplicationIntopieceDecisionCountForm(IntoPiecesFilter filter);
 }

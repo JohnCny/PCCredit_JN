@@ -24,6 +24,8 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
@@ -53,7 +55,7 @@ public class IntoPiecesComdao {
 		String cardId = filter.getCardId();
 		String status = filter.getStatus();
 		params.put("userId", userId);
-		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id = #{userId} and t.product_id=p.id  ");
+		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id = #{userId} and t.product_id=p.id  ");
 		if(StringUtils.trimToNull(productName)!=null){
 			params.put("productName", productName);
 			 sql.append(" and p.product_name like '%'||#{productName}||'%' ");
@@ -267,6 +269,16 @@ public class IntoPiecesComdao {
 		return customerApplicationInfo;
 	}
 	
+	public CustomerApplicationProcessForm findCustomerApplicationProcessById(String id) {
+		String sql ="select t.examine_amount,s.display_name  from customer_application_process t,sys_user s where s.id = t.audit_user and t.application_id='"+id+"'";
+		List<CustomerApplicationProcessForm> list = commonDao.queryBySql(CustomerApplicationProcessForm.class,sql, null);
+		if(list!=null&&!list.isEmpty()){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+	
 	/* 查询申请的某一笔进件申请单中上传的产品的附件*/
 	public List<AddressAccessories> findAddressAccessories(
 			String applicationId,String productId) {
@@ -332,6 +344,20 @@ public class IntoPiecesComdao {
 			return null;
 		}
 	}
+	
+	public String findNodeName(String id){
+		String sql = "select d.node_name from customer_application_process p,Node_audit d where p.next_node_id = d.id and p.APPLICATION_ID =#{id}";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, params);
+		if(list != null && list.size() > 0){
+			HashMap<String, Object> map = list.get(0);
+			return (String) map.get("NODE_NAME");
+		} else {
+			return null;
+		}
+	}
+	
 	
 	public Float checkApplyQuota(String userId,String productId){
 		String sql = "select * from MANAGER_PRODUCTS_CONFIGURATION t where exists (select 1 from ACCOUNT_MANAGER_PARAMETER f where t.customer_manager_level = f.level_information and f.user_id = '"+userId+"' and t.product_id = '"+productId+"')";
@@ -415,5 +441,51 @@ public class IntoPiecesComdao {
 		}else{
 			return null;
 		}
+	}
+	
+	
+	/* 查询进件信息count */
+	public int findintoPiecesByFilterCount(IntoPiecesFilter filter) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		String id = filter.getId();
+		String chineseName = filter.getChineseName();
+		String productName = filter.getProductName();
+		String userId = filter.getUserId();
+		String cardId = filter.getCardId();
+		String status = filter.getStatus();
+		StringBuffer sql = null;
+
+//			// 获取自己及下属id
+//			String userSql = "select * from account_manager_parameter where id in ( select t.child_id from manager_belong_map t left join account_manager_parameter amp on amp.id = t.parent_id where amp.user_id = '"
+//					+ userId + "')";
+//			List<AccountManagerParameter> userList = commonDao.queryBySql(
+//					AccountManagerParameter.class, userSql, null);
+//			String users = "('" + userId + "',";
+//			for (int i = 0; i < userList.size(); i++) {
+//				users += "'" + userList.get(i).getUserId() + "',";
+//			}
+//			users = users.substring(0, users.length() - 1) + ")";
+		sql = new StringBuffer(
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.final_approval,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		if (StringUtils.trimToNull(cardId) != null
+				|| StringUtils.trimToNull(chineseName) != null) {
+			if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) != null) {
+				sql.append(" and (b.card_id like '%" + cardId
+						+ "%' or b.chinese_name like '%" + chineseName + "%' )");
+			} else if (StringUtils.trimToNull(cardId) != null
+					&& StringUtils.trimToNull(chineseName) == null) {
+				params.put("cardId", cardId);
+				sql.append(" and b.card_id like '%'||#{cardId}||'%' ");
+			} else if (StringUtils.trimToNull(cardId) == null
+					&& StringUtils.trimToNull(chineseName) != null) {
+				params.put("chineseName", chineseName);
+				sql.append(" and b.chinese_name like '%'||#{chineseName}||'%' ");
+			}
+		}
+
+		sql.append(" order by t.id asc");
+		return commonDao.queryBySql(IntoPieces.class, sql.toString(), params)
+				.size();
 	}
 }

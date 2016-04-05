@@ -119,7 +119,7 @@ public class ImportBankDataFileTools {
 	            	if(DECIMAL.equals(type) || VARCHAR.equals(type)){
 						value = value.trim();
 						
-						if(DECIMAL.equals(type) || NumberUtils.isNumber(value)){
+						/*if(DECIMAL.equals(type) || NumberUtils.isNumber(value)){
 							try {
 								value = NumberUtils.createBigDecimal(value).toString();
 							} catch (Exception e) {
@@ -127,7 +127,7 @@ public class ImportBankDataFileTools {
 								//e.printStackTrace();
 								log.error("处理数据出错，保留原值");
 							}
-						}
+						}*/
 											
 						if(DECIMAL.equals(type) && StringUtils.isNotEmpty(value) && !NumberUtils.isNumber(value)){
 							log.info(value + " is not number, line string : " + line);
@@ -143,7 +143,7 @@ public class ImportBankDataFileTools {
             		value=value.replace("\"", "");
 					map.put(SqlJavaNameUtil.getVariableName(column, false),value);
 	            }
-	            map.put("id", IDGenerator.generateID());
+	            //map.put("id", IDGenerator.generateID());
 	            map.put("createTime", date);
 	            if(flag){
 	            	datas.add(map);
@@ -162,8 +162,8 @@ public class ImportBankDataFileTools {
 				fis.close();
 			}
 		}
-		File file = new File(fileName);
-		file.delete();
+		/*File file = new File(fileName);
+		file.delete();*/
         return datas;
 	}
 	
