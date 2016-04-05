@@ -930,4 +930,13 @@
 		 )
 	</insert>
 	
+	
+	<select id="findCipersonfamilyCount" resultType="int" parameterType="map">
+			select count(id) from t_cipersonfamily where CUSTID = #{custid}
+	</select>
+	
+	<select id="findCIPERSONBASINFOCount" resultType="int" parameterType="map">
+			select count(id) from T_CIPERSONBASINFO where CUSTID = #{custid}
+	</select>
+	
 </mapper>

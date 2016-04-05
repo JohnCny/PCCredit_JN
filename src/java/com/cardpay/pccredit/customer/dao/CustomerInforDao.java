@@ -259,4 +259,7 @@ public interface CustomerInforDao {
 	
 	
 	public int insertBatchTask(Map<String, Object> map);
+	
+	public int findCipersonfamilyCount(Map<String, Object> map);
+	public int findCIPERSONBASINFOCount(Map<String, Object> map);
 }

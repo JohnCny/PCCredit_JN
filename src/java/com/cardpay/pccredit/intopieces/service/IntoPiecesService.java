@@ -34,6 +34,8 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
@@ -77,7 +79,32 @@ public class IntoPiecesService {
 	 */
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
-		//QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
+		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
+		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
+		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
+		List<IntoPieces> intoPieces = qs.getItems();
+		for(IntoPieces pieces : intoPieces){
+			if(pieces.getStatus()==null){
+				pieces.setNodeName("未提交申请");
+			}
+			else{
+				if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
+					pieces.setNodeName("未提交申请");
+				} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+					//String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
+					String nodeName = intoPiecesComdao.findNodeName(pieces.getId());
+					if(StringUtils.isNotEmpty(nodeName)){
+						pieces.setNodeName(nodeName);
+					} else {
+						pieces.setNodeName("不在审批中");
+					}
+				} else {
+					pieces.setNodeName("审批结束");
+				}
+			}
+		}
+		return qs;
+	/*	//QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
 		List<IntoPieces> plans = intoPiecesDao.findIntoPiecesList(filter);
 		int size = intoPiecesDao.findIntoPiecesCountList(filter);
 		QueryResult<IntoPieces> queryResult = new QueryResult<IntoPieces>(size,plans);
@@ -104,7 +131,7 @@ public class IntoPiecesService {
 				pieces.setGroupName(list.get(0).getDisplayName());
 			}
 		}
-		return queryResult;
+		return queryResult;*/
 	}
 	
 	/*
@@ -798,6 +825,10 @@ public class IntoPiecesService {
 	/* 信息主表信息是否存在，如果存在则更新信息 */
 	public CustomerApplicationInfo findCustomerApplicationInfoById(String id) {
 		return intoPiecesComdao.findCustomerApplicationInfoById(id);
+	}
+	
+	public CustomerApplicationProcessForm findCustomerApplicationProcessById(String id) {
+		return intoPiecesComdao.findCustomerApplicationProcessById(id);
 	}
 
 	/* 查询申请的某一笔进件申请单中上传的产品的附件 */

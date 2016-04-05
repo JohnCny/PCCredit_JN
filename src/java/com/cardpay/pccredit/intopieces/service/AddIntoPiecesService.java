@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -28,6 +30,7 @@ import com.cardpay.pccredit.intopieces.dao.LocalExcelDao;
 import com.cardpay.pccredit.intopieces.dao.LocalImageDao;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.Dcbzlr;
 import com.cardpay.pccredit.intopieces.model.Dcddpz;
 import com.cardpay.pccredit.intopieces.model.Dclrjb;
@@ -43,9 +46,18 @@ import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.model.BatchTask;
+import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
+import com.cardpay.pccredit.system.constants.YesNoEnum;
+import com.cardpay.pccredit.system.model.NodeAudit;
+import com.cardpay.pccredit.system.model.NodeControl;
+import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.tools.DataFileConf;
 import com.cardpay.pccredit.tools.ImportBankDataFileTools;
 import com.cardpay.pccredit.tools.JXLReadExcel;
+import com.cardpay.workflow.models.WfProcessInfo;
+import com.cardpay.workflow.models.WfStatusInfo;
+import com.cardpay.workflow.models.WfStatusResult;
+import com.cardpay.workflow.service.ProcessService;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -70,6 +82,11 @@ public class AddIntoPiecesService {
 	@Autowired
 	private CustomerInforDao customerInforDao;
 
+	@Autowired
+	private NodeAuditService nodeAuditService;
+	
+	@Autowired
+	private ProcessService processService;
 	
 	/* 查询调查报告信息 */
 	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer(AddIntoPiecesFilter filter) {
@@ -211,12 +228,11 @@ public class AddIntoPiecesService {
 	
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
-		// TODO Auto-generated method stub
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//TODO 测试时暂时
 		//Map<String, String> map = SFTPUtil.upload(file, customerId);
-		//String fileName = map.get("fileName");
-		//String url = map.get("url");
+		String fileName = map.get("fileName");
+		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
 		localImage.setProductId(productId);
 		localImage.setCustomerId(customerId);
@@ -224,12 +240,12 @@ public class AddIntoPiecesService {
 			localImage.setApplicationId(applicationId);
 		}
 		localImage.setCreatedTime(new Date());
-//		if (StringUtils.trimToNull(url) != null) {
-//			localImage.setUri(url);
-//		}
-//		if (StringUtils.trimToNull(fileName) != null) {
-//			localImage.setAttachment(fileName);
-//		}
+		if (StringUtils.trimToNull(url) != null) {
+			localImage.setUri(url);
+		}
+		if (StringUtils.trimToNull(fileName) != null) {
+			localImage.setAttachment(fileName);
+		}
 		
 		commonDao.insertObject(localImage);
 	}
@@ -256,6 +272,66 @@ public class AddIntoPiecesService {
 		for(LocalImage obj : ls){
 			obj.setApplicationId(app.getId());
 			commonDao.updateObject(obj);
+		}
+		
+		//添加流程 20160328 sc
+		addProcess(app.getId(),addIntoPiecesForm.getProductId());
+	}
+	
+	public void addProcess(String appId,String productId){
+		//添加申请件流程
+		WfProcessInfo wf=new WfProcessInfo();
+		wf.setProcessType(WfProcessInfoType.process_type);
+		wf.setVersion("1");
+		commonDao.insertObject(wf);
+		List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productId);
+		boolean startBool=false;
+		boolean endBool=false;
+		//节点id和WfStatusInfo id的映射
+		Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
+		for(NodeAudit nodeAudit:list){
+			if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+				startBool=true;
+			}
+			
+			if(startBool&&!endBool){
+				WfStatusInfo wfStatusInfo=new WfStatusInfo();
+				wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setRelationedProcess(wf.getId());
+				wfStatusInfo.setStatusName(nodeAudit.getNodeName());
+				wfStatusInfo.setStatusCode(nodeAudit.getId());
+				commonDao.insertObject(wfStatusInfo);
+				
+				nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
+				
+				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+					//添加初始审核
+					CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
+					String serialNumber = processService.start(wf.getId());
+					customerApplicationProcess.setSerialNumber(serialNumber);
+					customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
+					customerApplicationProcess.setApplicationId(appId);
+					commonDao.insertObject(customerApplicationProcess);
+					
+					CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
+					applicationInfo.setSerialNumber(serialNumber);
+					commonDao.updateObject(applicationInfo);
+				}
+			}
+			
+			if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
+				endBool=true;
+			}
+		}
+		//节点关系
+		List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productId);
+		for(NodeControl control : nodeControls){
+			WfStatusResult wfStatusResult = new WfStatusResult();
+			wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
+			wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
+			wfStatusResult.setExamineResult(control.getCurrentStatus());
+			commonDao.insertObject(wfStatusResult);
 		}
 	}
 	

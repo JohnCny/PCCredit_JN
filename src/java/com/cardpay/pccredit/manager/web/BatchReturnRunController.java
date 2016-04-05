@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.customer.service.ReadWholeAndIncrementService;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
@@ -59,6 +60,9 @@ public class BatchReturnRunController extends BaseController{
 	
 	@Autowired
 	private AddIntoPiecesService addIntoPiecesService;
+	
+	@Autowired
+	ReadWholeAndIncrementService incrementService;
 	/**
 	 * 查看失败批处理信息
 	 * @param request
@@ -97,6 +101,8 @@ public class BatchReturnRunController extends BaseController{
 				dailyReportScheduleService.insertWeekSchedule();
 			}else if(batchCode.equals("jb")){//test 基本信息
 				customerInforService.readFile();
+			}else if(batchCode.equals("incre")){//test 导数增量
+				incrementService.readFileIncrement();
 			}
 			returnMap.addGlobalMessage(ManagerLevelAdjustmentConstant.IF_HANDLE_SUCCESS);
 		} catch (Exception e) {

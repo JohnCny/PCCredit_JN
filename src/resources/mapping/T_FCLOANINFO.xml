@@ -65,4 +65,5 @@
     <result column="PROCESSID"   	  jdbcType="VARCHAR" index="62" />
     <result column="TOBADLOANREASON"   	  jdbcType="VARCHAR" index="63" />
     <result column="BADLOANDATE"   	  jdbcType="VARCHAR" index="64" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
 </resultMap>

@@ -85,4 +85,5 @@
     <result column="HUKOU"   	  jdbcType="VARCHAR" index="82" />
     <result column="BACKOPERATOR"   	  jdbcType="VARCHAR" index="83" />
     <result column="BUSIFLAG"   	  jdbcType="VARCHAR" index="84" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
 </resultMap>

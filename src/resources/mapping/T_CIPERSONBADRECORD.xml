@@ -10,4 +10,5 @@
     <result column="INSTCITYCODE"   	jdbcType="VARCHAR" index="7" />
     <result column="OPERDATETIME"   	jdbcType="VARCHAR" index="8" />
     <result column="REFERAOMUNT"   	    jdbcType="VARCHAR" index="9" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
 </resultMap>

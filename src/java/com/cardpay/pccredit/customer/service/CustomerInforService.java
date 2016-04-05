@@ -27,8 +27,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,8 +57,6 @@ import com.cardpay.pccredit.customer.model.CustomerInforWeb;
 import com.cardpay.pccredit.customer.model.MaintenanceLog;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.customer.model.TyRepayLsz;
-import com.cardpay.pccredit.customer.model.TyRepayTkmx;
-import com.cardpay.pccredit.customer.model.TyRepayYehz;
 import com.cardpay.pccredit.customer.model.TyRepayYehzVo;
 import com.cardpay.pccredit.datapri.service.DataAccessSqlService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -2292,40 +2290,64 @@ public class CustomerInforService {
 		return queryResult;
 	}
 	
+//===============================================================JN================================================================//	
+	//TODO：1、建表 2、根据表改SQL,需要改成济南的
 	
-	//TODO：1、建表 2、根据表改SQL，需要改成济南的。
-    /*
-    授信申请基本信息
-     */
+	/**
+	 * 授信申请基本信息
+	 * @param fileName
+	 * @param date
+	 */
+	public void saveCCLMTAPPLYINFODataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CCLMTAPPLYINFO.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//save
+			insertCCLMTAPPLYINFO(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 授信申请基本信息
+	 * @param list
+	 */
     public void insertCCLMTAPPLYINFO(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO (	APPCODE,							"+
-                                                    "	PROCESSID,            "+
+        String sql =    "insert into T_CCLMTAPPLYINFO  (APPCODE,							"+
+                                                    "	PROCESSID,           			    "+
                                                     "	CUSTID,								"+
-                                                    "	BUSISTATE,						"+
+                                                    "	BUSISTATE,						    "+
                                                     "	CCTYPE,								"+
                                                     "	BUSITYPE,							"+
-                                                    "	LOANPURPOSE,					"+
-                                                    "	LOWRISKFLAG,					"+
-                                                    "	LOANPURPOSEREMARK,		"+
+                                                    "	LOANPURPOSE,					    "+
+                                                    "	LOWRISKFLAG,					    "+
+                                                    "	LOANPURPOSEREMARK,		            "+
                                                     "	REQLMT,								"+
                                                     "	CURRENCY,							"+
-                                                    "	BUSIMANAGER,					"+
-                                                    "	ASSISTBUSIMANAGER,		"+
+                                                    "	BUSIMANAGER,					    "+
+                                                    "	ASSISTBUSIMANAGER,		            "+
                                                     "	APPDATE,							"+
                                                     "	STATE,								"+
-                                                    "	IFCORPLOAN,						"+
-                                                    "	AUDITDATE,						"+
-                                                    "	OPERDATETIME,					"+
+                                                    "	IFCORPLOAN,							"+
+                                                    "	AUDITDATE,							"+
+                                                    "	OPERDATETIME,						"+
                                                     "	OPERATOR,							"+
-                                                    "	INSTCITYCODE,					"+
+                                                    "	INSTCITYCODE,						"+
                                                     "	INSTCODE,							"+
                                                     "	DEPTCODE,							"+
-                                                    "	LOANCARDFLAG,					"+
-                                                    "	CREDITMODEL,					"+
-                                                    "	ACCANTDEPT,						"+
-                                                    "	IFFNONGCARD						)"+
-                "    values                         (?,                              "+
+                                                    "	LOANCARDFLAG,						"+
+                                                    "	CREDITMODEL,						"+
+                                                    "	ACCANTDEPT,							"+
+                                                    "	IFFNONGCARD,CREATE_TIME)			"+
+                "values                         (?,                              					"+
+                                                    "    		    ?,                      		"+
                                                     "    		    ?,                              "+
                                                     "    		    ?,                              "+
                                                     "    		    ?,                              "+
@@ -2349,38 +2371,37 @@ public class CustomerInforService {
                                                     "    		    ?,                              "+
                                                     "    		    ?,                              "+
                                                     "    		    ?,                              "+
-                                                    "    		    ?,                              "+
-                                                    "    		    ?                              )";
+                                                    "    		    ?,?)							";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("APPCODE"   	 ).toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("PROCESSID"   ).toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("CUSTID"   	 ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("BUSISTATE"   ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("CCTYPE"   	 ).toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("BUSITYPE"   	).toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("LOANPURPOSE" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("LOWRISKFLAG" ).toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("LOANPURPOSEREMARK").toString());
-                ps.setString(10, ((Map<String, Object>) shopsList.get(i)).get("REQLMT").toString());
-                ps.setString(11,((Map<String, Object>)shopsList.get(i)).get("CURRENCY"   	).toString());
-                ps.setString(12,((Map<String, Object>)shopsList.get(i)).get("BUSIMANAGER" ).toString());
-                ps.setString(13,((Map<String, Object>)shopsList.get(i)).get("ASSISTBUSIMANAGER").toString());
-                ps.setString(14, ((Map<String, Object>) shopsList.get(i)).get("APPDATE").toString());
-                ps.setString(15,((Map<String, Object>)shopsList.get(i)).get("STATE"   	  ).toString());
-                ps.setString(16,((Map<String, Object>)shopsList.get(i)).get("IFCORPLOAN"  ).toString());
-                ps.setString(17,((Map<String, Object>)shopsList.get(i)).get("AUDITDATE"   ).toString());
-                ps.setString(18,((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME").toString());
-                ps.setString(19,((Map<String, Object>)shopsList.get(i)).get("OPERATOR"   	).toString());
-                ps.setString(20,((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE").toString());
-                ps.setString(21,((Map<String, Object>)shopsList.get(i)).get("INSTCODE"   	).toString());
-                ps.setString(22,((Map<String, Object>)shopsList.get(i)).get("DEPTCODE"   	).toString());
-                ps.setString(23,((Map<String, Object>)shopsList.get(i)).get("LOANCARDFLAG").toString());
-                ps.setString(24,((Map<String, Object>)shopsList.get(i)).get("CREDITMODEL" ).toString());
-                ps.setString(25,((Map<String, Object>)shopsList.get(i)).get("ACCANTDEPT" ).toString());
-                ps.setString(26,((Map<String, Object>)shopsList.get(i)).get("IFFNONGCARD" ).toString());
-
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("appcode").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("processid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("busistate").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("cctype").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("lowriskflag").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("loanpurposeremark").toString());
+                ps.setString(10, ((Map<String, Object>) shopsList.get(i)).get("reqlmt").toString());
+                ps.setString(11,((Map<String, Object>)shopsList.get(i)).get("currency").toString());
+                ps.setString(12,((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());
+                ps.setString(13,((Map<String, Object>)shopsList.get(i)).get("assistbusimanager").toString());
+                ps.setString(14, ((Map<String, Object>) shopsList.get(i)).get("appdate").toString());
+                ps.setString(15,((Map<String, Object>)shopsList.get(i)).get("state").toString());
+                ps.setString(16,((Map<String, Object>)shopsList.get(i)).get("ifcorploan").toString());
+                ps.setString(17,((Map<String, Object>)shopsList.get(i)).get("auditdate").toString());
+                ps.setString(18,((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(19,((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                ps.setString(20,((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(21,((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+                ps.setString(22,((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+                ps.setString(23,((Map<String, Object>)shopsList.get(i)).get("loancardflag").toString());
+                ps.setString(24,((Map<String, Object>)shopsList.get(i)).get("creditmodel").toString());
+                ps.setString(25,((Map<String, Object>)shopsList.get(i)).get("accantdept").toString());
+                ps.setString(26,((Map<String, Object>)shopsList.get(i)).get("iffnongcard").toString());
+                ps.setString(27,((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -2388,42 +2409,65 @@ public class CustomerInforService {
             }
         });
     }
-
-    /*
-    对私客户不良记录
+    
+    
+    
+    /**
+     *对私客户不良记录 
+     */
+    public void saveCIPERSONBADRECORDDataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONBADRECORD.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//save
+			insertCIPERSONBADRECORD(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    
+    /**
+     * 对私客户不良记录
+     * @param list
      */
     public void insertCIPERSONBADRECORD(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO (   ID"+
-                                                            "CUSTID"+
-                                                            "SUBJECT"+
-                                                            "RECORDDATE"+
-                                                            "BADDESCRIPTION"+
-                                                            "OPERATOR"+
-                                                            "INSTCITYCODE"+
-                                                            "OPERDATETIME"+
-                                                            "REFERAOMUNT)"+
-                "    values                         (?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?,                              "+
-                                    "    		    ?)";
+        String sql =    "  insert into T_CIPERSONBADRECORD (    ID,"+
+                                                            "CUSTID,"+
+                                                            "SUBJECT,"+
+                                                            "RECORDDATE,"+
+                                                            "BADDESCRIPTION,"+
+                                                            "OPERATOR,"+
+                                                            "INSTCITYCODE,"+
+                                                            "OPERDATETIME,"+
+                                                            "REFERAOMUNT,CREATE_TIME)"+
+                "    values                        (?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,                               "+
+                                    "    		    ?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("ID"   	 ).toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("CUSTID"   ).toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("SUBJECT"   	 ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("RECORDDATE"   ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("BADDESCRIPTION"   	 ).toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("OPERATOR"   	).toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME" ).toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("REFERAOMUNT").toString());
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("subject").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("recorddate").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("baddescription").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("referaomunt").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -2431,97 +2475,139 @@ public class CustomerInforService {
             }
         });
     }
+    
+    /**
+     *对私客户基本信息
+     * @param list
+     */
+    public void saveCIPERSONBASINFODataFile(String fileName,String date) {
+		try {
+			//add
+			List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
+			//update
+			List<Map<String, Object>> updatedatas = new ArrayList<Map<String,Object>>();
+			
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONBASINFO.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			
+			//for
+			for(Map<String, Object> map : datas){
+				int count = customerInforDao.findCIPERSONBASINFOCount(map);
+				if(count >0){
+					updatedatas.add(map);
+				}else{
+					insertdatas.add(map);
+				}
+			}
+			//save
+			insertCIPERSONBASINFO(insertdatas);
+			//update
+			updateCIPERSONBASINFO(updatedatas);
+			//释放空间
+			datas=null;
+			
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    /*
-   对私家庭成员信息
-    */
+    /**
+     * 对私客户基本信息
+     * @param list
+     * insert
+     */
     public void insertCIPERSONBASINFO(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO (   ID"+
-                                                            "INITID"+
-                                                            "CUSTID"+
-                                                            "TYPEID"+
-                                                            "CUSTTYPE"+
-                                                            "CNAME"+
-                                                            "SEX"+
-                                                            "CARDTYPE"+
-                                                            "CARDNUM"+
-                                                            "ETHICAL"+
-                                                            "COUNTRY"+
-                                                            "BIRTHDAY"+
-                                                            "SYADDR"+
-                                                            "USEFULLIFE"+
-                                                            "SIGNORG"+
-                                                            "CUSTPROPERTY"+
-                                                            "EMPLOYER"+
-                                                            "EMPLOYERADDR"+
-                                                            "EMPLOYERPOSTCODE"+
-                                                            "EMPLOYERTIME"+
-                                                            "CATEGORYID"+
-                                                            "TITLE"+
-                                                            "VOCATION"+
-                                                            "DUTY"+
-                                                            "REGISTERCODE"+
-                                                            "CODENAME"+
-                                                            "MANAGERNAME"+
-                                                            "MANAGEPLACE"+
-                                                            "MANAGEEXTENT"+
-                                                            "FOUNDDATE"+
-                                                            "ANNUCHECK"+
-                                                            "SCHOOL"+
-                                                            "SCHOOLADDR"+
-                                                            "SCHOOLATTRIB"+
-                                                            "SCHOOLTEL"+
-                                                            "MARRIGE"+
-                                                            "ISREFERAGRICULTURAL"+
-                                                            "CITY"+
-                                                            "DISTRICTCOUNTY"+
-                                                            "TOWN"+
-                                                            "COMMUNITY"+
-                                                            "CONTACTMOBILETEL"+
-                                                            "CONTACTTEL"+
-                                                            "ADDRESS"+
-                                                            "POSTCODE"+
-                                                            "MESSAGEADDR"+
-                                                            "COMMPOSTCODE"+
-                                                            "EDUCATIONLEVEL"+
-                                                            "DEGREE"+
-                                                            "INDUSTRY"+
-                                                            "RESIDE"+
-                                                            "LEVELCAL"+
-                                                            "JOINRING"+
-                                                            "FAMASSET"+
-                                                            "FAMDEBT"+
-                                                            "FAMANNUINCOME"+
-                                                            "FAMANNUPAYOUT"+
-                                                            "RELAMAN"+
-                                                            "EMAIL"+
-                                                            "INCOMEACCOUNT"+
-                                                            "INCOMEBANK"+
-                                                            "BUSIMANAGER"+
-                                                            "INSTCODE"+
-                                                            "DEPTCODE"+
-                                                            "INSTCITYCODE"+
-                                                            "ISTMP"+
-                                                            "VERSION"+
-                                                            "DISPOSALSTATUS"+
-                                                            "STATUS"+
-                                                            "REMARK"+
-                                                            "INPUTMAN"+
-                                                            "INPUTDATE"+
-                                                            "GROUPID"+
-                                                            "OPERATOR"+
-                                                            "OPERDATETIME"+
-                                                            "CUSTSTATUS"+
-                                                            "ASSISTBUSIMANAGE"+
-                                                            "FAMNUM"+
-                                                            "FIRSTMANAGER"+
-                                                            "GOVERNMANAGER"+
-                                                            "ISTRANS"+
-                                                            "HUKOU"+
-                                                            "BACKOPERATOR"+
-                                                            "BUSIFLAG)"+
-                "    values                         (?,                              "+
+        String sql =    "  insert into T_CIPERSONBASINFO (   ID,"+
+                                                            "INITID,"+
+                                                            "CUSTID,"+
+                                                            "TYPEID,"+
+                                                            "CUSTTYPE,"+
+                                                            "CNAME,"+
+                                                            "SEX,"+
+                                                            "CARDTYPE,"+
+                                                            "CARDNUM,"+
+                                                            "ETHICAL,"+
+                                                            "COUNTRY,"+
+                                                            "BIRTHDAY,"+
+                                                            "SYADDR,"+
+                                                            "USEFULLIFE,"+
+                                                            "SIGNORG,"+
+                                                            "CUSTPROPERTY,"+
+                                                            "EMPLOYER,"+
+                                                            "EMPLOYERADDR,"+
+                                                            "EMPLOYERPOSTCODE,"+
+                                                            "EMPLOYERTIME,"+
+                                                            "CATEGORYID,"+
+                                                            "TITLE,"+
+                                                            "VOCATION,"+
+                                                            "DUTY,"+
+                                                            "REGISTERCODE,"+
+                                                            "CODENAME,"+
+                                                            "MANAGERNAME,"+
+                                                            "MANAGEPLACE,"+
+                                                            "MANAGEEXTENT,"+
+                                                            "FOUNDDATE,"+
+                                                            "ANNUCHECK,"+
+                                                            "SCHOOL,"+
+                                                            "SCHOOLADDR,"+
+                                                            "SCHOOLATTRIB,"+
+                                                            "SCHOOLTEL,"+
+                                                            "MARRIGE,"+
+                                                            "ISREFERAGRICULTURAL,"+
+                                                            "CITY,"+
+                                                            "DISTRICTCOUNTY,"+
+                                                            "TOWN,"+
+                                                            "COMMUNITY,"+
+                                                            "CONTACTMOBILETEL,"+
+                                                            "CONTACTTEL,"+
+                                                            "ADDRESS,"+
+                                                            "POSTCODE,"+
+                                                            "MESSAGEADDR,"+
+                                                            "COMMPOSTCODE,"+
+                                                            "EDUCATIONLEVEL,"+
+                                                            "DEGREE,"+
+                                                            "INDUSTRY,"+
+                                                            "RESIDE,"+
+                                                            "LEVELCAL,"+
+                                                            "JOINRING,"+
+                                                            "FAMASSET,"+
+                                                            "FAMDEBT,"+
+                                                            "FAMANNUINCOME,"+
+                                                            "FAMANNUPAYOUT,"+
+                                                            "RELAMAN,"+
+                                                            "EMAIL,"+
+                                                            "INCOMEACCOUNT,"+
+                                                            "INCOMEBANK,"+
+                                                            "BUSIMANAGER,"+
+                                                            "INSTCODE,"+
+                                                            "DEPTCODE,"+
+                                                            "INSTCITYCODE,"+
+                                                            "ISTMP,"+
+                                                            "VERSION,"+
+                                                            "DISPOSALSTATUS,"+
+                                                            "STATUS,"+
+                                                            "REMARK,"+
+                                                            "INPUTMAN,"+
+                                                            "INPUTDATE,"+
+                                                            "GROUPID,"+
+                                                            "OPERATOR,"+
+                                                            "OPERDATETIME,"+
+                                                            "CUSTSTATUS,"+
+                                                            "ASSISTBUSIMANAGE,"+
+                                                            "FAMNUM,"+
+                                                            "FIRSTMANAGER,"+
+                                                            "GOVERNMANAGER,"+
+                                                            "ISTRANS,"+
+                                                            "HUKOU,"+
+                                                            "BACKOPERATOR,"+
+                                                            "BUSIFLAG,CREATE_TIME)"+
+                "    values                         (?,                                 "+
                                         "    		    ?,                              "+
                                         "    		    ?,                              "+
                                         "    		    ?,                              "+
@@ -2604,94 +2690,95 @@ public class CustomerInforService {
                                         "    		    ?,                              "+
                                         "    		    ?,                              "+
                                         "    		    ?,                              "+
-                                        "    		    ?)";
+                                        "    		    ?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("ID" ).toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("INITID" ).toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("CUSTID" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("TYPEID" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("CUSTTYPE" ).toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("CNAME" ).toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("SEX" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("CARDTYPE" ).toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("CARDNUM" ).toString());
-                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("ETHICAL" ).toString());
-                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("COUNTRY" ).toString());
-                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("BIRTHDAY" ).toString());
-                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("SYADDR" ).toString());
-                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("USEFULLIFE" ).toString());
-                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("SIGNORG" ).toString());
-                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("CUSTPROPERTY" ).toString());
-                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("EMPLOYER" ).toString());
-                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("EMPLOYERADDR" ).toString());
-                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("EMPLOYERPOSTCODE" ).toString());
-                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("EMPLOYERTIME" ).toString());
-                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("CATEGORYID" ).toString());
-                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("TITLE" ).toString());
-                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("VOCATION" ).toString());
-                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("DUTY" ).toString());
-                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("REGISTERCODE" ).toString());
-                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("CODENAME" ).toString());
-                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("MANAGERNAME" ).toString());
-                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("MANAGEPLACE" ).toString());
-                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("MANAGEEXTENT" ).toString());
-                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("FOUNDDATE" ).toString());
-                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("ANNUCHECK" ).toString());
-                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("SCHOOL" ).toString());
-                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("SCHOOLADDR" ).toString());
-                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("SCHOOLATTRIB" ).toString());
-                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("SCHOOLTEL" ).toString());
-                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("MARRIGE" ).toString());
-                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("ISREFERAGRICULTURAL" ).toString());
-                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("CITY" ).toString());
-                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("DISTRICTCOUNTY" ).toString());
-                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("TOWN" ).toString());
-                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("COMMUNITY" ).toString());
-                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("CONTACTMOBILETEL" ).toString());
-                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("CONTACTTEL" ).toString());
-                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("ADDRESS" ).toString());
-                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("POSTCODE" ).toString());
-                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("MESSAGEADDR" ).toString());
-                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("COMMPOSTCODE" ).toString());
-                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("EDUCATIONLEVEL" ).toString());
-                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("DEGREE" ).toString());
-                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("INDUSTRY" ).toString());
-                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("RESIDE" ).toString());
-                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("LEVELCAL" ).toString());
-                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("JOINRING" ).toString());
-                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("FAMASSET" ).toString());
-                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("FAMDEBT" ).toString());
-                ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("FAMANNUINCOME" ).toString());
-                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("FAMANNUPAYOUT" ).toString());
-                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("RELAMAN" ).toString());
-                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("EMAIL" ).toString());
-                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("INCOMEACCOUNT" ).toString());
-                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("INCOMEBANK" ).toString());
-                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("BUSIMANAGER" ).toString());
-                ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("INSTCODE" ).toString());
-                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("DEPTCODE" ).toString());
-                ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE" ).toString());
-                ps.setString(66, ((Map<String, Object>)shopsList.get(i)).get("ISTMP" ).toString());
-                ps.setString(67, ((Map<String, Object>)shopsList.get(i)).get("VERSION" ).toString());
-                ps.setString(68, ((Map<String, Object>)shopsList.get(i)).get("DISPOSALSTATUS" ).toString());
-                ps.setString(69, ((Map<String, Object>)shopsList.get(i)).get("STATUS" ).toString());
-                ps.setString(70, ((Map<String, Object>)shopsList.get(i)).get("REMARK" ).toString());
-                ps.setString(71, ((Map<String, Object>)shopsList.get(i)).get("INPUTMAN" ).toString());
-                ps.setString(72, ((Map<String, Object>)shopsList.get(i)).get("INPUTDATE" ).toString());
-                ps.setString(73, ((Map<String, Object>)shopsList.get(i)).get("GROUPID" ).toString());
-                ps.setString(74, ((Map<String, Object>)shopsList.get(i)).get("OPERATOR" ).toString());
-                ps.setString(75, ((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME" ).toString());
-                ps.setString(76, ((Map<String, Object>)shopsList.get(i)).get("CUSTSTATUS" ).toString());
-                ps.setString(77, ((Map<String, Object>)shopsList.get(i)).get("ASSISTBUSIMANAGE" ).toString());
-                ps.setString(78, ((Map<String, Object>)shopsList.get(i)).get("FAMNUM" ).toString());
-                ps.setString(79, ((Map<String, Object>)shopsList.get(i)).get("FIRSTMANAGER" ).toString());
-                ps.setString(80, ((Map<String, Object>)shopsList.get(i)).get("GOVERNMANAGER" ).toString());
-                ps.setString(81, ((Map<String, Object>)shopsList.get(i)).get("ISTRANS" ).toString());
-                ps.setString(82, ((Map<String, Object>)shopsList.get(i)).get("HUKOU" ).toString());
-                ps.setString(83, ((Map<String, Object>)shopsList.get(i)).get("BACKOPERATOR" ).toString());
-                ps.setString(84, ((Map<String, Object>)shopsList.get(i)).get("BUSIFLAG").toString());
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("initid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("custtype").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("cname").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("sex").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("cardtype").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("cardnum").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("ethical").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("country").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("birthday").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("syaddr").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("usefullife").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("signorg").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("custproperty").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("employer").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("employeraddr").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("employerpostcode").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("employertime").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("categoryid").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("title").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("vocation").toString());
+                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("duty").toString());
+                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("registercode").toString());
+                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("codename").toString());
+                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("managername").toString());
+                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("manageplace").toString());
+                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("manageextent").toString());
+                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("founddate").toString());
+                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("annucheck").toString());
+                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("school").toString());
+                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("schooladdr").toString());
+                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("schoolattrib").toString());
+                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("schooltel").toString());
+                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("marrige").toString());
+                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("isreferagricultural").toString());
+                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("city").toString());
+                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("districtcounty").toString());
+                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("town").toString());
+                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("community" ).toString());
+                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("contactmobiletel").toString());
+                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("contacttel").toString());
+                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("address").toString());
+                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("postcode").toString());
+                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("messageaddr").toString());
+                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("commpostcode").toString());
+                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("educationlevel").toString());
+                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("degree").toString());
+                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("industry").toString());
+                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("reside").toString());
+                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("levelcal").toString());
+                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("joinring").toString());
+                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("famasset").toString());
+                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("famdebt").toString());
+                ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("famannuincome").toString());
+                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("famannupayout").toString());
+                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("relaman").toString());
+                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("email").toString());
+                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("incomeaccount").toString());
+                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("incomebank").toString());
+                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());
+                ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+                ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(66, ((Map<String, Object>)shopsList.get(i)).get("istmp").toString());
+                ps.setString(67, ((Map<String, Object>)shopsList.get(i)).get("version").toString());
+                ps.setString(68, ((Map<String, Object>)shopsList.get(i)).get("disposalstatus").toString());
+                ps.setString(69, ((Map<String, Object>)shopsList.get(i)).get("status").toString());
+                ps.setString(70, ((Map<String, Object>)shopsList.get(i)).get("remark").toString());
+                ps.setString(71, ((Map<String, Object>)shopsList.get(i)).get("inputman").toString());
+                ps.setString(72, ((Map<String, Object>)shopsList.get(i)).get("inputdate").toString());
+                ps.setString(73, ((Map<String, Object>)shopsList.get(i)).get("groupid").toString());
+                ps.setString(74, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                ps.setString(75, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(76, ((Map<String, Object>)shopsList.get(i)).get("custstatus").toString());
+                ps.setString(77, ((Map<String, Object>)shopsList.get(i)).get("assistbusimanage").toString());
+                ps.setString(78, ((Map<String, Object>)shopsList.get(i)).get("famnum").toString());
+                ps.setString(79, ((Map<String, Object>)shopsList.get(i)).get("firstmanager").toString());
+                ps.setString(80, ((Map<String, Object>)shopsList.get(i)).get("governmanager").toString());
+                ps.setString(81, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(82, ((Map<String, Object>)shopsList.get(i)).get("hukou").toString());
+                ps.setString(83, ((Map<String, Object>)shopsList.get(i)).get("backoperator").toString());
+                ps.setString(84, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+                ps.setString(85, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -2699,36 +2786,267 @@ public class CustomerInforService {
             }
         });
     }
+    
+    
+    
+    /**
+     * 对私客户基本信息
+     * @param list
+     * update
+     */
+    public void updateCIPERSONBASINFO(List<Map<String, Object>> list){
+        final List<Map<String, Object>> shopsList = list;
+        String sql =    " update T_CIPERSONBASINFO set    "+
+		        		"  id 				  = ?         "+         
+		        		"  ,initid 	          = ? 		  "+		              
+		        		"  ,custid  		  = ?         "+    
+		        		"  ,typeid  		  = ?         "+     
+		        		"  ,custtype		  = ?         "+   
+		        		"  ,cname          	  = ?         "+  
+		        		"  ,sex               = ?         "+   
+		        		"  ,cardtype          = ?         "+ 
+		        		"  ,cardnum           = ?         "+ 
+		        		"  ,ethical           = ?         "+
+		        		"  ,country           = ?         "+
+		        		"  ,birthday          = ?         "+
+		        		"  ,syaddr            = ?         "+
+		        		"  ,usefullife        = ?         "+
+		        		"  ,signorg           = ?         "+
+		        		"  ,custproperty      = ?         "+
+		        		"  ,employer          = ?         "+
+		        		"  ,employeraddr      = ?         "+
+		        		"  ,employerpostcode  = ?         "+
+		        		"  ,employertime      = ?         "+
+		        		"  ,categoryid        = ?         "+
+		        		"  ,title             = ?         "+ 
+		        		"  ,vocation          = ?         "+
+		        		"  ,duty              = ?         "+
+		        		"  ,registercode      = ?         "+
+		        		"  ,codename          = ?         "+
+		        		"  ,managername       = ?         "+
+		        		"  ,manageplace       = ?         "+
+		        		"  ,manageextent      = ?         "+
+		        		"  ,founddate         = ?         "+
+		        		"  ,annucheck         = ?         "+
+		        		"  ,school            = ?         "+
+		        		"  ,schooladdr        = ?         "+
+		        		"  ,schoolattrib      = ?         "+
+		        		"  ,schooltel         = ?         "+
+		        		"  ,marrige           = ?         "+
+		        		"  ,isreferagricultural = ?       "+
+		        		"  ,city              = ?         "+
+		        		"  ,districtcounty    = ?         "+
+		        		"  ,town              = ?         "+
+		        		"  ,community         = ?         "+
+		        		"  ,contactmobiletel  = ?         "+
+		        		"  ,contacttel        = ?         "+
+		        		"  ,address           = ?         "+
+		        		"  ,postcode          = ?         "+
+		        		"  ,messageaddr       = ?         "+
+		        		"  ,commpostcode      = ?         "+
+		        		"  ,educationlevel    = ?         "+
+		        		"  ,degree            = ?         "+
+		        		"  ,industry          = ?         "+
+		        		"  ,reside            = ?         "+
+		        		"  ,levelcal          = ?         "+
+		        		"  ,joinring          = ?         "+
+		        		"  ,famasset          = ?         "+
+		        		"  ,famdebt           = ?         "+
+		        		"  ,famannuincome     = ?         "+
+		        		"  ,famannupayout     = ?         "+
+		        		"  ,relaman           = ?         "+
+		        		"  ,email             = ?         "+
+		        		"  ,incomeaccount     = ?         "+
+		        		"  ,incomebank        = ?         "+
+		        		"  ,busimanager       = ?         "+
+		        		"  ,instcode          = ?         "+
+		        		"  ,deptcode          = ?         "+
+		        		"  ,instcitycode      = ?         "+
+		        		"  ,istmp             = ?         "+
+		        		"  ,version           = ?         "+
+		        		"  ,disposalstatus    = ?         "+
+		        		"  ,status            = ?         "+
+		        		"  ,remark            = ?         "+
+		        		"  ,inputman          = ?         "+
+		        		"  ,inputdate         = ?         "+
+		        		"  ,groupid           = ?         "+
+		        		"  ,operator          = ?         "+
+		        		"  ,operdatetime      = ?         "+
+		        		"  ,custstatus        = ?         "+
+		        		"  ,assistbusimanage  = ?         "+
+		        		"  ,famnum            = ?         "+
+		        		"  ,firstmanager      = ?         "+
+		        		"  ,governmanager     = ?         "+
+		        		"  ,istrans           = ?         "+
+		        		"  ,hukou             = ?         "+
+		        		"  ,backoperator      = ?         "+
+		        		"  ,busiflag          = ?         "+
+		        		"  ,CREATE_TIME       = ?         "+
+		        		"  where  custid 	  = ?         ";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+            	ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("initid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("custtype").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("cname").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("sex").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("cardtype").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("cardnum").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("ethical").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("country").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("birthday").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("syaddr").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("usefullife").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("signorg").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("custproperty").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("employer").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("employeraddr").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("employerpostcode").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("employertime").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("categoryid").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("title").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("vocation").toString());
+                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("duty").toString());
+                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("registercode").toString());
+                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("codename").toString());
+                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("managername").toString());
+                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("manageplace").toString());
+                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("manageextent").toString());
+                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("founddate").toString());
+                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("annucheck").toString());
+                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("school").toString());
+                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("schooladdr").toString());
+                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("schoolattrib").toString());
+                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("schooltel").toString());
+                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("marrige").toString());
+                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("isreferagricultural").toString());
+                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("city").toString());
+                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("districtcounty").toString());
+                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("town").toString());
+                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("community" ).toString());
+                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("contactmobiletel").toString());
+                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("contacttel").toString());
+                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("address").toString());
+                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("postcode").toString());
+                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("messageaddr").toString());
+                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("commpostcode").toString());
+                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("educationlevel").toString());
+                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("degree").toString());
+                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("industry").toString());
+                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("reside").toString());
+                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("levelcal").toString());
+                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("joinring").toString());
+                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("famasset").toString());
+                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("famdebt").toString());
+                ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("famannuincome").toString());
+                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("famannupayout").toString());
+                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("relaman").toString());
+                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("email").toString());
+                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("incomeaccount").toString());
+                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("incomebank").toString());
+                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());
+                ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+                ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(66, ((Map<String, Object>)shopsList.get(i)).get("istmp").toString());
+                ps.setString(67, ((Map<String, Object>)shopsList.get(i)).get("version").toString());
+                ps.setString(68, ((Map<String, Object>)shopsList.get(i)).get("disposalstatus").toString());
+                ps.setString(69, ((Map<String, Object>)shopsList.get(i)).get("status").toString());
+                ps.setString(70, ((Map<String, Object>)shopsList.get(i)).get("remark").toString());
+                ps.setString(71, ((Map<String, Object>)shopsList.get(i)).get("inputman").toString());
+                ps.setString(72, ((Map<String, Object>)shopsList.get(i)).get("inputdate").toString());
+                ps.setString(73, ((Map<String, Object>)shopsList.get(i)).get("groupid").toString());
+                ps.setString(74, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                ps.setString(75, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(76, ((Map<String, Object>)shopsList.get(i)).get("custstatus").toString());
+                ps.setString(77, ((Map<String, Object>)shopsList.get(i)).get("assistbusimanage").toString());
+                ps.setString(78, ((Map<String, Object>)shopsList.get(i)).get("famnum").toString());
+                ps.setString(79, ((Map<String, Object>)shopsList.get(i)).get("firstmanager").toString());
+                ps.setString(80, ((Map<String, Object>)shopsList.get(i)).get("governmanager").toString());
+                ps.setString(81, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(82, ((Map<String, Object>)shopsList.get(i)).get("hukou").toString());
+                ps.setString(83, ((Map<String, Object>)shopsList.get(i)).get("backoperator").toString());
+                ps.setString(84, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+                ps.setString(85, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                ps.setString(86, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+    }
+    
+    
+    /**
+     * 对私家庭成员信息
+     * @param list
+     */
+    public void saveCIPERSONFAMILYDataFile(String fileName,String date) {
+		try {
+			//add
+			List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
+			//update
+			List<Map<String, Object>> updatedatas = new ArrayList<Map<String,Object>>();
+			
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONFAMILY.xml");
+			
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//for
+			for(Map<String, Object> map : datas){
+				int count = customerInforDao.findCipersonfamilyCount(map);
+				if(count >0){
+					updatedatas.add(map);
+				}else{
+					insertdatas.add(map);
+				}
+			}
+			//save
+			insertCIPERSONFAMILY(insertdatas);
+			//update
+			updateCIPERSONFAMILY(updatedatas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-
-    /*
-  对私家庭成员信息
-   */
+   /**
+    * 对私家庭成员信息
+    * @param list
+    * insert
+    */
     public void insertCIPERSONFAMILY(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO (  ID"+
-                                                            "PARTYID"+
-                                                            "PARTYINITID"+
-                                                            "CUSTID"+
-                                                            "TYPEID"+
-                                                            "NAME"+
-                                                            "SEX"+
-                                                            "FAMILYMBERCCTION"+
-                                                            "PAPERTYPE"+
-                                                            "PAPERCODE"+
-                                                            "MOVEPHONE"+
-                                                            "FIXATIONPHONE"+
-                                                            "JOBUNIT"+
-                                                            "CREATEDUSER"+
-                                                            "CREATEDTIME"+
-                                                            "GROUPID"+
-                                                            "INSTCITYCODE"+
-                                                            "DELETEREASON"+
-                                                            "STATUS"+
-                                                            "OPERATOR"+
-                                                            "OPERDATETIME"+
-                                                            "ISTRANS)"+
-                "    values                         (?,                              "+
+        String sql =    "  insert into T_CIPERSONFAMILY (    ID,"+
+                                                            "PARTYID,"+
+                                                            "PARTYINITID,"+
+                                                            "CUSTID,"+
+                                                            "TYPEID,"+
+                                                            "NAME,"+
+                                                            "SEX,"+
+                                                            "FAMILYMBERCCTION,"+
+                                                            "PAPERTYPE,"+
+                                                            "PAPERCODE,"+
+                                                            "MOVEPHONE,"+
+                                                            "FIXATIONPHONE,"+
+                                                            "JOBUNIT,"+
+                                                            "CREATEDUSER,"+
+                                                            "CREATEDTIME,"+
+                                                            "GROUPID,"+
+                                                            "INSTCITYCODE,"+
+                                                            "DELETEREASON,"+
+                                                            "STATUS,"+
+                                                            "OPERATOR,"+
+                                                            "OPERDATETIME,"+
+                                                            "ISTRANS,CREATE_TIME)"+
+                "    values                        (?,                              "+
                                     "    		    ?,                              "+
                                     "    		    ?,                              "+
                                     "    		    ?,                              "+
@@ -2749,32 +3067,33 @@ public class CustomerInforService {
                                     "    		    ?,                              "+
                                     "    		    ?,                              "+
                                     "    		    ?,                              "+
-                                    "    		    ?)";
+                                    "    		    ?,?)								";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("ID").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("PARTYID" ).toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("PARTYINITID" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("CUSTID" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("TYPEID" ).toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("NAME").toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("SEX" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("FAMILYMBERCCTION").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("PAPERTYPE").toString());
-                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("PAPERCODE").toString());
-                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("MOVEPHONE").toString());
-                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("FIXATIONPHONE").toString());
-                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("JOBUNIT").toString());
-                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("CREATEDUSER").toString());
-                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("CREATEDTIME" ).toString());
-                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("GROUPID").toString());
-                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE" ).toString());
-                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("DELETEREASON").toString());
-                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("STATUS").toString());
-                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("OPERATOR").toString());
-                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME").toString());
-                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("ISTRANSID" ).toString());
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("partyid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("partyinitid").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("name").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("sex").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("familymbercction").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("papertype").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("papercode").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("movephone").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("fixationphone").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("jobunit").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("createduser").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("createdtime").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("groupid").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("deletereason").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("status").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -2782,76 +3101,165 @@ public class CustomerInforService {
             }
         });
     }
+    
+    
+    /**
+     * 对私家庭成员信息
+     * @param list
+     * insert
+     */
+     public void updateCIPERSONFAMILY(List<Map<String, Object>> list){
+         final List<Map<String, Object>> shopsList = list;
+         String sql =    " update T_CIPERSONFAMILY set "+
+		        		 "	  id = ?,                  "+
+		        		 "	  partyid= ?,              "+
+		        		 "	  partyinitid= ?,          "+
+		        		 "	  custid= ?,               "+
+		        		 "	  typeid= ?,               "+
+		        		 "	  name= ?,                 "+
+		        		 "	  sex= ?,                  "+
+		        		 "	  familymbercction= ?,     "+
+		        		 "	  papertype= ?,            "+
+		        		 "	  papercode= ?,            "+
+		        		 "	  movephone= ?,            "+
+		        		 "	  fixationphone= ?,        "+
+		        		 "	  jobunit= ?,              "+
+		        		 "	  createduser= ?,          "+
+		        		 "	  createdtime= ?,          "+
+		        		 "	  groupid= ?,              "+
+		        		 "	  instcitycode= ?,         "+
+		        		 "	  deletereason= ?,         "+
+		        		 "	  status= ?,               "+
+		        		 "	  operator= ?,             "+
+		        		 "	  operdatetime= ?,         "+
+		        		 "	  istrans= ?,              "+
+		        		 "	  create_time =?           "+
+		        		 "  where custid = ?           ";
+         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+             public void setValues(PreparedStatement ps,int i)throws SQLException
+             {
+                 ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());
+                 ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("partyid").toString());
+                 ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("partyinitid").toString());
+                 ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                 ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                 ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("name").toString());
+                 ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("sex").toString());
+                 ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("familymbercction").toString());
+                 ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("papertype").toString());
+                 ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("papercode").toString());
+                 ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("movephone").toString());
+                 ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("fixationphone").toString());
+                 ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("jobunit").toString());
+                 ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("createduser").toString());
+                 ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("createdtime").toString());
+                 ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("groupid").toString());
+                 ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                 ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("deletereason").toString());
+                 ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("status").toString());
+                 ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                 ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                 ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                 ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                 ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+             }
+             public int getBatchSize()
+             {
+                 return shopsList.size();
+             }
+         });
+     }
 
-    /*
- 借据月末余额表（结果表）
-  */
+    
+    /**
+     * 借据月末余额表（结果表）
+     * @param list
+     */
+    public void saveFCLOANINFODataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCLOANINFO.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//save
+			insertFCLOANINFO(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    /**
+     * 借据月末余额表（结果表）
+     * @param list
+     */
     public void insertFCLOANINFO(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO (  KEYCODE"+
-                                                            "YEAR"+
-                                                            "TIMES"+
-                                                            "BUSICODE"+
-                                                            "BUSITYPE"+
-                                                            "DEPTCODE"+
-                                                            "INSTCITYCODE"+
-                                                            "CONTRACTCODE"+
-                                                            "CUSTID"+
-                                                            "CNAME"+
-                                                            "TYPEID"+
-                                                            "CUSTTYPE"+
-                                                            "CUSTPROPERTY"+
-                                                            "ORGCERTCODE"+
-                                                            "UNITCUSTTYPE"+
-                                                            "CARDTYPE"+
-                                                            "CARDNUM"+
-                                                            "CITY"+
-                                                            "DISTRICTCOUNTY"+
-                                                            "TOWN"+
-                                                            "COMMUNITY"+
-                                                            "INSTCODE"+
-                                                            "CURRENCY"+
-                                                            "MONEY"+
-                                                            "BALAMT"+
-                                                            "DEBTINTEREST"+
-                                                            "REQLMT"+
-                                                            "LOANDATE"+
-                                                            "ENDDATE"+
-                                                            "BUSISTATE"+
-                                                            "CREDITLEVEL"+
-                                                            "INDUSTRY"+
-                                                            "LOANPURPOSE"+
-                                                            "MAINASSURE"+
-                                                            "BUSIMANAGER"+
-                                                            "ISBACK"+
-                                                            "ISBIGCOMPANY"+
-                                                            "STATE"+
-                                                            "ISLOWRISK"+
-                                                            "VALIDTIME"+
-                                                            "SORTRESULT"+
-                                                            "SORTRESULTFIVE"+
-                                                            "PRESORTRESULT"+
-                                                            "PRESORTFIVE"+
-                                                            "AUTOSORTRESULT"+
-                                                            "AUTOSORTREMARK"+
-                                                            "AUTOSORTFIVE"+
-                                                            "ISADM"+
-                                                            "CUSTSCALE"+
-                                                            "OVERTIMES"+
-                                                            "DELAYAMTDAYS"+
-                                                            "DELAYINTERESTDAYS"+
-                                                            "CHANGEFLAG"+
-                                                            "CATEGORYTYPE"+
-                                                            "OPERDATETIME"+
-                                                            "OPERATOR"+
-                                                            "ISWORKMANU"+
-                                                            "ADMDATE"+
-                                                            "AJUSTSTATE"+
-                                                            "ISTRANS"+
-                                                            "LASTYEARSORTRESULT"+
-                                                            "PROCESSID"+
-                                                            "TOBADLOANREASON"+
-                                                            "BADLOANDATE)"+
+        String sql =    "  insert into T_FCLOANINFO (    KEYCODE,"+
+                                                            "YEAR,"+
+                                                            "TIMES,"+
+                                                            "BUSICODE,"+
+                                                            "BUSITYPE,"+
+                                                            "DEPTCODE,"+
+                                                            "INSTCITYCODE,"+
+                                                            "CONTRACTCODE,"+
+                                                            "CUSTID,"+
+                                                            "CNAME,"+
+                                                            "TYPEID,"+
+                                                            "CUSTTYPE,"+
+                                                            "CUSTPROPERTY,"+
+                                                            "ORGCERTCODE,"+
+                                                            "UNITCUSTTYPE,"+
+                                                            "CARDTYPE,"+
+                                                            "CARDNUM,"+
+                                                            "CITY,"+
+                                                            "DISTRICTCOUNTY,"+
+                                                            "TOWN,"+
+                                                            "COMMUNITY,"+
+                                                            "INSTCODE,"+
+                                                            "CURRENCY,"+
+                                                            "MONEY,"+
+                                                            "BALAMT,"+
+                                                            "DEBTINTEREST,"+
+                                                            "REQLMT,"+
+                                                            "LOANDATE,"+
+                                                            "ENDDATE,"+
+                                                            "BUSISTATE,"+
+                                                            "CREDITLEVEL,"+
+                                                            "INDUSTRY,"+
+                                                            "LOANPURPOSE,"+
+                                                            "MAINASSURE,"+
+                                                            "BUSIMANAGER,"+
+                                                            "ISBACK,"+
+                                                            "ISBIGCOMPANY,"+
+                                                            "STATE,"+
+                                                            "ISLOWRISK,"+
+                                                            "VALIDTIME,"+
+                                                            "SORTRESULT,"+
+                                                            "SORTRESULTFIVE,"+
+                                                            "PRESORTRESULT,"+
+                                                            "PRESORTFIVE,"+
+                                                            "AUTOSORTRESULT,"+
+                                                            "AUTOSORTREMARK,"+
+                                                            "AUTOSORTFIVE,"+
+                                                            "ISADM,"+
+                                                            "CUSTSCALE,"+
+                                                            "OVERTIMES,"+
+                                                            "DELAYAMTDAYS,"+
+                                                            "DELAYINTERESTDAYS,"+
+                                                            "CHANGEFLAG,"+
+                                                            "CATEGORYTYPE,"+
+                                                            "OPERDATETIME,"+
+                                                            "OPERATOR,"+
+                                                            "ISWORKMANU,"+
+                                                            "ADMDATE,"+
+                                                            "AJUSTSTATE,"+
+                                                            "ISTRANS,"+
+                                                            "LASTYEARSORTRESULT,"+
+                                                            "PROCESSID,"+
+                                                            "TOBADLOANREASON,"+
+                                                            "BADLOANDATE,CREATE_TIME)"+
                 "    values                         (?,                              "+
                                             "    		    ?,                              "+
                                             "    		    ?,                              "+
@@ -2915,76 +3323,75 @@ public class CustomerInforService {
                                             "    		    ?,                              "+
                                             "    		    ?,                              "+
                                             "    		    ?,                              "+
-                                            "    		    ?)";
+                                            "    		    ?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("KEYCODE").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("YEAR").toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("TIMES" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("BUSICODE" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("BUSITYPE" ).toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("DEPTCODE").toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("CONTRACTCODE").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("CUSTID").toString());
-                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("CNAME").toString());
-                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("TYPEID").toString());
-                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("CUSTTYPE").toString());
-                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("CUSTPROPERTY" ).toString());
-                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("ORGCERTCODE" ).toString());
-                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("UNITCUSTTYPE" ).toString());
-                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("CARDTYPE").toString());
-                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("CARDNUM" ).toString());
-                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("CITY").toString());
-                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("DISTRICTCOUNTY").toString());
-                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("TOWN").toString());
-                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("COMMUNITY").toString());
-                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("INSTCODE").toString());
-                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("CURRENCY" ).toString());
-                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("MONEY" ).toString());
-                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("BALAMT" ).toString());
-                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("DEBTINTEREST").toString());
-                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("REQLMT" ).toString());
-                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("LOANDATE").toString());
-                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("ENDDATE").toString());
-                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("BUSISTATE").toString());
-                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("CREDITLEVEL").toString());
-                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("INDUSTRY").toString());
-                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("LOANPURPOSE" ).toString());
-                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("MAINASSURE" ).toString());
-                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("BUSIMANAGER" ).toString());
-                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("ISBACK").toString());
-                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("ISBIGCOMPANY" ).toString());
-                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("STATE").toString());
-                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("ISLOWRISK").toString());
-                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("VALIDTIME").toString());
-                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("SORTRESULT").toString());
-                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("SORTRESULTFIVE").toString());
-                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("PRESORTRESULT" ).toString());
-                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("PRESORTFIVE" ).toString());
-                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("AUTOSORTRESULT" ).toString());
-                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("AUTOSORTREMARK").toString());
-                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("AUTOSORTFIVE" ).toString());
-                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("ISADM").toString());
-                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("CUSTSCALE").toString());
-                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("OVERTIMES").toString());
-                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("DELAYAMTDAYS").toString());
-                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("DELAYINTERESTDAYS").toString());
-                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("CHANGEFLAG" ).toString());
-                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("CATEGORYTYPE" ).toString());
-                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME").toString());
-                ps.setString(56, ((Map<String, Object>) shopsList.get(i)).get("OPERATOR").toString());
-                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("ISWORKMANU" ).toString());
-                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("ADMDATE").toString());
-                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("AJUSTSTATE").toString());
-                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("ISTRANS").toString());
-                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("LASTYEARSORTRESULT").toString());
-                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("PROCESSID").toString());
-                ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("TOBADLOANREASON" ).toString());
-                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("BADLOANDATEDE" ).toString());
-
-
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("keycode").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("year").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("times").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("busicode").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("contractcode").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("cname").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("custtype").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("custproperty").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("orgcertcode").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("unitcusttype").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("cardtype").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("cardnum").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("city").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("districtcounty").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("town").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("community").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("currency").toString());
+                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("money").toString());
+                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("balamt").toString());
+                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("debtinterest").toString());
+                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("reqlmt").toString());
+                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("loandate").toString());
+                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("enddate").toString());
+                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("busistate").toString());
+                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("creditlevel").toString());
+                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("industry").toString());
+                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());
+                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("mainassure").toString());
+                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("busimanager" ).toString());
+                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("isback").toString());
+                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("isbigcompany").toString());
+                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("state").toString());
+                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("islowrisk").toString());
+                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("validtime").toString());
+                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("sortresult").toString());
+                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("sortresultfive").toString());
+                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("presortresult").toString());
+                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("presortfive").toString());
+                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("autosortresult").toString());
+                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("autosortremark").toString());
+                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("autosortfive").toString());
+                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("isadm").toString());
+                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("custscale").toString());
+                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("overtimes").toString());
+                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("delayamtdays").toString());
+                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("delayinterestdays").toString());
+                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("changeflag").toString());
+                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("categorytype").toString());
+                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(56, ((Map<String, Object>) shopsList.get(i)).get("operator").toString());
+                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("isworkmanu").toString());
+                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("admdate").toString());
+                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("ajuststate").toString());
+                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("lastyearsortresult").toString());
+                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("processid").toString());
+                ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
+                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("badloandatede").toString());
+                ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -2993,50 +3400,71 @@ public class CustomerInforService {
         });
     }
 
-    /*
-认定结果表（历史表）
-*/
+    
+    /**
+     * 认定结果表（历史表）
+     * @param list
+     */
+    public void saveFCRESULTHISDataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCRESULTHIS.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//save
+			insertFCRESULTHIS(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    /**
+     * 认定结果表（历史表）
+     * @param list
+     */
     public void insertFCRESULTHIS(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO ( KEYCODE"+
-                                                            "TYPEID"+
-                                                            "CUSTTYPE"+
-                                                            "CUSTID"+
-                                                            "YEAR"+
-                                                            "TIMES"+
-                                                            "CONTRACTCODE"+
-                                                            "BUSICODE"+
-                                                            "SORTINSTCODE"+
-                                                            "SORTDEPTCODE"+
-                                                            "BUSISTATE"+
-                                                            "BUSITYPE"+
-                                                            "MONEY"+
-                                                            "LOANDATE"+
-                                                            "ENDDATE"+
-                                                            "LOANPURPOSE"+
-                                                            "DELAYAMTDAYS"+
-                                                            "DELAYINTERESTDAYS"+
-                                                            "DEBTINTEREST"+
-                                                            "CREDITLEVEL"+
-                                                            "INITSORTINSTCODE"+
-                                                            "INITSORTDEPTCODE"+
-                                                            "CREATOR"+
-                                                            "CREATORTIMES"+
-                                                            "APPROVER"+
-                                                            "BUSIMANAGER"+
-                                                            "SORTDATE"+
-                                                            "SORTRESULT"+
-                                                            "TOBADLOANREASON"+
-                                                            "REASONSTATUS"+
-                                                            "PRESORTRESULT"+
-                                                            "REMARK"+
-                                                            "STATE"+
-                                                            "INSTCODE"+
-                                                            "DEPTCODE"+
-                                                            "INSTCITYCODE"+
-                                                            "OPERDATETIME"+
-                                                            "OPERATOR"+
-                                                            "ISTRANS)"+
+        String sql =    "  insert into T_FCRESULTHIS ( KEYCODE,"+
+                                                            "TYPEID,"+
+                                                            "CUSTTYPE,"+
+                                                            "CUSTID,"+
+                                                            "YEAR,"+
+                                                            "TIMES,"+
+                                                            "CONTRACTCODE,"+
+                                                            "BUSICODE,"+
+                                                            "SORTINSTCODE,"+
+                                                            "SORTDEPTCODE,"+
+                                                            "BUSISTATE,"+
+                                                            "BUSITYPE,"+
+                                                            "MONEY,"+
+                                                            "LOANDATE,"+
+                                                            "ENDDATE,"+
+                                                            "LOANPURPOSE,"+
+                                                            "DELAYAMTDAYS,"+
+                                                            "DELAYINTERESTDAYS,"+
+                                                            "DEBTINTEREST,"+
+                                                            "CREDITLEVEL,"+
+                                                            "INITSORTINSTCODE,"+
+                                                            "INITSORTDEPTCODE,"+
+                                                            "CREATOR,"+
+                                                            "CREATORTIMES,"+
+                                                            "APPROVER,"+
+                                                            "BUSIMANAGER,"+
+                                                            "SORTDATE,"+
+                                                            "SORTRESULT,"+
+                                                            "TOBADLOANREASON,"+
+                                                            "REASONSTATUS,"+
+                                                            "PRESORTRESULT,"+
+                                                            "REMARK,"+
+                                                            "STATE,"+
+                                                            "INSTCODE,"+
+                                                            "DEPTCODE,"+
+                                                            "INSTCITYCODE,"+
+                                                            "OPERDATETIME,"+
+                                                            "OPERATOR,"+
+                                                            "ISTRANS,CREATE_TIME)"+
                 "    values                         (?,                              "+
                 "    		    ?,                              "+
                 "    		    ?,                              "+
@@ -3075,49 +3503,50 @@ public class CustomerInforService {
                 "    		    ?,                              "+
                 "    		    ?,                              "+
                 "    		    ?,                              "+
-                "    		    ?)";
+                "    		    ?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("KEYCODE").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("TYPEID").toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("CUSTTYPE" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("CUSTID" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("YEAR" ).toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("TIMES").toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("CONTRACTCODE" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("BUSICODE").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("SORTINSTCODE").toString());
-                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("SORTDEPTCODE").toString());
-                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("BUSISTATE").toString());
-                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("BUSITYPE").toString());
-                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("MONEY" ).toString());
-                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("LOANDATE" ).toString());
-                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("ENDDATE" ).toString());
-                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("LOANPURPOSE").toString());
-                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("DELAYAMTDAYS" ).toString());
-                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("DELAYINTERESTDAYS").toString());
-                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("DEBTINTEREST").toString());
-                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("CREDITLEVEL").toString());
-                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("INITSORTINSTCODE").toString());
-                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("INITSORTDEPTCODE").toString());
-                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("CREATOR" ).toString());
-                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("CREATORTIMES" ).toString());
-                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("APPROVER" ).toString());
-                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("BUSIMANAGER").toString());
-                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("SORTDATE" ).toString());
-                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("SORTRESULT").toString());
-                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("TOBADLOANREASON").toString());
-                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("REASONSTATUS").toString());
-                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("PRESORTRESULT").toString());
-                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("REMARK").toString());
-                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("STATE" ).toString());
-                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("INSTCODE" ).toString());
-                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("DEPTCODE" ).toString());
-                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE").toString());
-                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME" ).toString());
-                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("OPERATOR").toString());
-                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("ISTRANS").toString());
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("keycode").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("custtype").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("year").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("times").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("contractcode").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("busicode").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("sortinstcode").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("sortdeptcode").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("busistate").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("money").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("loandate").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("enddate").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("delayamtdays").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("delayinterestdays").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("debtinterest").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("creditlevel").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("initsortinstcode").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("initsortdeptcode").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("creator").toString());
+                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("creatortimes").toString());
+                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("approver").toString());
+                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());
+                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("sortdate").toString());
+                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("sortresult").toString());
+                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
+                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("reasonstatus").toString());
+                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("presortresult").toString());
+                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("remark").toString());
+                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("state").toString());
+                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -3125,24 +3554,43 @@ public class CustomerInforService {
             }
         });
     }
-
-    /*
-五级分类统计表
-*/
+    
+    
+    /**
+     * 五级分类统计表
+     */
+    public void saveFCSTATISTICSDataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCSTATISTICSDATA.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//save
+			insertFCSTATISTICSDATA(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    /**
+     * 五级分类统计表
+     */
     public void insertFCSTATISTICSDATA(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO ( DT"+
-                                                            "BRHID"+
-                                                            "FTYPE"+
-                                                            "DIM1"+
-                                                            "DIM2"+
-                                                            "DIM3"+
-                                                            "AMT1"+
-                                                            "AMT2"+
-                                                            "AMT3"+
-                                                            "LASTMODIFIED"+
-                                                            "INSTCITYCODE"+
-                                                            "ISTRANS)"+
+        String sql =    "  insert into T_FCSTATISTICSDATA ( DT,"+
+                                                            "BRHID,"+
+                                                            "FTYPE,"+
+                                                            "DIM1,"+
+                                                            "DIM2,"+
+                                                            "DIM3,"+
+                                                            "AMT1,"+
+                                                            "AMT2,"+
+                                                            "AMT3,"+
+                                                            "LASTMODIFIED,"+
+                                                            "INSTCITYCODE,"+
+                                                            "ISTRANS,CREATE_TIME)"+
                 "    values                         (?,                              "+
                 "    		    ?,                              "+
                 "    		    ?,                              "+
@@ -3154,22 +3602,23 @@ public class CustomerInforService {
                 "    		    ?,                              "+
                 "    		    ?,                              "+
                 "    		    ?,                              "+
-                "    		    ?)";
+                "    		    ?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("DT").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("BRHID").toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("FTYPE" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("DIM1" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("DIM2").toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("DIM3").toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("AMT1" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("AMT2").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("AMT3").toString());
-                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("LASTMODIFIED").toString());
-                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE").toString());
-                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("ISTRANS").toString());
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("dt").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("brhid").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("ftype").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("dim1").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("dim2").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("dim3").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("amt1").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("amt2").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("amt3").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("lastmodified").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {
@@ -3178,33 +3627,53 @@ public class CustomerInforService {
         });
     }
 
-    /*
-GC担保对应表
-*/
+    /**
+     * GC担保对应表
+     * @param list
+     */
+    public void saveGCASSURECORRESPONDDataFile(String fileName,String date) {
+		try {
+			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			// 解析数据文件配置
+			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_GCASSURECORRESPOND.xml");
+			// 解析”帐单记录表“数据文件
+			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			//save
+			insertGCASSURECORRESPOND(datas);
+			//释放空间
+			datas=null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    /**
+     * GC担保对应表
+     * @param list
+     */
     public void insertGCASSURECORRESPOND(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
-        String sql =    "  insert into T_CCLMTAPPLYINFO (KEYCODE"+
-                                                            "KEYTYPE"+
-                                                            "GCBUSINESSLEVEL"+
-                                                            "GCSYSLEVEL"+
-                                                            "UPKEYCODE"+
-                                                            "UPKEYTYPE"+
-                                                            "UPGCBUSINESSLEVEL"+
-                                                            "UPGCSYSLEVEL"+
-                                                            "SEQUENCENO"+
-                                                            "ACONTKEYCODE"+
-                                                            "ACONTKEYTYPE"+
-                                                            "ACONTGCBUSINESSLEVEL"+
-                                                            "ACONTGCSYSLEVEL"+
-                                                            "CONFIRMMETHOD"+
-                                                            "USEASSUREMONEY"+
-                                                            "USEASSUREMONEYCUR"+
-                                                            "KEYEFFECTEDSTATE"+
-                                                            "KEYDATESTATE"+
-                                                            "EDITIONNO"+
-                                                            "INSTCITYCODE"+
-                                                            "OPERDATETIME"+
-                                                            "ISTRANS)"+
+        String sql =    "  insert into T_GCASSURECORRESPOND (KEYCODE,"+
+                                                            "KEYTYPE,"+
+                                                            "GCBUSINESSLEVEL,"+
+                                                            "GCSYSLEVEL,"+
+                                                            "UPKEYCODE,"+
+                                                            "UPKEYTYPE,"+
+                                                            "UPGCBUSINESSLEVEL,"+
+                                                            "UPGCSYSLEVEL,"+
+                                                            "SEQUENCENO,"+
+                                                            "ACONTKEYCODE,"+
+                                                            "ACONTKEYTYPE,"+
+                                                            "ACONTGCBUSINESSLEVEL,"+
+                                                            "ACONTGCSYSLEVEL,"+
+                                                            "CONFIRMMETHOD,"+
+                                                            "USEASSUREMONEY,"+
+                                                            "USEASSUREMONEYCUR,"+
+                                                            "KEYEFFECTEDSTATE,"+
+                                                            "KEYDATESTATE,"+
+                                                            "EDITIONNO,"+
+                                                            "INSTCITYCODE,"+
+                                                            "OPERDATETIME,"+
+                                                            "ISTRANS,CREATE_TIME)"+
                 "    values                         (?,                              "+
                 "    		    ?,                              "+
                 "    		    ?,                              "+
@@ -3226,32 +3695,33 @@ GC担保对应表
                 "    		    ?,                              "+
                 "    		    ?,                              "+
                 "    		    ?,                              "+
-                "    		    ?)";
+                "    		    ?,?)";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
             public void setValues(PreparedStatement ps,int i)throws SQLException
             {
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("KEYCODE").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("KEYTYPE").toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("GCBUSINESSLEVEL" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("GCSYSLEVEL" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("UPKEYCODE").toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("UPKEYTYPE").toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("UPGCBUSINESSLEVEL" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("UPGCSYSLEVEL").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("SEQUENCENO").toString());
-                ps.setString(0, ((Map<String, Object>)shopsList.get(i)).get("ACONTKEYCODE").toString());
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("ACONTKEYTYPE").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("ACONTGCBUSINESSLEVEL").toString());
-                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("ACONTGCSYSLEVEL" ).toString());
-                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("CONFIRMMETHOD" ).toString());
-                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("USEASSUREMONEY").toString());
-                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("USEASSUREMONEYCUR").toString());
-                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("KEYEFFECTEDSTATE" ).toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("KEYDATESTATE").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("EDITIONNO").toString());
-                ps.setString(0, ((Map<String, Object>)shopsList.get(i)).get("INSTCITYCODE").toString());
-                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("OPERDATETIME").toString());
-                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("ISTRANS").toString());
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("keycode").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("keytype").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("gcbusinesslevel").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("gcsyslevel").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("upkeycode").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("upkeytype").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("upgcbusinesslevel").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("upgcsyslevel").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("sequenceno").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("acontkeycode").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("acontkeytype").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("acontgcbusinesslevel").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("acontgcsyslevel").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("confirmmethod").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("useassuremoney").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("useassuremoneycur").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("keyeffectedstate").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("keydatestate").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("editionno").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
             }
             public int getBatchSize()
             {
@@ -3260,7 +3730,7 @@ GC担保对应表
         });
     }
 
-
+//===================================================================JN END========================================================//
     //TODO:以下为太原使用，可以准备删除
 	/*
 	 * 批量插入流水号

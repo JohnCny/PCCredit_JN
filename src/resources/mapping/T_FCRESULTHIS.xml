@@ -40,4 +40,5 @@
     <result column="OPERDATETIME"           jdbcType="VARCHAR" index="37" />
     <result column="OPERATOR"   	        jdbcType="VARCHAR" index="38" />
     <result column="ISTRANS"   	            jdbcType="VARCHAR" index="39" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
 </resultMap>

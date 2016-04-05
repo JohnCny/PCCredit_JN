@@ -5,7 +5,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">填写审议结论>审议结论</div>
+        <div class="title">填写初审结论>初审结论</div>
       </div>
        
       <form id="id_module_form" action="${contextPath}/intopieces/intopiecesdecision/updateAll.json"/>
@@ -13,23 +13,6 @@
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
-        <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
-          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
-            <colgroup>
-              <col width="10%" />
-              <col width="30%" />
-              <col width="10%" />
-              <col width="30%" />
-            </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">初审结论</td></tr>
-            <tr>
-			  <td class="titlefc3"><label for="csAmount">初审额度(元):</label></td>
-              <td><input  type="text" class="rinpsty" name="csAmount" id="csAmount" value="$!customerApplicationProcess.examineAmount" disabled="disabled"/></td>
-              <td class="titlefc3"><label for="decisionRate">审核人:</label></td>
-              <td><input type="text" class="rinpsty" name="auditUser" id="auditUser" value="$!customerApplicationProcess.displayName" disabled="disabled"/></td>
-            </tr>
-          </table>
-         </div>
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
             <colgroup>
@@ -42,7 +25,7 @@
             <tr>
               <td  class="titlefc3"><label for="status">审议结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
-                  	#dict("intopieces_decision",$!customerApplicationInfo.status)
+                  	#dict("intopieces_decision_chusheng",$!customerApplicationInfo.status)
                   </select></td>
             </tr>
             <tr>
@@ -61,26 +44,6 @@
                   </select>
               </td>
             </tr>
-            <tr>
-              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
-              <td><select  name="cyUser1" id="cyUser1">
-                  	#dict("USERSANDMANA","")
-                  </select>
-              </td>
-              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
-              <td><select  name="cyUser2" id="cyUser2">
-                  	#dict("USERSANDMANA","")
-                  </select>
-              </td>
-            </tr>
-            <tr>
-              <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
-              <td><select  name="fdUser" id="fdUser">
-                  	#dict("USERS","")
-                  </select>
-              </td>
-            </tr>
-            
             <tr style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>拒绝原因:</label></td>
               <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!customerApplicationInfo.decisionRefusereason</textarea></td>
@@ -140,11 +103,11 @@
 					 $("#decisionRate").after("<label class='error myerror'generated='true' >利率不能为空</label>");  
 					 return;
 				}
-				var fdUser = $("#fdUser").val();
+				/* var fdUser = $("#fdUser").val();
 				if(fdUser=="0"){
 					$("#fdUser").after("<label class='error myerror'generated='true' >辅调客户经理不能为空</label>");  
 					 return;
-				}
+				} */
 			}
 			if( status == "REJECTAPPROVE"){
 				if($("#decisionRefusereason").val() == ""){
@@ -191,8 +154,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(4)").show();
-				$("tr:eq(8)").hide();
+				$("tr:eq(2)").show();
+				$("tr:eq(4)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -202,15 +165,11 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(4)").hide();
-				$("tr:eq(8)").show();
+				$("tr:eq(2)").hide();
+				$("tr:eq(4)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
-			}
-			
-			if( status == "RETURNAPPROVE"){
-				$("tr:eq(8)").hide();
 			}
 			
 			if(status =='nopass_replenish'){

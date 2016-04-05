@@ -17,6 +17,9 @@ public class IntoPiecesFilter extends BusinessFilter{
     
     private String custManagerIds;
     
+    /*added by sc 节点中文名 */
+	private String nextNodeName;
+    
 	public String getId() {
 		return id;
 	}
@@ -59,5 +62,13 @@ public class IntoPiecesFilter extends BusinessFilter{
 	public void setCustManagerIds(String custManagerIds) {
 		this.custManagerIds = custManagerIds;
 	}
+	public String getNextNodeName() {
+		return nextNodeName;
+	}
+	public void setNextNodeName(String nextNodeName) {
+		this.nextNodeName = nextNodeName;
+	}
+	
+	
 	
 }

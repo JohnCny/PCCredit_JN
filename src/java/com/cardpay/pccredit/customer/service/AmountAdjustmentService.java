@@ -234,7 +234,7 @@ public class AmountAdjustmentService {
 		}else if(StringUtils.isNotEmpty(approveStatus)&&approveStatus.equals(ApproveOperationTypeEnum.REJECTAPPROVE)){
 			amountAdjustmentProcess.setRefusalReason(amountAdjustmentForm.getReason());
 		}
-	    String examineResutl = processService.examine(amountAdjustmentForm.getSerialNumber(), user.getId(), approveStatus, amountAdjustmentForm.getApprovalLimit());
+	    String examineResutl = processService.examine("",amountAdjustmentForm.getSerialNumber(), user.getId(), approveStatus, amountAdjustmentForm.getApprovalLimit());
 		
 	    //更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||

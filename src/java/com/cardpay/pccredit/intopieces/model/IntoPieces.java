@@ -30,6 +30,15 @@ public class IntoPieces  extends BusinessModel {
     private String jjh; //对应银行借据号
     private String jkrq; //对应银行借款日期
     
+    private String finalApproval;
+    
+    
+	public String getFinalApproval() {
+		return finalApproval;
+	}
+	public void setFinalApproval(String finalApproval) {
+		this.finalApproval = finalApproval;
+	}
 	public String getDecisionRefuseReason() {
 		return decisionRefuseReason;
 	}

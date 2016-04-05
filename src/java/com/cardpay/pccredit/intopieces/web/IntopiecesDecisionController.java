@@ -32,11 +32,14 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationIntopieceWaitService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
@@ -84,7 +87,11 @@ public class IntopiecesDecisionController extends BaseController {
 	
 	@Autowired
 	private MaintenanceService maintenanceService;
-	//显示进件
+	
+	@Autowired
+	private CustomerApplicationIntopieceWaitService customerApplicationIntopieceWaitService;
+	
+	//审贷决议
 	@ResponseBody
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -92,27 +99,33 @@ public class IntopiecesDecisionController extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-		/*//查询客户经理
-		List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId(user);
-		if(forms != null && forms.size() > 0){
-			StringBuffer userIds = new StringBuffer();
-			userIds.append("(");
-			for(AccountManagerParameterForm form : forms){
-				userIds.append("'").append(form.getUserId()).append("'").append(",");
-			}
-			userIds = userIds.deleteCharAt(userIds.length() - 1);
-			userIds.append(")");
-			filter.setCustManagerIds(userIds.toString());
-		}else{
-			filter.setUserId(userId);
-		}*/
-		filter.setStatus(Constant.APPROVE_INTOPICES);
+		/*filter.setStatus(Constant.APPROVE_INTOPICES);
 		QueryResult<IntoPieces> result = intoPiecesService.findintoPiecesByFilter(filter);
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
-
-		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse", request);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse", request);*/
+		filter.setNextNodeName("审贷决议");
+		filter.setUserId(userId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecison(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse2", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
-
+		return mv;
+	}
+	
+	//初审进件
+	@ResponseBody
+	@RequestMapping(value = "csBrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView csBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = user.getId();
+		filter.setNextNodeName("进件初审");
+		filter.setUserId(userId);
+		QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecison(filter);
+		JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse1", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
 	
@@ -123,8 +136,25 @@ public class IntopiecesDecisionController extends BaseController {
 	public AbstractModelAndView input_decision(HttpServletRequest request) {
 		String appId = request.getParameter("appId");
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision", request);
+		mv.addObject("customerApplicationInfo", customerApplicationInfo);
+		mv.addObject("producAttribute", producAttribute);
+		mv.addObject("customerApplicationProcess", processForm);
+		return mv;
+	}
+	
+	
+	//显示进件初审 界面
+	@ResponseBody
+	@RequestMapping(value = "input_decision_chusheng.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView input_decision_chusheng(HttpServletRequest request) {
+		String appId = request.getParameter("appId");
+		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision_chusheng", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
 		return mv;
@@ -156,6 +186,39 @@ public class IntopiecesDecisionController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_letter", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 
+		return mv;
+	}
+	
+	
+	/**
+	 * 执行提交
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateAll.json")
+	@JRadOperation(JRadOperation.APPROVE)
+	public JRadReturnMap update(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+
+		if (returnMap.isSuccess()) {
+			try {
+				customerApplicationIntopieceWaitService.updateCustomerApplicationProcessBySerialNumber(request);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	
+	// 查看进件
+	@ResponseBody
+	@RequestMapping(value = "turn_iframe_tab.page")
+	public AbstractModelAndView turn_iframe_tab(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/iframe_tab",request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		mv.addObject("appId", appId);
 		return mv;
 	}
 }
