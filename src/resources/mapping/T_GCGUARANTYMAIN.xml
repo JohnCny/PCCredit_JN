@@ -90,5 +90,6 @@
 	<result column="cckeycode" 					jdbcType="VARCHAR" index="88" />    
 	<result column="istrans" 					jdbcType="VARCHAR" index="89" />    
 	<result column="uselifedate" 				jdbcType="VARCHAR" index="90" />    
-	<result column="outtype" 					jdbcType="VARCHAR" index="91" />         
+	<result column="outtype" 					jdbcType="VARCHAR" index="91" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>         
 </resultMap>

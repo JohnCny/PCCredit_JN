@@ -15,5 +15,6 @@
 	  <result column="OPERDATETIME" 	jdbcType="VARCHAR" index="13" /> 
 	  <result column="OPERATOR" 		jdbcType="VARCHAR" index="14" /> 
 	  <result column="LOANSTATUS" 		jdbcType="VARCHAR" index="15" /> 
-	  <result column="ISTRANS" 			jdbcType="VARCHAR" index="16" />           	
+	  <result column="ISTRANS" 			jdbcType="VARCHAR" index="16" />
+	  <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>           	
 </resultMap>

@@ -18,5 +18,6 @@
 	<result column="MODIFIEDUSER" 	jdbcType="VARCHAR" index="16" />        
 	<result column="MODIFIEDTIME" 	jdbcType="VARCHAR" index="17" />        
 	<result column="ACTIVATESTATUS" jdbcType="VARCHAR" index="18" />      
-	<result column="ISTRANS" 		jdbcType="VARCHAR" index="19" />             	
+	<result column="ISTRANS" 		jdbcType="VARCHAR" index="19" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>             	
 </resultMap>

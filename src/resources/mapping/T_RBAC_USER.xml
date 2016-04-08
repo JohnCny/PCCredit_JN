@@ -16,5 +16,6 @@
 	<result column="COMMITTEE" 		jdbcType="VARCHAR" index="14"/>  
 	<result column="IDCARDNO" 		jdbcType="VARCHAR" index="15"/>  
 	<result column="GROUPMODIFIEDDATE"  jdbcType="VARCHAR" index="16"/>  
-	<result column="PWDMODIFIEDDATE" 	jdbcType="VARCHAR" index="17"/>  
+	<result column="PWDMODIFIEDDATE" 	jdbcType="VARCHAR" index="17"/>
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/> 
 </resultMap>

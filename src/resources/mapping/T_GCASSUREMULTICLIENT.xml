@@ -16,5 +16,6 @@
 	<result column="EDITIONNO" 			jdbcType="VARCHAR" index="14" /> 
 	<result column="INSTCITYCODE" 		jdbcType="VARCHAR" index="15" /> 
 	<result column="OPERDATETIME" 		jdbcType="VARCHAR" index="16" /> 
-	<result column="ISTRANS" 			jdbcType="VARCHAR" index="17" />   
+	<result column="ISTRANS" 			jdbcType="VARCHAR" index="17" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>   
 </resultMap>

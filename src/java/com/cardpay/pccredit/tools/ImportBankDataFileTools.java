@@ -151,6 +151,7 @@ public class ImportBankDataFileTools {
 	        }
 		}catch(Exception e){
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}finally{
 			if(br != null){
 				 br.close();

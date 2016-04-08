@@ -12,5 +12,6 @@
 	<result column="CREATEDTIME"  		jdbcType="VARCHAR" index="10" />   
 	<result column="MODIFIEDUSER"  		jdbcType="VARCHAR" index="11" />   
 	<result column="MODIFIEDTIME"  		jdbcType="VARCHAR" index="12" />   
-	<result column="GROUPID"  			jdbcType="VARCHAR" index="13" />   
+	<result column="GROUPID"  			jdbcType="VARCHAR" index="13" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>   
 </resultMap>

@@ -124,5 +124,6 @@
     <result column="USEMODE" 				jdbcType="VARCHAR" index="122" />  
     <result column="CONTRACTUSEMODE" 		jdbcType="VARCHAR" index="123" />  
     <result column="CLREQLMT" 				jdbcType="VARCHAR" index="124" />  
-    <result column="BUSIFLAG" 				jdbcType="VARCHAR" index="125" />  
+    <result column="BUSIFLAG" 				jdbcType="VARCHAR" index="125" />
+    <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>  
 </resultMap>
