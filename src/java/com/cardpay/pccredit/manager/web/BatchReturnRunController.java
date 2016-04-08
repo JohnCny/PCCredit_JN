@@ -1,5 +1,8 @@
 package com.cardpay.pccredit.manager.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -91,18 +94,21 @@ public class BatchReturnRunController extends BaseController{
 	public JRadReturnMap handleAdjustmentLevel(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
-			String id = RequestHelper.getStringValue(request, ID);
-			//User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-			//String ids = id.split("@")[0];
-			String batchCode = id.split("@")[1];
+			String param = RequestHelper.getStringValue(request, ID);
+			String batchCode = param.split("@")[1];
+			String time = param.split("@")[2];
+			DateFormat format = new SimpleDateFormat("yyyyMMdd");
+			String dateString = format.format(new Date(time));
 			
 			//客户经理日报batch
 			if(batchCode.equals("rb")){
 				dailyReportScheduleService.insertWeekSchedule();
-			}else if(batchCode.equals("jb")){//test 基本信息
-				customerInforService.readFile();
-			}else if(batchCode.equals("incre")){//test 导数增量
-				incrementService.readFileIncrement();
+			//ODS增量数据
+			}else if(batchCode.equals("incre")){
+				incrementService.doReadFileIncrementByDate(dateString);
+			//ODS全量数据
+			}else if(batchCode.equals("whole")){
+				incrementService.doReadFileWholeByDate(dateString);
 			}
 			returnMap.addGlobalMessage(ManagerLevelAdjustmentConstant.IF_HANDLE_SUCCESS);
 		} catch (Exception e) {

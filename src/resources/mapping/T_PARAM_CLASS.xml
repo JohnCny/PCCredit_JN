@@ -16,4 +16,5 @@
 	 <result column="CLASSURI"    			 jdbcType="VARCHAR" index="14"/>
 	 <result column="REPOSITORYPROCESSOR"    jdbcType="VARCHAR" index="15"/>
 	 <result column="DISPLAYURI"    		 jdbcType="VARCHAR" index="16"/>
+	 <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
 </resultMap>

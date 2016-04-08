@@ -38,7 +38,7 @@ public class ReadWholeAndIncrementComdao {
 		    		  "                                briefnamecaption,   "+
 		    		  "                                classuri,           "+
 		    		  "                                repositoryprocessor,"+
-		    		  "                                displayuri)         "+
+		    		  "                                displayuri,CREATE_TIME)         "+
 		    		  "  values(?,                                         "+
 		    		  "  			 ?,                                    "+
 		    		  "  			 ?,                                    "+
@@ -54,7 +54,7 @@ public class ReadWholeAndIncrementComdao {
 		    		  "  			 ?,                                    "+
 		    		  "  			 ?,                                    "+
 		    		  "  			 ?,                                    "+
-		    		  "  			 ?)                                    ";
+		    		  "  			 ?,?)                                    ";
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -74,6 +74,7 @@ public class ReadWholeAndIncrementComdao {
 	        	ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("classuri").toString());
 	        	ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("repositoryprocessor").toString());
 	        	ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("displayuri").toString());
+	        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -96,7 +97,7 @@ public class ReadWholeAndIncrementComdao {
 		    		 "                               briefname,   "+
 		    		 "                               updatedate,  "+
 		    		 "                               userid,      "+
-		    		 "                               displayorder)"+  
+		    		 "                               displayorder,CREATE_TIME)"+  
 		    		 " values( ?,                                 "+      
 		    		 " 			  ?,                              "+        
 		    		 " 			  ?,                              "+        
@@ -108,7 +109,7 @@ public class ReadWholeAndIncrementComdao {
 		    		 " 			  ?,                              "+        
 		    		 " 			  ?,                              "+        
 		    		 " 			  ?,                              "+        
-		    		 " 			  ?)                              ";  
+		    		 " 			  ?,?)                              ";  
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -124,6 +125,7 @@ public class ReadWholeAndIncrementComdao {
     			ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("updatedate").toString());
     			ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("userid").toString());
     			ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("displayorder").toString());
+    			ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -136,19 +138,19 @@ public class ReadWholeAndIncrementComdao {
 	//客户类型表
 	public void insertParamType(List<Map<String, Object>> list){
 		final List<Map<String, Object>> shopsList = list;
-	   String sql = " insert into T_PARTY_TYPE (id                 "+
-		    		"                           parentid           "+
-		    		"                           name               "+
-		    		"                           displayname        "+
-		    		"                           description        "+
-		    		"                           displayuri         "+
-		    		"                           codepolicymanager  "+
-		    		"                           repositorytable    "+
-		    		"                           createduser        "+
-		    		"                           createdtime        "+
-		    		"                           modifieduser       "+
-		    		"                           modifiedtime       "+
-		    		"                 			groupid)           "+                       
+	   String sql = " insert into T_PARTY_TYPE (id,                 "+
+		    		"                           parentid,           "+
+		    		"                           name,               "+
+		    		"                           displayname,        "+
+		    		"                           description,        "+
+		    		"                           displayuri,         "+
+		    		"                           codepolicymanager,  "+
+		    		"                           repositorytable,    "+
+		    		"                           createduser,        "+
+		    		"                           createdtime,        "+
+		    		"                           modifieduser,       "+
+		    		"                           modifiedtime,       "+
+		    		"                 			groupid,CREATE_TIME)           "+                       
 		    		"     values(?,                                "+   
 		    		"     			  ?,                           "+     
 		    		"     			  ?,                           "+     
@@ -161,7 +163,7 @@ public class ReadWholeAndIncrementComdao {
 		    		"     			  ?,                           "+     
 		    		"     			  ?,                           "+  
 		    		" 		 		  ?,                           "+
-		    		" 		 		  ?)                           ";         
+		    		" 		 		  ?,?)                           ";         
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -177,7 +179,8 @@ public class ReadWholeAndIncrementComdao {
 	        	 ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("createdtime").toString());  
 	        	 ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("modifieduser").toString());  
 	        	 ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("modifiedtime").toString());  
-	        	 ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("groupid").toString());  
+	        	 ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("groupid").toString());
+	        	 ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -226,7 +229,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                          lcunoinlimit,       "+
 				   "                          fnonglimint,        "+
 				   "                          ifnsh,              "+
-				   "                          callilogflag)       "+
+				   "                          callilogflag,CREATE_TIME)       "+
 				   "  values(?,                                   "+
 				   "  				?,                            "+
 				   "  				?,                            "+
@@ -262,11 +265,11 @@ public class ReadWholeAndIncrementComdao {
 				   "         ?,                                   "+
 				   "         ?,                                   "+
 				   "         ?,                                   "+
-				   "         ?)                                   ";      
+				   "         ?,?)                                   ";      
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
-	        	ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id ").toString());              
+	        	ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("id").toString());              
 	        	ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("parentid").toString());         
 	        	ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("code").toString());             
 	        	ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("name").toString());
@@ -302,6 +305,7 @@ public class ReadWholeAndIncrementComdao {
 	        	ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("fnonglimint").toString());
 	        	ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("ifnsh").toString());
 	        	ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("callilogflag").toString());
+	        	ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -313,7 +317,7 @@ public class ReadWholeAndIncrementComdao {
 	//用户表
 	public void insertRbacUser(List<Map<String, Object>> list){
 		final List<Map<String, Object>> shopsList = list;
-	 String sql = "insert into T_RBAC_GROUP (ID,                  "+            
+	 String sql = "insert into T_RBAC_USER (ID,                  "+            
 				  "                          LOGINNAME,           "+            
 				  "                          PASSWORD,            "+            
 				  "                          NAME,                "+            
@@ -329,7 +333,7 @@ public class ReadWholeAndIncrementComdao {
 				  "               			 COMMITTEE,           "+                  
 				  "               			 IDCARDNO,            "+                   
 				  "               			 GROUPMODIFIEDDATE,   "+                   
-				  "               			 PWDMODIFIEDDATE)     "+
+				  "               			 PWDMODIFIEDDATE,CREATE_TIME)     "+
 				  " values(?,                                     "+
 				  " 				?,                            "+
 				  " 				?,                            "+
@@ -346,7 +350,7 @@ public class ReadWholeAndIncrementComdao {
 				  "        ?,       					          "+
 				  "        ?,                                     "+
 				  "        ?,                                     "+
-				  "        ?)       					          ";
+				  "        ?,?)       					          ";
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -367,7 +371,7 @@ public class ReadWholeAndIncrementComdao {
 	        	 ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("idcardno").toString());       
 	        	 ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("groupmodifieddate").toString());
 	        	 ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("pwdmodifieddate").toString());
-             
+	        	 ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -380,7 +384,7 @@ public class ReadWholeAndIncrementComdao {
 	//GC担保信息表 增量
 	public void insertGCASSUREMAIN(List<Map<String, Object>> list){
 		final List<Map<String, Object>> shopsList = list;
-	   String sql = "insert into T_GCASSUREMAIN (keycode                        "+ 
+	   String sql = "insert into T_GCASSUREMAIN (keycode,                       "+ 
 					"                            keytype,                       "+
 					"                            extendkeycode,                 "+
 					"                            gcbusinesslevel,               "+
@@ -435,7 +439,7 @@ public class ReadWholeAndIncrementComdao {
 					"                            instcitycode,                  "+
 					"                            operator,                      "+
 					"                            operdatetime,                  "+
-					"                            istrans)                       "+
+					"                            istrans,CREATE_TIME)           "+
 					"   values(?,                                               "+
 					"   				?,                                      "+
 					"   				?,                                      "+
@@ -491,7 +495,7 @@ public class ReadWholeAndIncrementComdao {
 					"          ?,                                               "+
 					"          ?,                                               "+
 					"          ?,                                               "+
-					"          ?)                                               ";
+					"          ?,?)                                             ";
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -550,7 +554,8 @@ public class ReadWholeAndIncrementComdao {
 	            ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
 	            ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
 	            ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
-	            ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());             
+	            ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+	            ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -581,7 +586,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                     editionno,           "+
 				   "                                     instcitycode,        "+
 				   "                                     operdatetime,        "+
-				   "                                     istrans)             "+
+				   "                                     istrans,CREATE_TIME) "+
 				   "    values(?,                                             "+
 				   "    			 ?,                                       "+
 				   "    			 ?,                                       "+
@@ -598,7 +603,7 @@ public class ReadWholeAndIncrementComdao {
 				   "           ?,                                             "+
 				   "           ?,                                             "+
 				   "           ?,                                             "+
-				   "           ?)                                             ";
+				   "           ?,?)                                           ";
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -619,7 +624,7 @@ public class ReadWholeAndIncrementComdao {
 	        	ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString()); 
 	        	ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString()); 
 	        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString()); 
-
+	        	ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString()); 
 	           }
 	           public int getBatchSize()
 	           {
@@ -651,7 +656,7 @@ public class ReadWholeAndIncrementComdao {
 				  "                                startdate,               "+   
 				  "                                enddate,                 "+   
 				  "                                lastdate,                "+   
-				  "                                limit,                   "+  
+				  "                                limit_1,                   "+  
 				  "                                limitunit,               "+       
 				  "                                keyeffectedstate,        "+       
 				  "                                keydatestate,            "+       
@@ -717,7 +722,7 @@ public class ReadWholeAndIncrementComdao {
 				  "                                accantdept,              "+
 				  "                                instcitycode,            "+
 				  "                                operdatetime,            "+
-				  "                                operator,                "+
+				  "                                operator_1,                "+
 				  "                                istrans,                 "+
 				  "                                isreferagricultural,     "+
 				  "                                isunitcust,              "+
@@ -726,7 +731,7 @@ public class ReadWholeAndIncrementComdao {
 				  "                                iffnongcard,             "+
 				  "                                frozenstate,             "+
 				  "                                busiflag,                "+
-				  "                                paymode)                 "+
+				  "                                paymode,CREATE_TIME)     "+
 				  "    values(?,                                            "+
 				  "    			 ?,                                         "+
 				  "    			 ?,                                         "+
@@ -818,7 +823,7 @@ public class ReadWholeAndIncrementComdao {
 				  "           ?,                                            "+
 				  "           ?,                                            "+
 				  "           ?,                                            "+
-				  "           ?)                                            ";
+				  "           ?,?)                                            ";
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
 	           {
@@ -914,6 +919,7 @@ public class ReadWholeAndIncrementComdao {
 	        	ps.setString(90, ((Map<String, Object>)shopsList.get(i)).get("frozenstate").toString());
 	        	ps.setString(91, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
 	        	ps.setString(92, ((Map<String, Object>)shopsList.get(i)).get("paymode").toString());
+	        	ps.setString(93, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -1025,7 +1031,7 @@ public class ReadWholeAndIncrementComdao {
 			  "                                  cckeycode,                         "+
 			  "                                  istrans,                           "+
 			  "                                  uselifedate,                       "+
-			  "                                  outtype)                           "+
+			  "                                  outtype,CREATE_TIME)               "+
 			  "      values(?,                                                      "+
 			  "       	 		 ?,                                                 "+
 			  "       	 		 ?,                                                 "+
@@ -1116,7 +1122,7 @@ public class ReadWholeAndIncrementComdao {
 			  "             ?,                                                      "+
 			  "             ?,                                                      "+
 			  "             ?,                                                      "+
-			  "             ?)                                                      ";
+			  "             ?,?)                                                      ";
 
 	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 	        public void setValues(PreparedStatement ps,int i)throws SQLException
@@ -1211,7 +1217,8 @@ public class ReadWholeAndIncrementComdao {
 	        	ps.setString(88, ((Map<String, Object>)shopsList.get(i)).get("cckeycode").toString());                      
 	        	ps.setString(89, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());                        
 	        	ps.setString(90, ((Map<String, Object>)shopsList.get(i)).get("uselifedate").toString());                    
-	        	ps.setString(91, ((Map<String, Object>)shopsList.get(i)).get("outtype").toString());                        	
+	        	ps.setString(91, ((Map<String, Object>)shopsList.get(i)).get("outtype").toString());
+	        	ps.setString(92, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 	           }
 	           public int getBatchSize()
 	           {
@@ -1245,7 +1252,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                          instcitycode,           "+  
 				   "                                          operdatetime,           "+  
 				   "                                          operator,               "+  
-				   "                                          istrans)                "+  
+				   "                                          istrans,CREATE_TIME)    "+  
 				   "   values(?,                                               	      "+  
 				   "   			 ?,                                                   "+  
 				   "   			 ?,                                                   "+  
@@ -1262,7 +1269,7 @@ public class ReadWholeAndIncrementComdao {
 				   "          ?,                                                      "+  
 				   "          ?,                                                      "+  
 				   "          ?,                                                      "+  
-				   "          ?)                                                      ";  
+				   "          ?,?)                                                      ";  
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
 		           {
@@ -1282,7 +1289,8 @@ public class ReadWholeAndIncrementComdao {
 		        	ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());  
 		        	ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());  
 		        	ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());      
-		        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());       
+		        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+		        	ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString()); 
 		           }
 		           public int getBatchSize()
 		           {
@@ -1311,7 +1319,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                      					instcitycode,  "+  
 				   "                       				    operator,      "+  
 				   "                       				    operdatetime,  "+  
-				   "                                        istrans)       "+  
+				   "                                        istrans,CREATE_TIME)       "+  
 				   "   values(?,                                           "+  
 				   "   			  ?,                                       "+  
 				   "   			  ?,                                       "+  
@@ -1323,7 +1331,7 @@ public class ReadWholeAndIncrementComdao {
 				   "          ?,                                           "+  
 				   "          ?,                                           "+  
 				   "          ?,                                           "+  
-				   "          ?)                                           ";  
+				   "          ?,?)                                           ";  
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
 		           {
@@ -1339,6 +1347,7 @@ public class ReadWholeAndIncrementComdao {
 		        	 ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
 		        	 ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
 		        	 ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+		        	 ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 		           }
 		           public int getBatchSize()
 		           {
@@ -1371,7 +1380,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                     startdate,                            "+
 				   "                                     enddate,                              "+
 				   "                                     lastdate,                             "+
-				   "                                     limit,                                "+
+				   "                                     limit_1,                                "+
 				   "                                     limitunit,                            "+
 				   "                                     keyeffectedstate,                     "+
 				   "                                     keydatestate,                         "+
@@ -1442,7 +1451,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                     deptcode,                             "+
 				   "                                     instcode,                             "+
 				   "                                     instcitycode,                         "+
-				   "                                     operator,                             "+
+				   "                                     operator_1,                             "+
 				   "                                     operdatetime,                         "+
 				   "                                     firstrevolddate,                      "+
 				   "                                     transferflag,                         "+
@@ -1461,7 +1470,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                     selfhelprepaynet,                     "+
 				   "                                     lmtusemode,                           "+
 				   "                                     contractusemode,                      "+
-				   "                                     busiflag)                             "+
+				   "                                     busiflag,CREATE_TIME)                 "+
 				   "    values(?,                                                              "+
 				   "    			 ?,                                                        "+
 				   "    			 ?,                                                        "+
@@ -1561,7 +1570,7 @@ public class ReadWholeAndIncrementComdao {
 				   "           ?,                                                              "+
 				   "           ?,                                                              "+
 				   "           ?,                                                              "+
-				   "           ?)                                                              ";
+				   "           ?,?,?,?,?,?,?,?,?,?,?,?)                                                              ";
 
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
@@ -1676,6 +1685,7 @@ public class ReadWholeAndIncrementComdao {
 		        	 ps.setString(108, ((Map<String, Object>)shopsList.get(i)).get("lmtusemode").toString());
 		        	 ps.setString(109, ((Map<String, Object>)shopsList.get(i)).get("contractusemode").toString());
 		        	 ps.setString(110, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+		        	 ps.setString(111, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 		           }
 		           public int getBatchSize()
 		           {
@@ -1831,7 +1841,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                     usemode,                    "+
 				   "                                     contractusemode,            "+
 				   "                                     clreqlmt,                   "+
-				   "                                     busiflag)                   "+
+				   "                                     busiflag,CREATE_TIME)       "+
 				   "   values(?,                                                     "+
 				   "   				?,                                               "+
 				   "   				?,                                               "+
@@ -2081,47 +2091,48 @@ public class ReadWholeAndIncrementComdao {
 		        	 ps.setString(100, ((Map<String, Object>)shopsList.get(i)).get("badloandate").toString());
 		        	 ps.setString(101, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
 		        	 ps.setString(102, ((Map<String, Object>)shopsList.get(i)).get("draftstatus").toString());
-		        	 ps.setString(104, ((Map<String, Object>)shopsList.get(i)).get("bailamt").toString());
-		        	 ps.setString(105, ((Map<String, Object>)shopsList.get(i)).get("assurerate").toString());
-		        	 ps.setString(106, ((Map<String, Object>)shopsList.get(i)).get("bailacc").toString());
-		        	 ps.setString(107, ((Map<String, Object>)shopsList.get(i)).get("bailcurtype").toString());
-		        	 ps.setString(108, ((Map<String, Object>)shopsList.get(i)).get("poundagerate").toString());
-		        	 ps.setString(109, ((Map<String, Object>)shopsList.get(i)).get("poundagecurtype").toString());
-		        	 ps.setString(110, ((Map<String, Object>)shopsList.get(i)).get("poundageamt").toString());
-		        	 ps.setString(111, ((Map<String, Object>)shopsList.get(i)).get("remittername").toString());
-		        	 ps.setString(112, ((Map<String, Object>)shopsList.get(i)).get("remitteraccount").toString());
-		        	 ps.setString(113, ((Map<String, Object>)shopsList.get(i)).get("createbank").toString());
-		        	 ps.setString(114, ((Map<String, Object>)shopsList.get(i)).get("createbankname").toString());
-		        	 ps.setString(115, ((Map<String, Object>)shopsList.get(i)).get("payeename").toString());
-		        	 ps.setString(116, ((Map<String, Object>)shopsList.get(i)).get("payeeaccbankname").toString());
-		        	 ps.setString(117, ((Map<String, Object>)shopsList.get(i)).get("payeeaccbankcode").toString());
-		        	 ps.setString(118, ((Map<String, Object>)shopsList.get(i)).get("payeeacc").toString());
-		        	 ps.setString(119, ((Map<String, Object>)shopsList.get(i)).get("dftno").toString());
-		        	 ps.setString(120, ((Map<String, Object>)shopsList.get(i)).get("autosortresult").toString());
-		        	 ps.setString(121, ((Map<String, Object>)shopsList.get(i)).get("lowriskflag").toString());
-		        	 ps.setString(122, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
-		        	 ps.setString(123, ((Map<String, Object>)shopsList.get(i)).get("item").toString());
-		        	 ps.setString(124, ((Map<String, Object>)shopsList.get(i)).get("mainbusiness").toString());
-		        	 ps.setString(125, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
-		        	 ps.setString(126, ((Map<String, Object>)shopsList.get(i)).get("loanmanager").toString());
-		        	 ps.setString(127, ((Map<String, Object>)shopsList.get(i)).get("revoldtimes").toString());
-		        	 ps.setString(128, ((Map<String, Object>)shopsList.get(i)).get("firstrevolddate").toString());
-		        	 ps.setString(129, ((Map<String, Object>)shopsList.get(i)).get("loancardflag").toString());
-		        	 ps.setString(130, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
-		        	 ps.setString(131, ((Map<String, Object>)shopsList.get(i)).get("firstmanager").toString());
-		        	 ps.setString(132, ((Map<String, Object>)shopsList.get(i)).get("isouttableloan").toString());
-		        	 ps.setString(133, ((Map<String, Object>)shopsList.get(i)).get("transout").toString());
-		        	 ps.setString(134, ((Map<String, Object>)shopsList.get(i)).get("iffnongcard").toString());
-		        	 ps.setString(135, ((Map<String, Object>)shopsList.get(i)).get("loanchannel").toString());
-		        	 ps.setString(136, ((Map<String, Object>)shopsList.get(i)).get("repaychannel").toString());
-		        	 ps.setString(137, ((Map<String, Object>)shopsList.get(i)).get("selfhelploannet").toString());
-		        	 ps.setString(138, ((Map<String, Object>)shopsList.get(i)).get("selfhelprepaynet").toString());
-		        	 ps.setString(139, ((Map<String, Object>)shopsList.get(i)).get("guarantornames").toString());
-		        	 ps.setString(140, ((Map<String, Object>)shopsList.get(i)).get("lmtcode").toString());
-		        	 ps.setString(141, ((Map<String, Object>)shopsList.get(i)).get("usemode").toString());
-		        	 ps.setString(142, ((Map<String, Object>)shopsList.get(i)).get("contractusemode").toString());
-		        	 ps.setString(143, ((Map<String, Object>)shopsList.get(i)).get("clreqlmt").toString());
-		        	 ps.setString(144, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+		        	 ps.setString(103, ((Map<String, Object>)shopsList.get(i)).get("bailamt").toString());
+		        	 ps.setString(104, ((Map<String, Object>)shopsList.get(i)).get("assurerate").toString());
+		        	 ps.setString(105, ((Map<String, Object>)shopsList.get(i)).get("bailacc").toString());
+		        	 ps.setString(106, ((Map<String, Object>)shopsList.get(i)).get("bailcurtype").toString());
+		        	 ps.setString(107, ((Map<String, Object>)shopsList.get(i)).get("poundagerate").toString());
+		        	 ps.setString(108, ((Map<String, Object>)shopsList.get(i)).get("poundagecurtype").toString());
+		        	 ps.setString(109, ((Map<String, Object>)shopsList.get(i)).get("poundageamt").toString());
+		        	 ps.setString(110, ((Map<String, Object>)shopsList.get(i)).get("remittername").toString());
+		        	 ps.setString(111, ((Map<String, Object>)shopsList.get(i)).get("remitteraccount").toString());
+		        	 ps.setString(112, ((Map<String, Object>)shopsList.get(i)).get("createbank").toString());
+		        	 ps.setString(113, ((Map<String, Object>)shopsList.get(i)).get("createbankname").toString());
+		        	 ps.setString(114, ((Map<String, Object>)shopsList.get(i)).get("payeename").toString());
+		        	 ps.setString(115, ((Map<String, Object>)shopsList.get(i)).get("payeeaccbankname").toString());
+		        	 ps.setString(116, ((Map<String, Object>)shopsList.get(i)).get("payeeaccbankcode").toString());
+		        	 ps.setString(117, ((Map<String, Object>)shopsList.get(i)).get("payeeacc").toString());
+		        	 ps.setString(118, ((Map<String, Object>)shopsList.get(i)).get("dftno").toString());
+		        	 ps.setString(119, ((Map<String, Object>)shopsList.get(i)).get("autosortresult").toString());
+		        	 ps.setString(120, ((Map<String, Object>)shopsList.get(i)).get("lowriskflag").toString());
+		        	 ps.setString(121, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+		        	 ps.setString(122, ((Map<String, Object>)shopsList.get(i)).get("item").toString());
+		        	 ps.setString(123, ((Map<String, Object>)shopsList.get(i)).get("mainbusiness").toString());
+		        	 ps.setString(124, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+		        	 ps.setString(125, ((Map<String, Object>)shopsList.get(i)).get("loanmanager").toString());
+		        	 ps.setString(126, ((Map<String, Object>)shopsList.get(i)).get("revoldtimes").toString());
+		        	 ps.setString(127, ((Map<String, Object>)shopsList.get(i)).get("firstrevolddate").toString());
+		        	 ps.setString(128, ((Map<String, Object>)shopsList.get(i)).get("loancardflag").toString());
+		        	 ps.setString(129, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+		        	 ps.setString(130, ((Map<String, Object>)shopsList.get(i)).get("firstmanager").toString());
+		        	 ps.setString(131, ((Map<String, Object>)shopsList.get(i)).get("isouttableloan").toString());
+		        	 ps.setString(132, ((Map<String, Object>)shopsList.get(i)).get("transout").toString());
+		        	 ps.setString(133, ((Map<String, Object>)shopsList.get(i)).get("iffnongcard").toString());
+		        	 ps.setString(134, ((Map<String, Object>)shopsList.get(i)).get("loanchannel").toString());
+		        	 ps.setString(135, ((Map<String, Object>)shopsList.get(i)).get("repaychannel").toString());
+		        	 ps.setString(136, ((Map<String, Object>)shopsList.get(i)).get("selfhelploannet").toString());
+		        	 ps.setString(137, ((Map<String, Object>)shopsList.get(i)).get("selfhelprepaynet").toString());
+		        	 ps.setString(138, ((Map<String, Object>)shopsList.get(i)).get("guarantornames").toString());
+		        	 ps.setString(139, ((Map<String, Object>)shopsList.get(i)).get("lmtcode").toString());
+		        	 ps.setString(140, ((Map<String, Object>)shopsList.get(i)).get("usemode").toString());
+		        	 ps.setString(141, ((Map<String, Object>)shopsList.get(i)).get("contractusemode").toString());
+		        	 ps.setString(142, ((Map<String, Object>)shopsList.get(i)).get("clreqlmt").toString());
+		        	 ps.setString(143, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+		        	 ps.setString(144, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 		           }
 		           public int getBatchSize()
 		           {
@@ -2264,7 +2275,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                            usemode,                     "+
 				   "                            contractusemode,             "+
 				   "                            clreqlmt,                    "+
-				   "                            busiflag)                    "+
+				   "                            busiflag,CREATE_TIME)        "+
 				   "   values(?,                                             "+
 				   "   				?,                                       "+
 				   "   				?,                                       "+
@@ -2389,7 +2400,7 @@ public class ReadWholeAndIncrementComdao {
 				   "          ?,                                             "+
 				   "          ?,                                             "+
 				   "          ?,                                             "+
-				   "          ?)                                             ";
+				   "          ?,?)                                             ";
 
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
@@ -2519,6 +2530,7 @@ public class ReadWholeAndIncrementComdao {
 		            ps.setString(123, ((Map<String, Object>)shopsList.get(i)).get("contractusemode").toString());
 		            ps.setString(124, ((Map<String, Object>)shopsList.get(i)).get("clreqlmt").toString());
 		            ps.setString(125, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+		            ps.setString(126, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 		           }
 		           public int getBatchSize()
 		           {
@@ -2552,7 +2564,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                modifieduser,      "+
 				   "                                modifiedtime,      "+
 				   "                                activatestatus,    "+
-				   "                                istrans)           "+
+				   "                                istrans,CREATE_TIME)           "+
 				   "  values(?,                                        "+
 				   "  			 ?,                                    "+
 				   "  			 ?,                                    "+
@@ -2571,7 +2583,7 @@ public class ReadWholeAndIncrementComdao {
 				   "         ?,                                        "+
 				   "         ?,                                        "+
 				   "         ?,                                        "+
-				   "         ?)                                        ";
+				   "         ?,?)                                        ";
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
 		           {
@@ -2593,7 +2605,8 @@ public class ReadWholeAndIncrementComdao {
 		        	ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("modifieduser").toString());   
 		        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("modifiedtime").toString());   
 		        	ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("activatestatus").toString());   
-		        	ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());   
+		        	ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString()); 
+		        	ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());  
 		           }
 		           public int getBatchSize()
 		           {
@@ -2608,7 +2621,7 @@ public class ReadWholeAndIncrementComdao {
 		//还款情况表   增量
 		public void insertRAREPAYLIST(List<Map<String, Object>> list){
 		   final List<Map<String, Object>> shopsList = list;
-		   String sql = "insert into T_PARTY_BWLIST(keycode,            "+
+		   String sql = "insert into T_RAREPAYLIST(keycode,            "+
 				   "                                repaydate,          "+
 				   "                                busicode,           "+
 				   "                                repayamt,           "+
@@ -2621,9 +2634,9 @@ public class ReadWholeAndIncrementComdao {
 				   "                                deptcode,           "+
 				   "                                instcitycode,       "+
 				   "                                operdatetime,       "+
-				   "                                operator,           "+
+				   "                                operator_1,           "+
 				   "                                loanstatus,         "+
-				   "                                istrans)            "+
+				   "                                istrans,CREATE_TIME)            "+
 				   "   values(?,                                        "+
 				   "   				?,                                  "+
 				   "   				?,                                  "+
@@ -2639,7 +2652,7 @@ public class ReadWholeAndIncrementComdao {
 				   "          ?,                                        "+
 				   "          ?,                                        "+
 				   "          ?,                                        "+
-				   "          ?)                                        ";
+				   "          ?,?)                                        ";
 
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
@@ -2660,6 +2673,7 @@ public class ReadWholeAndIncrementComdao {
 		        	  ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
 		        	  ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("loanstatus").toString());
 		        	  ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+		        	  ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 		           }
 		           public int getBatchSize()
 		           {
@@ -2739,7 +2753,7 @@ public class ReadWholeAndIncrementComdao {
 				   "                                    usemode,                       "+
 				   "                                    contractusemode,               "+
 				   "                                    custidno,                      "+
-				   "                                    changeamount)                  "+
+				   "                                    changeamount,CREATE_TIME)                  "+
 				   "    values(?,                                                      "+
 				   "    			 ?,                                                "+
 				   "    			 ?,                                                "+
@@ -2805,7 +2819,7 @@ public class ReadWholeAndIncrementComdao {
 				   "           ?,                                                      "+
 				   "           ?,                                                      "+
 				   "           ?,                                                      "+
-				   "           ?)                                                      ";
+				   "           ?,?)                                                      ";
 
 		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
 		        public void setValues(PreparedStatement ps,int i)throws SQLException
@@ -2876,7 +2890,7 @@ public class ReadWholeAndIncrementComdao {
 		        	  ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("contractusemode").toString()); 
 		        	  ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("custidno").toString()); 
 		        	  ps.setString(66, ((Map<String, Object>)shopsList.get(i)).get("changeamount").toString()); 
-
+		        	  ps.setString(67, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
 		           }
 		           public int getBatchSize()
 		           {

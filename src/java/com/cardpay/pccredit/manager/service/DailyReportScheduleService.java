@@ -125,7 +125,9 @@ public class DailyReportScheduleService {
 		commonDao.queryBySql(sql, null);
 		
 		//task
-		//accountManagerParameterService.insertBatchTaskFlow("rb","日报");//初始
+		accountManagerParameterService.insertBatchTaskFlow("rb","日报");//初始
+		accountManagerParameterService.insertBatchTaskFlow("incre","增量数据");//初始
+		accountManagerParameterService.insertBatchTaskFlow("whole","全量数据");//初始
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}
 	

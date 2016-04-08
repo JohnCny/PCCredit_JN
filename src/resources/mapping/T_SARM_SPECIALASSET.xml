@@ -65,5 +65,6 @@
 	  <result column="USEMODE" 					jdbcType="VARCHAR" index="63" />  
 	  <result column="CONTRACTUSEMODE" 			jdbcType="VARCHAR" index="64" />  
 	  <result column="CUSTIDNO" 				jdbcType="VARCHAR" index="65" />  
-	  <result column="CHANGEAMOUNT" 			jdbcType="VARCHAR" index="66" />        	
+	  <result column="CHANGEAMOUNT" 			jdbcType="VARCHAR" index="66" />
+	  <result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>        	
 </resultMap>

@@ -2297,9 +2297,9 @@ public class CustomerInforService {
 	 * 授信申请基本信息
 	 * @param fileName
 	 * @param date
+	 * @throws Exception 
 	 */
-	public void saveCCLMTAPPLYINFODataFile(String fileName,String date) {
-		try {
+	public void saveCCLMTAPPLYINFODataFile(String fileName,String date) throws Exception  {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CCLMTAPPLYINFO.xml");
@@ -2309,9 +2309,6 @@ public class CustomerInforService {
 			insertCCLMTAPPLYINFO(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -2415,8 +2412,7 @@ public class CustomerInforService {
     /**
      *对私客户不良记录 
      */
-    public void saveCIPERSONBADRECORDDataFile(String fileName,String date) {
-		try {
+    public void saveCIPERSONBADRECORDDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONBADRECORD.xml");
@@ -2426,9 +2422,6 @@ public class CustomerInforService {
 			insertCIPERSONBADRECORD(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
     
     /**
@@ -2480,8 +2473,7 @@ public class CustomerInforService {
      *对私客户基本信息
      * @param list
      */
-    public void saveCIPERSONBASINFODataFile(String fileName,String date) {
-		try {
+    public void saveCIPERSONBASINFODataFile(String fileName,String date) throws Exception{
 			//add
 			List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
 			//update
@@ -2497,9 +2489,43 @@ public class CustomerInforService {
 			for(Map<String, Object> map : datas){
 				int count = customerInforDao.findCIPERSONBASINFOCount(map);
 				if(count >0){
+					//put updateMap
 					updatedatas.add(map);
+					//变更 同步本系统
+					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
+							"select id from sys_user where external_id='"+map.get("BUSIMANAGER").toString()+"'", null);
+					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
+							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
+					//存在则更新客户经理id
+					if(infoList.size()>0){
+						CustomerInfor info = infoList.get(0);
+						info.setUserId(user != null?user.get(0).getId():map.get("busimanager").toString());
+						commonDao.updateObject(info);
+					}
 				}else{
+					//put insertMap
 					insertdatas.add(map);
+					//和本系统作关联
+					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
+							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);
+					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
+							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
+					//不存在则插入
+					if(infoList.size()==0){
+						CustomerInfor info = new CustomerInfor();
+						info.setId(IDGenerator.generateID());
+						info.setCardId(map.get("cardnum").toString());
+						info.setCardType(map.get("cardtype").toString());
+						info.setChineseName(map.get("cname").toString());
+						info.setUserId(user.size() > 0?user.get(0).getId():map.get("busimanager").toString());
+						info.setTyCustomerId(map.get("id").toString());
+						commonDao.insertObject(info);
+					}else{
+						//存在则作关联
+						CustomerInfor info = infoList.get(0);
+						info.setTyCustomerId(map.get("id").toString());
+						commonDao.updateObject(info);
+					}
 				}
 			}
 			//save
@@ -2508,12 +2534,8 @@ public class CustomerInforService {
 			updateCIPERSONBASINFO(updatedatas);
 			//释放空间
 			datas=null;
-			
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
     /**
@@ -2985,8 +3007,7 @@ public class CustomerInforService {
      * 对私家庭成员信息
      * @param list
      */
-    public void saveCIPERSONFAMILYDataFile(String fileName,String date) {
-		try {
+    public void saveCIPERSONFAMILYDataFile(String fileName,String date)throws Exception {
 			//add
 			List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
 			//update
@@ -3012,9 +3033,6 @@ public class CustomerInforService {
 			updateCIPERSONFAMILY(updatedatas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
    /**
@@ -3174,9 +3192,9 @@ public class CustomerInforService {
     /**
      * 借据月末余额表（结果表）
      * @param list
+     * @throws Exception 
      */
-    public void saveFCLOANINFODataFile(String fileName,String date) {
-		try {
+    public void saveFCLOANINFODataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCLOANINFO.xml");
@@ -3186,9 +3204,6 @@ public class CustomerInforService {
 			insertFCLOANINFO(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
     /**
      * 借据月末余额表（结果表）
@@ -3390,7 +3405,7 @@ public class CustomerInforService {
                 ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("lastyearsortresult").toString());
                 ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("processid").toString());
                 ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
-                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("badloandatede").toString());
+                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("badloandate").toString());
                 ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
@@ -3404,9 +3419,9 @@ public class CustomerInforService {
     /**
      * 认定结果表（历史表）
      * @param list
+     * @throws Exception 
      */
-    public void saveFCRESULTHISDataFile(String fileName,String date) {
-		try {
+    public void saveFCRESULTHISDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCRESULTHIS.xml");
@@ -3416,9 +3431,6 @@ public class CustomerInforService {
 			insertFCRESULTHIS(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
     /**
      * 认定结果表（历史表）
@@ -3558,9 +3570,9 @@ public class CustomerInforService {
     
     /**
      * 五级分类统计表
+     * @throws Exception 
      */
-    public void saveFCSTATISTICSDataFile(String fileName,String date) {
-		try {
+    public void saveFCSTATISTICSDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCSTATISTICSDATA.xml");
@@ -3570,9 +3582,6 @@ public class CustomerInforService {
 			insertFCSTATISTICSDATA(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
     /**
      * 五级分类统计表
@@ -3630,9 +3639,9 @@ public class CustomerInforService {
     /**
      * GC担保对应表
      * @param list
+     * @throws Exception 
      */
-    public void saveGCASSURECORRESPONDDataFile(String fileName,String date) {
-		try {
+    public void saveGCASSURECORRESPONDDataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_GCASSURECORRESPOND.xml");
@@ -3642,9 +3651,6 @@ public class CustomerInforService {
 			insertGCASSURECORRESPOND(datas);
 			//释放空间
 			datas=null;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
     /**
      * GC担保对应表
@@ -3721,7 +3727,7 @@ public class CustomerInforService {
                 ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
                 ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
                 ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
-                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
             {

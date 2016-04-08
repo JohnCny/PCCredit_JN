@@ -36,4 +36,5 @@
 	<result column="FNONGLIMINT"       	jdbcType="VARCHAR" index="34" />
 	<result column="IFNSH" 			    jdbcType="VARCHAR" index="35" />
 	<result column="CALLILOGFLAG" 		jdbcType="VARCHAR" index="36" />
+	<result column="CREATE_TIME" jdbcType="DATE_NOW" index="" style="yyyyMMdd"/>
 </resultMap>
