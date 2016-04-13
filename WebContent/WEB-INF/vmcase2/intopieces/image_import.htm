@@ -118,23 +118,26 @@
 				topWin.Dialog.message("请先上传影像资料！");
 				return;
 			}
-			submitFlag = 1;
+			
 			var url = "${contextPath}/intopieces/addIntopieces/addIntopieces.json?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
-			 $.ajax({
-				 url : url,
-				 type : "get",
-				 success : function(data) {
-					 if (data.success) {
-						 topWin.Dialog.message("保存成功！");
-						 window.location.href="${contextPath}/intopieces/addIntopieces/browseProduct.page";
+			Dialog.confirm("确定要提交进件吗？", "提示",
+	        function(){ 
+			    submitFlag = 1;
+				$.ajax({
+					 url : url,
+					 type : "get",
+					 success : function(data) {
+						 if (data.success) {
+							 topWin.Dialog.message("保存成功！");
+							 window.location.href="${contextPath}/intopieces/addIntopieces/browseProduct.page";
+						 }
+						 else{
+							 topWin.Dialog.message(data.message);
+						 }
+						 submitFlag = 0;
 					 }
-					 else{
-						 topWin.Dialog.message(data.message);
-					 }
-					 submitFlag = 0;
-				 }
-			 });
-			 
+				    });
+			}); 
         });
 	});
 </script>
