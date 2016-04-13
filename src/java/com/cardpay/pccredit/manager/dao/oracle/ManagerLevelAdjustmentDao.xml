@@ -88,7 +88,7 @@
 		SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from t_batch_task
+					 select * from t_batch_task order by CREATED_TIME DESC
   			<![CDATA[		
 					) ROW_
 				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

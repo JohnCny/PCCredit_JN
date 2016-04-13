@@ -90,7 +90,7 @@ public class IntoPiecesService {
 			else{
 				if(pieces.getStatus().equals(Constant.SAVE_INTOPICES)){
 					pieces.setNodeName("未提交申请");
-				} else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
+				}else if(pieces.getStatus().equals(Constant.APPROVE_INTOPICES)){
 					//String nodeName = intoPiecesComdao.findAprroveProgress(pieces.getId());
 					String nodeName = intoPiecesComdao.findNodeName(pieces.getId());
 					if(StringUtils.isNotEmpty(nodeName)){
@@ -98,7 +98,7 @@ public class IntoPiecesService {
 					} else {
 						pieces.setNodeName("不在审批中");
 					}
-				} else {
+				}else {
 					pieces.setNodeName("审批结束");
 				}
 			}

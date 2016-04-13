@@ -60,12 +60,21 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 	private String nextNodeId;
 	private String delayAuditUser;
 	private Date auditTime;
+	private Date createdTime;
 	
 	private String nodeName; //下一个节点的名称
 
 	private String userId;
 	private String productName;
 	
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+
 	public String getNodeName() {
 		return nodeName;
 	}
