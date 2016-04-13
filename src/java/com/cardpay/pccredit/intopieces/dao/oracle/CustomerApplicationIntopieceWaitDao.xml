@@ -47,7 +47,7 @@
 		<result column="NEXT_NODE_ID" property="nextNodeId" />
 		<result column="DELAY_AUDIT_USER" property="delayAuditUser" />
 		<result column="AUDIT_TIME" property="auditTime" />
-		
+		<result column="CREATED_TIME" property="createdTime" />
 		<result column="NODE_NAME" property="nodeName" />
 
 		<result column="USER_ID" property="userId"/>
@@ -221,7 +221,8 @@
 		b.APPLY_QUOTA AS applyQuota,
 		A.SERIAL_NUMBER as SERIALNUMBER,
    		N.NODE_NAME as nodeName,
-		A.AUDIT_TIME as auditTime
+		A.AUDIT_TIME as auditTime,
+		b.CREATED_TIME   as createdTime
 		FROM
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
