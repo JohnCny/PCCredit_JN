@@ -95,6 +95,13 @@ public class AddIntoPiecesService {
 		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
 		return qr;
 	}
+	
+	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer1(AddIntoPiecesFilter filter) {
+		List<LocalExcelForm> ls = localExcelDao.findByProductAndCustomer1(filter);
+		int size = localExcelDao.findCountByProductAndCustomer(filter);
+		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
+		return qr;
+	}
 
 	//导入调查报告
 	public void importExcel(MultipartFile file,String productId, String customerId) {

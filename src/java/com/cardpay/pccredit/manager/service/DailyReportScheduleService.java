@@ -47,14 +47,15 @@ public class DailyReportScheduleService {
 	
 	/**
 	 * 客户经理日报
-	 * 周六或周日生成下周的日报
+	 * 周六生成下周的日报
+	 * 系统自动生成
 	 */
 	public void insertWeekSchedule(){
 	    log.info("【客户经理日报生成start】"+new Date()+"***********************************************");
+	    //record job
+	    insBtachtask("rb","日报");
 		try{
 			  Calendar nextdate=Calendar.getInstance(Locale.CHINA);
-			  //SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-			  //Date date = sdf.parse("20160320");
 			  nextdate.setTime(new Date());
 			  nextdate.add(Calendar.WEEK_OF_MONTH, 1);
 			  nextdate.set(Calendar.DAY_OF_WEEK, nextdate.getActualMinimum(Calendar.DAY_OF_WEEK));
@@ -95,19 +96,84 @@ public class DailyReportScheduleService {
 		log.info("【客户经理日报生成end】"+new Date()+"***********************************************");
 	}
 	
-	//upd
-		public void updBtachtask(String status,String batchCode){
-			DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
-			transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
-			TransactionStatus one = txManager.getTransaction(transStatus);
-			try{
-				//upd task
-				accountManagerParameterService.updBatchTaskFlow(status,batchCode);
-				txManager.commit(one);
-			}catch (Exception e){
-				txManager.rollback(one);
+	
+	/**
+	 * 客户经理日报
+	 * 系统手动调度重跑
+	 */
+	public void insertWeekScheduleByDate(String dateString){
+	    log.info("【客户经理日报生成start】"+new Date()+"***********************************************");
+		try{
+			  Calendar nextdate=Calendar.getInstance(Locale.CHINA);
+			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			  Date date = sdf.parse(dateString);
+			  nextdate.setTime(date);
+			  nextdate.add(Calendar.WEEK_OF_MONTH, 1);
+			  nextdate.set(Calendar.DAY_OF_WEEK, nextdate.getActualMinimum(Calendar.DAY_OF_WEEK));
+			  nextdate.add(Calendar.DATE, 1);
+			  //startDate 
+			  String startDate=DateHelper.getDateFormat(nextdate.getTime(), "yyyy-MM-dd");
+			  nextdate.add(Calendar.DATE, 4);
+			  //endDate
+			  String endDate=DateHelper.getDateFormat(nextdate.getTime(), "yyyy-MM-dd");
+			/**
+			 * 查找所有客户经理
+			 */
+			List<AccountManagerParameterForm> managerList=accountManagerParameterService.findAccountManagerParameterAll();
+			for(AccountManagerParameterForm accountManagerParameterForm:managerList){
+				String title=accountManagerParameterForm.getDisplayName()+"("+startDate+"到"+endDate+")周报";
+				WeeklyAccountManager weeklyAccountManager=new WeeklyAccountManager();
+				weeklyAccountManager.setCustomerManagerId(accountManagerParameterForm.getUserId());
+				weeklyAccountManager.setTitle(title);
+				weeklyAccountManager.setCreatedTime(new Date());
+				weeklyAccountManager.setModifiedTime(new Date());
+				weeklyAccountService.insertWeeklyAccount(weeklyAccountManager);
+				for(int i=1;i<=5;i++){
+					DailyAccountManager dailyAccountManager=new DailyAccountManager();
+					dailyAccountManager.setWeeklyId(weeklyAccountManager.getId());
+					dailyAccountManager.setWhatDay(i);
+					dailyAccountManager.setCreatedTime(new Date());
+					dailyAccountManager.setModifiedTime(new Date());
+					dailyAccountService.insertDailyAccount(dailyAccountManager);
+				}
 			}
+			//upd task
+			accountManagerParameterService.updBatchTaskFlow("100","rb");
+		}catch(Exception e){
+			e.printStackTrace();
+			this.updBtachtask("001","rb");
+			throw new RuntimeException(e);
 		}
+		log.info("【客户经理日报生成end】"+new Date()+"***********************************************");
+	}
+	
+	//upd
+	public void updBtachtask(String status,String batchCode){
+		DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
+		transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		TransactionStatus one = txManager.getTransaction(transStatus);
+		try{
+			//upd task
+			accountManagerParameterService.updBatchTaskFlow(status,batchCode);
+			txManager.commit(one);
+		}catch (Exception e){
+			txManager.rollback(one);
+		}
+	}
+		
+	//insert
+	public void insBtachtask(String status,String batchCode){
+		DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
+		transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+		TransactionStatus one = txManager.getTransaction(transStatus);
+		try{
+			//insert task
+			accountManagerParameterService.insertBatchTaskFlow(status,batchCode);
+			txManager.commit(one);
+		}catch (Exception e){
+			txManager.rollback(one);
+		}
+	}
 	
 	
 	
@@ -117,17 +183,14 @@ public class DailyReportScheduleService {
 	 */
 	public void doTransferData(){
 		log.info("【批处理task生成start】"+new Date()+"***********************************************");
-		//将status-100数据移到历史表t_batch_task_log 
-		accountManagerParameterService.insertBatchTaskLogFlow();
-		
-		//清空表数据
-		String sql = " truncate   table   t_batch_task";
-		commonDao.queryBySql(sql, null);
-		
+		//将[status=100]数据移到历史表t_batch_task_log 
+		//accountManagerParameterService.insertBatchTaskLogFlow();
 		//task
-		accountManagerParameterService.insertBatchTaskFlow("rb","日报");//初始
+		//日报批处理周六未执行 使用管理系统手工导入功能
+		accountManagerParameterService.insertBatchTaskFlow("downLoad","下载和解压数据");//初始
 		accountManagerParameterService.insertBatchTaskFlow("incre","增量数据");//初始
 		accountManagerParameterService.insertBatchTaskFlow("whole","全量数据");//初始
+		
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}
 	

@@ -188,6 +188,7 @@
 		<item name="refuse" title="被拒接" />
 		<item name="approved" title="审批结束" />
 		<item name="succeed" title="申请成功" />
+		<item name="end" title="放款成功" />
 	</dictionary>
 	<dictionary name="QuotaAdjustType" title="调额类型">
 		<item name="up" title="升额" />

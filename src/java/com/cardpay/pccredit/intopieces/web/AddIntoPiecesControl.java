@@ -164,7 +164,7 @@ public class AddIntoPiecesControl extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
-		QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer(filter);
+		QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
 		JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/report_import",request);
 		mv.addObject(PAGED_RESULT, pagedResult);

@@ -55,7 +55,10 @@ public class IntoPiecesComdao {
 		String cardId = filter.getCardId();
 		String status = filter.getStatus();
 		params.put("userId", userId);
-		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id and b.user_id = #{userId} and t.product_id=p.id  ");
+		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME  from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		if(StringUtils.trimToNull(userId)!=null){
+			sql.append("and b.user_id = #{userId}");
+		}
 		if(StringUtils.trimToNull(productName)!=null){
 			params.put("productName", productName);
 			 sql.append(" and p.product_name like '%'||#{productName}||'%' ");
@@ -466,7 +469,11 @@ public class IntoPiecesComdao {
 //			}
 //			users = users.substring(0, users.length() - 1) + ")";
 		sql = new StringBuffer(
-				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.final_approval,t.status from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+				"select t.id,t.customer_id,b.chinese_name,b.id as customerId,t.product_id,p.product_name,b.card_id,b.card_type,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		if(StringUtils.trimToNull(userId)!=null){
+			params.put("userId", userId);
+			sql.append("and b.user_id = #{userId}");
+		}
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null

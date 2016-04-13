@@ -88,7 +88,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          #btnpriv("create")<a id="id_browse_button" class="btn_g" onclick="show()" href="javascript:void(0);" title="#i18n('button.create.hint')">维护计划列表</a>#end 
+          #btnpriv("create")<a  class="btn_g" onclick="show()" href="javascript:void(0);" title="#i18n('button.create.hint')">维护计划列表</a>#end 
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -101,7 +101,18 @@
 	window.top.currentWindow.setLayout(layout);
 	
 	$(document).ready(function() {
-	
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.browseUrl = "${modulePath}/log.page";
+		if (opsObj.browseUrl) {
+			 $("#id_browse_button").click(function() {
+		            var url = opsObj.browseUrl;
+		            if (opsObj.formObj) {
+		                opsObj.formObj.action = opsObj.browseUrl;
+		                opsObj.formObj.submit();
+		            }
+		        });
+		}
 	});
 	
 	function show(){
@@ -113,5 +124,7 @@
 				topWin.Dialog.message("请选择记录！");
 			}
 	}
+	
+	
 </script>
 #parse ("common/iframe_page_footer.htm")

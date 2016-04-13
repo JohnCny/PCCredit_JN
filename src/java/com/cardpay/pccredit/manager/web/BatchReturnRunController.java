@@ -31,6 +31,7 @@ import com.cardpay.pccredit.manager.filter.BatchRunFilter;
 import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
+import com.cardpay.pccredit.toolsjn.OdsTools;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -66,8 +67,11 @@ public class BatchReturnRunController extends BaseController{
 	
 	@Autowired
 	ReadWholeAndIncrementService incrementService;
+	
+	@Autowired
+	OdsTools  odsTools;
 	/**
-	 * 查看失败批处理信息
+	 * 查看批处理信息
 	 * @param request
 	 * @return
 	 */
@@ -100,9 +104,12 @@ public class BatchReturnRunController extends BaseController{
 			DateFormat format = new SimpleDateFormat("yyyyMMdd");
 			String dateString = format.format(new Date(time));
 			
+			//下载和解压数据
+			if(batchCode.equals("downLoad")){
+				odsTools.downloadFilesbyDate(dateString);
 			//客户经理日报batch
-			if(batchCode.equals("rb")){
-				dailyReportScheduleService.insertWeekSchedule();
+			}else if(batchCode.equals("rb")){
+				dailyReportScheduleService.insertWeekScheduleByDate(dateString);
 			//ODS增量数据
 			}else if(batchCode.equals("incre")){
 				incrementService.doReadFileIncrementByDate(dateString);
@@ -110,6 +117,9 @@ public class BatchReturnRunController extends BaseController{
 			}else if(batchCode.equals("whole")){
 				incrementService.doReadFileWholeByDate(dateString);
 			}
+			//同步进件状态
+			//绩效
+			
 			returnMap.addGlobalMessage(ManagerLevelAdjustmentConstant.IF_HANDLE_SUCCESS);
 		} catch (Exception e) {
 			return WebRequestHelper.processException(e);
