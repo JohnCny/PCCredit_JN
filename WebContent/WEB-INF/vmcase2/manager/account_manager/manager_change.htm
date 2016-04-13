@@ -48,7 +48,7 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#validator($formName)
+	#parse ("/manager/account_manager/manager_create_validation.js")
 	
 	$("#id_save_button").click(function() {
 		if(submitFlag == 1){
