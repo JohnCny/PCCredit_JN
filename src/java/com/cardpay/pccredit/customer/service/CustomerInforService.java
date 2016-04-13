@@ -2493,13 +2493,13 @@ public class CustomerInforService {
 					updatedatas.add(map);
 					//变更 同步本系统
 					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
-							"select id from sys_user where external_id='"+map.get("BUSIMANAGER").toString()+"'", null);
+							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);
 					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
 							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
 					//存在则更新客户经理id
 					if(infoList.size()>0){
 						CustomerInfor info = infoList.get(0);
-						info.setUserId(user != null?user.get(0).getId():map.get("busimanager").toString());
+						info.setUserId(user.size() > 0?user.get(0).getId():map.get("busimanager").toString());
 						commonDao.updateObject(info);
 					}
 				}else{
@@ -2533,8 +2533,8 @@ public class CustomerInforService {
 			//update
 			updateCIPERSONBASINFO(updatedatas);
 			//释放空间
-			datas=null;
-			//释放空间
+			insertdatas=null;
+			updatedatas=null;
 			datas=null;
 	}
 
@@ -3032,6 +3032,8 @@ public class CustomerInforService {
 			//update
 			updateCIPERSONFAMILY(updatedatas);
 			//释放空间
+			updatedatas = null;
+			insertdatas =null;
 			datas=null;
 	}
 

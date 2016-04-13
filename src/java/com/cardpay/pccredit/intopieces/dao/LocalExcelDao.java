@@ -12,6 +12,7 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface LocalExcelDao {
 	public List<LocalExcelForm> findByProductAndCustomer(AddIntoPiecesFilter filter);
+	public List<LocalExcelForm> findByProductAndCustomer1(AddIntoPiecesFilter filter);
 	public LocalExcel findById(@Param("id") String id);
 	public int findCountByProductAndCustomer(AddIntoPiecesFilter filter);
 	public LocalExcel findByApplication(@Param("applicationId") String applicationId);
