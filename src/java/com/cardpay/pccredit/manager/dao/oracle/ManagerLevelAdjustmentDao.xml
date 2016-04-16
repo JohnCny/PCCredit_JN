@@ -88,7 +88,12 @@
 		SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from t_batch_task order by CREATED_TIME DESC
+					 select * from t_batch_task 
+					 where CREATED_TIME between #{startDate} and #{endDate}
+					 <if test="status != null and status != '' ">
+						and status = #{status}
+					 </if>
+					 order by CREATED_TIME DESC
   			<![CDATA[		
 					) ROW_
 				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -97,7 +102,11 @@
 	</select>
 	
 	<select id="findBatchCountFilter" resultType="int">
-		select count(*) from t_batch_task
+		select count(*) from t_batch_task 
+		where CREATED_TIME between #{startDate} and #{endDate}
+		<if test="status != null and status != '' ">
+			and status = #{status}
+		</if>
 	</select>
 
 </mapper>

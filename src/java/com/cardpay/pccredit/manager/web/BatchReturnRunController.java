@@ -41,6 +41,7 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
 /**
@@ -80,6 +81,13 @@ public class BatchReturnRunController extends BaseController{
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute BatchRunFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
+		//
+		if(filter.getStartDate() ==null){
+			filter.setStartDate(DateHelper.getDateFormat("2016-04-01","yyyy-MM-dd"));
+		}
+		if(filter.getEndDate()==null){
+			filter.setEndDate(new Date());
+		}
 		QueryResult<BatchTask> result = managerLevelAdjustmentService.findBatchFilter(filter);
 		JRadPagedQueryResult<BatchTask> pagedResult = new JRadPagedQueryResult<BatchTask>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/manager/batchreturnrun/batch_return_run", request);
@@ -150,13 +158,13 @@ public class BatchReturnRunController extends BaseController{
 			}
 			addIntoPiecesService.importTxt(file);
 			map.put(JRadConstants.SUCCESS, true);
-			map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
+			map.put(JRadConstants.MESSAGE, "导入成功");
 			JSONObject obj = JSONObject.fromObject(map);
 			response.getWriter().print(obj.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put(JRadConstants.SUCCESS, false);
-			map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+			map.put(JRadConstants.MESSAGE, "导入失败:"+e.getMessage());
 			JSONObject obj = JSONObject.fromObject(map);
 			response.getWriter().print(obj.toString());
 		}
