@@ -47,7 +47,6 @@
               <col width="10%" />
               <col width="10%" />
               <col width="10%" />
-              <col width="10%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -55,7 +54,6 @@
               <th nowrap="nowrap">客户证件号码</th>
               <th nowrap="nowrap">所属产品</th>
               <th nowrap="nowrap">贷款金额</th>
-              <th nowrap="nowrap">利率</th>
               <th nowrap="nowrap">距离还款日(日)</th>
               <th nowrap="nowrap">应还本金</th>
               <th nowrap="nowrap">应还利息</th>
@@ -77,21 +75,19 @@
               <col width="10%" />
               <col width="10%" />
               <col width="10%" />
-              <col width="10%" />
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.cname</td>
+              <td nowrap="nowrap">$!customer.cardnum</td>
+              <td nowrap="nowrap">$!customer.prodName</td>
+              <td nowrap="nowrap">$!customer.money</td>
+              <td nowrap="nowrap">$!customer.hkr</td>
+              <td nowrap="nowrap">$!customer.hkbj</td>
+              <td nowrap="nowrap">$!customer.yhlx</td>
+              <td nowrap="nowrap">$!customer.busimanager</td>
+              <td nowrap="nowrap">$!customer.instcode</td>
             </tr>
             #end
           </table>

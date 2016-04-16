@@ -88,18 +88,18 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.cname</td>
+              <td nowrap="nowrap">$!customer.cardnum</td>
+              <td nowrap="nowrap">$!customer.prodName</td>
+              <td nowrap="nowrap">$!customer.money</td>
+              <td nowrap="nowrap">$format.formatNumber($!customer.interest, 5, 1)</td>
+              <td nowrap="nowrap">$!customer.loandate</td>
+              <td nowrap="nowrap">$!customer.balamt</td>
+              <td nowrap="nowrap">$!customer.bj</td>
+              <td nowrap="nowrap">$!customer.lx</td>
+              <td nowrap="nowrap">$!customer.state</td>
+              <td nowrap="nowrap">$!customer.busimanager</td>
+              <td nowrap="nowrap">$!customer.instcode</td>
             </tr>
             #end
           </table>
