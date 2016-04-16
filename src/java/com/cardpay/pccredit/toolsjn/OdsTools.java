@@ -164,7 +164,7 @@ public class OdsTools {
 			//获取文件列表
 			ArrayList<String> files = sftp.getList(curRemotePath);
 			//处理ftp文件
-			processFtpFile(sftp, files);
+			processFtpFileByDate(sftp, files,dateString);
 			//update task
 			dailyReportScheduleService.updBtachtask("100","downLoad");
 			
