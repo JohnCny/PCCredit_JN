@@ -33,8 +33,8 @@
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
-			<menu id="080003" name="highriskcustomer" title="高风险客户名单" url="/riskcontrol/highriskcustomer/browse.page" img="" operations="display|browse"/>
-		</menu>
+<!-- 			<menu id="080003" name="highriskcustomer" title="高风险客户名单" url="/riskcontrol/highriskcustomer/browse.page" img="" operations="display|browse"/>
+ -->		</menu>
 		
 		
 		<menu id="091000" name="postLoan" title="贷后管理" url="" img="images/icon_sys.gif" operations="">
@@ -48,7 +48,7 @@
 			 <menu id="092003" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
 		</menu>
 		
-		<menu id="100000" name="report" title="报表统计" url="" img="images/icon_sys.gif" operations="">
+		<menu id="100000" name="report" title="报表管理" url="" img="images/icon_sys.gif" operations="">
 			<menu id="100010" name="customerMove" title="客户移交流水记录报表 "  url="/customer/transferFlow/queryCustomerTransfer.page" img="" operations="browse"/>
 			<menu id="100020" name="disburseLoan" title="已发放贷款统计报表 "   url="/disburse/loan/queryHaveBeenLoan.page" img="" operations="browse"/>
 			<menu id="100030" name="refuseLoan"   title="被拒绝贷款统计报表 "   url="/refuse/loan/queryRefuseLoan.page" img="" operations="browse"/>
@@ -61,6 +61,8 @@
 		
 		<menu id="102000" name="batchrunManagement" title="批处理管理" url="" img="images/icon_sys.gif" operations="">
 			 <menu id="102001" name="batchrun" title="批处理重跑" url="/batch/returnrun/browse.page" img="" operations="display|browse"/>
+			 <menu id="102002" name="log" title="日志查看" url="/batch/returnrun/logBrowse.page" img="" operations="display|browse"/>
+			 <menu id="102003" name="excute" title="数据差错处理" url="/batch/returnrun/dataErrorProcee.page" img="" operations="display|browse"/>
 		</menu>
 		
 		<menu id="103000" name="system" title="系统管理" url="" img="images/icon_sys.gif" operations="">

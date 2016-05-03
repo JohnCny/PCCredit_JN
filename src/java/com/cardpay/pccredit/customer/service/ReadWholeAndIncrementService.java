@@ -16,13 +16,14 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.dao.comdao.ReadWholeAndIncrementComdao;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
-import com.cardpay.pccredit.tools.CardFtpUtils;
 import com.cardpay.pccredit.tools.DataFileConf;
 import com.cardpay.pccredit.tools.ImportBankDataFileTools;
 import com.cardpay.pccredit.tools.SPTxt;
 import com.cardpay.pccredit.tools.UpdateCustomerTool;
+import com.cardpay.pccredit.toolsjn.FtpUtils;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
 /**
@@ -47,6 +48,9 @@ public class ReadWholeAndIncrementService {
 	PlatformTransactionManager txManager;
 	
 	@Autowired
+	private CustomerInforDao customerInforDao;
+	
+	@Autowired
 	private AccountManagerParameterService accountManagerParameterService;
 	
 	//全量
@@ -57,26 +61,16 @@ public class ReadWholeAndIncrementService {
 									"t_rbac_user.txt"};
 	
 	//增量
-	private String[] fileTxtIncre = {"t_cclmtapplyinfo.txt",     
-									 "t_cipersonbadrecord.txt",  
-									 "t_cipersonbasinfo.txt",    
-									 "t_cipersonfamily.txt",     
-									 "t_fcloaninfo.txt",         
-									 "t_fcresulthis.txt",        
-									 "t_fcstatisticsdata.txt",   
-									 "t_gcassurecorrespond.txt", 
-									 "t_gcassuremain.txt",       
-									 "t_gcassuremulticlient.txt",
-									 "t_gccontractmain.txt",     
-									 "t_gcguarantymain.txt",     
-									 "t_gcloancard1.txt",         
-									 "t_gcloancardcontract.txt", 
-									 "t_gcloancredit.txt",       
-									 "t_mibusidata.txt",         
-									 "t_miloancard.txt",         
-									 "t_party_bwlist.txt",       
-									 "t_rarepaylist.txt",        
-									 "t_sarm_specialasset.txt"};
+	private String[] fileTxtIncre = {"sarm_specialasset.txt",     
+									 "rarepaylist.txt",  
+									 "mibusidata.txt",    
+									 "gccontractmain.txt",     
+									 "FCRESULTHIS.txt",         
+									 "GCASSUREMULTICLIENT.txt",        
+									 "FCLOANINFO.txt",   
+									 "cipersonbasinfo.txt", 
+									 "CIPERSONBADRECORD.txt",       
+									 "cclmtapplyinfo.txt"};
 	
 	
 	
@@ -111,7 +105,7 @@ public class ReadWholeAndIncrementService {
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
 		log.info(dateString+"******************开始读取增量信息文件********************");  
-	        String gzFile = CardFtpUtils.bank_ftp_down_path+dateString;
+	        String gzFile = FtpUtils.bank_ftp_down_path+dateString;
 	        for(int i=0;i<fileTxtIncre.length;i++){
 				String url = gzFile+File.separator+fileTxtIncre[i];
 				File f = new File(url);
@@ -179,7 +173,7 @@ public class ReadWholeAndIncrementService {
 									}else if(fn.startsWith("t_gcloancardcontract")){
 										log.info("*****************Gc贷款证合同关联关系表 ********************");
 										saveGCLOANCARDCONTRACTDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcloancredit")){//TODO
+									}else if(fn.startsWith("t_gcloancredit")){
 										log.info("*****************Gc凭证信息表 ********************");
 										saveGCLOANCREDITDataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("t_mibusidata")){
@@ -227,7 +221,7 @@ public class ReadWholeAndIncrementService {
 	public void doReadFileIncrementByDate(String dateString) {
 		//指定日期
 		log.info(dateString+"******************开始手动读取增量信息文件********************");  
-	        String gzFile = CardFtpUtils.bank_ftp_down_path+dateString;
+	        String gzFile = FtpUtils.bank_ftp_down_path+dateString;
 	        for(int i=0;i<fileTxtIncre.length;i++){
 				String url = gzFile+File.separator+fileTxtIncre[i];
 				File f = new File(url);
@@ -236,8 +230,8 @@ public class ReadWholeAndIncrementService {
 						String fileN = "";
 						//判断文件大小，超过50M的先分割
 						if (f.exists() && f.isFile()){
-							if(f.length()>20000000){
-								int spCount = (int) (f.length()/20000000);
+							if(f.length()>10000000){
+								int spCount = (int) (f.length()/10000000);
 								SPTxt.splitTxt(url,spCount);
 								int to = fileTxtIncre[i].lastIndexOf('.');
 						    	fileN = fileTxtIncre[i].substring(0, to);
@@ -253,66 +247,98 @@ public class ReadWholeAndIncrementService {
 						for(String fn : spFile){
 							try{
 								if(fn.contains(fileN)) {
-									if(fn.startsWith("t_cclmtapplyinfo")){
-										log.info("*****************Cc授信申请基本信息（结果表）********************");  
+									/*if(fn.startsWith("cclmtapplyinfo")){
+										log.info("*****************Cc授信申请基本信息（结果表）********************");
 										customerInforService.saveCCLMTAPPLYINFODataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_cipersonbadrecord")){
+									}else if(fn.startsWith("CIPERSONBADRECORD")){
 										log.info("*****************对私客户不良记录********************");
 										customerInforService.saveCIPERSONBADRECORDDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_cipersonbasinfo")){
+									}else if(fn.startsWith("cipersonbasinfo")){
 										log.info("*****************对私客户基本信息********************");
 										customerInforService.saveCIPERSONBASINFODataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_cipersonfamily")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************对私家庭成员信息********************");
 										customerInforService.saveCIPERSONFAMILYDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_fcloaninfo")){
+									}else if(fn.startsWith("FCLOANINFO")){
 										log.info("*****************借据月末余额表（结果表）********************");
 										customerInforService.saveFCLOANINFODataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_fcresulthis")){
+									}else if(fn.startsWith("FCRESULTHIS")){
 										log.info("*****************认定结果表（历史表）********************");
 										customerInforService.saveFCRESULTHISDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_fcstatisticsdata")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************五级分类统计表********************");
 										customerInforService.saveFCSTATISTICSDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcassurecorrespond")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************GC担保对应表********************");
 										customerInforService.saveGCASSURECORRESPONDDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcassuremain")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************GC担保信息表********************");
 										saveGCASSUREMAINDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gccontractmain")){
+									}else if(fn.startsWith("gccontractmain")){
 										log.info("*****************GC合同基本表********************");
 										saveGCCONTRACTMAINDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcassuremulticlient")){
+									}else if(fn.startsWith("GCASSUREMULTICLIENT")){
 										log.info("*****************GC从合同多方信息表********************");
 										saveGCASSUREMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcguarantymain")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************GC押品主表********************");
 										saveGCGUARANTYMAINDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcloancard1")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************Gc贷款证表 ********************");
 										saveGCLOANCARDDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcloancardcontract")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************Gc贷款证合同关联关系表 ********************");
 										saveGCLOANCARDCONTRACTDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_gcloancredit")){//TODO
+									}else if(fn.startsWith("test")){
 										log.info("*****************Gc凭证信息表 ********************");
 										saveGCLOANCREDITDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_mibusidata")){
+									}else if(fn.startsWith("mibusidata")){
 										log.info("*****************台账——综合业务信息表  ********************");
 										saveMIBUSIDATADataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_miloancard")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************台账——贷款卡片********************");
 										saveMILOANCARDDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_party_bwlist")){
+									}else if(fn.startsWith("test")){
 										log.info("*****************黑名单客户结果表 ********************");
 										saveBWLISTDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_rarepaylist")){
+									}else if(fn.startsWith("rarepaylist")){
 										log.info("*****************还款情况表  ********************");
 										saveRAREPAYLISTDataFile(gzFile+File.separator+fn,dateString);
-									}else if(fn.startsWith("t_sarm_specialasset")){
+									}else if(fn.startsWith("sarm_specialasset")){
 										log.info("*****************不良贷款信息  ********************");
 										saveSPECIALASSETDataFile(gzFile+File.separator+fn,dateString);
+									}*/
+									
+									if(fn.startsWith("cclmtapplyinfo")){//ok
+										log.info("*****************Cc授信申请基本信息（结果表）********************");
+										//customerInforService.saveCCLMTAPPLYINFODataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("CIPERSONBADRECORD")){//ok
+										log.info("*****************对私客户不良记录********************");
+										//customerInforService.saveCIPERSONBADRECORDDataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("cipersonbasinfo")){
+										log.info("*****************对私客户基本信息********************");
+										//customerInforService.saveCIPERSONBASINFODataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("FCLOANINFO")){
+										log.info("*****************借据月末余额表（结果表）********************");
+										//customerInforService.saveFCLOANINFODataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("FCRESULTHIS")){//数据偏移
+										log.info("*****************认定结果表（历史表）********************");
+										//customerInforService.saveFCRESULTHISDataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("gccontractmain")){//数据偏移
+										log.info("*****************GC合同基本表********************");
+										saveGCCONTRACTMAINDataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("GCASSUREMULTICLIENT")){
+										log.info("*****************GC从合同多方信息表********************");
+										//saveGCASSUREMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("mibusidata")){
+										log.info("*****************台账——综合业务信息表  ********************");
+										//saveMIBUSIDATADataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("rarepaylist")){//ok
+										log.info("*****************还款情况表  ********************");
+										//saveRAREPAYLISTDataFile(gzFile+File.separator+fn,dateString);
+									}else if(fn.startsWith("sarm_specialasset")){//ok
+										log.info("*****************不良贷款信息  ********************");
+										//saveSPECIALASSETDataFile(gzFile+File.separator+fn,dateString);
 									}
 								}
 							}catch(Exception e){
@@ -362,7 +388,7 @@ public class ReadWholeAndIncrementService {
 		//获取今日日期 yyyyMMdd格式
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
-		String gzFile = CardFtpUtils.bank_ftp_down_path+dateString;
+		String gzFile = FtpUtils.bank_ftp_down_path+dateString;
 
 		log.info(dateString+"******************开始读取全量数据文件********************");  
 		//清空表数据
@@ -434,7 +460,7 @@ public class ReadWholeAndIncrementService {
 	 */
 	public void doReadFileWholeByDate(String dateString){
 		//指定日期
-		String gzFile = CardFtpUtils.bank_ftp_down_path+dateString;
+		String gzFile = FtpUtils.bank_ftp_down_path+dateString;
 
 		log.info(dateString+"******************开始手动读取全量数据文件********************");  
 		//清空表数据
@@ -638,8 +664,12 @@ public class ReadWholeAndIncrementService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_GCCONTRACTMAIN.xml");
 			// 解析”流水号“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			
+			for (Map<String, Object> map : datas){
+				customerInforDao.insertMain(map);
+			}
 			// 批量插入
-			andIncrementComdao.insertGCCONTRACTMAIN(datas);
+			//andIncrementComdao.insertGCCONTRACTMAIN(datas);
 			// 释放空间
 			datas=null;
 	}
@@ -768,6 +798,9 @@ public class ReadWholeAndIncrementService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_MIBUSIDATA.xml");
 			// 解析”流水号“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			/*for (Map<String, Object> map : datas){
+				customerInforDao.insertMIBUSIDATA(map);
+			}*/
 			// 批量插入
 			andIncrementComdao.insertMIBUSIDATA(datas);
 			// 释放空间

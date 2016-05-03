@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.jnpad.dao.JnIpadUserLoginDao;
+import com.cardpay.pccredit.jnpad.model.CustomerAppInfoIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.product.dao.ProductDao;
 import com.cardpay.pccredit.product.model.ProductAttribute;
@@ -85,4 +86,8 @@ public class JnIpadUserLoginService {
 	public ProductAttribute findPublishedProductAttributeByProductId(String productId) {
 		return productDao.findPublishedProductAttributeByProductId(productId);
 	}
+	
+	/*List<CustomerAppInfoIpad> findCustomerAppIntoCount(){
+		
+	}*/
 }

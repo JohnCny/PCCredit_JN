@@ -526,4 +526,14 @@ public class AddIntoPiecesService {
 		}
 	}
 	
+	
+	/**
+	 * 差错数据处理
+	 * @param sql
+	 */
+	public void dataErrorProceeExcute(String sql){
+		Map<String, Object> params = new HashMap<String, Object>();
+		commonDao.queryBySql(sql, params);
+	}
+	
 }

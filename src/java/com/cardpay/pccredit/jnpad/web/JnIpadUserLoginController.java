@@ -13,16 +13,15 @@ import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.model.CustomerAppInfoIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
@@ -50,7 +49,7 @@ public class JnIpadUserLoginController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/ipad/user/login.json")
+	@RequestMapping(value = "/ipad/user/JnLogin.json")
 	@JRadOperation(JRadOperation.BROWSE)
 	public String login(HttpServletRequest request) {
 		String login = RequestHelper.getStringValue(request, "login");
@@ -121,12 +120,39 @@ public class JnIpadUserLoginController {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String name = request.getParameter("name");
 		String cardId = request.getParameter("cardId");
+		String cardType = request.getParameter("cardType");
+		
 		String userId = request.getParameter("userId");
-		map = customerInforService.addCustomer(name,cardId,userId);
+		map = customerInforService.addCustomer(name,cardId,cardType,userId);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
+	
+	
+	
+	/**
+	 * 客户进件信息
+	 * 查询进件数量及审核通过的进件量
+	 */
+	/*@ResponseBody
+	@RequestMapping(value = "/ipad/customerInfor/customerInsert.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public String findCustomerAppIntoCount(HttpServletRequest request) {
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		
+		String userId = request.getParameter("userId");
+		
+		List<CustomerAppInfoIpad> list = null;
+		list = 
+		map.put("result", list);
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	*/
 	
 }
