@@ -95,7 +95,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 54 17 ? * *</value><!--时间定在第一个跑批前  -->
+            <value>0 00 15 ? * *</value><!--时间定在第一个跑批前  -->
         </property>
     </bean>
 	<!-- task end-->
@@ -118,7 +118,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 15 16 ? * *</value><!--下午3点 -->
+            <value>0 05 15 ? * *</value><!--下午3点 -->
         </property>
     </bean>
 	<!-- 每日下载和解压数据 end-->
@@ -141,10 +141,15 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 04 15 ? * *</value><!--时间定在周六  -->
+            <value>0 05 15 ? * *</value><!--时间定在周六  -->
         </property>
     </bean>
     <!-- 客户经理日报  end -->
+    
+
+    
+    
+    
     
     
     

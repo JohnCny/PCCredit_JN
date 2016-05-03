@@ -48,7 +48,7 @@ public class CustomerInforForIpadService {
 	 * @param customerInfor
 	 * @return
 	 */
-	public Map<String,Object> addCustomer(String name,String cardId,String userId){
+	public Map<String,Object> addCustomer(String name,String cardId,String cardType,String userId){
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		CustomerInforFilter filter = new CustomerInforFilter();
 		filter.setCardId(cardId);

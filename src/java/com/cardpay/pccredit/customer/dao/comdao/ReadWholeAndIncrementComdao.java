@@ -4,16 +4,20 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import com.cardpay.pccredit.tools.UpdateCustomerTool;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
 
 @Service
 public class ReadWholeAndIncrementComdao {
-	
+	public Logger log = Logger.getLogger(ReadWholeAndIncrementComdao.class);
 	@Autowired
 	private CommonDao commonDao;
 
@@ -925,7 +929,9 @@ public class ReadWholeAndIncrementComdao {
 	           {
 	            return shopsList.size();
 	           }
+	           
 	     });
+	      
 	}
 	
 	

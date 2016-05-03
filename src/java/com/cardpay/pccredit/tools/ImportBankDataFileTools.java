@@ -41,7 +41,7 @@ import com.wicresoft.util.date.DateHelper;
  */
 public class ImportBankDataFileTools {
 	// 分隔符
-	public static final String SPLITE_CHARS = "@";
+	public static final String SPLITE_CHARS = "\\|";
 	
 	public static final String DECIMAL = "DECIMAL";
 	public static final String VARCHAR = "VARCHAR";
@@ -104,30 +104,23 @@ public class ImportBankDataFileTools {
 	        int count=0;
 	        while ((line=br.readLine())!=null) {
 	        	count++;
-	        	//System.out.println(count);
 	        	dataArrs = StringUtils.splitPreserveAllTokens(line.replaceAll(SPLITE_CHARS, "±"),"±");
 	            map = new HashMap<String, Object>();
 	            boolean flag = true;
 	            for(DataFileConf dataFileConf : confList){
 	            	type = dataFileConf.getJdbcType();
 	            	column = dataFileConf.getColumn();
+	            	value ="";
 	            	
-	            	if(dataFileConf.getIndex() >= 1){
+	            	
+	            	if(dataFileConf.getIndex() >= 1 && dataFileConf.getIndex() <= dataArrs.length){
 	            		value = dataArrs[dataFileConf.getIndex()-1].trim();
 	            	}
 	            	
 	            	if(DECIMAL.equals(type) || VARCHAR.equals(type)){
-						value = value.trim();
-						
-						/*if(DECIMAL.equals(type) || NumberUtils.isNumber(value)){
-							try {
-								value = NumberUtils.createBigDecimal(value).toString();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								//e.printStackTrace();
-								log.error("处理数据出错，保留原值");
-							}
-						}*/
+	            		if(!StringUtils.isEmpty(value)){
+	            			value = value.trim();
+	            		}
 											
 						if(DECIMAL.equals(type) && StringUtils.isNotEmpty(value) && !NumberUtils.isNumber(value)){
 							log.info(value + " is not number, line string : " + line);
@@ -139,8 +132,10 @@ public class ImportBankDataFileTools {
 	            	}else if(DATE_NOW.equals(type)){
 	            		value = DateHelper.getDateFormat(new Date(), dataFileConf.getStyle());
 	            	}
-	            	value=value.replaceAll(" ","");
-            		value=value.replace("\"", "");
+	            	if(!StringUtils.isEmpty(value)){
+		            	value=value.replaceAll(" ","");
+	            		value=value.replace("\"", "");
+	            	}
 					map.put(SqlJavaNameUtil.getVariableName(column, false),value);
 	            }
 	            //map.put("id", IDGenerator.generateID());
@@ -166,6 +161,7 @@ public class ImportBankDataFileTools {
 		/*File file = new File(fileName);
 		file.delete();*/
         return datas;
+       
 	}
 	
 	//RandomAccessFile 效率太低

@@ -262,4 +262,12 @@ public interface CustomerInforDao {
 	
 	public int findCipersonfamilyCount(Map<String, Object> map);
 	public int findCIPERSONBASINFOCount(Map<String, Object> map);
+	
+	
+	//测试 insertMain
+	public int insertMain(Map<String, Object> map);
+	public int insertFCLOANINFO(Map<String, Object> map);
+	public int insertFCRESULTHIS(Map<String, Object> map);
+	public int insertMIBUSIDATA(Map<String, Object> map);
+	
 }

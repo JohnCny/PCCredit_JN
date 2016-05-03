@@ -2426,7 +2426,7 @@ public class CustomerInforService {
     
     /**
      * 对私客户不良记录
-     * @param list
+     * @param list 
      */
     public void insertCIPERSONBADRECORD(List<Map<String, Object>> list){
         final List<Map<String, Object>> shopsList = list;
@@ -2437,8 +2437,8 @@ public class CustomerInforService {
                                                             "BADDESCRIPTION,"+
                                                             "OPERATOR,"+
                                                             "INSTCITYCODE,"+
-                                                            "OPERDATETIME,"+
-                                                            "REFERAOMUNT,CREATE_TIME)"+
+                                                            "REFERAOMUNT,"+
+                                                            "OPERDATETIME,CREATE_TIME)"+
                 "    values                        (?,                               "+
                                     "    		    ?,                               "+
                                     "    		    ?,                               "+
@@ -2458,8 +2458,8 @@ public class CustomerInforService {
                 ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("baddescription").toString());
                 ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
                 ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
-                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
-                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("referaomunt").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("referaomunt").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
                 ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
             }
             public int getBatchSize()
@@ -3202,6 +3202,9 @@ public class CustomerInforService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCLOANINFO.xml");
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+			/*for(Map<String, Object> map :datas){
+				customerInforDao.insertFCLOANINFO(map);
+			}*/
 			//save
 			insertFCLOANINFO(datas);
 			//释放空间
@@ -3429,6 +3432,9 @@ public class CustomerInforService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCRESULTHIS.xml");
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+//			for(Map<String, Object> map : datas){
+//				customerInforDao.insertFCRESULTHIS(map);
+//			}
 			//save
 			insertFCRESULTHIS(datas);
 			//释放空间

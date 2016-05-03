@@ -50,7 +50,7 @@ public class CustomerInforIpadController extends BaseController{
 		String name = request.getParameter("name");
 		String cardId = request.getParameter("cardId");
 		String userId = request.getParameter("userId");
-		map = customerInforService.addCustomer(name,cardId,userId);
+		map = customerInforService.addCustomer(name,cardId,null,userId);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

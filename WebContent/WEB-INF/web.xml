@@ -85,7 +85,7 @@
 		<url-pattern>*.java</url-pattern>
 	</servlet-mapping>
 	
-	<!-- google验证码 -->
+	<!--  google验证码
 	<servlet>
 		<servlet-name>Kaptcha</servlet-name>
 		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
@@ -194,7 +194,7 @@
 	<servlet-mapping>
 		<servlet-name>Kaptcha</servlet-name>
 		<url-pattern>/Kaptcha.jpg</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

@@ -1,5 +1,10 @@
 package com.cardpay.pccredit.manager.web;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,13 +31,12 @@ import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.ReadWholeAndIncrementService;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
-import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
 import com.cardpay.pccredit.manager.filter.BatchRunFilter;
 import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
-import com.cardpay.pccredit.toolsjn.OdsTools;
+import com.cardpay.pccredit.toolsjn.OdsTools_jn;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -70,7 +75,7 @@ public class BatchReturnRunController extends BaseController{
 	ReadWholeAndIncrementService incrementService;
 	
 	@Autowired
-	OdsTools  odsTools;
+	OdsTools_jn  odsTools_jn;
 	/**
 	 * 查看批处理信息
 	 * @param request
@@ -114,7 +119,7 @@ public class BatchReturnRunController extends BaseController{
 			
 			//下载和解压数据
 			if(batchCode.equals("downLoad")){
-				odsTools.downloadFilesbyDate(dateString);
+				odsTools_jn.downloadFilesbyDate(dateString);
 			//客户经理日报batch
 			}else if(batchCode.equals("rb")){
 				dailyReportScheduleService.insertWeekScheduleByDate(dateString);
@@ -170,4 +175,68 @@ public class BatchReturnRunController extends BaseController{
 		}
 		return null;
 	}
+	
+	private String log_path = "/home/jradbaseweb.log";
+	private String log_name = "jradbaseweb.log";
+	
+	@ResponseBody
+	@RequestMapping(value = "logBrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(HttpServletRequest request) throws IOException {
+		JRadModelAndView mv = new JRadModelAndView("/manager/batchreturnrun/log_browse",request);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "download.json", method = { RequestMethod.GET })
+	public AbstractModelAndView download(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String query_date = request.getParameter("query_date");
+		String path = log_path;
+		String fileName = log_name;
+		
+		if(StringUtils.isNotEmpty(query_date)){
+			path = log_path + "." + query_date;
+			fileName = log_name + "." + query_date;
+		}
+		
+		File file = new File(path);
+		if(file.exists()){
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(fileName, "UTF-8"));
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+			if (bis != null) {
+				bis.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+		}
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "dataErrorProcee.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView dataUpdate(HttpServletRequest request) throws IOException {
+		JRadModelAndView mv = new JRadModelAndView("/manager/batchreturnrun/dataErrorProcee",request);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "excute.json", method = { RequestMethod.GET })
+	public AbstractModelAndView excute(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		String sql = request.getParameter("sql");
+		addIntoPiecesService.dataErrorProceeExcute(sql);
+		return null;
+	}
+	
 }
