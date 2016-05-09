@@ -317,7 +317,7 @@ public class ReadWholeAndIncrementService {
 										//customerInforService.saveCIPERSONBADRECORDDataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("cipersonbasinfo")){
 										log.info("*****************对私客户基本信息********************");
-										//customerInforService.saveCIPERSONBASINFODataFile(gzFile+File.separator+fn,dateString);
+										customerInforService.saveCIPERSONBASINFODataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("FCLOANINFO")){
 										log.info("*****************借据月末余额表（结果表）********************");
 										//customerInforService.saveFCLOANINFODataFile(gzFile+File.separator+fn,dateString);
@@ -326,7 +326,7 @@ public class ReadWholeAndIncrementService {
 										//customerInforService.saveFCRESULTHISDataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("gccontractmain")){//数据偏移
 										log.info("*****************GC合同基本表********************");
-										saveGCCONTRACTMAINDataFile(gzFile+File.separator+fn,dateString);
+										//saveGCCONTRACTMAINDataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("GCASSUREMULTICLIENT")){
 										log.info("*****************GC从合同多方信息表********************");
 										//saveGCASSUREMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
@@ -665,11 +665,11 @@ public class ReadWholeAndIncrementService {
 			// 解析”流水号“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
 			
-			for (Map<String, Object> map : datas){
-				customerInforDao.insertMain(map);
-			}
+//			for (Map<String, Object> map : datas){
+//				customerInforDao.insertMain(map);
+//			}
 			// 批量插入
-			//andIncrementComdao.insertGCCONTRACTMAIN(datas);
+			andIncrementComdao.insertGCCONTRACTMAIN(datas);
 			// 释放空间
 			datas=null;
 	}

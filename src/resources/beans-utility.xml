@@ -104,7 +104,7 @@
 	<bean id="downAndtargzJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
         <property name="targetObject">
-            <ref bean="odsTools"/>
+            <ref bean="odsTools_jn"/>
         </property>
         <!-- 调用类中的方法 -->
         <property name="targetMethod">
@@ -141,7 +141,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 05 15 ? * *</value><!--时间定在周六  -->
+            <value>0 0 12 ? * SAT</value><!--时间定在周六  -->
         </property>
     </bean>
     <!-- 客户经理日报  end -->
@@ -162,8 +162,9 @@
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                 <ref bean="dailyReportScheduleTigger"/>
+            	 <ref bean="taskTigger"/>
                  <ref bean="downAndtargzScheduleTigger"/>
+                 <ref bean="dailyReportScheduleTigger"/>
             </list>
         </property>
     </bean>
