@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCc;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
@@ -298,6 +299,49 @@ public class CustomerFirsthendController extends BaseController{
 			List<CustomerFirsthendSafe> base = customerInforService.findSafeByNm(customerNm);
 			mv.addObject("result", base);
 			mv.addObject("customerNm", customerNm);
+		}
+		return mv;
+	}
+	
+	
+	
+	
+	/**
+	 * 查看客户原始信息
+	 * jn
+	 * @param request
+	 * @return
+	*/
+	@ResponseBody
+	@RequestMapping(value = "showInfoJn.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView showInfoJn(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_11", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(customerInforId);
+			mv.addObject("customerInfor", base);
+			mv.addObject("customerNm", base.getId());
+		}
+		return mv;
+	}
+	
+	/**
+	 * 基本信息
+	 * jn
+	 * @param request
+	 * @return
+	*/
+	@ResponseBody
+	@RequestMapping(value = "iframe_11.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_11(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_11", request);
+		String customerNm = request.getParameter("id");
+		if (StringUtils.isNotEmpty(customerNm)) {
+			CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(customerNm);
+			mv.addObject("customerInfor", base);
+			mv.addObject("customerNm", base.getId());
 		}
 		return mv;
 	}
