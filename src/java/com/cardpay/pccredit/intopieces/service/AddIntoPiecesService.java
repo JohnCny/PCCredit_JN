@@ -106,7 +106,9 @@ public class AddIntoPiecesService {
 	//导入调查报告
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//指定服务器上传
+		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -122,7 +124,9 @@ public class AddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		String sheet[] = readExcel.readExcelToHtml(url, true);
+		//String sheet[] = readExcel.readExcelToHtml(url, true);
+		//服务器
+		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -235,9 +239,10 @@ public class AddIntoPiecesService {
 	
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//TODO 测试时暂时
-		//Map<String, String> map = SFTPUtil.upload(file, customerId);
+		//
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//指定服务器上传
+		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
@@ -361,11 +366,11 @@ public class AddIntoPiecesService {
 		if(v!=null){
 //			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 			String url = v.getUri();
-			if(url.contains("pccreditFile")){
-				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
-			}else{
-				SFTPUtil.download(response, v.getUri(), v.getAttachment());
-			}
+//			if(url.contains("pccreditFile")){
+			//UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+//			}else{
+			SFTPUtil.download(response, v.getUri(), v.getAttachment());
+//			}
 		}
 	}
 	

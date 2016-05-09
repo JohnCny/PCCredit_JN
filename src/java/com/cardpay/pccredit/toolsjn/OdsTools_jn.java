@@ -20,8 +20,10 @@ import org.apache.tools.zip.ZipFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 
@@ -31,7 +33,7 @@ import com.jcraft.jsch.SftpException;
 @Service
 public class OdsTools_jn {
 	public Logger log = Logger.getLogger(OdsTools.class);
-	
+	private static ChannelSftp csftp = null;  
 	public String curRemotePath = "";//本次下载服务器目录
 	private String[] fileName = {"xdsj.tar.Z"};
 
@@ -219,11 +221,12 @@ public class OdsTools_jn {
 			File fileUrl = new File(url1);
 			log.info("fileUrl*********:"+fileUrl.exists());
 			if(fileUrl.exists()){
-//				String command ="cd /xwd31/"+dateString;
-//				log.info("cd:"+command);
-//				Runtime.getRuntime().exec(command);
+				//连接sftp
+				SFTPUtil31.connect();  
+	        	//进入上传目录
+				csftp.cd(gzFile + File.separator);
 				String command = "tar -zxvf xdsj.tar.Z";
-				log.info("tar:"+command);
+				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
 				//删除压缩包
 				//fileUrl.delete();

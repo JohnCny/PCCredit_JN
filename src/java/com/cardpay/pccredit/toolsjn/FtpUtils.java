@@ -17,8 +17,8 @@ public class FtpUtils {
 	public static String bank_ftp_password="1234567";  			// ftp密码
 	public static String bank_ftp_path="/xwd/";     			// ftp文件目录
 	
-	public static String bank_ftp_down_path="E://jndownload//"; // 下载本地目录
-//	public static String bank_ftp_down_path="/xwd31/"; 			// 下发数据存放
+//	public static String bank_ftp_down_path="E://jndownload//"; // 下载本地目录
+	public static String bank_ftp_down_path="/xwd31/"; 			// 下发数据存放
 	private ChannelSftp sftp = null;
 
 
