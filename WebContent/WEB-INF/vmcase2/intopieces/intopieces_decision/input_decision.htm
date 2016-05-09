@@ -13,6 +13,7 @@
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
+      <input type="hidden" name="auditType" id="auditType" value="2" />
         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
@@ -27,6 +28,16 @@
               <td><input  type="text" class="rinpsty" name="csAmount" id="csAmount" value="$!customerApplicationProcess.examineAmount" disabled="disabled"/></td>
               <td class="titlefc3"><label for="decisionRate">审核人:</label></td>
               <td><input type="text" class="rinpsty" name="auditUser" id="auditUser" value="$!customerApplicationProcess.displayName" disabled="disabled"/></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="csAmount">参与审批客户经理:</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser1" id="chu_cyUser1" value="$!appManagerAuditLog.userId_1" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="decisionRate">参与审批客户经理：</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser2" id="chu_cyUser2" value="$!appManagerAuditLog.userId_2" disabled="disabled"/></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
+              <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!appManagerAuditLog.userId_3" disabled="disabled"/></td>
             </tr>
           </table>
          </div>
