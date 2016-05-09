@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.product.model.AccessoriesList;
 import com.cardpay.pccredit.product.model.AppendixDict;
 import com.wicresoft.util.annotation.Mapper;
@@ -26,6 +27,8 @@ public interface AccessoriesListDao {
 	
 	//根据productId删除产品附件
 	public void deleteAppendixByProductId(@Param("productId") String productId);
+	
+	public List<AppManagerAuditLog> findAppManagerAuditLog(@Param("appId") String appId);
 	
 
 }

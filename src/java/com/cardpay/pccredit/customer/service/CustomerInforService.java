@@ -42,6 +42,7 @@ import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
 import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
@@ -1423,6 +1424,10 @@ public class CustomerInforService {
 		return commonDao.findObjectById(CustomerFirsthendBase.class,customerInforId);
 	}
 	
+	public CIPERSONBASINFO findCIPERSONBASINFO(String customerInforId){
+		return commonDao.findObjectById(CIPERSONBASINFO.class,customerInforId);
+	}
+	
 	/**
 	 * 按客户内码id查找相应的客户基本信息（太原）
 	 * @param customerInforId
@@ -2484,9 +2489,12 @@ public class CustomerInforService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONBASINFO.xml");
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			
+			for(Map<String, Object> map :datas){
+				customerInforDao.insertCipersonBasinfo(map);
+			}
+			//insertCIPERSONBASINFO(datas);
 			//for
-			for(Map<String, Object> map : datas){
+			/*for(Map<String, Object> map : datas){
 				int count = customerInforDao.findCIPERSONBASINFOCount(map);
 				if(count >0){
 					//put updateMap
@@ -2534,7 +2542,7 @@ public class CustomerInforService {
 			updateCIPERSONBASINFO(updatedatas);
 			//释放空间
 			insertdatas=null;
-			updatedatas=null;
+			updatedatas=null;*/
 			datas=null;
 	}
 
