@@ -21,7 +21,6 @@ import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
-import com.cardpay.pccredit.jnpad.model.CustomerAppInfoIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
@@ -31,6 +30,7 @@ import com.wicresoft.util.web.RequestHelper;
 
 /**
  * ipad interface
+ * pad用户登录
  * songchen
  * 2016年04月16日   下午1:54:18
  */

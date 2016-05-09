@@ -147,7 +147,8 @@
 					Dialog.message("无原始信息!");
 					return;
 				}
-				var url = "${modulePath}/showInfo.page?id=" + rowid;
+				//var url = "${modulePath}/showInfo.page?id=" + rowid;//ty
+				var url = "${modulePath}/showInfoJn.page?id=" + rowid;//jn
 				window.location.href = url;
 			}else{
 				Dialog.message("请选择记录!");

@@ -13,6 +13,7 @@
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
+       <input type="hidden" name="auditType" id="auditType" value="1" />
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
             <colgroup>
@@ -41,6 +42,25 @@
               <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
+                  </select>
+              </td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
+              <td><select  name="cyUser1" id="cyUser1">
+                  	#dict("USERSANDMANA","")
+                  </select>
+              </td>
+              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
+              <td><select  name="cyUser2" id="cyUser2">
+                  	#dict("USERSANDMANA","")
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
+              <td><select  name="fdUser" id="fdUser">
+                  	#dict("USERS","")
                   </select>
               </td>
             </tr>

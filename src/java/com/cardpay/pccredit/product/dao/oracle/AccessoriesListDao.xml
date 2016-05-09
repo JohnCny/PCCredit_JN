@@ -13,6 +13,12 @@
 		<result property="typeCode" column="TYPE_CODE" />
 	</resultMap>
 	
+    <resultMap id="logMap" type="com.cardpay.pccredit.intopieces.model.AppManagerAuditLog">
+		<result property="userId_1" column="USER_ID_1" />
+		<result property="userId_2" column="USER_ID_2" />
+		<result property="userId_3" column="USER_ID_3" />
+	</resultMap>
+	
 
 	<select id="findAppendixTypeCodeByProductId" resultMap="ResultMap" parameterType="java.lang.String">
 		SELECT * from ACCESSORIES_LIST
@@ -29,5 +35,16 @@
 	WHERE
 	A .PRODUCT_ID = #{productId}
 	</delete>
+	
+	<select id="findAppManagerAuditLog" resultMap="logMap" parameterType="java.lang.String">
+		 select s.display_name as USERID_1,
+        d.display_name as USERID_2,
+        g.display_name as USERID_3
+   from t_app_manager_audit_log t left join sys_user s on s.id = t.user_id_1
+   left join sys_user d on d.id = t.user_id_2
+   left join sys_user g on g.id = t.user_id_3
+        where 
+        AUDIT_TYPE ='1' and APPLICATION_ID =#{appId}
+	</select>
 
 </mapper>

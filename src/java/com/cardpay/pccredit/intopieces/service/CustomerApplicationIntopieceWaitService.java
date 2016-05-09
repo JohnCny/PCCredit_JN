@@ -2,14 +2,17 @@ package com.cardpay.pccredit.intopieces.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.ApplicationStatusEnum;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -17,6 +20,7 @@ import com.cardpay.pccredit.intopieces.dao.CustomerApplicationInfoDao;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.filter.CustomerApplicationProcessFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
@@ -66,6 +70,9 @@ public class CustomerApplicationIntopieceWaitService {
 	
 	@Autowired
 	private IntoPiecesService intoPiecesService;
+	
+	@Autowired
+	private CustomerInforDao customerInforDao;
 	
 
 	// 查询所有的进件包括审核的及未审核的
@@ -204,6 +211,13 @@ public class CustomerApplicationIntopieceWaitService {
 	 * @throws Exception
 	 */
 	public void updateCustomerApplicationProcessBySerialNumber(HttpServletRequest request) throws Exception {
+		
+		String cyUser1 = request.getParameter("cyUser1");
+		String cyUser2 = request.getParameter("cyUser2");
+		String fdUser = request.getParameter("fdUser");
+		String auditType = request.getParameter("auditType");
+		
+		
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
@@ -287,7 +301,29 @@ public class CustomerApplicationIntopieceWaitService {
 		customerApplicationProcess.setCreatedTime(new Date());
 		customerApplicationProcess.setExamineAmount(examineAmount);
 		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(customerApplicationProcess);
-
+		
+		
+		if(applicationStatus.equals("APPROVE")&&!StringUtils.isEmpty(auditType)){
+			//select 
+			int count = customerInforDao.findAppAuditLog(applicationId,auditType);
+			if(count == 0){
+				AppManagerAuditLog log = new AppManagerAuditLog();
+				log.setId(IDGenerator.generateID());
+				log.setApplicationId(applicationId);
+				log.setAuditType(auditType);//1-初审 2-审贷
+				log.setUserId_1(cyUser1);
+				log.setUserId_2(cyUser2);
+				log.setUserId_3(fdUser);
+				commonDao.insertObject(log);
+			}else{
+				//update
+				 customerInforDao.updateAppAuditLog(applicationId,
+													auditType,
+													cyUser1,
+													cyUser2,
+													fdUser);
+			}
+		}
 	}
 
 }
