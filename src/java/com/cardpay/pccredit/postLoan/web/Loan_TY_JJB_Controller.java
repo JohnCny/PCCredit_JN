@@ -44,6 +44,9 @@ import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.Rarepaylist;
+import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -75,7 +78,12 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	private MaintenanceService maintenanceService;
 	
 	
-	//太原借据表
+	/**
+	 * 借据表
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -84,15 +92,23 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 
-		QueryResult<TyRepayTkmxForm> result = postLoanService.findListByFilter(filter);
-		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);
+	/*	QueryResult<TyRepayTkmxForm> result = postLoanService.findListByFilter(filter);
+		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);*/
+		QueryResult<Fcloaninfo> result = postLoanService.findJJJnListByFilter(filter);
+		JRadPagedQueryResult<Fcloaninfo> pagedResult = new JRadPagedQueryResult<Fcloaninfo>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/jjb_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
 	}
-	//太原流水表
+	
+	/**
+	 * 流水表
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "lshbrowse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -101,8 +117,11 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 
-		QueryResult<TyRepayLshForm> result = postLoanService.findLshListByFilter(filter);
+	/*	QueryResult<TyRepayLshForm> result = postLoanService.findLshListByFilter(filter);
 		JRadPagedQueryResult<TyRepayLshForm> pagedResult = new JRadPagedQueryResult<TyRepayLshForm>(filter, result);
+		*/
+		QueryResult<RarepaylistForm> result = postLoanService.findLshJnListByFilter(filter);
+		JRadPagedQueryResult<RarepaylistForm> pagedResult = new JRadPagedQueryResult<RarepaylistForm>(filter, result);
 
 		JRadModelAndView mv = new JRadModelAndView("/postLoan/lsh_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);

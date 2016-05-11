@@ -15,6 +15,9 @@ import com.cardpay.pccredit.customer.web.MaintenanceForm;
 import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.Rarepaylist;
+import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.wicresoft.util.annotation.Mapper;
 
 /**
@@ -29,15 +32,34 @@ public interface PostLoanDao {
 	 * @param filter
 	 * @return
 	 */
-	List<TyRepayTkmxForm> findListByFilter(PostLoanFilter filter);
-	int findListCountByFilter(PostLoanFilter filter);
+/*	List<TyRepayTkmxForm> findListByFilter(PostLoanFilter filter);
+	int findListCountByFilter(PostLoanFilter filter);*/
 	
 	/**
 	 * 得到流水表
 	 * @param filter
 	 * @return
 	 */
-	List<TyRepayLshForm> findLshListByFilter(PostLoanFilter filter);
-	int findLshListCountByFilter(PostLoanFilter filter);
+	/*List<TyRepayLshForm> findLshListByFilter(PostLoanFilter filter);
+	int findLshListCountByFilter(PostLoanFilter filter);*/
+	
+	
+	/**
+	 * JN
+	 * 借据表
+	 * @param filter
+	 * @return
+	 */
+	List<Fcloaninfo> findJJJnListByFilter(PostLoanFilter filter);
+	int findJJJnListCountByFilter(PostLoanFilter filter);
+	
+	/**
+	 * JN
+	 * 流水表
+	 * @param filter
+	 * @return
+	 */
+	List<RarepaylistForm> findLshJnListByFilter(PostLoanFilter filter);
+	int findLshJnListCountByFilter(PostLoanFilter filter);
 	
 }
