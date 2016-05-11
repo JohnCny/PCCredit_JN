@@ -131,7 +131,7 @@ public class ReadWholeAndIncrementService {
 						for(String fn : spFile){
 							try{
 								if(fn.contains(fileN)) {
-									if(fn.startsWith("t_cclmtapplyinfo")){
+								/*	if(fn.startsWith("t_cclmtapplyinfo")){
 										log.info("*****************Cc授信申请基本信息（结果表）********************");  
 										customerInforService.saveCCLMTAPPLYINFODataFile(gzFile+File.separator+fn,dateString);
 									}else if(fn.startsWith("t_cipersonbadrecord")){
@@ -191,7 +191,7 @@ public class ReadWholeAndIncrementService {
 									}else if(fn.startsWith("t_sarm_specialasset")){
 										log.info("*****************不良贷款信息  ********************");
 										saveSPECIALASSETDataFile(gzFile+File.separator+fn,dateString);
-									}
+									}*/
 								}
 							}catch(Exception e){
 								//异常可throws 事务也回滚 但此处用来记录 task 是否成功

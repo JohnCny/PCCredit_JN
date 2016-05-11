@@ -454,6 +454,30 @@
 		<item name="9" title="未知" />
 	</dictionary>
 	
+	<dictionary name="ISBACK" title="是否是退回借据">
+		<item name="0" title="否" />
+		<item name="1" title="是" />
+	</dictionary>
 	
+	<dictionary name="STATE" title="状态">
+		<item name="1" title="清分完成(未认定)" />
+		<item name="2" title="初分完成（认定未提交）" />
+		<item name="3" title="审批中（已提交）" />
+		<item name="4" title="认定结束" />
+		<item name="5" title="重分完成" />
+		<item name="6" title="重分审批中" />
+	</dictionary>
 	
+	<dictionary name="SQUAREMODEL" title="清收方式">
+		<item name="XJQS"   title="正常清收" />
+		<item name="JXHJ"   title="借新还旧" />
+		<item name="QTQS"   title="其他清收" />
+		<item name="NBZB"   title="内部招标" />
+		<item name="FXDL"   title="风险代理" />
+		<item name="ZQZR"   title="债权转让" />
+		<item name="ZWCZ"   title="债务重组" />
+		<item name="SSTC"   title="损失退出" />
+		<item name="DZZCJS" title="以资抵债" />
+		<item name="FLSS"   title="诉讼清收" />
+	</dictionary>
 </dictionaries>
