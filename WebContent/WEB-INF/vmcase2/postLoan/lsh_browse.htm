@@ -37,14 +37,14 @@
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">借据号</th>
-              <th nowrap="nowrap">客户经理</th>
-              <th nowrap="nowrap">贷款账号</th>
-              <th nowrap="nowrap">借方金额</th>
-              <th nowrap="nowrap">贷方金额</th>
-              <th nowrap="nowrap">摘要</th>
-              <th nowrap="nowrap">记账日期</th>
-              <th nowrap="nowrap">业务日期</th>
+              <th nowrap="nowrap">业务编号</th>
+              <th nowrap="nowrap">收回本金</th>
+              <th nowrap="nowrap">收回利息</th>
+              <th nowrap="nowrap">清收方式</th>
+              <th nowrap="nowrap">还款日期</th>
+              <th nowrap="nowrap">操作时间</th>
+              <th nowrap="nowrap">贷款状态</th>
+              <th nowrap="nowrap">是否移植数据</th>
             </tr>
           </table>
         </div>
@@ -66,14 +66,14 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"
                    /></td>
 <!--               <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td> -->
-              <td nowrap="nowrap">$!obj.jjh</td>
-              <td nowrap="nowrap">$!obj.khjl1</td>
-              <td nowrap="nowrap">$!obj.dkzh</td>
-              <td nowrap="nowrap">$!obj.jf</td>
-              <td nowrap="nowrap">$!obj.df</td>
-              <td nowrap="nowrap">$!obj.zy</td>
-              <td nowrap="nowrap">$!obj.jzrq</td>
-              <td nowrap="nowrap">$!obj.ywrq</td>
+              <td nowrap="nowrap">$!obj.busicode</td>
+              <td nowrap="nowrap">$!obj.repayamt</td>
+              <td nowrap="nowrap">$!obj.rapayinterest</td>
+              <td nowrap="nowrap">#dictVal("SQUAREMODEL", $!obj.param1)</td>
+              <td nowrap="nowrap">$!obj.repaydate</td>
+              <td nowrap="nowrap">$!obj.operdatetime</td>
+              <td nowrap="nowrap">$!obj.loanstatus</td>
+              <td nowrap="nowrap">$!obj.istrans</td>
             </tr>
             #end
           </table>
