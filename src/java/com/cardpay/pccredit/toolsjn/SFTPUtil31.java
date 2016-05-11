@@ -34,15 +34,15 @@ public class SFTPUtil31 {
     private static String username="root";  
     private static String password="1234567";  
     private static int port = 22;  
-    private static ChannelSftp sftp = null;  
+    private static ChannelSftp csftp = null;  
     private static String directory = "/usr/pccreditFile/";  
     
     /** 
      * connect server via sftp 
      */  
-    public static void connect() {  
+    public  void connect() {  
         try {  
-            if(sftp != null){  
+            if(csftp != null){  
                 System.out.println("sftp is not null");  
             }  
             JSch jsch = new JSch();  
@@ -58,7 +58,7 @@ public class SFTPUtil31 {
             System.out.println("Opening Channel.");  
             Channel channel = sshSession.openChannel("sftp");  
             channel.connect();  
-            sftp = (ChannelSftp) channel;  
+            csftp = (ChannelSftp) channel;  
             System.out.println("Connected to " + host + ".");  
         } catch (Exception e) {  
             e.printStackTrace();  
@@ -68,10 +68,10 @@ public class SFTPUtil31 {
      * Disconnect with server 
      */  
     public static void disconnect() {  
-        if(sftp != null){  
-            if(sftp.isConnected()){  
-                sftp.disconnect();  
-            }else if(sftp.isClosed()){  
+        if(csftp != null){  
+            if(csftp.isConnected()){  
+                csftp.disconnect();  
+            }else if(csftp.isClosed()){  
                 System.out.println("sftp is closed already");  
             }  
         }  
@@ -81,22 +81,22 @@ public class SFTPUtil31 {
     /** 
      * upload all the files to the server 
      */  
-    public  static Map<String, String> upload(MultipartFile oldFile,String customerId) {  
+    public   Map<String, String> upload(MultipartFile oldFile,String customerId) {  
     	Map<String, String> map = new HashMap<String, String>();
         try {  
         	if (oldFile != null && !oldFile.isEmpty()) {
 	        	//连接sftp
 	        	 connect();  
 	        	//进入上传目录
-	        	sftp.cd(directory);
+	        	csftp.cd(directory);
 	        	DateFormat format = new SimpleDateFormat("yyyyMMdd");
 	    		String dateString = format.format(new Date());
 	    		try {
-	    			sftp.cd(directory+File.separator+dateString);
+	    			csftp.cd(directory+File.separator+dateString);
 				} catch (Exception e) {
-					sftp.cd(directory);
-					sftp.mkdir(dateString);  
-					sftp.cd(directory+File.separator+dateString);
+					csftp.cd(directory);
+					csftp.mkdir(dateString);  
+					csftp.cd(directory+File.separator+dateString);
 				}
 	    			
 	    	   String id = IDGenerator.generateID();
@@ -105,7 +105,7 @@ public class SFTPUtil31 {
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)oldFile;
 	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
 	           File file = fi.getStoreLocation();
-	    	   sftp.put(new FileInputStream(file), newFileName);
+	    	   csftp.put(new FileInputStream(file), newFileName);
 	    	   System.out.println("上传成功！");
 	    	   disconnect();  
 	           
@@ -129,7 +129,7 @@ public class SFTPUtil31 {
      * @param saveFile 存在本地的路径
      * @param sftp
      */
-	public static void download(HttpServletResponse response,
+	public  void download(HttpServletResponse response,
 			String filePath, String fileName) {
 		try {
 			String dateString = filePath.split("\\\\")[0];
@@ -138,9 +138,9 @@ public class SFTPUtil31 {
 			response.setHeader("Content-Disposition", "attachment; filename="
 					+ java.net.URLEncoder.encode(fileName, "UTF-8"));
 			connect();
-			sftp.cd(directory+File.separator+dateString);
+			csftp.cd(directory+File.separator+dateString);
 			BufferedInputStream bis = new BufferedInputStream(
-					sftp.get(filePath.split("\\\\")[1]));
+					csftp.get(filePath.split("\\\\")[1]));
 			BufferedOutputStream bos = new BufferedOutputStream(
 					response.getOutputStream());
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
