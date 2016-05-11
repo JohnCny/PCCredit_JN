@@ -30,7 +30,17 @@ public class IntoPieces  extends BusinessModel {
     private String jjh; //对应银行借据号
     private String jkrq; //对应银行借款日期
     
-    private String finalApproval;
+    
+    private String reqlmt;//省联社放款批准额度 jn
+    
+    
+    public String getReqlmt() {
+		return reqlmt;
+	}
+	public void setReqlmt(String reqlmt) {
+		this.reqlmt = reqlmt;
+	}
+	private String finalApproval;
     
     
 	public String getFinalApproval() {

@@ -893,9 +893,18 @@ public class IntoPiecesService {
 		return intoPiecesComdao.findCustomerApplicationInfo();
 	}
 	
+	//查询审核通过的进件信息
+	public List<IntoPieces> findCustomerApplicationInfoJn(){
+		return intoPiecesComdao.findCustomerApplicationInfoJn();
+	}
+	
 	//更新进件状态
 	public void updateCustomerApplicationInfo(IntoPieces  pieces){
 		intoPiecesDao.updateCustomerApplicationInfo(pieces);
+	}
+	
+	public void updateCustomerApplicationInfoJn(IntoPieces  pieces){
+		intoPiecesDao.updateCustomerApplicationInfoJn(pieces);
 	}
 	
 	public CustomerCreditInfo findCustCreditInfomation(String appId){

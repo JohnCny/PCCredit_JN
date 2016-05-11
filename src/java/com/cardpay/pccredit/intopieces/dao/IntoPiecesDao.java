@@ -26,4 +26,5 @@ public interface IntoPiecesDao {
 	public int findIntoPiecesCountList(IntoPiecesFilter filter);
 	
 	public void updateCustomerApplicationInfo(IntoPieces  pieces);
+	public void updateCustomerApplicationInfoJn(IntoPieces  pieces);
 }

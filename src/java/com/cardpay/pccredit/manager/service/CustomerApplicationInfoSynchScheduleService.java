@@ -41,6 +41,35 @@ public class CustomerApplicationInfoSynchScheduleService {
 	private AccountManagerParameterService accountManagerParameterService;
 	@Autowired
 	private CommonDao commonDao;
+	
+	
+	/**
+	 * 济南
+	 * 同步进件状态(更新为已放款)
+	 */
+	private void dosynchJnCustAppInfoMethod(){
+		//获取今日日期
+		DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
+		logger.info(dateString+"进件状态更新开始（已放款）**********");
+		
+		//查询已经审核通过的进件信息
+		List<IntoPieces> intoPiecesList = intoPiecesService.findCustomerApplicationInfoJn();
+		for(IntoPieces intoPieces:intoPiecesList){
+			IntoPieces  pieces = new IntoPieces();
+			pieces.setStatus(Constant.END);//放款成功
+			pieces.setReqlmt(intoPieces.getReqlmt());//批准金额
+			pieces.setId(intoPieces.getId());
+			intoPiecesService.updateCustomerApplicationInfoJn(pieces);
+		}
+		logger.info(dateString+"进件状态更新结束（已放款）**********");
+	}
+	
+	
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+	
 
 	/**
 	 * 同步进件状态(更新为已放款)

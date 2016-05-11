@@ -401,6 +401,17 @@ public class IntoPiecesComdao {
 	}
 	
 	
+	public List<IntoPieces> findCustomerApplicationInfoJn() {
+		//进件审批approved 省联社系统进件状态为正常
+		String sql =  "select t.id,c.reqlmt from customer_application_info t, "
+					+ "basic_customer_information b,"
+					+ "t_cclmtapplyinfo c "
+					+ "where c.custid = b.TY_CUSTOMER_ID and b.id = t.CUSTOMER_ID and t.status = 'approved' and c.state ='1' ";
+		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
+		return list;
+	}
+	
+	
 	public CustomerCreditInfo findCustCreditInfomation(String appId){
 		
 	   String sql = "		select tkmz.jzll,							  "+
