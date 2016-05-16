@@ -13,9 +13,21 @@
 		    <result property="status" 		column="status" />
 	</resultMap>
 	
+	
+	<resultMap id="NotificationResultMap" type="com.cardpay.pccredit.notification.model.NotificationMessage">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="noticeType" column="NOTICE_TYPE" />
+		<result property="noticeContent" column="NOTICE_CONTENT" />
+	    <result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	</resultMap>
+	
 
    <select id="findCustAppInfoXxCount" resultType="int">
-	  select count(*) 
+	 select count(*) 
 	  from customer_application_info c
 	  left join 
 	  basic_customer_information b
@@ -125,5 +137,52 @@
 	    and b.USER_ID = #{userId}
 	  </if>
     </select>
+    
+    
+    
+
+	<select id="findNotificationMessageByFilter" resultMap="NotificationResultMap" parameterType="map">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				
+				SELECT * from notification_message t
+				WHERE 1=1
+				<if test="userId != null and userId != '' ">
+					AND T.USER_ID=#{userId}
+				</if>
+				   AND T.IS_CHECK != 1
+				   
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findNotificationCountMessageByFilter" resultType="int">
+		SELECT count(*) from notification_message t
+				WHERE 1=1
+				<if test="userId != null and userId != '' ">
+					AND T.USER_ID=#{userId}
+				</if>
+				   AND T.IS_CHECK != 1
+	</select>
+	
+	
+	<select id="getRewardIncentiveInformation" resultType="String">
+		select reward_incentive_information from MANAGER_SALARY t
+		where t.year=#{year}
+		and t.month=#{month}
+		and t.customer_id=#{id}
+	</select>
+	
+	
+	<select id="getReturnPrepareAmountById" resultType="String">
+		select return_prepare_amount from MANAGER_SALARY t
+		where t.year=#{year}
+		and t.month=#{month}
+		and t.customer_id=#{id}
+	</select>
 	
 </mapper> 
