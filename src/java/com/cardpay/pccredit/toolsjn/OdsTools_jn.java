@@ -125,7 +125,8 @@ public class OdsTools_jn {
 				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
 				//删除压缩包
-				fileUrl.delete();	
+				fileUrl.delete();
+				csftp.disconnect();
 			}
 		}
 		log.error(dateString+"******************解压完毕********************");  
@@ -210,6 +211,7 @@ public class OdsTools_jn {
 				Runtime.getRuntime().exec(command);
 				//删除压缩包
 				fileUrl.delete();
+				csftp.disconnect();
 			}
 		}
 		log.error(dateString+"******************解压完毕********************");  
