@@ -167,6 +167,9 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					  select *  from t_fcloaninfo a WHERE 1=1 
+					   <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					   </if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -176,6 +179,9 @@
 	
 	<select id="findJJJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 	  	select count(*)  from t_fcloaninfo a  WHERE 1=1 
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(a.BUSICODE)=#{busiCode}
+		</if>
 	</select>
 	
 	
@@ -185,6 +191,9 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					  select a.*,trim(a.squaremodel) as param1 from T_RAREPAYLIST a WHERE 1=1 
+					  <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					   </if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -194,6 +203,9 @@
 	
 	<select id="findLshJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 	  	select count(*)  from T_RAREPAYLIST a  WHERE 1=1 
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(a.BUSICODE)=#{busiCode}
+		</if>
 	</select>
 	
 </mapper>

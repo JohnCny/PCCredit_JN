@@ -91,7 +91,6 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
-
 	/*	QueryResult<TyRepayTkmxForm> result = postLoanService.findListByFilter(filter);
 		JRadPagedQueryResult<TyRepayTkmxForm> pagedResult = new JRadPagedQueryResult<TyRepayTkmxForm>(filter, result);*/
 		QueryResult<Fcloaninfo> result = postLoanService.findJJJnListByFilter(filter);
