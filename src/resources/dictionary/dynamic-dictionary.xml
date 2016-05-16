@@ -390,4 +390,14 @@ AND A.IS_DELETED = '0'
  		sys_user WHERE external_id is not null and USER_TYPE in ('1','2')
 	</dictionary>
 	
+	
+	<dictionary name="MANAGERUSERS" title="客户经理" timeout="10000">
+		select '0' as NAME, '请选择' as title
+		  FROM sys_user
+		union
+		select s.id as NAME, s.external_id || s.display_name AS title
+		  from account_manager_parameter m, sys_user s
+		 where s.id = m.user_id
+	</dictionary>
+	
 </dictionaries>

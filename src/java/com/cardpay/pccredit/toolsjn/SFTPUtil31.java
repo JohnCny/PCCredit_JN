@@ -67,7 +67,7 @@ public class SFTPUtil31 {
     /** 
      * Disconnect with server 
      */  
-    public static void disconnect() {  
+    public  void disconnect() {  
         if(csftp != null){  
             if(csftp.isConnected()){  
                 csftp.disconnect();  

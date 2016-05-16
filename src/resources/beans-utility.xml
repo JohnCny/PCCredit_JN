@@ -188,7 +188,7 @@
             <ref bean="updateCustomerAppInfoStatusJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 0 0/2 * * ?</value>
+            <value>0 00 23 ? * *</value>
         </property>
     </bean>
     

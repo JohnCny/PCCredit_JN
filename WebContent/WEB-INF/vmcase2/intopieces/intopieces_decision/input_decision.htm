@@ -75,19 +75,19 @@
             <tr>
               <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
               <td><select  name="cyUser1" id="cyUser1">
-                  	#dict("USERSANDMANA","")
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
               <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
               <td><select  name="cyUser2" id="cyUser2">
-                  	#dict("USERSANDMANA","")
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
               <td><select  name="fdUser" id="fdUser">
-                  	#dict("USERS","")
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
             </tr>
@@ -202,8 +202,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(4)").show();
-				$("tr:eq(8)").hide();
+				$("tr:eq(6)").show();
+				$("tr:eq(10)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -213,15 +213,16 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(4)").hide();
-				$("tr:eq(8)").show();
+				$("tr:eq(6)").hide();
+				$("tr:eq(10)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(8)").hide();
+				$("tr:eq(6)").hide();
+				$("tr:eq(10)").hide();
 			}
 			
 			if(status =='nopass_replenish'){

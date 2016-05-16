@@ -20,16 +20,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
+import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
-import com.wicresoft.jrad.base.auth.IUser;
-import com.wicresoft.jrad.base.auth.JRadOperation;
-import com.wicresoft.jrad.base.web.security.LoginManager;
-import com.wicresoft.util.spring.Beans;
+import com.cardpay.pccredit.notification.model.NotificationMessage;
 
 /**
  * ipad interface
  * 3.1.2 客户进件信息
  * 3.1.3 客户运营状况
+ * 3.1.5 通知
+ * 3.1.6 奖励激励信息
  * songchen
  * 2016年05月09日   下午1:54:18
  */
@@ -50,7 +50,7 @@ public class JnIpadCustAppInfoXxController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/browse.json", method = { RequestMethod.GET })
 	public String browse(HttpServletRequest request) {
-		//获取当前登录用户id
+		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		
 		//获取请求参数
@@ -79,10 +79,10 @@ public class JnIpadCustAppInfoXxController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/findintoApprovedPieces.json", method = { RequestMethod.GET })
 	public String findintoApprovedPieces(HttpServletRequest request,CustomerApprovedFilter filter) {
-		//获取当前登录用户id
+		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		filter.setUserId(userId);
-		//获取分页参数
+		//分页参数
 		String currentPage=request.getParameter("currentPage");
 		String pageSize=request.getParameter("pageSize");
 		
@@ -118,7 +118,7 @@ public class JnIpadCustAppInfoXxController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/findAppintoPiecesByParams.json", method = { RequestMethod.GET })
 	public String findAppintoPiecesByParams(HttpServletRequest request,CustomerApprovedFilter filter) {
-		//获取当前登录用户id
+		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		filter.setUserId(userId);
 		//分页参数
@@ -154,9 +154,7 @@ public class JnIpadCustAppInfoXxController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerInfor/updateCustomerApplicationInfo.json")
-	@JRadOperation(JRadOperation.CREATE)
 	public String updateCustomerApplicationInfo(HttpServletRequest request,CustomerApprovedFilter filter) {
-		//请求参数
 		String id = request.getParameter("id");
 		String status = request.getParameter("status");
 		
@@ -178,7 +176,7 @@ public class JnIpadCustAppInfoXxController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/calCreditAmt.json", method = { RequestMethod.GET })
 	public String calCreditAmt(HttpServletRequest request,CustomerApprovedFilter filter) {
-		//当前登录用户id
+		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		filter.setUserId(userId);
 		
@@ -199,7 +197,7 @@ public class JnIpadCustAppInfoXxController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/overdueCustomerCount.json", method = { RequestMethod.GET })
 	public String overdueCustomerCount(HttpServletRequest request,CustomerApprovedFilter filter) {
-		//获取当前登录用户id
+		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		filter.setUserId(userId);
 		int num =  appInfoXxService.overdueCustomerCount(filter);
@@ -218,7 +216,7 @@ public class JnIpadCustAppInfoXxController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/cavCustomerCount.json", method = { RequestMethod.GET })
 	public String cavCustomerCount(HttpServletRequest request,CustomerApprovedFilter filter) {
-		//获取当前登录用户id
+		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		filter.setUserId(userId);
 		
@@ -231,4 +229,79 @@ public class JnIpadCustAppInfoXxController {
 		return json.toString();
 	}
 	
+	/**
+	 * 客户资料变更通知
+	 * 根据参数NotificationMessageFilter的noticeType属性的不同来实现查询不同的通知
+	 * //审贷会通知shendaihui//客户原始资料变更通知yuanshiziliao
+	 * //培训通知peixun//考察成绩通知kaocha//其他通知qita
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/notifiyMessage.json", method = { RequestMethod.GET })
+	public String notifiyMessage(HttpServletRequest request,NotificationMessageFilter filter) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		String noticeType=request.getParameter("noticeType");
+		filter.setUserId(userId);
+		filter.setNoticeType(noticeType);
+		
+		List<NotificationMessage> list = appInfoXxService.findNotificationMessageByFilter(filter);
+		int totalCount = appInfoXxService.findNotificationCountMessageByFilter(filter);
+		
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		result.put("totalCount", totalCount);
+		result.put("result", list);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 奖励激励信息
+	 * 上个月奖励激励金额
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/rewardIncentive.json", method = { RequestMethod.GET })
+	public String rewardIncentive(HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		String year=request.getParameter("year");
+		String month=request.getParameter("month");
+		
+		String  reward_incentive = appInfoXxService.getRewardIncentiveInformation(Integer.parseInt(year),
+																				  Integer.parseInt(month),
+																				  userId);
+		
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		result.put("reward_incentive",reward_incentive);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	/**
+	 * 奖励激励信息
+	 * 风险保证
+	 */
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/returnPrepareAmount.json", method = { RequestMethod.GET })
+	public String returnPrepareAmount(HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		String year=request.getParameter("year");
+		String month=request.getParameter("month");
+		
+		String  return_prepare_amount = appInfoXxService.getReturnPrepareAmountById(Integer.parseInt(year),
+																				  	Integer.parseInt(month),
+																				    userId);
+		
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		result.put("return_prepare_amount",return_prepare_amount);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
 }
