@@ -480,4 +480,16 @@
 		<item name="DZZCJS" title="以资抵债" />
 		<item name="FLSS"   title="诉讼清收" />
 	</dictionary>
+	
+	
+	<dictionary name="DKZT" title="贷款状态">
+		<item name="BN"     title="表内" />
+		<item name="HX"     title="已核销" />
+		<item name="ZTSG"   title="整体收购" />
+		<item name="ZCZH"   title="资产置换" />
+		<item name="PJZH"   title="票据置换" />
+		<item name="SSTC"   title="损失退出" />
+		<item name="GDGM"   title="股东购买" />
+		<item name="DBCZ"   title="打包处置" />
+	</dictionary>
 </dictionaries>
