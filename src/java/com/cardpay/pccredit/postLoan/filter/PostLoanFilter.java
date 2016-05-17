@@ -16,6 +16,17 @@ import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
 public class PostLoanFilter extends BaseQueryFilter{
 	private String zjhm;
 	private String jjh;
+	private String busiCode;
+	
+	
+
+	public String getBusiCode() {
+		return busiCode;
+	}
+
+	public void setBusiCode(String busiCode) {
+		this.busiCode = busiCode;
+	}
 
 	public String getZjhm() {
 		return zjhm;

@@ -219,7 +219,7 @@ public class AddIntoPiecesControl extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "imageImport.json")
 	public Map<String, Object> imageImport(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
-		response.setContentType("text/html;charset=utf-8");
+		response.setContentType("text/html;charset=gbk");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			if(file==null||file.isEmpty()){

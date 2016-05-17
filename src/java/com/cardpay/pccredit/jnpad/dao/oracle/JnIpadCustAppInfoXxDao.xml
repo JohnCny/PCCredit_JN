@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnIpadCustAppInfoXxDao" >
+	
+	<resultMap id="ResultMap" type="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		 	<result property="id" 			column="id" />
+		  	<result property="customerId"   column="customer_id" />
+		   	<result property="chineseName"  column="chinese_name" />
+		    <result property="productId"    column="product_id" />
+		    <result property="productName"  column="product_name" />
+		    <result property="cardId" 		column="card_id" />
+		    <result property="applyQuota" 	column="apply_quota" />
+		    <result property="status" 		column="status" />
+	</resultMap>
+	
+	
+	<resultMap id="NotificationResultMap" type="com.cardpay.pccredit.notification.model.NotificationMessage">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+		<result property="noticeType" column="NOTICE_TYPE" />
+		<result property="noticeContent" column="NOTICE_CONTENT" />
+	    <result property="createTime" column="CREATED_TIME" />
+		<result property="createBy" column="CREATED_BY" />
+		<result property="modifyTime" column="MODIFIED_TIME" />
+		<result property="modifyBy" column="MODIFIED_BY" />
+	</resultMap>
+	
+
+   <select id="findCustAppInfoXxCount" resultType="int">
+	 select count(*) 
+	  from customer_application_info c
+	  left join 
+	  basic_customer_information b
+	  on c.customer_id = b.id
+	  where b.user_id=#{userId}
+	  <if test="status1!=null and status1!=''">
+	  	and STATUS = #{status1}
+	  </if>
+	  
+	  <if test="status2!=null and status2!=''">
+	  	and STATUS = #{status2}
+	  </if>
+	  
+	  <if test="status3!=null and status3!=''">
+	  	and STATUS = #{status3}
+	  </if>
+	  
+	  <if test="status4!=null and status4!=''">
+	  	and STATUS = #{status4}
+	  </if>
+  </select>
+  
+  
+  
+  
+  <select id="findCustomerApprovedList" resultMap="ResultMap" 
+  		   parameterType="com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select t.id,
+				       t.customer_id,
+				       b.chinese_name,
+				       t.product_id,
+				       p.product_name,
+				       b.card_id,
+				       t.apply_quota,
+				       t.status
+				  from customer_application_info  t,
+				       basic_customer_information b,
+				       product_attribute          p
+				 where t.customer_id = b.id
+				   and t.product_id = p.id
+				   <if test="status != null and status != '' ">
+					 and t.status = #{status}
+				   </if>
+				   <if test="userId != null and userId != '' ">
+					 and b.USER_ID = #{userId}
+				   </if>
+				   <if test="productName != null and productName != '' ">
+					 and p.product_name like '%'||#{productName}||'%' 
+		   			</if>
+				 order by t.id asc
+				 	
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findCustomerApprovedCountList" resultType="int" parameterType="com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter">
+		select count(*)
+		  from customer_application_info  t,
+		       basic_customer_information b,
+		       product_attribute          p
+		 where t.customer_id = b.id
+		   and t.product_id = p.id
+		   <if test="status != null and status != '' ">
+			 and t.status = #{status}
+		   </if>
+		   <if test="userId != null and userId != '' ">
+			 and b.USER_ID = #{userId}
+		   </if>
+		   <if test="productName != null and productName != '' ">
+			 and p.product_name like '%'||#{productName}||'%' 
+		   </if>
+		   
+		 order by t.id asc
+	</select>
+	
+	<update id="updateCustomerApplicationInfo" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		update customer_application_info
+		<set>
+			status = #{status} 
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="calCreditAmt" resultType="String" parameterType="com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter">
+		select sum(t.actual_quote) from 
+			customer_application_info t,
+            basic_customer_information b
+	    where t.customer_id = b.id 
+	    <if test="userId != null and userId != '' ">
+			 and b.USER_ID = #{userId}
+		</if>
+	</select>
+	
+	
+	<select id="overdueCustomerCount" resultType="int">
+		select count(*)
+		  from t_sarm_specialasset t, basic_customer_information b
+		 where t.OWNERCODE = b.ty_customer_id
+	  <if test="userId != null and userId != '' ">
+	    and b.USER_ID = #{userId}
+	  </if>
+    </select>
+    
+    
+    
+
+	<select id="findNotificationMessageByFilter" resultMap="NotificationResultMap" parameterType="map">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				
+				SELECT * from notification_message t
+				WHERE 1=1
+				<if test="userId != null and userId != '' ">
+					AND T.USER_ID=#{userId}
+				</if>
+				   AND T.IS_CHECK != 1
+				   
+			<![CDATA[
+					) ROW_
+				WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+			WHERE ROWNUM_ > #{limit}*#{page}
+			]]>
+	</select>
+	
+	<select id="findNotificationCountMessageByFilter" resultType="int">
+		SELECT count(*) from notification_message t
+				WHERE 1=1
+				<if test="userId != null and userId != '' ">
+					AND T.USER_ID=#{userId}
+				</if>
+				   AND T.IS_CHECK != 1
+	</select>
+	
+	
+	<select id="getRewardIncentiveInformation" resultType="String">
+		select reward_incentive_information from MANAGER_SALARY t
+		where t.year=#{year}
+		and t.month=#{month}
+		and t.customer_id=#{id}
+	</select>
+	
+	
+	<select id="getReturnPrepareAmountById" resultType="String">
+		select return_prepare_amount from MANAGER_SALARY t
+		where t.year=#{year}
+		and t.month=#{month}
+		and t.customer_id=#{id}
+	</select>
+	
+</mapper> 

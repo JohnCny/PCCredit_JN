@@ -580,12 +580,16 @@ function importCustomer(reloadUrl){
 				 });
 			} else {
 				topWin.Dialog.message(data.message);
+				uploadTip.style.display='none';
+				uploadButton.disabled='';
 				return false;
 			}
 		},
 		error : function(data) {
 			topWin.Dialog.closeLoad();
 			topWin.Dialog.message("导入失败");
+			uploadTip.style.display='none';
+			uploadButton.disabled='';
 			return false;
 		}
 	});

@@ -13,6 +13,7 @@
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
+      <input type="hidden" name="auditType" id="auditType" value="2" />
         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
@@ -27,6 +28,16 @@
               <td><input  type="text" class="rinpsty" name="csAmount" id="csAmount" value="$!customerApplicationProcess.examineAmount" disabled="disabled"/></td>
               <td class="titlefc3"><label for="decisionRate">审核人:</label></td>
               <td><input type="text" class="rinpsty" name="auditUser" id="auditUser" value="$!customerApplicationProcess.displayName" disabled="disabled"/></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="csAmount">参与审批客户经理:</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser1" id="chu_cyUser1" value="$!appManagerAuditLog.userId_1" disabled="disabled"/></td>
+              <td class="titlefc3"><label for="decisionRate">参与审批客户经理：</label></td>
+              <td><input type="text" class="rinpsty" name="chu_cyUser2" id="chu_cyUser2" value="$!appManagerAuditLog.userId_2" disabled="disabled"/></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
+              <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!appManagerAuditLog.userId_3" disabled="disabled"/></td>
             </tr>
           </table>
          </div>
@@ -64,19 +75,19 @@
             <tr>
               <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
               <td><select  name="cyUser1" id="cyUser1">
-                  	#dict("USERSANDMANA","")
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
               <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
               <td><select  name="cyUser2" id="cyUser2">
-                  	#dict("USERSANDMANA","")
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
               <td><select  name="fdUser" id="fdUser">
-                  	#dict("USERS","")
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
             </tr>
@@ -191,8 +202,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(4)").show();
-				$("tr:eq(8)").hide();
+				$("tr:eq(6)").show();
+				$("tr:eq(10)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -202,15 +213,16 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(4)").hide();
-				$("tr:eq(8)").show();
+				$("tr:eq(6)").hide();
+				$("tr:eq(10)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(8)").hide();
+				$("tr:eq(6)").hide();
+				$("tr:eq(10)").hide();
 			}
 			
 			if(status =='nopass_replenish'){

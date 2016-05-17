@@ -4,6 +4,7 @@ package com.cardpay.pccredit.toolsjn;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
@@ -20,8 +21,10 @@ import org.apache.tools.zip.ZipFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 
@@ -31,7 +34,7 @@ import com.jcraft.jsch.SftpException;
 @Service
 public class OdsTools_jn {
 	public Logger log = Logger.getLogger(OdsTools.class);
-	
+	//private static ChannelSftp csftp = null;  
 	public String curRemotePath = "";//本次下载服务器目录
 	private String[] fileName = {"xdsj.tar.Z"};
 
@@ -115,34 +118,15 @@ public class OdsTools_jn {
 			String url1 = gzFile+File.separator+fileName[i];
 			File fileUrl = new File(url1);
 			if(fileUrl.exists()){
-				ZipFile zip = new ZipFile(url1);  
-				for(Enumeration entries = zip.getEntries();entries.hasMoreElements();){
-					ZipEntry entry = (ZipEntry)entries.nextElement();  
-					String zipEntryName = entry.getName();  
-					InputStream in = zip.getInputStream(entry);  
-					String outPath = (gzFile+File.separator+zipEntryName).replaceAll("\\*", "/");
-					//判断路径是否存在,不存在则创建文件路径  
-					File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));  
-					if(!file.exists()){  
-						file.mkdirs();  
-					}  
-					//判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压  
-					if(new File(outPath).isDirectory()){  
-						continue;  
-					}  
-					
-					OutputStream out = new FileOutputStream(outPath);  
-					byte[] buf1 = new byte[1024];  
-					int len;  
-					while((len=in.read(buf1))>0){
-						out.write(buf1,0,len);  
-					}  
-					in.close();  
-					out.close();         
-					zip.close();
-				}
+				//连接sftp31
+				SFTPUtil31 csftp = new SFTPUtil31();
+				csftp.connect();  
+				String command = "tar -zxvf "+ gzFile +File.separator+"xdsj.tar.Z "+ "-C " + gzFile;
+				log.info("tar命令:"+command);
+				Runtime.getRuntime().exec(command);
 				//删除压缩包
 				fileUrl.delete();
+				csftp.disconnect();
 			}
 		}
 		log.error(dateString+"******************解压完毕********************");  
@@ -219,44 +203,19 @@ public class OdsTools_jn {
 			File fileUrl = new File(url1);
 			log.info("fileUrl*********:"+fileUrl.exists());
 			if(fileUrl.exists()){
-//				String command ="cd /xwd31/"+dateString;
-//				log.info("cd:"+command);
-//				Runtime.getRuntime().exec(command);
-				String command = "tar -zxvf xdsj.tar.Z";
-				log.info("tar:"+command);
+				//连接sftp31
+				SFTPUtil31 csftp = new SFTPUtil31();
+				csftp.connect();  
+				String command = "tar -zxvf "+ gzFile +File.separator+"xdsj.tar.Z "+ "-C " + gzFile;
+				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
 				//删除压缩包
-				//fileUrl.delete();
-			/*	ZipFile zip = new ZipFile(url1);  
-				for(Enumeration entries = zip.getEntries();entries.hasMoreElements();){
-					ZipEntry entry = (ZipEntry)entries.nextElement();  
-					String zipEntryName = entry.getName();  
-					InputStream in = zip.getInputStream(entry);  
-					String outPath = (gzFile+File.separator+zipEntryName).replaceAll("\\*", "/");
-					//判断路径是否存在,不存在则创建文件路径  
-					File file = new File(outPath.substring(0, outPath.lastIndexOf('/')));  
-					if(!file.exists()){  
-						file.mkdirs();  
-					}  
-					//判断文件全路径是否为文件夹,如果是上面已经上传,不需要解压  
-					if(new File(outPath).isDirectory()){  
-						continue;  
-					}  
-					
-					OutputStream out = new FileOutputStream(outPath);  
-					byte[] buf1 = new byte[1024];  
-					int len;  
-					while((len=in.read(buf1))>0){
-						out.write(buf1,0,len);  
-					}  
-					in.close();  
-					out.close();         
-					zip.close();
-				}
-				//删除压缩包
-				fileUrl.delete();*/
+				fileUrl.delete();
+				csftp.disconnect();
 			}
 		}
 		log.error(dateString+"******************解压完毕********************");  
 	}
+	
+		
 }

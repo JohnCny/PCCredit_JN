@@ -31,6 +31,8 @@ import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
@@ -138,10 +140,13 @@ public class IntopiecesDecisionController extends BaseController {
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
 		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId);
+		
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
 		mv.addObject("customerApplicationProcess", processForm);
+		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
 		return mv;
 	}
 	

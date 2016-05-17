@@ -131,4 +131,16 @@
 		where id = #{id}
 	</update>
 	
+	
+	<update id="updateCustomerApplicationInfoJn" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
+		update customer_application_info
+		<set>
+			status = #{status} 
+		</set>
+		<if test="reqlmt != null and reqlmt != '' ">
+			,ACTUAL_QUOTE = #{reqlmt} 
+		</if>
+		where id = #{id}
+	</update>
+	
 </mapper>

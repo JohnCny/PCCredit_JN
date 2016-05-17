@@ -21,16 +21,15 @@ import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
-import com.cardpay.pccredit.jnpad.model.CustomerAppInfoIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.product.model.ProductAttribute;
-import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.util.web.RequestHelper;
 
 /**
  * ipad interface
+ * pad用户登录
  * songchen
  * 2016年04月16日   下午1:54:18
  */
@@ -50,7 +49,6 @@ public class JnIpadUserLoginController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/user/JnLogin.json")
-	@JRadOperation(JRadOperation.BROWSE)
 	public String login(HttpServletRequest request) {
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
@@ -112,10 +110,8 @@ public class JnIpadUserLoginController {
 	/**
 	 * 客户新增
 	 */
-	
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerInfor/customerInsert.json")
-	@JRadOperation(JRadOperation.CREATE)
 	public String insert(HttpServletRequest request) {
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		String name = request.getParameter("name");
@@ -129,30 +125,5 @@ public class JnIpadUserLoginController {
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
-	
-	
-	
-	/**
-	 * 客户进件信息
-	 * 查询进件数量及审核通过的进件量
-	 */
-	/*@ResponseBody
-	@RequestMapping(value = "/ipad/customerInfor/customerInsert.json")
-	@JRadOperation(JRadOperation.CREATE)
-	public String findCustomerAppIntoCount(HttpServletRequest request) {
-		Map<String,Object> map = new LinkedHashMap<String,Object>();
-		
-		String userId = request.getParameter("userId");
-		
-		List<CustomerAppInfoIpad> list = null;
-		list = 
-		map.put("result", list);
-		
-		JsonConfig jsonConfig = new JsonConfig();
-		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-		JSONObject json = JSONObject.fromObject(map, jsonConfig);
-		return json.toString();
-	}
-	*/
 	
 }

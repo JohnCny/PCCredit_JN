@@ -13,6 +13,7 @@
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
+       <input type="hidden" name="auditType" id="auditType" value="1" />
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
             <colgroup>
@@ -41,6 +42,25 @@
               <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
+                  </select>
+              </td>
+            </tr>
+             <tr>
+              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
+              <td><select  name="cyUser1" id="cyUser1">
+                  	#dict("MANAGERUSERS","")
+                  </select>
+              </td>
+              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
+              <td><select  name="cyUser2" id="cyUser2">
+                  	#dict("MANAGERUSERS","")
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
+              <td><select  name="fdUser" id="fdUser">
+                  	#dict("MANAGERUSERS","")
                   </select>
               </td>
             </tr>
@@ -155,7 +175,7 @@
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
 				$("tr:eq(2)").show();
-				$("tr:eq(4)").hide();
+				$("tr:eq(6)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -166,7 +186,7 @@
 			
 			if( status == "REJECTAPPROVE"){
 				$("tr:eq(2)").hide();
-				$("tr:eq(4)").show();
+				$("tr:eq(6)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}

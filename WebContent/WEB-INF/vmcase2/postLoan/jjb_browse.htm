@@ -12,7 +12,7 @@
             <ul>
             
               <li>
-                <span>证件号码：<input type="text" name="zjhm" value="$!result.filter.zjhm" /></span>
+                <span>业务编号：<input type="text" name="busiCode" value="$!result.filter.busiCode" /></span>
               </li>
               
               <li class="search_button">
@@ -25,55 +25,95 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-             <!--  <col width="5%" /> -->
               <col width="5%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col />
-              <col />
-              <col />
-              <col />
-              <col />
+              <col width="11%" />
+              <!-- <col width="6%" /> -->
+              <col width="6%" />
+              <col width="10%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <!-- <col width="6%" />
+              <col width="6%" /> -->
+              <col width="6%" />
+              <col width="7%" />
+              <col width="7%" />
+              <!-- <col width="6%" /> -->
+           <!--    <col width="6%" /> -->
+<!--               <col width="6%" /> -->
+              <col width="10%" />
+              <col width="10%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">借据号</th>
+              <th nowrap="nowrap">业务编号</th>
+              <!-- <th nowrap="nowrap">业务品种</th> -->
+              <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">发放金额</th>
-              <th nowrap="nowrap">借款日期</th>
-              <th nowrap="nowrap">到期日期</th>
-              <th nowrap="nowrap">贷款期限(月)</th>
-              <th nowrap="nowrap">客户经理</th>
-              <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">贷款余额</th>
+              <th nowrap="nowrap">欠息金额</th>
+              <th nowrap="nowrap">授信金额</th>
+              <!-- <th nowrap="nowrap">发放日期</th>
+              <th nowrap="nowrap">到期日期</th> -->
+              <th nowrap="nowrap">逾期次数</th>
+              <th nowrap="nowrap">本金逾期天数</th>
+              <th nowrap="nowrap">利息逾期天数</th>
+            <!--   <th nowrap="nowrap">主办客户经理</th> -->
+              <!-- <th nowrap="nowrap">发放类别（业务状态）</th> -->
+             <!--  <th nowrap="nowrap">贷款用途</th> -->
+              <th nowrap="nowrap">状态</th>
+              <th nowrap="nowrap">是否是退回借据</th>
             </tr>
           </table>
         </div>
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-<!--               <col width="5%" /> -->
               <col width="5%" />
-              <col width="20%" />
-              <col width="20%" />
-              <col />
-              <col />
-              <col />
-              <col />
-              <col />
+              <col width="11%" />
+              <!-- <col width="6%" /> -->
+              <col width="10%" />
+              <col width="15%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+              <col width="6%" />
+             <!--  <col width="6%" />
+              <col width="6%" /> -->
+              <col width="6%" />
+              <col width="7%" />
+              <col width="7%" />
+              <!-- <col width="6%" /> -->
+           <!--    <col width="6%" /> -->
+           <!--    <col width="6%" /> -->
+              <col width="10%" />
+              <col width="10%" />
             </colgroup>
             #foreach ($obj in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"
                    /></td>
 <!--               <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td> -->
-              <td nowrap="nowrap">$!obj.jjh</td>
-              <td nowrap="nowrap">$!obj.zjhm</td>
-              <td nowrap="nowrap">$!obj.ffje</td>
-              <td nowrap="nowrap">$!obj.jkrq</td>
-              <td nowrap="nowrap">$!obj.dqrq</td>
-              <td nowrap="nowrap">$!obj.dkqx</td>
-              <td nowrap="nowrap">$!obj.khjl</td>
-              <td nowrap="nowrap">$!obj.productName</td>
+              <td nowrap="nowrap">$!obj.busicode</td>
+              <!-- <td nowrap="nowrap">$!obj.busitype</td> -->
+              <td nowrap="nowrap">$!obj.cname</td>
+              <td nowrap="nowrap">$!obj.cardnum</td>
+              <td nowrap="nowrap">$!obj.money</td>
+              <td nowrap="nowrap">$!obj.balamt</td>
+              <td nowrap="nowrap">$!obj.debtinterest</td>
+              <td nowrap="nowrap">$!obj.reqlmt</td>
+      <!--         <td nowrap="nowrap">$!obj.loandate</td>
+              <td nowrap="nowrap">$!obj.enddate</td> -->
+              <td nowrap="nowrap">$!obj.overtimes</td>
+              <td nowrap="nowrap">$!obj.delayamtdays</td>
+              <td nowrap="nowrap">$!obj.delayinterestdays</td>
+              <!-- <td nowrap="nowrap">$!obj.busimanager</td> -->
+             <!--  <td nowrap="nowrap">$!obj.busistate</td> -->
+              <!-- <td nowrap="nowrap">$!obj.loanpurpose</td> -->
+              <td nowrap="nowrap">#dictVal("STATE", $!obj.state)</td>
+              <td nowrap="nowrap">#dictVal("ISBACK", $!obj.isback)</td>
             </tr>
             #end
           </table>

@@ -263,11 +263,21 @@ public interface CustomerInforDao {
 	public int findCipersonfamilyCount(Map<String, Object> map);
 	public int findCIPERSONBASINFOCount(Map<String, Object> map);
 	
+	public int findAppAuditLog(@Param("param1") String param1,
+							   @Param("param2") String param2);
+	
+	public void updateAppAuditLog(@Param("param1") String param1,
+								  @Param("param2") String param2,
+								  @Param("user1")  String user1,
+								  @Param("user2")  String user2,
+								  @Param("user3")  String user3);
 	
 	//测试 insertMain
 	public int insertMain(Map<String, Object> map);
 	public int insertFCLOANINFO(Map<String, Object> map);
 	public int insertFCRESULTHIS(Map<String, Object> map);
 	public int insertMIBUSIDATA(Map<String, Object> map);
+	public int insertCipersonBasinfo(Map<String, Object> map);
+
 	
 }

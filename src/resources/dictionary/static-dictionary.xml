@@ -397,5 +397,99 @@
 		<item name="100" title="成功" />
 	</dictionary>
 	
+	<!--  济南下发数据数据字典 start -->
+	<dictionary name="SEX" title="性别">
+		<item name="1" title="男" />
+		<item name="2" title="女" />
+	</dictionary>
 	
+	<dictionary name="CARDTYPE" title="证件类型">
+		<item name="0" title="身份证" />
+		<item name="1" title="军官证" />
+		<item name="2" title="护照" />
+		<item name="3" title="香港身份证" />
+		<item name="4" title="澳门身份证" />
+		<item name="5" title="台湾身份证" />
+	</dictionary>
+	
+	<dictionary name="MARRIGE" title="婚姻状况">
+		<item name="0" title="未婚" />
+		<item name="1" title="已婚" />
+		<item name="2" title="丧偶" />
+		<item name="3" title="离婚" />
+	</dictionary>
+	
+	
+	<dictionary name="RESIDE" title="居住状况">
+		<item name="0" title="自置" />
+		<item name="1" title="按揭" />
+		<item name="2" title="租房" />
+		<item name="3" title="集体宿舍" />
+		<item name="4" title="亲属楼宇" />
+		<item name="5" title="共有住宅" />
+		<item name="6" title="其他" />
+		<item name="7" title="未知" />
+	</dictionary>
+	
+	
+	<dictionary name="EDUCATIONLEVEL" title="最高学位">
+		<item name="0" title="博士" />
+		<item name="1" title="名誉博士" />
+		<item name="2" title="硕士" />
+		<item name="3" title="学士" />
+		<item name="4" title="其他" />
+		<item name="5" title="无" />
+		<item name="6" title="未知" />
+	</dictionary>
+	
+	<dictionary name="DEGREE" title="最高学历">
+		<item name="1" title="研究生" />
+		<item name="2" title="大学本科" />
+		<item name="3" title="大学专科或专科学校" />
+		<item name="4" title="中等专业或技术学校" />
+		<item name="5" title="高中" />
+		<item name="6" title="初中" />
+		<item name="7" title="小学" />
+		<item name="8" title="文盲或半文盲" />
+		<item name="9" title="未知" />
+	</dictionary>
+	
+	<dictionary name="ISBACK" title="是否是退回借据">
+		<item name="0" title="否" />
+		<item name="1" title="是" />
+	</dictionary>
+	
+	<dictionary name="STATE" title="状态">
+		<item name="1" title="清分完成(未认定)" />
+		<item name="2" title="初分完成（认定未提交）" />
+		<item name="3" title="审批中（已提交）" />
+		<item name="4" title="认定结束" />
+		<item name="5" title="重分完成" />
+		<item name="6" title="重分审批中" />
+	</dictionary>
+	
+	<dictionary name="SQUAREMODEL" title="清收方式">
+		<item name="XJQS"   title="正常清收" />
+		<item name="JXHJ"   title="借新还旧" />
+		<item name="QTQS"   title="其他清收" />
+		<item name="NBZB"   title="内部招标" />
+		<item name="FXDL"   title="风险代理" />
+		<item name="ZQZR"   title="债权转让" />
+		<item name="ZWCZ"   title="债务重组" />
+		<item name="SSTC"   title="损失退出" />
+		<item name="DZZCJS" title="以资抵债" />
+		<item name="FLSS"   title="诉讼清收" />
+	</dictionary>
+	
+	
+	<dictionary name="DKZT" title="贷款状态">
+		<item name="BN"     title="表内" />
+		<item name="HX"     title="已核销" />
+		<item name="ZTSG"   title="整体收购" />
+		<item name="ZCZH"   title="资产置换" />
+		<item name="PJZH"   title="票据置换" />
+		<item name="SSTC"   title="损失退出" />
+		<item name="GDGM"   title="股东购买" />
+		<item name="DBCZ"   title="打包处置" />
+	</dictionary>
 </dictionaries>
