@@ -216,7 +216,10 @@ public class CustomerApplicationIntopieceWaitService {
 		String cyUser2 = request.getParameter("cyUser2");
 		String fdUser = request.getParameter("fdUser");
 		String auditType = request.getParameter("auditType");
+		String lv = request.getParameter("decisionRate");
+		String productId = request.getParameter("productId");
 		
+		String custManagerId = request.getParameter("custManagerId");
 		
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
 		CustomerApplicationProcess customerApplicationProcess = new CustomerApplicationProcess();
@@ -271,7 +274,7 @@ public class CustomerApplicationIntopieceWaitService {
 	    
 	    
 		if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.RETURNAPPROVE)) {
-			String fallbackReason = request.getParameter("reason");
+			String fallbackReason = request.getParameter("decisionRefusereason");
 			customerApplicationProcess.setFallbackReason(fallbackReason);
 		}else if (StringUtils.isNotEmpty(applicationStatus) && applicationStatus.equals(ApplicationStatusEnum.REJECTAPPROVE)) {
 			String refusalReason = request.getParameter("decisionRefusereason");
@@ -291,6 +294,8 @@ public class CustomerApplicationIntopieceWaitService {
 				riskCustomer.setReportedIdManager(user.getId());
 				riskCustomer.setCreatedBy(user.getId());
 				riskCustomer.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
+				riskCustomer.setProductId(productId);
+				riskCustomer.setCustManagerId(custManagerId);
 				commonDao.insertObject(riskCustomer);
 			}
 		}
@@ -299,7 +304,7 @@ public class CustomerApplicationIntopieceWaitService {
 		customerApplicationProcess.setExamineAmount(examineAmount);
 		customerApplicationProcess.setAuditUser(loginId);
 		customerApplicationProcess.setCreatedTime(new Date());
-		customerApplicationProcess.setExamineAmount(examineAmount);
+		customerApplicationProcess.setExamineLv(lv);
 		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(customerApplicationProcess);
 		
 		

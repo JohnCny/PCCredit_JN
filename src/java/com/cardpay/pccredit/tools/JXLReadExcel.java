@@ -52,7 +52,7 @@ public class JXLReadExcel {
      */
     public String[] readExcelToHtml(String filePath, boolean isWithStyle){
         
-    	String sheet[] = new String[17];
+    	String sheet[] = new String[18];
         InputStream is = null;
         String approveValue="";
 //        String htmlExcel = null;
@@ -255,18 +255,18 @@ public class JXLReadExcel {
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[15] = content_base64;
 				}
-//				else if(wb.getSheetAt(i).getSheetName().indexOf("决议表")>=0){
-//					if (wb instanceof XSSFWorkbook) {
-//                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
-//                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jyb,ImportParameter.editAble_jyb,false);
-//                    }else if(wb instanceof HSSFWorkbook){
-//                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
-//                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jyb,ImportParameter.editAble_jyb,false);
-//                    }
-//                	String content_base64 = getBASE64(map.get("computerData").toString());
-//					sheet[16] = content_base64;
-//				}
-            	sheet[16] = approveValue;
+				else if(wb.getSheetAt(i).getSheetName().indexOf("决议表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+                        XSSFWorkbook xWb = (XSSFWorkbook) wb;
+                        map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jyb,ImportParameter.editAble_jyb,false);
+                    }else if(wb instanceof HSSFWorkbook){
+                        HSSFWorkbook hWb = (HSSFWorkbook) wb;
+                        map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jyb,ImportParameter.editAble_jyb,false);
+                    }
+                	String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[16] = content_base64;
+				}
+            	sheet[17] = approveValue;
             }
             
         } catch (Exception e) {

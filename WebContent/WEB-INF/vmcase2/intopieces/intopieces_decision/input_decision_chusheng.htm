@@ -13,7 +13,10 @@
       <input type="hidden" name="id" value="$!customerApplicationInfo.id"/>
       <input type="hidden" name="serialNumber" value="$!customerApplicationInfo.serialNumber">
       <input type="hidden" id ="prodCreditRange" name="prodCreditRange" value="$!producAttribute.prodCreditRange"/>
+      <input type="hidden" id ="productId" name="productId" value="$!producAttribute.id"/>
        <input type="hidden" name="auditType" id="auditType" value="1" />
+       <input type="hidden" name="custManagerId" id="custManagerId" value="$!custManagerId" />
+       
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
             <colgroup>
@@ -26,13 +29,13 @@
             <tr>
               <td  class="titlefc3"><label for="status">审议结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
-                  	#dict("intopieces_decision_chusheng",$!customerApplicationInfo.status)
+                  	#dict("intopieces_decision",$!customerApplicationInfo.status)
                   </select></td>
             </tr>
             <tr>
 			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
-              <td class="titlefc3"><label for="decisionRate">利率(‰):</label></td>
+              <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
             </tr>
             <tr>
@@ -46,12 +49,12 @@
               </td>
             </tr>
              <tr>
-              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
+              <td class="titlefc3"><label for="decisionTerm">参与审批人:</label></td>
               <td><select  name="cyUser1" id="cyUser1">
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
-              <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
+              <td class="titlefc3"><label for="decisionTerm">参与审批人:</label></td>
               <td><select  name="cyUser2" id="cyUser2">
                   	#dict("MANAGERUSERS","")
                   </select>
@@ -65,7 +68,7 @@
               </td>
             </tr>
             <tr style="display :none">
-              <td  class="titlefc3"><label id ="reason" for=reason>拒绝原因:</label></td>
+              <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
               <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!customerApplicationInfo.decisionRefusereason</textarea></td>
             </tr>
           </table>
@@ -192,12 +195,16 @@
 				}
 			}
 			
-			if(status =='nopass_replenish'){
-			  $("#reason").text("补充调查原因");
-			}else{
-		      $("#reason").text("拒绝原因");	
+			if( status == "RETURNAPPROVE"){
+				$("tr:eq(2)").hide();
+				$("tr:eq(6)").show();
 			}
 			
+			if(status =='RETURNAPPROVE'){
+ 			  $("#reason").text("退回原因");	
+ 			}else{
+ 		      $("#reason").text("拒绝原因");	
+ 			} 
 		});
 	});
 	

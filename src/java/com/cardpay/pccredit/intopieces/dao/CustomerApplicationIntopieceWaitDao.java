@@ -52,4 +52,6 @@ public interface CustomerApplicationIntopieceWaitDao {
 	
 	public List<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceDecisionForm(IntoPiecesFilter filter);
 	public int findCustomerApplicationIntopieceDecisionCountForm(IntoPiecesFilter filter);
+	
+	public CustomerApplicationProcess findByAppId(String appId);
 }

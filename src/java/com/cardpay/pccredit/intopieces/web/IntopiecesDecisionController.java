@@ -141,12 +141,14 @@ public class IntopiecesDecisionController extends BaseController {
 		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
 		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId);
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
 		
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
 		mv.addObject("customerApplicationProcess", processForm);
 		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
+		mv.addObject("custManagerId", customerInfor.getUserId());
 		return mv;
 	}
 	
@@ -159,9 +161,11 @@ public class IntopiecesDecisionController extends BaseController {
 		String appId = request.getParameter("appId");
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision_chusheng", request);
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
+		mv.addObject("custManagerId", customerInfor.getUserId());
 		return mv;
 	}
 	

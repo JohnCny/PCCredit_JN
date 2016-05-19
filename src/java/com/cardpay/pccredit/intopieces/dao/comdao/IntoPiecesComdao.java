@@ -273,8 +273,19 @@ public class IntoPiecesComdao {
 	}
 	
 	public CustomerApplicationProcessForm findCustomerApplicationProcessById(String id) {
-		String sql ="select t.examine_amount,s.display_name  from customer_application_process t,sys_user s where s.id = t.audit_user and t.application_id='"+id+"'";
+		String sql ="select t.examine_amount,s.display_name,t.EXAMINE_LV  from customer_application_process t,sys_user s where s.id = t.audit_user and t.application_id='"+id+"'";
 		List<CustomerApplicationProcessForm> list = commonDao.queryBySql(CustomerApplicationProcessForm.class,sql, null);
+		if(list!=null&&!list.isEmpty()){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	
+	public CustomerInfor findCustomerManager(String id) {//客户id
+		String sql ="select * from basic_customer_information t where  t.ID='"+id+"'";
+		List<CustomerInfor> list = commonDao.queryBySql(CustomerInfor.class,sql, null);
 		if(list!=null&&!list.isEmpty()){
 			return list.get(0);
 		}else{
@@ -359,6 +370,20 @@ public class IntoPiecesComdao {
 		} else {
 			return null;
 		}
+	}
+	
+	public List<HashMap<String, Object>> findNodeNameJN(String id){
+		String sql = "select d.node_name,p.REFUSAL_REASON,p.FALLBACK_REASON from customer_application_process p,Node_audit d where p.next_node_id = d.id and p.APPLICATION_ID =#{id}";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, params);
+		return list;
+		/*if(list != null && list.size() > 0){
+			HashMap<String, Object> map = list.get(0);
+			return (String) map.get("NODE_NAME");
+		} else {
+			return null;
+		}*/
 	}
 	
 	

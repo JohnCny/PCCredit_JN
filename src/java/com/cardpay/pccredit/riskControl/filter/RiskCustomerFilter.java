@@ -31,6 +31,16 @@ public class RiskCustomerFilter extends BaseQueryFilter{
 	// 风险属性
 	private String riskAttribute;
 	
+	private String custManagerId;
+	
+	public String getCustManagerId() {
+		return custManagerId;
+	}
+
+	public void setCustManagerId(String custManagerId) {
+		this.custManagerId = custManagerId;
+	}
+
 	public String getStatus() {
 		return status;
 	}

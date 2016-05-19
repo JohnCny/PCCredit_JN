@@ -9,6 +9,18 @@ public class CustomerApplicationProcessForm extends BusinessModel{
 
 	private String displayName;
 	private String examineAmount;
+	private String examineLv;
+	
+	
+	public String getExamineLv() {
+		return examineLv;
+	}
+	public void setExamineLv(String examineLv) {
+		this.examineLv = examineLv;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getDisplayName() {
 		return displayName;
 	}

@@ -32,24 +32,28 @@
             <colgroup>
               <col width="5%" />
               <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="18%"/>
-              <col width="15%"/>
-              <col width="10%"/>
-              <col width="15%"/>
-              <col width="7%"/>
+              <col width="6%" />
+              <col width="6%" />
+           <!--    <col width="10%"/>
+              <col width="11%"/> -->
+              <col width="8%"/>
+             <!--  <col width="10%"/> -->
+              <col width="8%"/>
+              <col width="8%"/>
+              <col width="8%"/>
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">申请金额</th>
               <th nowrap="nowrap">最终金额</th>
-              <th nowrap="nowrap">证件类型</th>
-              <th nowrap="nowrap">证件号码</th>
+         <!--      <th nowrap="nowrap">证件类型</th>
+              <th nowrap="nowrap">证件号码</th> -->
               <th nowrap="nowrap">审核状态</th>
-              <th nowrap="nowrap">申请时间</th>
+             <!--  <th nowrap="nowrap">申请时间</th> -->
               <th nowrap="nowrap">节点名称</th>
+              <th nowrap="nowrap">退回原因</th>
+              <th nowrap="nowrap">拒绝原因</th>
             </tr>
           </table>
         </div>
@@ -58,25 +62,37 @@
             <colgroup>
               <col width="5%" />
               <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="18%"/>
-              <col width="15%"/>
-              <col width="10%"/>
-              <col width="15%"/>
-              <col width="7%"/>
+              <col width="6%" />
+              <col width="6%" />
+            <!--   <col width="10%"/>
+              <col width="11%"/> -->
+              <col width="8%"/>
+             <!--  <col width="10%"/> -->
+              <col width="8%"/>
+              <col width="8%"/>
+              <col width="8%"/>
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="viewPiecesInfo();">
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.applyQuota</td>
               <td nowrap="nowrap">$!wait.finalApproval</td>
-              <td nowrap="nowrap">$!wait.cardType</td>
-              <td nowrap="nowrap">$!wait.cardId</td>
-              <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
-              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.createdTime)</td>
-              <td nowrap="nowrap">$!wait.nodeName</td>
+            <!--   <td nowrap="nowrap">$!wait.cardType</td>
+              <td nowrap="nowrap">$!wait.cardId</td> -->
+               #if($!wait.status=='returnedToFirst')
+               <td nowrap="nowrap">退回至客户经理</td>
+               #else
+               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>
+               #end
+              <!-- <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.createdTime)</td> -->
+               #if($!wait.status=='returnedToFirst')
+               <td nowrap="nowrap">退回</td>
+               #else
+               <td nowrap="nowrap">$!wait.nodeName</td>
+               #end
+                <td nowrap="nowrap">$!wait.fallBackReason</td>
+                <td nowrap="nowrap">$!wait.refusqlReason</td>
             </tr>
             #end
 
@@ -92,6 +108,7 @@
           <a id="id_yx_button" class="btn_g" href="javascript:void(0);" title="用信信息">用信信息</a>
           <a id="id_bc_button"  class="btn_g" href="javascript:void(0);" title="补充调查">补充调查</a>
           <a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">查看审批记录</a>
+          <a id="id_return_button" class="btn_g" href="javascript:void(0);" title="退回重新调查提交进件">提交进件</a>
 		</div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -272,6 +289,37 @@
 			}
 	    });
 		
+		//退回重新调查发起进件
+		 $("#id_return_button").click(function() {
+				var url = "${modulePath}/applyInfo.json";
+				if ($(".checkbox :checked").length == 1) {
+					var rowid = $("input[name='checkbox']:checked").val();
+					 if(rowid.split("@")[6]!='returnedToFirst'){
+						 Dialog.message("审核状态非退回至客户经理!");
+						return; 
+					 }
+					Dialog.confirm("确定要处理吗？", "提示",
+			     		function() {
+			     			$.ajax({
+			      				url : url,
+			      				type : "get",
+			      				data : "id=" + rowid.split("@")[0],//要发送的数据
+			      				success : function(data) {
+			      					if (data.success) {
+			      						topWin.Dialog.message("处理成功！");
+			      						window.location.reload(true);
+			      					}
+			      					else{
+			      						topWin.Dialog.message(data.message);
+			      				    }
+			      					submitFlag = 0;
+			      				}
+			      			});
+				 	});
+				} else {
+	                Dialog.message("请选择一行!");
+	            } 
+	     });
 	});
 	
 </script>
