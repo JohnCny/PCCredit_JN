@@ -132,7 +132,7 @@ public class AddIntoPiecesService {
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
 			}
 		}
-		localExcel.setSheetJy(sheet[0]);
+		/*localExcel.setSheetJy(sheet[0]);
 		localExcel.setSheetJbzk(sheet[1]);
 		localExcel.setSheetJyzt(sheet[2]);
 		localExcel.setSheetSczt(sheet[3]);
@@ -148,8 +148,19 @@ public class AddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[13]);
 		localExcel.setSheetYsyf(sheet[14]);
 		localExcel.setSheetLsfx(sheet[15]);
-		localExcel.setApproveValue(sheet[16]);
-//		localExcel.setJyb(sheet[16]);
+		localExcel.setApproveValue(sheet[17]);
+		localExcel.setJyb(sheet[16]);*/
+		localExcel.setSheetJy(sheet[0]);
+		localExcel.setSheetJbzk(sheet[1]);
+		localExcel.setSheetFz(sheet[2]);
+		localExcel.setSheetBzlrb(sheet[3]);
+		localExcel.setSheetXjllb(sheet[4]);
+		localExcel.setSheetJc(sheet[5]);
+		localExcel.setSheetGdzc(sheet[6]);
+		localExcel.setSheetYfys(sheet[7]);
+		localExcel.setSheetYsyf(sheet[8]);
+		localExcel.setJyb(sheet[9]);
+		localExcel.setApproveValue(sheet[10]);
 		//删除旧模板
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
@@ -539,6 +550,13 @@ public class AddIntoPiecesService {
 	public void dataErrorProceeExcute(String sql){
 		Map<String, Object> params = new HashMap<String, Object>();
 		commonDao.queryBySql(sql, params);
+	}
+	
+	public void doMethod(String applicationId){
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+		//更新状态为--audit
+		applicationInfo.setStatus("audit");
+		commonDao.updateObject(applicationInfo);
 	}
 	
 }

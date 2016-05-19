@@ -53,6 +53,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
@@ -70,7 +71,9 @@ import com.wicresoft.jrad.base.web.DataBindHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -1385,5 +1388,18 @@ public class IntoPiecesControl extends BaseController {
 			return null;
 		}
 		
-	
+		@ResponseBody
+		@RequestMapping(value = "applyInfo.json")
+		public JRadReturnMap removeRisk(HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			try {
+				String appId = RequestHelper.getStringValue(request, ID);
+				addIntoPiecesService.doMethod(appId);
+				returnMap.addGlobalMessage("提交成功");
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+
+			return returnMap;
+		}
 }

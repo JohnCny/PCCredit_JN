@@ -3,7 +3,9 @@ package com.cardpay.workflow.service;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -126,7 +128,8 @@ public class ProcessService {
 			wfProcessRecord.setIsClosed("1");
 			commonDao.updateObject(wfProcessRecord);
 			//审批退回进件到录入
-			refuse(appId);
+			//refuse(appId);
+			returnToFirst(appId);
 			return ApproveOperationTypeEnum.RETURNAPPROVE.toString();
 		} //拒绝 
 		else if(exResult.equalsIgnoreCase(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
@@ -164,6 +167,47 @@ public class ProcessService {
 			//返回节点的id
 			return nextStatusInfo.getStatusCode();
 		}
+	}
+	
+	/**
+	 * 退回到客户经理
+	 */
+	public void returnToFirst(String applicationId){
+		//获取进件信息
+		CustomerApplicationInfo applicationInfo= commonDao.findObjectById(CustomerApplicationInfo.class, applicationId);
+		//获取进件流程信息
+		CustomerApplicationProcess process =  customerApplicationIntopieceWaitDao.findByAppId(applicationId);
+	
+		String nodeSql = "select n.id from ("
+				+" select t.*,connect_by_isleaf isLeaf from node_control t"
+				+" start with current_node=#{currentNode}"
+				+" connect by next_node= prior current_node"
+				+") m,node_audit n where m.current_node=n.id"
+				+ " and m.isLeaf=1";
+		
+		Map<String, Object> nodeparams = new HashMap<String, Object>();
+		nodeparams.put("currentNode", process.getNextNodeId());
+		List<HashMap<String, Object>> nodeList = commonDao.queryBySql(nodeSql, nodeparams);
+		//更新业务流程表
+		process.setNextNodeId((String)nodeList.get(0).get("ID"));
+		process.setCreatedTime(new Date());
+		customerApplicationIntopieceWaitDao.updateCustomerApplicationProcessBySerialNumber(process);
+		//更新状态为--退件到申请状态
+		applicationInfo.setStatus("returnedToFirst");
+		commonDao.updateObject(applicationInfo);
+		//查找当前所处流转状态
+  		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, process.getSerialNumber());
+		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
+		String currentProcess = wfStatusQueueRecord.getCurrentProcess();
+		String sql = "select t.* from wf_status_queue_record t " 
+					+ "where t.current_process =  #{currentProcess}"
+					+ "and t.before_status is null";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("currentProcess", currentProcess);
+		List<WfStatusQueueRecord> list = commonDao.queryBySql(WfStatusQueueRecord.class, sql, params);
+
+		wfProcessRecord.setWfStatusQueueRecord(list.get(0).getId());
+		commonDao.updateObject(wfProcessRecord);
 	}
 	
 	/**
