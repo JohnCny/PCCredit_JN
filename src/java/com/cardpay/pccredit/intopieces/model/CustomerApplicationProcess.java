@@ -29,6 +29,22 @@ public class CustomerApplicationProcess extends BusinessModel {
 	private String delayAuditUser;
 	private Date auditTime;
 	private String processOpStatus;
+	
+	private String examineLv;
+	
+	
+
+	public String getExamineLv() {
+		return examineLv;
+	}
+
+	public void setExamineLv(String examineLv) {
+		this.examineLv = examineLv;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public String getProductId() {
 		return productId;

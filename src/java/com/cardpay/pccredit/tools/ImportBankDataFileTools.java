@@ -91,13 +91,14 @@ public class ImportBankDataFileTools {
 		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
 		FileInputStream fis = null;
 		InputStreamReader isr = null;
-		BufferedReader br = null;
+		//BufferedReader br = null;
+		ReadLine br =null;
 		String value = null;
 		try{
 			fis=new FileInputStream(fileName);
 		    isr=new InputStreamReader(fis, "utf-8");
-		    br = new BufferedReader(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
-		      
+		   // br = new BufferedReader(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
+		    br = new ReadLine(isr,10*1024*1024);// 用10M的缓冲读取文本文件  
 			String line="", type = null, column = null;
 	        String[] dataArrs=null;
 	        Map<String, Object> map = null;
@@ -107,6 +108,10 @@ public class ImportBankDataFileTools {
 	        	dataArrs = StringUtils.splitPreserveAllTokens(line.replaceAll(SPLITE_CHARS, "±"),"±");
 	            map = new HashMap<String, Object>();
 	            boolean flag = true;
+	            if(dataArrs.length<=1){
+	        		flag = false;
+					break;
+	        	}
 	            for(DataFileConf dataFileConf : confList){
 	            	type = dataFileConf.getJdbcType();
 	            	column = dataFileConf.getColumn();
@@ -139,8 +144,8 @@ public class ImportBankDataFileTools {
 					map.put(SqlJavaNameUtil.getVariableName(column, false),value);
 	            }
 	            //map.put("id", IDGenerator.generateID());
-	            map.put("createTime", date);
 	            if(flag){
+	            	 map.put("createTime", date);
 	            	datas.add(map);
 	            }
 	        }

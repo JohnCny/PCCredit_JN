@@ -33,8 +33,23 @@ public class IntoPieces  extends BusinessModel {
     
     private String reqlmt;//省联社放款批准额度 jn
     
+    private String refusqlReason;
+    private String fallBackReason;
     
-    public String getReqlmt() {
+    
+    public String getRefusqlReason() {
+		return refusqlReason;
+	}
+	public void setRefusqlReason(String refusqlReason) {
+		this.refusqlReason = refusqlReason;
+	}
+	public String getFallBackReason() {
+		return fallBackReason;
+	}
+	public void setFallBackReason(String fallBackReason) {
+		this.fallBackReason = fallBackReason;
+	}
+	public String getReqlmt() {
 		return reqlmt;
 	}
 	public void setReqlmt(String reqlmt) {
