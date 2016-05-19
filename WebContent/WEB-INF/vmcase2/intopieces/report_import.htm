@@ -60,7 +60,7 @@
               <td nowrap="nowrap">$!obj.attachment</td>
               <td nowrap="nowrap">$!obj.customerName</td>
               <td nowrap="nowrap">$!obj.productName</td>
-              <td nowrap="nowrap">$!obj.createdTime</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!obj.createdTime)</td>
             </tr>
             #end
           </table>

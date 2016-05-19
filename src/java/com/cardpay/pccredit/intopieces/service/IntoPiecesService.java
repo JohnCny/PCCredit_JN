@@ -3,6 +3,7 @@ package com.cardpay.pccredit.intopieces.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -98,6 +99,18 @@ public class IntoPiecesService {
 					} else {
 						pieces.setNodeName("不在审批中");
 					}
+				}else if(pieces.getStatus().equals(Constant.REFUSE_INTOPICES)||pieces.getStatus().equals("returnedToFirst")){
+					List<HashMap<String, Object>> list = intoPiecesComdao.findNodeNameJN(pieces.getId());
+					String refusqlReason ="";
+					String fallBackReason ="";
+					if(list != null && list.size() > 0){
+						HashMap<String, Object> map = list.get(0);
+						refusqlReason = (String) map.get("REFUSAL_REASON");
+						fallBackReason =(String) map.get("FALLBACK_REASON");
+					}
+					pieces.setNodeName("审批结束");
+					pieces.setRefusqlReason(refusqlReason);
+					pieces.setFallBackReason(fallBackReason);
 				}else {
 					pieces.setNodeName("审批结束");
 				}
@@ -829,6 +842,10 @@ public class IntoPiecesService {
 	
 	public CustomerApplicationProcessForm findCustomerApplicationProcessById(String id) {
 		return intoPiecesComdao.findCustomerApplicationProcessById(id);
+	}
+	
+	public CustomerInfor findCustomerManager(String id) {
+		return intoPiecesComdao.findCustomerManager(id);
 	}
 
 	/* 查询申请的某一笔进件申请单中上传的产品的附件 */

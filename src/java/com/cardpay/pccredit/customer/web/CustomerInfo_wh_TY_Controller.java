@@ -895,49 +895,49 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 
 		return returnMap;
 	}
-//	//显示维护信息--流水分析
-//	@ResponseBody
-//	@RequestMapping(value = "report_jyb.page")
-//	public AbstractModelAndView report_jyb(HttpServletRequest request) {
-//		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jyb", request);
-//		String appId = RequestHelper.getStringValue(request, "appId");
-//		String urlType = RequestHelper.getStringValue(request, "urlType");
-//		if (StringUtils.isNotEmpty(appId)) {
-//			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
-//			String tableContent = getFromBASE64(localExcel.getJyb()).replaceAll("\n", "<br>").replace("><br><", "><");
-//			mv.addObject("tableContent", tableContent);
-//			mv.addObject("appId", appId);
-//			mv.addObject("urlType", urlType);
-//			//查询权限 非本人只能查看 不能操作
-//			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-//			String userId = user.getId();
-//			boolean lock = false;
-//			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
-//				lock = true;
-//			}
-//			mv.addObject("lock", lock);
-//		}
-//		return mv;
-//	}
-//	
-//	//修改--流水分析
-//	@ResponseBody
-//	@RequestMapping(value = "change_report_jyb.json")
-//	public JRadReturnMap change_report_jyb(HttpServletRequest request) {
-//		JRadReturnMap returnMap = new JRadReturnMap();
-//		String appId = RequestHelper.getStringValue(request, "appId");
-//		try {
-//			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
-//			localExcel.setJyb(request.getParameter("content"));
-//			addIntoPiecesService.change_localExcel(localExcel);
-//			
-//			returnMap.addGlobalMessage(CHANGE_SUCCESS);
-//		} catch (Exception e) {
-//			return WebRequestHelper.processException(e);
-//		}
-//
-//		return returnMap;
-//	}
+	//显示维护信息--流水分析
+	@ResponseBody
+	@RequestMapping(value = "report_jyb.page")
+	public AbstractModelAndView report_jyb(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/report_jyb", request);
+		String appId = RequestHelper.getStringValue(request, "appId");
+		String urlType = RequestHelper.getStringValue(request, "urlType");
+		if (StringUtils.isNotEmpty(appId)) {
+			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			String tableContent = getFromBASE64(localExcel.getJyb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			mv.addObject("tableContent", tableContent);
+			mv.addObject("appId", appId);
+			mv.addObject("urlType", urlType);
+			//查询权限 非本人只能查看 不能操作
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			boolean lock = false;
+			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+				lock = true;
+			}
+			mv.addObject("lock", lock);
+		}
+		return mv;
+	}
+	
+	//修改--流水分析
+	@ResponseBody
+	@RequestMapping(value = "change_report_jyb.json")
+	public JRadReturnMap change_report_jyb(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		String appId = RequestHelper.getStringValue(request, "appId");
+		try {
+			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+			localExcel.setJyb(request.getParameter("content"));
+			addIntoPiecesService.change_localExcel(localExcel);
+			
+			returnMap.addGlobalMessage(CHANGE_SUCCESS);
+		} catch (Exception e) {
+			return WebRequestHelper.processException(e);
+		}
+
+		return returnMap;
+	}
 	//修改影像资料
 	@ResponseBody
 	@RequestMapping(value = "imageImport.page")
