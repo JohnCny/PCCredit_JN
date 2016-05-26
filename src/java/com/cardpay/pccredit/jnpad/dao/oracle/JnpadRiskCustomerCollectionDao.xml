@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.jnpad.dao.JnpadRiskCustomerCollectionDao">
+
+
+<resultMap id="CollectionFormResultMap"
+		type="com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm">
+		<result property="createWay" column="create_way"/>
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="chineseName" column="CHINESE_NAME" />
+		<result property="productId" column="PRODUCT_ID" />
+		<result property="productName" column="PRODUCT_NAME" />
+		<result property="implementationObjective" column="IMPLEMENTATION_OBJECTIVE" />
+		<result property="endResult" column="END_RESULT" />
+		<result property="collectionTime" column="COLLECTION_TIME" />
+		<result property="collectionMethod" column="COLLECTION_METHOD" />
+		<result property="collectionPromiseDate" column="COLLECTION_PROMISE_DATE" />
+		<result property="collectionEndtime" column="COLLECTION_ENDTIME" />
+		<result property="collectionAmount" column="COLLECTION_AMOUNT" />
+		<result property="userName" column="DISPLAY_NAME"/>
+		<result property="size" column="countAction"/>
+	</resultMap>
+	
+	
+	<select id="findCountByFilter" resultType="int"
+		parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter">
+		select
+		count(*)
+		from (
+		SELECT
+		c.*
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		where i.user_id=#{customerManagerId})
+	</select>
+	
+		<select id="findRiskCustomerCollectionPlans" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		 SELECT c.*, P.PRODUCT_NAME, i.CHINESE_NAME,(select count(1) from collection_plans_action a where a.collection_plan_id=c.id) as countAction 
+		 FROM COLLECTION_PLAN c
+		 LEFT JOIN PRODUCT_ATTRIBUTE P
+		 ON c.product_id = P.ID
+		 LEFT JOIN BASIC_CUSTOMER_INFORMATION i
+		 ON c.customer_id = i.ID
+		 where i.user_id = #{customerManagerId}
+		 order by c.created_time desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+<select id="findRiskCustomerCollectionPlanById" resultMap="CollectionFormResultMap">
+		SELECT * FROM
+		(SELECT
+		c.*,
+		P.PRODUCT_NAME,
+		i.CHINESE_NAME
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		PRODUCT_ATTRIBUTE P ON c.product_id = P.ID
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		WHERE C.ID=#{id})
+	</select>
+	
+	
+	<select id="findRiskViewSubCollectionPlansCountByFilter" resultType="int">
+		SELECT
+		count(*)
+		FROM
+		COLLECTION_PLAN c
+		LEFT JOIN
+		BASIC_CUSTOMER_INFORMATION i ON c.customer_id = i.ID
+		where i.user_id in
+		<foreach collection="customerManagerId" index="index" item="item" open="(" separator="," close=")">
+		     #{item.userId}
+		</foreach>
+	</select>
+	</mapper>

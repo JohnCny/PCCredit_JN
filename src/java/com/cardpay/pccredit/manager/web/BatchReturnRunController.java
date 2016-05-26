@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -177,6 +179,7 @@ public class BatchReturnRunController extends BaseController{
 	}
 	
 	private String log_path = "/home/jradbaseweb.log";
+//	private String log_path = "E:/jradbaseweb.log";
 	private String log_name = "jradbaseweb.log";
 	
 	@ResponseBody
@@ -184,6 +187,7 @@ public class BatchReturnRunController extends BaseController{
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(HttpServletRequest request) throws IOException {
 		JRadModelAndView mv = new JRadModelAndView("/manager/batchreturnrun/log_browse",request);
+		
 		return mv;
 	}
 	
@@ -191,13 +195,25 @@ public class BatchReturnRunController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "download.json", method = { RequestMethod.GET })
 	public AbstractModelAndView download(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		JRadModelAndView mav = new JRadModelAndView("/manager/batchreturnrun/log_result", request);
+		JRadReturnMap rmp = new JRadReturnMap();
+		String result = "";
 		String query_date = request.getParameter("query_date");
 		String path = log_path;
 		String fileName = log_name;
+		Date date = new Date();
+		SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+		String currentDate =formatDate.format(date);
+		
 		
 		if(StringUtils.isNotEmpty(query_date)){
-			path = log_path + "." + query_date;
-			fileName = log_name + "." + query_date;
+			if(currentDate==query_date||currentDate.equals(query_date)){
+				
+			}else{
+				
+				path = log_path + "." + query_date;
+				fileName = log_name + "." + query_date;
+			}
 		}
 		
 		File file = new File(path);
@@ -217,8 +233,14 @@ public class BatchReturnRunController extends BaseController{
 			if (bos != null) {
 				bos.close();
 			}
+			return null;
+		}else{
+		result = "下载失败，文件不存在！";
+		rmp.put("result", result);
+		rmp.setSuccess(false);
 		}
-		return null;
+		mav.addObject("rmp", rmp);
+		return mav ;
 	}
 	
 	
@@ -238,5 +260,51 @@ public class BatchReturnRunController extends BaseController{
 		addIntoPiecesService.dataErrorProceeExcute(sql);
 		return null;
 	}
+	
+	private String errLog_path="/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/logs/server1/SystemErr.log";
+//	private String errLog_path="E:/SystemErr.log";
+	private String errLog_name="SystemErr.log";
+	@ResponseBody
+	@RequestMapping(value = "errLogDownload.json", method = { RequestMethod.GET })
+	public AbstractModelAndView errLogDownload(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		JRadModelAndView mav = new JRadModelAndView("/manager/batchreturnrun/log_result", request);
+		JRadReturnMap rmp = new JRadReturnMap();
+		String result = "";
+		
+		File file = new File(errLog_path);
+		if(file.exists()){
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(errLog_name, "UTF-8"));
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(errLog_path));
+			OutputStream out =response.getOutputStream();
+			BufferedOutputStream bos = new BufferedOutputStream(out);
+			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+			if (bis != null) {
+				bis.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+			
+		
+			result = "下载完成！";
+			rmp.put("result", result);
+			rmp.setSuccess(true);
+			return null;
+		}else{
+		result = "下载失败，文件不存在！";
+		rmp.put("result", result);
+		rmp.setSuccess(false);
+		}
+		mav.addObject("rmp", rmp);
+		
+		return mav ;
+	}
+	
+	
 	
 }
