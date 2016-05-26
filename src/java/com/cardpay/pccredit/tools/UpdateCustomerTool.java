@@ -47,7 +47,6 @@ public class UpdateCustomerTool {
 	@Autowired
 	private CustomerInforService customerInforService;
 	
-	//@Scheduled(cron = "0 0 15 * * ?")
 	public void downloadFiles(){
 		log.error("下载文件：");
 		CardFtpUtils sftp = new CardFtpUtils();

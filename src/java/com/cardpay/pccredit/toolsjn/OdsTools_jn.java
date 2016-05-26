@@ -124,8 +124,8 @@ public class OdsTools_jn {
 				String command = "tar -zxvf "+ gzFile +File.separator+"xdsj.tar.Z "+ "-C " + gzFile;
 				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
-				//删除压缩包
-				fileUrl.delete();
+				//删除压缩包  存在解压未完成 删包的condition
+				//fileUrl.delete();
 				csftp.disconnect();
 			}
 		}
@@ -209,8 +209,8 @@ public class OdsTools_jn {
 				String command = "tar -zxvf "+ gzFile +File.separator+"xdsj.tar.Z "+ "-C " + gzFile;
 				log.info("tar命令:"+command);
 				Runtime.getRuntime().exec(command);
-				//删除压缩包
-				fileUrl.delete();
+				//删除压缩包 存在解压未完成 删包的condition
+				//fileUrl.delete();
 				csftp.disconnect();
 			}
 		}

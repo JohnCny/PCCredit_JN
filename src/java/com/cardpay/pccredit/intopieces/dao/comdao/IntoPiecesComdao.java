@@ -426,12 +426,32 @@ public class IntoPiecesComdao {
 	}
 	
 	
-	public List<IntoPieces> findCustomerApplicationInfoJn() {
-		//进件审批approved 省联社系统进件状态为正常
-		String sql =  "select t.id,c.reqlmt from customer_application_info t, "
-					+ "basic_customer_information b,"
-					+ "t_cclmtapplyinfo c "
-					+ "where c.custid = b.TY_CUSTOMER_ID and b.id = t.CUSTOMER_ID and t.status = 'approved' and c.state ='1' ";
+	public List<IntoPieces> findCustomerApplicationInfoJnFk() {
+		String sql ="select t.id,                               "+
+					"       r.money                             "+
+					"  from customer_application_info  t,       "+
+					"       basic_customer_information b,       "+
+					"       t_gcloancredit r                    "+
+					" where t.customer_id = b.TY_CUSTOMER_ID    "+
+					"       and r.custid = b.ty_customer_id     "+
+					"       and r.CREDITSTATE ='0004'           ";
+		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
+		return list;
+	}
+	
+	
+	public List<IntoPieces> findCustomerApplicationInfoJnHQ() {
+		String sql ="select t.id, c.reqlmt                  " + 
+					"  from customer_application_info  t,   " +  
+					"       basic_customer_information b,   " +  
+					"       t_cclmtapplyinfo           c,   " +  
+					"       t_gccontractmain m              " + 
+					" where c.custid = b.TY_CUSTOMER_ID     " + 
+					"   and b.id = t.CUSTOMER_ID            " + 
+					"   and t.status = 'approved'           " + 
+					"   and c.state = '1'                   " + 
+					"   and c.appcode = m.appcode           " + 
+					"   and m.squarestate ='1'              "; 
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
 		return list;
 	}

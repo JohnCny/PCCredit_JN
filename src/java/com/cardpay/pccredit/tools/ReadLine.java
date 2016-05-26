@@ -305,6 +305,7 @@ public class ReadLine extends Reader {
                 boolean eol = false;
                 char c = 0;
                 char a = 0;
+                char b = 0;
                 int i;
 
                 /* Skip a leftover '\n', if necessary */
@@ -314,10 +315,11 @@ public class ReadLine extends Reader {
                 omitLF = false;
 
             charLoop:
-                for (i = nextChar+1; i < nChars; i++) {
+                for (i = nextChar+2; i < nChars; i++) {
                     c = cb[i];
                     a = cb[i-1];
-                    if (((c == '\n')&&(a=='\"'||a=='|')) || ((a=='\"'||a=='|')&&(c == '\r'))) {
+                    b = cb[i-2];
+                    if ((a=='\"')&&(b=='$')&&((c == '\n')||(c == '\r'))){
                         eol = true;
                         break charLoop;
                     }
@@ -338,6 +340,7 @@ public class ReadLine extends Reader {
                     if (c == '\r') {
                         skipLF = true;
                     }
+                    System.out.println(str);
                     return str;
                 }
 

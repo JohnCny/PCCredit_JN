@@ -36,8 +36,16 @@ public class IntoPieces  extends BusinessModel {
     private String refusqlReason;
     private String fallBackReason;
     
+    private String repayStatus;
     
-    public String getRefusqlReason() {
+    
+    public String getRepayStatus() {
+		return repayStatus;
+	}
+	public void setRepayStatus(String repayStatus) {
+		this.repayStatus = repayStatus;
+	}
+	public String getRefusqlReason() {
 		return refusqlReason;
 	}
 	public void setRefusqlReason(String refusqlReason) {
