@@ -911,8 +911,13 @@ public class IntoPiecesService {
 	}
 	
 	//查询审核通过的进件信息
-	public List<IntoPieces> findCustomerApplicationInfoJn(){
-		return intoPiecesComdao.findCustomerApplicationInfoJn();
+	public List<IntoPieces> findCustomerApplicationInfoJnFK(){
+		return intoPiecesComdao.findCustomerApplicationInfoJnFk();
+	}
+	
+	//查询审核通过的进件信息
+	public List<IntoPieces> findCustomerApplicationInfoJnHQ(){
+		return intoPiecesComdao.findCustomerApplicationInfoJnHQ();
 	}
 	
 	//更新进件状态

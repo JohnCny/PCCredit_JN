@@ -12,16 +12,13 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.TyApplicationLog;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.model.ManagerSalaryParameter;
-import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -45,25 +42,38 @@ public class CustomerApplicationInfoSynchScheduleService {
 	
 	/**
 	 * 济南
-	 * 同步进件状态(更新为已放款)
+	 * 同步进件状态 
+	 * 已放款
+	 * 贷款已结清
 	 */
 	private void dosynchJnCustAppInfoMethod(){
 		//获取今日日期
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
-		logger.info(dateString+"进件状态更新开始（已放款）**********");
 		
-		//查询已经审核通过的进件信息
-		List<IntoPieces> intoPiecesList = intoPiecesService.findCustomerApplicationInfoJn();
+		logger.info(dateString+"进件状态更新开始（已放款）**********");
+		List<IntoPieces> intoPiecesList = intoPiecesService.findCustomerApplicationInfoJnFK();
 		for(IntoPieces intoPieces:intoPiecesList){
 			IntoPieces  pieces = new IntoPieces();
-			pieces.setStatus(Constant.END);//放款成功
+			pieces.setStatus(Constant.END);//已放款
 			pieces.setReqlmt(intoPieces.getReqlmt());//批准金额
 			pieces.setId(intoPieces.getId());
 			intoPiecesService.updateCustomerApplicationInfoJn(pieces);
 		}
 		logger.info(dateString+"进件状态更新结束（已放款）**********");
+		
+		logger.info(dateString+"进件状态更新开始（已还清）**********");
+		List<IntoPieces> list = intoPiecesService.findCustomerApplicationInfoJnHQ();
+		for(IntoPieces intoPieces:list){
+			IntoPieces  pieces = new IntoPieces();
+			pieces.setRepayStatus("1");//1-已还清
+			pieces.setId(intoPieces.getId());
+			intoPiecesService.updateCustomerApplicationInfoJn(pieces);
+		}
+		logger.info(dateString+"进件状态更新结束（已还清）**********");
 	}
+	
+
 	
 	
 	
@@ -75,7 +85,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 	 * 同步进件状态(更新为已放款)
 	 * @throws IOException 
 	 */
-	private void dosynchMethod() throws IOException{
+	/*private void dosynchMethod() throws IOException{
 		//获取今日日期
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
@@ -92,7 +102,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 			intoPiecesService.updateCustomerApplicationInfo(pieces);
 		}
 		logger.info(dateString+"进件状态更新结束（已放款）**********");
-	}
+	}*/
 	
 /*	*//**
 	 * 同步进件状态（还款已结束）
