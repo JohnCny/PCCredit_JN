@@ -2248,7 +2248,8 @@ public class CustomerInforService {
 		if(user==null){
 			return null;
 		}else{
-			return user.getExternalId();
+//			return user.getExternalId();
+			return user.getDisplayName();
 		}
 	}
 	/*
@@ -2489,9 +2490,9 @@ public class CustomerInforService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONBASINFO.xml");
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			/*for(Map<String, Object> map :datas){
-				customerInforDao.insertCipersonBasinfo(map);
-			}*/
+//			for(Map<String, Object> map :datas){
+//				customerInforDao.insertCipersonBasinfo(map);
+//			}
 			
 			//for
 			for(Map<String, Object> map : datas){
@@ -2499,8 +2500,8 @@ public class CustomerInforService {
 				if(count >0){
 					//put updateMap
 					updatedatas.add(map);
-					//变更 同步本系统
-					/*List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
+					/*//变更 同步本系统
+					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
 							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);
 					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
 							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
@@ -2513,14 +2514,14 @@ public class CustomerInforService {
 				}else{
 					//put insertMap
 					insertdatas.add(map);
-					//和本系统作关联
-					/*List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
+					/*//和本系统作关联
+					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
 							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);*/
 					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
 							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
 					//不存在则插入
 					if(infoList.size()==0){
-						/*CustomerInfor info = new CustomerInfor();
+					/*	CustomerInfor info = new CustomerInfor();
 						info.setId(IDGenerator.generateID());
 						info.setCardId(map.get("cardnum").toString());
 						info.setCardType(map.get("cardtype").toString());
@@ -3210,9 +3211,9 @@ public class CustomerInforService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCLOANINFO.xml");
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			/*for(Map<String, Object> map :datas){
-				customerInforDao.insertFCLOANINFO(map);
-			}*/
+//			for(Map<String, Object> map :datas){
+//				customerInforDao.insertFCLOANINFO(map);
+//			}
 			//save
 			insertFCLOANINFO(datas);
 			//释放空间
