@@ -75,7 +75,7 @@ public class CustomerInforInsertController extends BaseController{
 				CustomerInforFilter filter = new CustomerInforFilter();
 				filter.setCardId(customerinfoForm.getCardId());
 				//身份证号码验证
-				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId());
+				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId().trim());
 				if(msg !="" && msg != null){
 					returnMap.put(JRadConstants.MESSAGE, msg);
 					returnMap.put(JRadConstants.SUCCESS, false);
@@ -87,9 +87,9 @@ public class CustomerInforInsertController extends BaseController{
 					String message = "";
 					String gId = customerInforService.getUserInform(ls.get(0).getUserId());
 					if(gId==null){
-						message = "保存失败，此客户已挂在客户经理"+ls.get(0).getUserId()+"下，请线下及时联系!";
+						message = "保存失败，此客户已挂在客户经理【"+ls.get(0).getUserId()+"】下，请线下及时联系!";
 					}else{
-						message = "保存失败，此客户已挂在客户经理"+gId+"下!";
+						message = "保存失败，此客户已挂在客户经理【"+gId+"】下!";
 //						returnMap.put(JRadConstants.MESSAGE, "此客户已挂在客户经理"+gId+"下!");
 					}
 					//查询是否为风险名单

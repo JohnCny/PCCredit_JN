@@ -543,8 +543,8 @@
 		       	and  not exists 
 		       	(
 		       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
- 		       		and T2.REPAY_STATUS = '1' 
-            		and (trunc(sysdate)-trunc(T2.created_time))&lt;180
+ 		       		and T2.REPAY_STATUS  != '1'
+            	    <!-- and (trunc(sysdate)-trunc(T2.created_time))&lt;180  -->
 		       	)
 	
 		 <![CDATA[		
@@ -576,8 +576,8 @@
 		and not exists 
        	(
        		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
-       		and T2.REPAY_STATUS = '1' 
-            and (trunc(sysdate)-trunc(T2.created_time))&lt;180
+       		and T2.REPAY_STATUS  != '1'
+            <!-- and (trunc(sysdate)-trunc(T2.created_time))&lt;180 -->
        	)
 	</select>
 
