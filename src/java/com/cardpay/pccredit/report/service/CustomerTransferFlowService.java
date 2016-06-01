@@ -13,6 +13,7 @@ import com.cardpay.pccredit.report.model.CustomerMove;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.report.model.DkyetjbbForm;
 import com.cardpay.pccredit.report.model.DqzzdktjbbForm;
+import com.cardpay.pccredit.report.model.XdlctjbbForm;
 import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.report.model.YqhkdktjbbForm;
@@ -115,8 +116,7 @@ public class CustomerTransferFlowService {
 	}
 	
 	/**
-	 *	--预期还款贷款统计
-	 *	信贷流程统计
+	 *  预期还款贷款统计
 	 */
 	public QueryResult<YqhkdktjbbForm> findYqhkdktjbbFormList(ReportFilter filter){
 		List<YqhkdktjbbForm> list = customerTransferFlowDao.findYqhkdktjbbFormList(filter);
@@ -127,5 +127,20 @@ public class CustomerTransferFlowService {
 	
 	public List<YqhkdktjbbForm> getYqhkdktjbbFormList(ReportFilter filter){
 		return customerTransferFlowDao.getYqhkdktjbbFormList(filter);
+	}
+	
+	
+	/**
+	 *	信贷流程统计
+	 */
+	public QueryResult<XdlctjbbForm> findXdlctjbbFormList(ReportFilter filter){
+		List<XdlctjbbForm> list = customerTransferFlowDao.findXdlctjbbFormList(filter);
+		int size = customerTransferFlowDao.findXdlctjbbFormCountList(filter);
+		QueryResult<XdlctjbbForm> result = new QueryResult<XdlctjbbForm>(size,list);
+		return result;
+	} 
+	
+	public List<XdlctjbbForm> getXdlctjbbFormList(ReportFilter filter){
+		return customerTransferFlowDao.getXdlctjbbFormList(filter);
 	}
 }

@@ -75,7 +75,10 @@ public class CustomerInforInsertController extends BaseController{
 				CustomerInforFilter filter = new CustomerInforFilter();
 				filter.setCardId(customerinfoForm.getCardId());
 				//身份证号码验证
-				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId().trim());
+				String msg ="";
+				if("0".equals(customerinfoForm.getCardType())){
+					 msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId().trim());
+				}
 				if(msg !="" && msg != null){
 					returnMap.put(JRadConstants.MESSAGE, msg);
 					returnMap.put(JRadConstants.SUCCESS, false);

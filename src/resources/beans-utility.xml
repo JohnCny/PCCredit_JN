@@ -95,7 +95,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 00 15 ? * *</value><!--时间定在第一个跑批前  -->
+            <value>0 00 17 ? * *</value><!--时间定在第一个跑批前  -->
         </property>
     </bean>
 	<!-- task end-->
@@ -118,7 +118,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 10 15 ? * *</value><!--下午3点 -->
+            <value>0 10 18 ? * *</value><!--下午3点 -->
         </property>
     </bean>
 	<!-- 每日下载和解压数据 end-->
@@ -165,13 +165,13 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 0 12 ? * SAT</value><!--时间定在周六  -->
+            <value>0 30 18 ? * *</value><!--时间定在周六  -->
         </property>
     </bean>
     <!-- 客户经理日报  end -->
     
     
-    <!--5.同步系统中的进件的status 每两个小时跑一次-->
+    <!--5.同步系统中的进件的status-->
     <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
         <property name="targetObject">

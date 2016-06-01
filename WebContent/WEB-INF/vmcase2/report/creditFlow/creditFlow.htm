@@ -90,20 +90,20 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.prodName</td>
+              <td nowrap="nowrap">$!customer.applyQuota</td>
+              <td nowrap="nowrap">$!customer.createdTime</td>
+              <td nowrap="nowrap">$!customer.clts</td>
+              <td nowrap="nowrap">$!customer.dcr</td>
+              <td nowrap="nowrap">$!customer.dcts</td>
+              <td nowrap="nowrap">$!customer.sdhrq</td>
+              <td nowrap="nowrap">$!customer.sdhts</td>
+              <td nowrap="nowrap">$!customer.dkffjjr</td>
+              <td nowrap="nowrap">$!customer.totalNum</td>
+              <td nowrap="nowrap">$!customer.custManager</td>
+              <td nowrap="nowrap">$!customer.name</td>
             </tr>
             #end
           </table>
