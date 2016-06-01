@@ -246,7 +246,7 @@ public class ReadWholeAndIncrementService {
 								throw new RuntimeException(e);
 							} 
 						}
-						//f.delete();
+						f.delete();
 				}
 	        }
 	        //succ
@@ -405,7 +405,7 @@ public class ReadWholeAndIncrementService {
 								throw new RuntimeException(e);
 							}
 						}
-						//f.delete();
+						f.delete();
 				}
 	        }
 	        //succ

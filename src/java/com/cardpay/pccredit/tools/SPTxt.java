@@ -14,6 +14,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jfree.util.Log;
+
 public class SPTxt {
 	/**
 	 * 把一个txt分成几等分

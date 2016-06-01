@@ -245,9 +245,9 @@ public class SFTPUtil {
 			connect();
 //			System.out.println("download1:"+filePath.substring(0, 50));
 //			System.out.println("download2:"+sftp.get(filePath.substring(50, filePath.length())));
-			System.out.println(filePath.substring(0, 50));
+			//System.out.println(filePath.substring(0, 50));
 			sftp.cd(filePath.substring(0, 50));
-			System.out.println(filePath.substring(51, filePath.length()));
+			//System.out.println(filePath.substring(51, filePath.length()));
 			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));//filePath.split("\\\\")[4]
 			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
@@ -289,13 +289,13 @@ public class SFTPUtil {
         Map<String, String> map = new HashMap<String, String>();
         try {
         	SFTPUtil.connect();
-        	System.out.println(filePath.substring(0, 50));
+        	//System.out.println(filePath.substring(0, 50));
         	sftp.cd(filePath.substring(0, 50));//filePath.split("\\\\")[0]
         	is = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));
             Workbook wb = WorkbookFactory.create(is);
             for(int i=0;i<wb.getNumberOfSheets();i++)
             {
-            	System.out.println(wb.getSheetAt(i).getSheetName());
+            	//System.out.println(wb.getSheetAt(i).getSheetName());
             	if(wb.getSheetAt(i).getSheetName().indexOf("建议")>=0){
             		if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
@@ -550,7 +550,7 @@ public class SFTPUtil {
     				   continue;
     			   }
 					String	stringValue = getCellValue(cell);
-					System.out.println(stringValue);
+					//System.out.println(stringValue);
     			   if (map[0].containsKey(rowNum + "," + colNum)) {
     				   String pointString = map[0].get(rowNum + "," + colNum);
     				   map[0].remove(rowNum + "," + colNum);

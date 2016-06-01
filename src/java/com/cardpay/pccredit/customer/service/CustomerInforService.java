@@ -2490,9 +2490,6 @@ public class CustomerInforService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CIPERSONBASINFO.xml");
 			// 解析”帐单记录表“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-//			for(Map<String, Object> map :datas){
-//				customerInforDao.insertCipersonBasinfo(map);
-//			}
 			
 			//for
 			for(Map<String, Object> map : datas){
@@ -2500,7 +2497,7 @@ public class CustomerInforService {
 				if(count >0){
 					//put updateMap
 					updatedatas.add(map);
-					/*//变更 同步本系统
+					//变更 同步本系统
 					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
 							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);
 					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
@@ -2510,25 +2507,25 @@ public class CustomerInforService {
 						CustomerInfor info = infoList.get(0);
 						info.setUserId(user.size() > 0?user.get(0).getId():map.get("busimanager").toString());
 						commonDao.updateObject(info);
-					}*/
+					}
 				}else{
 					//put insertMap
 					insertdatas.add(map);
-					/*//和本系统作关联
+					//和本系统作关联
 					List<SystemUser> user = commonDao.queryBySql(SystemUser.class, 
-							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);*/
+							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);
 					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
 							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
 					//不存在则插入
 					if(infoList.size()==0){
-					/*	CustomerInfor info = new CustomerInfor();
+						CustomerInfor info = new CustomerInfor();
 						info.setId(IDGenerator.generateID());
 						info.setCardId(map.get("cardnum").toString());
 						info.setCardType(map.get("cardtype").toString());
 						info.setChineseName(map.get("cname").toString());
 						info.setUserId(user.size() > 0?user.get(0).getId():map.get("busimanager").toString());
 						info.setTyCustomerId(map.get("id").toString());
-						commonDao.insertObject(info);*/
+						commonDao.insertObject(info);
 					}else{
 						//存在则作关联
 						CustomerInfor info = infoList.get(0);

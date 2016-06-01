@@ -504,4 +504,14 @@
 		<item name="GDGM"   title="股东购买" />
 		<item name="DBCZ"   title="打包处置" />
 	</dictionary>
+	
+	 <dictionary name="CARDTYPEJN" title="证件类型">
+		<item name="0"     title="身份证" />
+		<item name="1"     title="军官证" />
+		<item name="2"     title="护照" />
+		<item name="3"     title="香港身份证" />
+		<item name="4"     title="澳门身份证" />
+		<item name="5"     title="台湾身份证" />
+	</dictionary>
+	
 </dictionaries>
