@@ -202,6 +202,18 @@
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
 					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
+					</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -220,6 +232,18 @@
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
 					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
+					</if>
  	</select>
 	
 	<select id="findYffdktjbbFormCountList" resultType="int" 
@@ -231,6 +255,18 @@
 					 
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
+		</if>
+		
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+		
+		<if test="status != null and status != '' ">
+			AND a.state=#{status}
 		</if>
 	</select>
 	
@@ -247,6 +283,14 @@
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
 					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -263,6 +307,14 @@
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
 		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+		
 	</select>
 	
 	
@@ -274,6 +326,12 @@
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 	</select>
 	
@@ -289,6 +347,12 @@
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -306,6 +370,12 @@
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
 		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
 	</select>
 	
 	
@@ -318,6 +388,12 @@
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
 					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
 	</select>
 	
 	<!-- 贷款余额统计 -->
@@ -328,10 +404,20 @@
 				FROM (
 					 select * from dkyetjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -344,10 +430,20 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*) from dkyetjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND a.cardnum=#{certiCode}
 		</if>
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
+		</if>
+		
+		<if test="status != null and status != '' ">
+			AND a.state=#{status}
 		</if>
 	</select>
 	
@@ -355,10 +451,20 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					 select a.*,ROWNUM row_index from dkyetjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
+					</if>
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
 					</if>
 	</select>
 	
@@ -370,10 +476,16 @@
 				FROM (
 					 select * from yqdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 		 			<![CDATA[		
 							) ROW_
@@ -388,10 +500,16 @@
 					
 					 select a.*,ROWNUM row_index from yqdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 	</select>
 	
@@ -400,10 +518,16 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*) from yqdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND a.cardnum=#{certiCode}
 		</if>
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
 		</if>
 	</select>
 	
@@ -415,10 +539,16 @@
 				FROM (
 					 select * from yqhkdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 		 			<![CDATA[		
 							) ROW_
@@ -431,10 +561,16 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*) from yqhkdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND a.cardnum=#{certiCode}
 		</if>
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
 		</if>
 	</select>
 	
@@ -442,10 +578,16 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					 select a.*,ROWNUM row_index from yqhkdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 	</select>
 	
@@ -462,6 +604,12 @@
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.custManager=#{custManagerName}
 					</if>
 					
 		 			<![CDATA[		
@@ -480,6 +628,12 @@
 		<if test="customerName != null and customerName != '' ">
 		    AND a.chineseName=#{customerName}
 		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.custManager=#{custManagerName}
+		</if>
 	</select>
 	
 	<select id="getXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
@@ -490,6 +644,12 @@
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.custManager=#{custManagerName}
 					</if>
 	</select>
 </mapper>

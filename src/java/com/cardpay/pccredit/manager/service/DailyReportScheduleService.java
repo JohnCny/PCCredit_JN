@@ -102,7 +102,7 @@ public class DailyReportScheduleService {
 	 * 系统手动调度重跑
 	 */
 	public void insertWeekScheduleByDate(String dateString){
-	    log.info("【客户经理日报生成start】"+new Date()+"***********************************************");
+	    log.info("【客户经理日报生成start】"+dateString+"***********************************************");
 		try{
 			  Calendar nextdate=Calendar.getInstance(Locale.CHINA);
 			  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -144,7 +144,7 @@ public class DailyReportScheduleService {
 			this.updBtachtask("001","rb");
 			throw new RuntimeException(e);
 		}
-		log.info("【客户经理日报生成end】"+new Date()+"***********************************************");
+		log.info("【客户经理日报生成end】"+dateString+"***********************************************");
 	}
 	
 	//upd
@@ -189,7 +189,7 @@ public class DailyReportScheduleService {
 		//日报批处理周六未执行 使用管理系统手工导入功能
 		accountManagerParameterService.insertBatchTaskFlow("downLoad","下载和解压数据");//初始
 		accountManagerParameterService.insertBatchTaskFlow("incre","增量数据");//初始
-		accountManagerParameterService.insertBatchTaskFlow("whole","全量数据");//初始
+		//accountManagerParameterService.insertBatchTaskFlow("whole","全量数据");//初始
 		
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}

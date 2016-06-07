@@ -2495,6 +2495,7 @@ public class CustomerInforService {
 			for(Map<String, Object> map : datas){
 				int count = customerInforDao.findCIPERSONBASINFOCount(map);
 				if(count >0){
+					log.info("*************************updatedatas*************************");
 					//put updateMap
 					updatedatas.add(map);
 					//变更 同步本系统
@@ -2509,6 +2510,7 @@ public class CustomerInforService {
 						commonDao.updateObject(info);
 					}
 				}else{
+					log.info("*************************insertdatas*************************");
 					//put insertMap
 					insertdatas.add(map);
 					//和本系统作关联

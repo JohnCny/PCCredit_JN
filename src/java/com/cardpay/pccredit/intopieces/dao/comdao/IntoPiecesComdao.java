@@ -59,6 +59,13 @@ public class IntoPiecesComdao {
 		if(StringUtils.trimToNull(userId)!=null){
 			sql.append("and b.user_id = #{userId}");
 		}
+		
+		String custManagerIds = filter.getCustManagerIds();
+		if(StringUtils.trimToNull(custManagerIds)!=null){
+			sql.append("and b.user_id in ");
+			sql.append(custManagerIds);
+		}
+		
 		if(StringUtils.trimToNull(productName)!=null){
 			params.put("productName", productName);
 			 sql.append(" and p.product_name like '%'||#{productName}||'%' ");
@@ -530,6 +537,13 @@ public class IntoPiecesComdao {
 			params.put("userId", userId);
 			sql.append("and b.user_id = #{userId}");
 		}
+		
+		String custManagerIds = filter.getCustManagerIds();
+		if(StringUtils.trimToNull(custManagerIds)!=null){
+			sql.append("and b.user_id in ");
+		    sql.append(custManagerIds);
+		}
+		
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null

@@ -14,13 +14,19 @@
      <div class="search">
           <form id="submitForm">
             <ul>
-              <li>
+             <!--  <li>
                <span>客户名称：<input type="text" id="customerName" name="customerName" /></span>
               </li>
-              
+               -->
               <li>
-               <span>证件号码：<input type="text" id="certiCode" name="certiCode"" /></span>
+               <span>客户证件号码：<input type="text" id="certiCode" name="certiCode"" /></span>
               </li>
+               <li>
+                 <span>所属客户经理：<input type="text" id="custManagerName" name="custManagerName"" /></span>
+              </li>
+              <li>
+				<span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+			  </li>
               
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -85,7 +91,7 @@
               <td nowrap="nowrap">$!customer.money</td>
               <td nowrap="nowrap">$!customer.hkr</td>
               <td nowrap="nowrap">$!customer.hkbj</td>
-              <td nowrap="nowrap">$!customer.yhlx</td>
+              <td nowrap="nowrap">$format.formatNumber($!customer.yhlx, 5, 1)</td>
               <td nowrap="nowrap">$!customer.busimanager</td>
               <td nowrap="nowrap">$!customer.instcode</td>
             </tr>

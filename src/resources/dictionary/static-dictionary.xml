@@ -514,4 +514,14 @@
 		<item name="5"     title="台湾身份证" />
 	</dictionary>
 	
+	
+	<dictionary name="ORGANJN" title="济南机构">
+		<item name="高新支行"     title="高新支行" />
+		<item name="天桥支行"     title="天桥支行" />
+		<item name="槐荫支行"     title="槐荫支行" />
+		<item name="长清支行"     title="长清支行" />
+		<item name="历城支行"     title="历城支行" />
+		<item name="历下支行"     title="历下支行" />
+		<item name="润丰支行"     title="润丰支行" />
+	</dictionary>
 </dictionaries>

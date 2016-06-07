@@ -6,8 +6,7 @@ var validator = $($formName).validate({
 		prodCreditRange:{required:true},
 		
 		prodLimitTime:{required:true},
-		loanTimeLimit:{required:true},
-		productTypeCode:{required:true}
+		loanTimeLimit:{required:true}
      },
 messages:
     {
@@ -16,8 +15,7 @@ messages:
 		prodCreditRange:{required:"产品授信区间不能为空"},
 		
 		prodLimitTime:{required:"产品期限不能为空"},
-		loanTimeLimit:{required:"贷款期限不能为空"},
-		productTypeCode:{required:"产品种类不能为空"}
+		loanTimeLimit:{required:"贷款期限不能为空"}
    },
 	errorPlacement : function(error, element) {
 		element.after(error);

@@ -261,6 +261,7 @@ WHERE
 			ACCOUNT_MANAGER_PARAMETER P
 	)
 AND A.IS_DELETED = '0'
+AND A.USER_TYPE !='0'
 	</dictionary>
 	<dictionary name="ALLMANAGER" title="所有客户经理" timeout="10000">
 		SELECT

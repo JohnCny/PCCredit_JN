@@ -17,8 +17,20 @@ public class PostLoanFilter extends BaseQueryFilter{
 	private String zjhm;
 	private String jjh;
 	private String busiCode;
+	private String cardNum;
 	
 	
+	
+	
+	
+
+	public String getCardNum() {
+		return cardNum;
+	}
+
+	public void setCardNum(String cardNum) {
+		this.cardNum = cardNum;
+	}
 
 	public String getBusiCode() {
 		return busiCode;
