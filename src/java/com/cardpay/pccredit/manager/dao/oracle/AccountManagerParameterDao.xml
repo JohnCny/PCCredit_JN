@@ -42,7 +42,7 @@
 		LEFT JOIN SYS_USER s ON T .USER_ID = s. ID
 		WHERE
 		1 = 1
-		AND s.USER_TYPE = '1'
+		<!-- AND s.USER_TYPE = '1' -->
 		<if test="displayName != null and displayName != '' ">
 			AND s.DISPLAY_NAME=#{displayName}
 		</if>
@@ -67,7 +67,7 @@
 		INNER JOIN SYS_USER s ON T .USER_ID = s. ID
 		WHERE
 		1 = 1
-		AND s.USER_TYPE = '1'
+		<!-- AND s.USER_TYPE = '1' -->
 		<if test="displayName != null and displayName != '' ">
 			AND s.DISPLAY_NAME=#{displayName}
 		</if>
