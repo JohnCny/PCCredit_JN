@@ -170,6 +170,9 @@
 					   <if test="busiCode != null and busiCode != '' ">
 						AND trim(a.BUSICODE)=#{busiCode}
 					   </if>
+					  <if test="cardNum != null and cardNum != '' ">
+							AND trim(a.CARDNUM)=#{cardNum}
+					  </if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -182,6 +185,9 @@
 	  	<if test="busiCode != null and busiCode != '' ">
 			AND trim(a.BUSICODE)=#{busiCode}
 		</if>
+		<if test="cardNum != null and cardNum != '' ">
+			AND trim(a.CARDNUM)=#{cardNum}
+	   </if>
 	</select>
 	
 	

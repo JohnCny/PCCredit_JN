@@ -4,15 +4,21 @@ import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
 
 public class ReportFilter extends BaseQueryFilter {
 	private String certiCode;//客户证件号码
-	private String custManagerName;//所属客户经理
-	private String state;//贷款状态
-	private String orgName;//所属机构
-	
+	private String customerName;//客户 暂不用
+	private String organName;//所属机构
+	private String custManagerName;
+	private String status;
 	public String getCertiCode() {
 		return certiCode;
 	}
 	public void setCertiCode(String certiCode) {
 		this.certiCode = certiCode;
+	}
+	public String getOrganName() {
+		return organName;
+	}
+	public void setOrganName(String organName) {
+		this.organName = organName;
 	}
 	public String getCustManagerName() {
 		return custManagerName;
@@ -20,18 +26,15 @@ public class ReportFilter extends BaseQueryFilter {
 	public void setCustManagerName(String custManagerName) {
 		this.custManagerName = custManagerName;
 	}
-	public String getState() {
-		return state;
+	public String getStatus() {
+		return status;
 	}
-	public void setState(String state) {
-		this.state = state;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	public String getOrgName() {
-		return orgName;
-	}
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
+	
+	
+	
 	
 	
 }

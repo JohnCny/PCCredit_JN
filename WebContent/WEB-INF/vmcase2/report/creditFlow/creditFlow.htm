@@ -14,13 +14,21 @@
      <div class="search">
           <form id="submitForm">
             <ul>
-              <li>
+              <!-- <li>
                <span>客户名称：<input type="text" id="customerName" name="customerName" /></span>
+              </li> -->
+              
+              <li>
+               <span>客户证件号码：<input type="text" id="certiCode" name="certiCode"" /></span>
               </li>
               
               <li>
-               <span>证件号码：<input type="text" id="certiCode" name="certiCode"" /></span>
+                 <span>所属客户经理：<input type="text" id="custManagerName" name="custManagerName"" /></span>
               </li>
+              
+              <li>
+				<span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+			  </li>
               
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -90,20 +98,20 @@
             #foreach ($customer in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.appId/$!customer.customerManagerId"/>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!customer.chineseName</td>
+              <td nowrap="nowrap">$!customer.cardId</td>
+              <td nowrap="nowrap">$!customer.prodName</td>
+              <td nowrap="nowrap">$!customer.applyQuota</td>
+              <td nowrap="nowrap">$!customer.createdTime</td>
+              <td nowrap="nowrap">$!customer.clts</td>
+              <td nowrap="nowrap">$!customer.dcr</td>
+              <td nowrap="nowrap">$!customer.dcts</td>
+              <td nowrap="nowrap">$!customer.sdhrq</td>
+              <td nowrap="nowrap">$!customer.sdhts</td>
+              <td nowrap="nowrap">$!customer.dkffjjr</td>
+              <td nowrap="nowrap">$!customer.totalNum</td>
+              <td nowrap="nowrap">$!customer.custManager</td>
+              <td nowrap="nowrap">$!customer.name</td>
             </tr>
             #end
           </table>

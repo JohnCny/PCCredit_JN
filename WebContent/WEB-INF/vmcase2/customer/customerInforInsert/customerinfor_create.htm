@@ -25,7 +25,8 @@
             <tr>
 			  <td class="titlefc3"><label for="cardType">身份证件类型:</label></td>
               <td><select class="rinpsty"  id="cardType" name="cardType" >
-                  #customerInfo($request.getAttribute("cardTypeList"),"CST0000000000A")
+                 <option value=""></option>
+              		#dict("CARDTYPEJN", "0")
                   </select></td>
               <td class="titlefc3"><label for="cardId">证件号码:</label></td>
               <td><input class="rinpsty"  type="text" name="cardId" id="cardId"  value="" /></td>
@@ -57,7 +58,7 @@
 			
 			 $("#cardIde").remove();	
 				var cardType = $("select[name=cardType]").val();
-				if( cardType == "CST0000000000A"){
+				if( cardType == "0"){
 			   
 				var cardId = $("#cardId").val();
 				if(cardId !=""){
@@ -114,7 +115,7 @@
 			 
 			 $("#cardIde").remove();	
 			var cardType = $("select[name=cardType]").val();
-			if( cardType == "CST0000000000A"){
+			if( cardType == "0"){
 		   
 			var cardId = $("#cardId").val();
 			if(cardId !=""){
@@ -134,7 +135,7 @@
 		$("#cardType").change(function(){
 			 $("#cardIde").remove();
 			var cardType = $("select[name=cardType]").val();
-			if( cardType == "CST0000000000A"){
+			if( cardType == "0"){
 				var cardId = $("#cardId").val();
 				if(cardId !=""){
 				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;

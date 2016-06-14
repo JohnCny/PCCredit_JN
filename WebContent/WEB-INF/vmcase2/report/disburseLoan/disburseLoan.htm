@@ -14,14 +14,21 @@
      <div class="search">
           <form id="submitForm">
             <ul>
-              <li>
+             <!--  <li>
                <span>客户名称：<input type="text" id="customerName" name="customerName" /></span>
-              </li>
-              
+              </li> -->
               <li>
-               <span>证件号码：<input type="text" id="certiCode" name="certiCode"" /></span>
+                 <span>客户证件号码：<input type="text" id="certiCode" name="certiCode"" /></span>
               </li>
-              
+              <li>
+                 <span>所属客户经理：<input type="text" id="custManagerName" name="custManagerName"" /></span>
+              </li>
+              <li>
+              	 <span>贷款状态：<select id="status" name="status"><option value="">请选择</option>#dict("STATE","")</select></span>
+              </li>
+              <li>
+                 <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
@@ -85,7 +92,7 @@
               <td nowrap="nowrap">$!customer.money</td>
               <td nowrap="nowrap">$format.formatNumber($!customer.baserate, 5, 1)</td>
               <td nowrap="nowrap">$!customer.interest</td>
-              <td nowrap="nowrap">$!customer.state</td>
+              <td nowrap="nowrap">#dictVal("STATE", $!customer.state)</td>
               <td nowrap="nowrap">$!customer.busimanager</td>
               <td nowrap="nowrap">$!customer.name</td>
             </tr>

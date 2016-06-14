@@ -112,7 +112,29 @@
 		<result property="rowIndex" column="row_index" />
 	</resultMap>
 	
-	
+	<resultMap id="XdlctjbbFormResultMap" type="com.cardpay.pccredit.report.model.XdlctjbbForm">
+		<result property="chineseName" column="chineseName" />
+		<result property="cardId" column="cardId" />
+		<result property="prodName" column="prodName" />
+		<result property="applyQuota" column="applyQuota" />
+		<result property="createdTime" column="createdTime" />
+		<result property="clts" column="clts" />
+		<result property="dcr" column="dcr" />
+		<result property="dcts" column="dcts" />
+		<result property="sdhrq" column="sdhrq" />
+		<result property="sdhts" column="sdhts" />
+		<result property="dkffjjr" column="dkffjjr" />
+		<result property="totalNum" column="totalNum" />
+		<result property="custManager" column="custManager" />
+		<result property="name" column="name" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+
+   
+  
+
+  
+
 	<select id="findCustomerTransferList" resultMap="ResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.CustomerMoveFilter">
 					SELECT * FROM
@@ -172,21 +194,25 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from yffdktjbb
+					 select * from yffdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.cardtype=#{certiCode}
 					</if>
 								 
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
 					
-					<if test="state != null and state != '' ">
-					    AND a.state=#{state}
-					</if>
-					
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -198,41 +224,49 @@
 	
 	<select id="getYffdktjbbFormlList" resultMap="YffdktjbbFormResultMap"
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
- 		 			select a.*,ROWNUM row_index from yffdktjbb a
+ 		 			select a.*,ROWNUM row_index from yffdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.cardtype=#{certiCode}
 					</if>
 								 
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
 					
-					<if test="state != null and state != '' ">
-					    AND a.state=#{state}
-					</if>
-					
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
 					</if>
  	</select>
 	
 	<select id="findYffdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*) from yffdktjbb a
+		 select count(*) from yffdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
 			AND a.cardtype=#{certiCode}
 		</if>
 					 
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		
 		<if test="custManagerName != null and custManagerName != '' ">
-		    AND a.cname=#{custManagerName}
+			AND a.busimanager=#{custManagerName}
 		</if>
 		
-		<if test="state != null and state != '' ">
-		    AND a.state=#{state}
-		</if>
-		
-		<if test="orgName != null and orgName != '' ">
-		    AND a.name=#{orgName}
+		<if test="status != null and status != '' ">
+			AND a.state=#{status}
 		</if>
 	</select>
 	
@@ -242,16 +276,21 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from bjjdktjbb
+					 select * from bjjdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.cardtype=#{certiCode}
 					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
-					</if>
+					
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -261,30 +300,38 @@
 	
 	<select id="findbjjdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*) from bjjdktjbb a
+		 select count(*) from bjjdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
 			AND a.cardtype=#{certiCode}
 		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		
 		<if test="custManagerName != null and custManagerName != '' ">
-		    AND a.cname=#{custManagerName}
+			AND a.busimanager=#{custManagerName}
 		</if>
-		<if test="orgName != null and orgName != '' ">
-		    AND a.name=#{orgName}
-		</if>
+		
 	</select>
 	
 	
 	<select id="getbjjdktjbbFormList" resultMap="BjjdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select a.*,ROWNUM row_index from bjjdktjbb a
+					 select a.*,ROWNUM row_index from bjjdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.cardtype=#{certiCode}
 					</if>
-					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 	</select>
 	
@@ -294,15 +341,18 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from dqzzdktjbb
+					 select * from dqzzdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.cardtype=#{certiCode}
 					</if>
-					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -313,30 +363,36 @@
 	
 	<select id="findDqzzdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*) from dqzzdktjbb a
+		 select count(*) from dqzzdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
 			AND a.cardtype=#{certiCode}
 		</if>
-		<if test="custManagerName != null and custManagerName != '' ">
-		    AND a.cname=#{custManagerName}
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
 		</if>
-		<if test="orgName != null and orgName != '' ">
-		    AND a.name=#{orgName}
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.busimanager=#{custManagerName}
 		</if>
 	</select>
 	
 	
 	<select id="getDqzzdktjbbFormList" resultMap="DqzzdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select a.*,ROWNUM row_index from dqzzdktjbb a
+					 select a.*,ROWNUM row_index from dqzzdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
 						AND a.cardtype=#{certiCode}
 					</if>
-					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.busimanager=#{custManagerName}
 					</if>
 	</select>
 	
@@ -346,18 +402,22 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from dkyetjbb
+					 select * from dkyetjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
-					</if>
-					<if test="state != null and state != '' ">
-		   			   AND a.state=#{state}
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -368,35 +428,43 @@
 	
 	<select id="findDkyetjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*) from dkyetjbb a
+		 select count(*) from dkyetjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND a.cardnum=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
 		</if>
 		<if test="custManagerName != null and custManagerName != '' ">
-		    AND a.cname=#{custManagerName}
+			AND a.busimanager=#{custManagerName}
 		</if>
-		<if test="orgName != null and orgName != '' ">
-		    AND a.name=#{orgName}
-		</if>
-		<if test="state != null and state != '' ">
-		    AND a.state=#{state}
+		
+		<if test="status != null and status != '' ">
+			AND a.state=#{status}
 		</if>
 	</select>
 	
 	<select id="getDkyetjbbFormList" resultMap="DkyetjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select a.*,ROWNUM row_index from dkyetjbb a
+					 select a.*,ROWNUM row_index from dkyetjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
-					</if>
-					<if test="state != null and state != '' ">
-		   			   AND a.state=#{state}
+					
+					<if test="status != null and status != '' ">
+						AND a.state=#{status}
 					</if>
 	</select>
 	
@@ -406,17 +474,19 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from yqdktjbb
+					 select * from yqdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
-					</if>
-					
 		 			<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -428,30 +498,36 @@
 	<select id="getYqdktjbbFormList" resultMap="YqdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					
-					 select a.*,ROWNUM row_index from yqdktjbb a
+					 select a.*,ROWNUM row_index from yqdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
-					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+						AND a.busimanager=#{custManagerName}
 					</if>
 	</select>
 	
 	
 	<select id="findYqdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*) from yqdktjbb a
+		 select count(*) from yqdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND a.cardnum=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
 		</if>
 		<if test="custManagerName != null and custManagerName != '' ">
-		    AND a.cname=#{custManagerName}
-		</if>
-		<if test="orgName != null and orgName != '' ">
-		    AND a.name=#{orgName}
+			AND a.busimanager=#{custManagerName}
 		</if>
 	</select>
 	
@@ -461,17 +537,19 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					 select * from yqhkdktjbb
+					 select * from yqhkdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
-					</if>
-					
 		 			<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -481,29 +559,97 @@
 	
 	<select id="findYqhkdktjbbFormCountList" resultType="int" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-		 select count(*) from yqhkdktjbb a
+		 select count(*) from yqhkdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND a.cardnum=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.cname=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.instcode=#{organName}
 		</if>
 		<if test="custManagerName != null and custManagerName != '' ">
-		    AND a.cname=#{custManagerName}
-		</if>
-		<if test="orgName != null and orgName != '' ">
-		    AND a.name=#{orgName}
+			AND a.busimanager=#{custManagerName}
 		</if>
 	</select>
 	
 	<select id="getYqhkdktjbbFormList" resultMap="YqhkdktjbbFormResultMap" 
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
-					 select a.*,ROWNUM row_index from yqhkdktjbb a
+					 select a.*,ROWNUM row_index from yqhkdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND a.cardnum=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.cname=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.instcode=#{organName}
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
-					    AND a.cname=#{custManagerName}
+						AND a.busimanager=#{custManagerName}
 					</if>
-					<if test="orgName != null and orgName != '' ">
-					    AND a.name=#{orgName}
+	</select>
+	
+	
+	<!--信贷流程统计-->
+	<select id="findXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					 select * from xdlctjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardId=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.custManager=#{custManagerName}
+					</if>
+					
+		 			<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findXdlctjbbFormCountList" resultType="int" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+		 select count(*) from xdlctjbb a WHERE 1=1 
+		<if test="certiCode != null and certiCode != '' ">
+			AND a.cardId=#{certiCode}
+		</if>
+		<if test="customerName != null and customerName != '' ">
+		    AND a.chineseName=#{customerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+		    AND a.name=#{organName}
+		</if>
+		<if test="custManagerName != null and custManagerName != '' ">
+			AND a.custManager=#{custManagerName}
+		</if>
+	</select>
+	
+	<select id="getXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
+			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
+					 select a.*,ROWNUM row_index from xdlctjbb a WHERE 1=1 
+					<if test="certiCode != null and certiCode != '' ">
+						AND a.cardId=#{certiCode}
+					</if>
+					<if test="customerName != null and customerName != '' ">
+					    AND a.chineseName=#{customerName}
+					</if>
+					<if test="organName != null and organName != '' ">
+					    AND a.name=#{organName}
+					</if>
+					<if test="custManagerName != null and custManagerName != '' ">
+						AND a.custManager=#{custManagerName}
 					</if>
 	</select>
 </mapper>

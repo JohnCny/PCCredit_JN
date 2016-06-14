@@ -55,10 +55,17 @@ public class IntoPiecesComdao {
 		String cardId = filter.getCardId();
 		String status = filter.getStatus();
 		params.put("userId", userId);
-		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME  from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
+		StringBuffer sql = new StringBuffer("select t.id,t.customer_id,b.ty_customer_id,b.chinese_name,t.product_id,p.product_name,b.card_id,t.apply_quota,t.final_approval,t.status,t.CREATED_TIME,t.ACTUAL_QUOTE as reqlmt  from customer_application_info t,basic_customer_information b,product_attribute p where t.customer_id=b.id  and t.product_id=p.id  ");
 		if(StringUtils.trimToNull(userId)!=null){
 			sql.append("and b.user_id = #{userId}");
 		}
+		
+		String custManagerIds = filter.getCustManagerIds();
+		if(StringUtils.trimToNull(custManagerIds)!=null){
+			sql.append("and b.user_id in ");
+			sql.append(custManagerIds);
+		}
+		
 		if(StringUtils.trimToNull(productName)!=null){
 			params.put("productName", productName);
 			 sql.append(" and p.product_name like '%'||#{productName}||'%' ");
@@ -530,6 +537,13 @@ public class IntoPiecesComdao {
 			params.put("userId", userId);
 			sql.append("and b.user_id = #{userId}");
 		}
+		
+		String custManagerIds = filter.getCustManagerIds();
+		if(StringUtils.trimToNull(custManagerIds)!=null){
+			sql.append("and b.user_id in ");
+		    sql.append(custManagerIds);
+		}
+		
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null

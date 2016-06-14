@@ -62,7 +62,7 @@
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id/$!customer.tyCustomerId"/></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
-              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+              <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
             </tr>
             #end

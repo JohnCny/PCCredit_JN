@@ -62,9 +62,10 @@
               <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"
                    /></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
-              <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td>
+              <!-- <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td> -->
+               <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
-              <td nowrap="nowrap">$!customer.tyUserId</td>
+              <td nowrap="nowrap">$!customer.userId</td>
             </tr>
             #end
           </table>

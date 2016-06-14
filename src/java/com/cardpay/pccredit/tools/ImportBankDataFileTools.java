@@ -141,6 +141,9 @@ public class ImportBankDataFileTools {
 		            	value=value.replaceAll(" ","");
 	            		value=value.replace("\"", "");
 	            	}
+	            	if("$".equals(value)){
+	            		value ="";
+	            	}
 					map.put(SqlJavaNameUtil.getVariableName(column, false),value);
 	            }
 	            //map.put("id", IDGenerator.generateID());
@@ -163,8 +166,8 @@ public class ImportBankDataFileTools {
 				fis.close();
 			}
 		}
-		/*File file = new File(fileName);
-		file.delete();*/
+		File file = new File(fileName);
+		file.delete();
         return datas;
        
 	}
@@ -570,6 +573,104 @@ public class ImportBankDataFileTools {
 		file.delete();
         return datas;
 	}
+	
+	
+	/**
+	 * jn 解决换行问题
+	 */
+	public List<Map<String, Object>> parseDataFileJN(String fileName, List<DataFileConf> confList,String date) {  
+		List<Map<String, Object>> datas = new ArrayList<Map<String, Object>>();
+		
+		int bufSize = 100*1024*1024;
+		ByteBuffer rBuffer = ByteBuffer.allocate(bufSize);
+		FileChannel fcin = null;
+		try {
+			fcin = new RandomAccessFile(fileName, "r").getChannel();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} 
+        String enterStr = "$\"\n";  
+        try {  
+        	Map<String, Object> map = null;
+            String value = null, type = null, column = null;
+	        String[] dataArrs=null;
+	        
+            byte[] bs = new byte[bufSize];  
+            StringBuilder strBuf = new StringBuilder();  
+            String tempString = null;
+            
+            int count = 0;
+            while (fcin.read(rBuffer) != -1) {  
+                int rSize = rBuffer.position();  
+                rBuffer.rewind();  
+                rBuffer.get(bs);  
+                rBuffer.clear();  
+                tempString = new String(bs, 0, rSize);  
+                int fromIndex = 0;  
+                int endIndex = 0;  
+    	        
+                while ((endIndex = tempString.indexOf(enterStr, fromIndex)) != -1) {  
+                    String line = tempString.substring(fromIndex, endIndex);  
+                    line = strBuf.toString() + line;
+                    //line = new String(line.getBytes("8859_1"),"utf8");
+                    System.out.println(line);
+                    count++;
+                    System.out.println(count);
+                    dataArrs = StringUtils.splitPreserveAllTokens(line.replaceAll(SPLITE_CHARS, "±"),"±");
+		            map = new HashMap<String, Object>();
+		            boolean flag = true;
+		            for(DataFileConf dataFileConf : confList){
+		            	type = dataFileConf.getJdbcType();
+		            	column = dataFileConf.getColumn();
+		            	value ="";
+		            	
+		            	if(dataFileConf.getIndex() >= 1 && dataFileConf.getIndex() <= dataArrs.length){
+		            		value = dataArrs[dataFileConf.getIndex()-1].trim();
+		            	}
+		            	
+		            	if(DECIMAL.equals(type) || VARCHAR.equals(type)){
+		            		if(!StringUtils.isEmpty(value)){
+		            			value = value.trim();
+		            		}
+												
+							if(DECIMAL.equals(type) && StringUtils.isNotEmpty(value) && !NumberUtils.isNumber(value)){
+								log.info(value + " is not number, line string : " + line);
+								flag = false;
+								break;
+							}
+		            	}else if(DATE_STRING.equals(type)){
+		            		value = value.replaceAll("-", "");
+		            	}else if(DATE_NOW.equals(type)){
+		            		value = DateHelper.getDateFormat(new Date(), dataFileConf.getStyle());
+		            	}
+		            	if(!StringUtils.isEmpty(value)){
+			            	value=value.replaceAll(" ","");
+		            		value=value.replace("\"", "");
+		            	}
+						map.put(SqlJavaNameUtil.getVariableName(column, false),value);
+		            }
+		            if(flag){
+		            	map.put("createTime", date);
+		            	datas.add(map);
+		            }
+                    
+                    strBuf.delete(0, strBuf.length());  
+                    fromIndex = endIndex + 1;  
+                }  
+  
+                if (rSize > tempString.length()) {  
+                    strBuf.append(tempString.substring(fromIndex,  
+                            tempString.length()));  
+                } else {  
+                    strBuf.append(tempString.substring(fromIndex, rSize));  
+                }  
+            }  
+  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+        return datas;
+    } 
 }
 
 

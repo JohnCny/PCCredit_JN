@@ -504,4 +504,24 @@
 		<item name="GDGM"   title="股东购买" />
 		<item name="DBCZ"   title="打包处置" />
 	</dictionary>
+	
+	 <dictionary name="CARDTYPEJN" title="证件类型">
+		<item name="0"     title="身份证" />
+		<item name="1"     title="军官证" />
+		<item name="2"     title="护照" />
+		<item name="3"     title="香港身份证" />
+		<item name="4"     title="澳门身份证" />
+		<item name="5"     title="台湾身份证" />
+	</dictionary>
+	
+	
+	<dictionary name="ORGANJN" title="济南机构">
+		<item name="高新支行"     title="高新支行" />
+		<item name="天桥支行"     title="天桥支行" />
+		<item name="槐荫支行"     title="槐荫支行" />
+		<item name="长清支行"     title="长清支行" />
+		<item name="历城支行"     title="历城支行" />
+		<item name="历下支行"     title="历下支行" />
+		<item name="润丰支行"     title="润丰支行" />
+	</dictionary>
 </dictionaries>
