@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.service;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +53,8 @@ public class DailyReportScheduleService {
 	 */
 	public void insertWeekSchedule(){
 	    log.info("【客户经理日报生成start】"+new Date()+"***********************************************");
+	    DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
 	    //record job
 	    insBtachtask("rb","日报");
 		try{
@@ -87,10 +90,10 @@ public class DailyReportScheduleService {
 				}
 			}
 			//upd task
-			accountManagerParameterService.updBatchTaskFlow("100","rb");
+			accountManagerParameterService.updBatchTaskFlow("100","rb",dateString);
 		}catch(Exception e){
 			e.printStackTrace();
-			this.updBtachtask("001","rb");
+			this.updBtachtask("001","rb",dateString);
 			throw new RuntimeException(e);
 		}
 		log.info("【客户经理日报生成end】"+new Date()+"***********************************************");
@@ -138,23 +141,23 @@ public class DailyReportScheduleService {
 				}
 			}
 			//upd task
-			accountManagerParameterService.updBatchTaskFlow("100","rb");
+			accountManagerParameterService.updBatchTaskFlow("100","rb",dateString);
 		}catch(Exception e){
 			e.printStackTrace();
-			this.updBtachtask("001","rb");
+			this.updBtachtask("001","rb",dateString);
 			throw new RuntimeException(e);
 		}
 		log.info("【客户经理日报生成end】"+dateString+"***********************************************");
 	}
 	
 	//upd
-	public void updBtachtask(String status,String batchCode){
+	public void updBtachtask(String status,String batchCode,String dateString){
 		DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
 		transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		TransactionStatus one = txManager.getTransaction(transStatus);
 		try{
 			//upd task
-			accountManagerParameterService.updBatchTaskFlow(status,batchCode);
+			accountManagerParameterService.updBatchTaskFlow(status,batchCode,dateString);
 			txManager.commit(one);
 		}catch (Exception e){
 			txManager.rollback(one);
