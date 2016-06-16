@@ -536,11 +536,12 @@ public class AccountManagerParameterService {
 		commonDao.insertObject(task);
 	}
 	
-	public void updBatchTaskFlow(String status,String batchCode){
+	public void updBatchTaskFlow(String status,String batchCode,String dateTime){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("status", status);
 		params.put("batchCode", batchCode);
-		String sql = "update t_batch_task set status = #{status},MODIFIED_TIME = sysdate where batch_code = #{batchCode}";
+		params.put("dateTime", dateTime);
+		String sql = "update t_batch_task set status = #{status},MODIFIED_TIME = sysdate where batch_code = #{batchCode} and to_char(created_time,'yyyyMMdd') = #{dateTime} ";
 		commonDao.queryBySql(BatchTask.class, sql, params);
 	}
 	

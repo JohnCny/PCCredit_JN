@@ -69,7 +69,7 @@
               <td nowrap="nowrap">#dictVal("status", $!run.status)</td>
               <td nowrap="nowrap">
 				#if($!run.status == "001"||$!run.status == "000")
-				<a onclick="handle('$!run.id@$!run.batchCode@$!run.createdTime')" class="btn_g" href="javascript:void(0);" >处理</a>	
+				<a onclick="handle('$!run.id@$!run.batchCode@$!date.format('yyyy-MM-dd HH:mm:ss ',$!{run.createdTime})')" class="btn_g" href="javascript:void(0);" >处理</a>	
 				#end
 			  </td>
 			  <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss ',$!{run.createdTime})</td>

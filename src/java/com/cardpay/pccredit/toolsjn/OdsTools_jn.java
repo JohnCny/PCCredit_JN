@@ -59,7 +59,7 @@ public class OdsTools_jn {
 			//处理ftp文件
 			processFtpFile(sftp, files);
 			//update task
-			dailyReportScheduleService.updBtachtask("100","downLoad");
+			dailyReportScheduleService.updBtachtask("100","downLoad",dateString);
 			
 		} catch (JSchException e) {
 			e.printStackTrace();
@@ -150,7 +150,7 @@ public class OdsTools_jn {
 			//处理ftp文件
 			processFtpFileByDate(sftp, files,dateString);
 			//update task
-			dailyReportScheduleService.updBtachtask("100","downLoad");
+			dailyReportScheduleService.updBtachtask("100","downLoad",dateString);
 			
 		} catch (JSchException e) {
 			e.printStackTrace();
