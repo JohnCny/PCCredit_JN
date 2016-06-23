@@ -21,6 +21,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
+import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
 
@@ -72,6 +73,31 @@ public class JnIpadCustAppInfoXxController {
 		return json.toString();
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/browse1.json", method = { RequestMethod.GET })
+	public String browse1(HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+		//refuse
+		String status2=request.getParameter("status2");
+		//approved
+		String status3=request.getParameter("status3");
+		
+		int refuse = appInfoXxService.findCustAppInfoXxCount(userId,null,status2, null,null);
+		int approved = appInfoXxService.findCustAppInfoXxCount(userId,null,null, status3,null);
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		
+		AppInfoListVo vo = new AppInfoListVo();
+		vo.setApprovedNum(approved);
+		vo.setRefuseNum(refuse);
+		
+		result.put("result", vo);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
 	
 	/**
 	 * 查询审核通过的进件

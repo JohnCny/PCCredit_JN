@@ -36,7 +36,7 @@ public class ProductAttribute extends BusinessModel {
 	private Date prodLimitTime;
 	private String prodCreditRange;
 
-	
+	private String prodLiTime;
 	
 	public Date getProdLimitTime() {
 		return prodLimitTime;

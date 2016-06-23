@@ -39,6 +39,17 @@ public class ProductAttribute extends BusinessModel{
 	private String modifiedBy;
 	private String pictureUrl;
 	private String pictureName;
+	
+	private String prodLiTime;
+	
+	
+	
+	public String getProdLiTime() {
+		return prodLiTime;
+	}
+	public void setProdLiTime(String prodLiTime) {
+		this.prodLiTime = prodLiTime;
+	}
 	public String getId() {
 		return id;
 	}
