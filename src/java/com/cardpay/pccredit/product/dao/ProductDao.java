@@ -62,6 +62,8 @@ public interface ProductDao {
 	
 	public List<ProductAttribute> findProducts(@Param("page") int currentPage,@Param("limit") int limit);
 	
+	public List<com.cardpay.pccredit.ipad.model.ProductAttribute> findProductsPad(@Param("page") int currentPage,@Param("limit") int limit);
+	
 	public int findProductsCount();
 	
 	public List<ProductsAgencyAssociation> findProductsAgencyAssociationByOrganizationIdPage(@Param("organizationId") String organizationId,@Param("page") int currentPage,@Param("limit") int limit);

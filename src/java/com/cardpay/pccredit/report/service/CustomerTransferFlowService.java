@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.report.dao.CustomerTransferFlowDao;
+import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
+import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.model.BjjdktjbbForm;
 import com.cardpay.pccredit.report.model.CustomerMove;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
@@ -142,5 +144,12 @@ public class CustomerTransferFlowService {
 	
 	public List<XdlctjbbForm> getXdlctjbbFormList(ReportFilter filter){
 		return customerTransferFlowDao.getXdlctjbbFormList(filter);
+	}
+	
+	/**
+	 * 贷款汇总统计
+	 */
+	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter){
+		return customerTransferFlowDao.getAccLoanCollect(filter);
 	}
 }

@@ -2,8 +2,10 @@ package com.cardpay.pccredit.report.dao;
 
 import java.util.List;
 
+import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
+import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.model.BjjdktjbbForm;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.report.model.DkyetjbbForm;
@@ -49,4 +51,6 @@ public interface CustomerTransferFlowDao {
 	List<XdlctjbbForm> findXdlctjbbFormList(ReportFilter filter);
 	int findXdlctjbbFormCountList(ReportFilter filter);
 	public List<XdlctjbbForm> getXdlctjbbFormList(ReportFilter filter);
+	
+	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter);
 }
