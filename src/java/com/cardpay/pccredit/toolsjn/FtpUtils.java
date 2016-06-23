@@ -15,7 +15,7 @@ public class FtpUtils {
 	public static int bank_ftp_port = 21;						// ftp端口
 	public static String bank_ftp_username="root";  			// ftp用户名
 	public static String bank_ftp_password="1234567";  			// ftp密码
-	public static String bank_ftp_path="/xwd/";     			// ftp文件目录
+	public static String bank_ftp_path="/home/xwdftp";     	    // ftp文件目录
 	
 //	public static String bank_ftp_down_path="E://jndownload//"; // 下载本地目录
 	public static String bank_ftp_down_path="/xwd31/"; 			// 下发数据存放

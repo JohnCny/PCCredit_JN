@@ -56,7 +56,7 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
  */
 public class SFTPUtil {
 	
-	private static String host = "61.98.0.32";  
+	private static String host = "61.34.0.32";  
     private static String username="root";  
     private static String password="1234567";  
     private static int port = 22;  

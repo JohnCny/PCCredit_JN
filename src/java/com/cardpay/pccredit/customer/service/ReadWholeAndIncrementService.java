@@ -237,8 +237,6 @@ public class ReadWholeAndIncrementService {
 										log.info("*****************Gc凭证信息表 ********************");
 										saveGCLOANCREDITDataFile(gzFile+File.separator+fn,dateString);
 									}
-									 //succ
-									accountManagerParameterService.updBatchTaskFlow("100","incre",dateString);
 								}
 							}catch(Exception e){
 								//异常可throws 事务也回滚 但此处用来记录 task 是否成功
@@ -249,6 +247,8 @@ public class ReadWholeAndIncrementService {
 							} 
 						}
 						f.delete();
+						//succ
+						accountManagerParameterService.updBatchTaskFlow("100","incre",dateString);
 				}
 	        }
 	        log.info(dateString+"******************完成读取增量信息文件********************");
@@ -397,8 +397,6 @@ public class ReadWholeAndIncrementService {
 										log.info("*****************Gc凭证信息表 ********************");
 										saveGCLOANCREDITDataFile(gzFile+File.separator+fn,dateString);
 									}
-									//succ
-									accountManagerParameterService.updBatchTaskFlow("100","incre",dateString);
 								}
 							}catch(Exception e){
 								e.printStackTrace();
@@ -408,6 +406,8 @@ public class ReadWholeAndIncrementService {
 							}
 						}
 						f.delete();
+						//succ
+						accountManagerParameterService.updBatchTaskFlow("100","incre",dateString);
 				}
 	        }
 	        log.info(dateString+"******************完成手动读取增量信息文件********************");

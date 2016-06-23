@@ -57,6 +57,7 @@
 			<menu id="100060" name="overLoan"     title="逾期贷款统计报表 "     url="/overdue/loan/queryOverdueLoan.page" img="" operations="browse"/>
 			<menu id="100070" name="expectLoan"   title="预期还款贷款统计报表 "   url="/expect/loan/queryExpectLoan.page" img="" operations="browse"/>
 			<menu id="100080" name="creditFlow"   title="信贷流程统计报表 "      url="/credit/flow/queryCreditFlow.page" img="" operations="browse"/>
+			<menu id="100090" name="afterLoancollectAll" title="贷款汇总查询"  url="/report/afterLoancollect/browseAll.page" img="" operations="browse"/>
 		</menu>
 		
 		<menu id="102000" name="batchrunManagement" title="批处理管理" url="" img="images/icon_sys.gif" operations="">
