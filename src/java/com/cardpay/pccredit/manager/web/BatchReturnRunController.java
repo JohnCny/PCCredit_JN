@@ -116,9 +116,9 @@ public class BatchReturnRunController extends BaseController{
 			String param = RequestHelper.getStringValue(request, ID);
 			String batchCode = param.split("@")[1];
 			String time = param.split("@")[2];
-			DateFormat format = new SimpleDateFormat("yyyyMMdd");
-			String dateString = format.format(new Date(time));
-			
+			//DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			//String dateString = format.format(new Date(time));
+			String dateString = time.substring(0, 10).replace("-", "");
 			//下载和解压数据
 			if(batchCode.equals("downLoad")){
 				odsTools_jn.downloadFilesbyDate(dateString);

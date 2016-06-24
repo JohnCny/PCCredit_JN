@@ -11,11 +11,11 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
 public class FtpUtils {
-	public static String bank_ftp_host="61.98.0.33";  			// ftp地址
+	public static String bank_ftp_host="61.34.0.33";  			// ftp地址
 	public static int bank_ftp_port = 21;						// ftp端口
 	public static String bank_ftp_username="root";  			// ftp用户名
 	public static String bank_ftp_password="1234567";  			// ftp密码
-	public static String bank_ftp_path="/xwd/";     			// ftp文件目录
+	public static String bank_ftp_path="/home/xwdftp";     	    // ftp文件目录
 	
 //	public static String bank_ftp_down_path="E://jndownload//"; // 下载本地目录
 	public static String bank_ftp_down_path="/xwd31/"; 			// 下发数据存放

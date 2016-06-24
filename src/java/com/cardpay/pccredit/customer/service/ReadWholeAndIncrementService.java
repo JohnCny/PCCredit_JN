@@ -242,15 +242,15 @@ public class ReadWholeAndIncrementService {
 								//异常可throws 事务也回滚 但此处用来记录 task 是否成功
 								e.printStackTrace();
 								//default
-								this.updBtachtask("001","incre");
+								this.updBtachtask("001","incre",dateString);
 								throw new RuntimeException(e);
 							} 
 						}
 						f.delete();
+						//succ
+						accountManagerParameterService.updBatchTaskFlow("100","incre",dateString);
 				}
 	        }
-	        //succ
-			accountManagerParameterService.updBatchTaskFlow("100","incre");
 	        log.info(dateString+"******************完成读取增量信息文件********************");
 
 	}
@@ -401,27 +401,27 @@ public class ReadWholeAndIncrementService {
 							}catch(Exception e){
 								e.printStackTrace();
 								//default
-								this.updBtachtask("001","incre");
+								this.updBtachtask("001","incre",dateString);
 								throw new RuntimeException(e);
 							}
 						}
 						f.delete();
+						//succ
+						accountManagerParameterService.updBatchTaskFlow("100","incre",dateString);
 				}
 	        }
-	        //succ
-			accountManagerParameterService.updBatchTaskFlow("100","incre");
 	        log.info(dateString+"******************完成手动读取增量信息文件********************");
 
 	}
 	
 	//upd
-	public void updBtachtask(String status,String batchCode){
+	public void updBtachtask(String status,String batchCode,String dateString){
 		DefaultTransactionDefinition  transStatus  = new DefaultTransactionDefinition();
 		transStatus.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
 		TransactionStatus one = txManager.getTransaction(transStatus);
 		try{
 			//upd task
-			accountManagerParameterService.updBatchTaskFlow(status,batchCode);
+			accountManagerParameterService.updBatchTaskFlow(status,batchCode,dateString);
 			txManager.commit(one);
 		}catch (Exception e){
 			e.printStackTrace();
@@ -496,7 +496,7 @@ public class ReadWholeAndIncrementService {
 						}catch(Exception e){
 							e.printStackTrace();
 							//default
-							this.updBtachtask("001","whole");
+							this.updBtachtask("001","whole",dateString);
 							throw new RuntimeException(e);
 						}
 					}
@@ -504,7 +504,7 @@ public class ReadWholeAndIncrementService {
 			}
         }
         //succ
-		accountManagerParameterService.updBatchTaskFlow("100","whole");
+		accountManagerParameterService.updBatchTaskFlow("100","whole",dateString);
         log.info(dateString+"******************完成读取全量数据文件********************");
 	}
 	
@@ -568,7 +568,7 @@ public class ReadWholeAndIncrementService {
 						}catch(Exception e){
 							e.printStackTrace();
 							//default
-							this.updBtachtask("001","whole");
+							this.updBtachtask("001","whole",dateString);
 							throw new RuntimeException(e);
 						}
 					}
@@ -576,7 +576,7 @@ public class ReadWholeAndIncrementService {
 			}
         }
         //succ
-		accountManagerParameterService.updBatchTaskFlow("100","whole");
+		accountManagerParameterService.updBatchTaskFlow("100","whole",dateString);
         log.info(dateString+"******************完成手动读取全量数据文件********************");
 	}
 	

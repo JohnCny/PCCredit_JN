@@ -21,10 +21,14 @@ import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
-import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.modules.privilege.model.User;
+import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.web.RequestHelper;
 
 /**
@@ -97,7 +101,7 @@ public class JnIpadUserLoginController {
 		if(StringUtils.isNotEmpty(pageSize)){
 			limit = Integer.parseInt(pageSize);
 		}
-		List<ProductAttribute> products = userService.findProducts(page,limit);
+		List<com.cardpay.pccredit.ipad.model.ProductAttribute> products = userService.findProducts(page,limit);
 		int totalCount = userService.findProductsCount();
 		result.put("totalCount", totalCount);
 		result.put("result", products);
@@ -126,4 +130,32 @@ public class JnIpadUserLoginController {
 		return json.toString();
 	}
 	
+	/**
+	 * 查看当前客户登录信息
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/findSysUserMsg.json")
+	public String findSysUserMsg(HttpServletRequest request) {
+		String loginId = RequestHelper.getStringValue(request, "userId");
+		//查询登录用户
+		SystemUser user = userService.findUser(loginId);
+		//查询机构
+		String orgName = userService.findOrg(loginId);
+		CustomerManagerVo  customerManagerVo = new CustomerManagerVo();
+		customerManagerVo.setName(user.getDisplayName());//姓名
+		customerManagerVo.setSex(user.getGender());//性别
+		customerManagerVo.setAge(user.getAge()+"");//年龄
+		customerManagerVo.setOrg(orgName);//所属银行
+		customerManagerVo.setExternalId(user.getExternalId());//客户经理编号
+		customerManagerVo.setSxqx("");//授信权限
+		customerManagerVo.setFkze("");//放款总额
+		
+		//response
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		result.put("result", customerManagerVo);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
 }

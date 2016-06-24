@@ -48,6 +48,7 @@
 		<result property="seqno" column="SEQNO" />
 		<result property="pictureUrl" column="PICTURE_URL" />
 		<result property="pictureName" column="PICTURE_NAME" />
+		<result property="prodLiTime" column="prodLiTime" />
 	</resultMap>
 	<resultMap id="dictMap" type="com.cardpay.pccredit.product.model.FilterDict">
 		<result property="id" column="ID" />
@@ -198,7 +199,25 @@
     	SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
 		FROM (
-		select *
+		select p.*,to_char(p.PROD_LIMIT_TIME,'yyyy-MM-dd') as prodLiTime
+		from PRODUCT_ATTRIBUTE p
+		where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		) order by p.created_time desc
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    
+     <select id="findProductsPad" resultMap="ProductResultMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select p.*,to_char(p.PROD_LIMIT_TIME,'yyyy-MM-dd') as prodLiTime
 		from PRODUCT_ATTRIBUTE p
 		where 1=1
 		AND (

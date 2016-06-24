@@ -146,7 +146,8 @@
 					Dialog.message("基本信息尚未同步!");
 					return;
 				}
-				var url = "${contextPath}/customer/customerInfor_wh_ty/showInfo.page?id=" + rowid.split("_")[1];
+				//var url = "${contextPath}/customer/customerInfor_wh_ty/showInfo.page?id=" + rowid.split("_")[1];
+				var url ="${contextPath}/customer/firsthend/showInfoJn.page?id=" + rowid.split("_")[2];
 				window.location.href = url;
 			}
 			else{

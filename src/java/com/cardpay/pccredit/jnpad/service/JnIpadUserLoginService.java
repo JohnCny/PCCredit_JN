@@ -3,6 +3,7 @@ package com.cardpay.pccredit.jnpad.service;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,12 +63,12 @@ public class JnIpadUserLoginService {
 	 * @param pageSize
 	 * @return
 	 */
-	public List<ProductAttribute> findProducts(int currentPage,int pageSize){
+	public List<com.cardpay.pccredit.ipad.model.ProductAttribute> findProducts(int currentPage,int pageSize){
 		currentPage = currentPage - 1;
 		if(currentPage<0){
 			currentPage = 0;
 		}
-		return productDao.findProducts(currentPage,pageSize);
+		return productDao.findProductsPad(currentPage,pageSize);
 	}
 	
 	/**
@@ -90,4 +91,18 @@ public class JnIpadUserLoginService {
 	/*List<CustomerAppInfoIpad> findCustomerAppIntoCount(){
 		
 	}*/
+	
+	public String findOrg(String id){
+		List<HashMap<String, Object>> list = jnIpadUserLoginDao.findOrg(id);
+		if(list != null && list.size() > 0){
+			HashMap<String, Object> map = list.get(0);
+			return (String) map.get("NAME");
+		} else {
+			return null;
+		}
+	}
+	
+	public SystemUser findUser(String userId){
+		return jnIpadUserLoginDao.findUser(userId);
+	}
 }
