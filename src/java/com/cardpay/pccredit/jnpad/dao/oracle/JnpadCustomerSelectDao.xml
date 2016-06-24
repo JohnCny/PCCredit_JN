@@ -143,6 +143,46 @@
 		) ROW_)
 
 </select>
+<!-- 根据cardId 和 经理id-->
+<select id="selectCustomerInfo" resultMap="selectCustomerinfo">
+
+
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 1=1
+		<if test="cardId != null and cardId != '' ">
+		AND c.CARD_ID=#{cardId}
+		</if>
+		<if test="chineseName != null and chineseName != '' ">
+		AND c.CHINESE_NAME=#{chineseName}
+		</if>
+		 AND 
+		c.USER_ID=#{userId}
+		) ROW_)
+
+</select>
+<!-- 根据姓名 和 经理id-->
+<select id="selectCustomerInforByNameAndUserId" resultMap="selectCustomerinfo" resultType="ArrayList">
+
+
+		SELECT * FROM
+		(SELECT
+		ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 1=1
+		AND
+		c.CHINESE_NAME=#{chineseName}
+		 AND 
+		c.USER_ID=#{userId}
+		) ROW_)
+
+</select>
 <!-- 根据id -->
 <select id="selectCustomerInfoById" resultMap="selectCustomerJnInfo">
 		SELECT * FROM
@@ -171,7 +211,5 @@
 		) ROW_)
 
 </select>
-
-
 
 </mapper> 

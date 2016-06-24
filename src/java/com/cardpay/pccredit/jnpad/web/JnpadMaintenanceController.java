@@ -75,7 +75,7 @@ public class JnpadMaintenanceController extends BaseController{
 	@ResponseBody
 	@RequestMapping(value = "/ipad/product/getMaintenance.json", method = { RequestMethod.GET })
 	public String getMaintenance( @ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
-		String id =RequestHelper.getStringValue(request, "id");
+		String id =RequestHelper.getStringValue(request, "userId");
 		int userType = RequestHelper.getIntValue(request, "userType");
 		//查询下属客户经理
 		List<AccountManagerParameterForm> forms = jnpadMaintenanceService.selectSubListManagerByManagerId(id,userType);
@@ -106,6 +106,7 @@ public class JnpadMaintenanceController extends BaseController{
 
 			String id =RequestHelper.getStringValue(request, "id");
 			int userType = RequestHelper.getIntValue(request, "userType");
+			filter.setCustomerManagerId(RequestHelper.getStringValue(request, "id"));
 			List<AccountManagerParameterForm> forms = jnpadMaintenanceService.selectSubListManagerByManagerId(id,userType);
 			String customerManagerId = filter.getCustomerManagerId();
 			QueryResult<MaintenanceForm> result = null;
