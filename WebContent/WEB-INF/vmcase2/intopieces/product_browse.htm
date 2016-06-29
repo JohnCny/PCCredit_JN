@@ -34,7 +34,7 @@
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">产品名称</th>
-              <th nowrap="nowrap">授信额度</th>
+              <th nowrap="nowrap">授信额度(元)</th>
               <th nowrap="nowrap">利率区间(%)</th>
               <th nowrap="nowrap">贷款期限</th>
             </tr>
@@ -53,7 +53,7 @@
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!product.id"/></td>
               <td nowrap="nowrap">$!product.productName</td>
-              <td nowrap="nowrap">$format.formatNumber($!product.creditLine,2,100)</td>
+              <td nowrap="nowrap">$!product.creditLine</td>
               <td nowrap="nowrap">$!product.rateRange</td>
               <td nowrap="nowrap">$!product.loanTimeLimit</td>
             </tr>
