@@ -106,6 +106,7 @@ public class AddIntoPiecesService {
 	//导入调查报告
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
+		//本地测试
 		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
@@ -124,6 +125,7 @@ public class AddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
+		//本地测试
 		String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
 		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
@@ -171,7 +173,10 @@ public class AddIntoPiecesService {
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
+		//本地
 		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//指定服务器上传
+		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -180,8 +185,9 @@ public class AddIntoPiecesService {
 		LocalExcel localExcel = new LocalExcel();
 		localExcel.setProductId(productId);
 		localExcel.setCustomerId(customerId);
-		localExcel.setApplicationId(appId);
 		localExcel.setCreatedTime(new Date());
+		localExcel.setApplicationId(appId);
+		
 		if (StringUtils.trimToNull(url) != null) {
 			localExcel.setUri(url);
 		}
@@ -191,34 +197,30 @@ public class AddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		String sheet[] = readExcel.readExcelToHtml(url, true);
+		//本地测试
+		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		//服务器
+		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
 			}
 		}
 		localExcel.setSheetJy(sheet[0]);
-		localExcel.setSheetJjbs(sheet[1]);
-		localExcel.setSheetJbzk(sheet[2]);
-		localExcel.setSheetJyzt(sheet[3]);
-		localExcel.setSheetSczt(sheet[4]);
-		localExcel.setSheetDdpz(sheet[5]);
-		localExcel.setSheetFz(sheet[6]);
-		localExcel.setSheetLrjb(sheet[7]);
-		localExcel.setSheetBzlrb(sheet[8]);
-		localExcel.setSheetXjllb(sheet[9]);
-		localExcel.setSheetJc(sheet[10]);
-		localExcel.setSheetDhd(sheet[11]);
-		localExcel.setSheetGdzc(sheet[12]);
-		localExcel.setSheetYfys(sheet[13]);
-		localExcel.setSheetYsyf(sheet[14]);
-		localExcel.setSheetLsfx(sheet[15]);
+		localExcel.setSheetJbzk(sheet[1]);
+		localExcel.setSheetFz(sheet[2]);
+		localExcel.setSheetBzlrb(sheet[3]);
+		localExcel.setSheetXjllb(sheet[4]);
+		localExcel.setSheetJc(sheet[5]);
+		localExcel.setSheetGdzc(sheet[6]);
+		localExcel.setSheetYfys(sheet[7]);
+		localExcel.setSheetYsyf(sheet[8]);
+		localExcel.setJyb(sheet[9]);
+		localExcel.setApproveValue(sheet[10]);
 		
+		//添加模板
 		commonDao.insertObject(localExcel);
-		
-		//修改进件状态为已申请-audit
-		localImageDao.updateCustomerInfoStatus(appId);
-		
+	
 	}
 
 	/* 查询影像资料信息 */
@@ -250,7 +252,7 @@ public class AddIntoPiecesService {
 	
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
-		//
+		//本地测试
 		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
@@ -375,6 +377,7 @@ public class AddIntoPiecesService {
 	public void downLoadYxzlById(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
+			//本地测试
 			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 			String url = v.getUri();
 			if(url.contains("pccreditFile")){
@@ -382,6 +385,8 @@ public class AddIntoPiecesService {
 			}else{
 				SFTPUtil.download(response, v.getUri(), v.getAttachment());
 			}
+			//服务器
+			//SFTPUtil.download(response, v.getUri(), v.getAttachment());
 		}
 	}
 	
