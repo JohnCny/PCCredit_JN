@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
-import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
@@ -57,12 +56,14 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		customerinfoForm.setCardType(request.getParameter("cardType"));
 		customerinfoForm.setCardId(request.getParameter("cardId"));
 		customerinfoForm.setSpmc(request.getParameter("spmc"));
+		customerinfoForm.setTelephone(request.getParameter("phoneNumber"));
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
 				CustomerInforFilter filter = new CustomerInforFilter();
 				filter.setCardId(customerinfoForm.getCardId());
 				//身份证号码验证
+				if(customerinfoForm.getCardType()=="0"){
 				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId());
 				if(msg !="" && msg != null){
 					returnMap.put(JRadConstants.MESSAGE, msg);
@@ -73,15 +74,18 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 					JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
 					return json.toString();
 				}
+				}
 				CustomerInfo ls = jnpadCustomerSelectService.selectCustomerInfoByCardId(filter.getCardId());
 				if(ls != null ){
 					String message = "";
 					String gId = ls.getUserId();
+					String managerName = jnpadCustomerSelectService.selectManagerNameById(gId);
 					if(gId==null){
 						message = "保存失败，此客户已存在，请线下及时联系!";
 					}else{
-						message = "保存失败，此客户已挂在客户经理"+gId+"下!";
+						message = "保存失败，此客户已挂在客户经理【"+managerName+"】名下!";
 					}
+					returnMap.put(JRadConstants.MESSAGE, message);
 					//查询是否为风险名单
 //					List<RiskCustomer> riskCustomers = customerInforService.findRiskByCardId(customerinfoForm.getCardId());
 //					if(riskCustomers.size()>0){
@@ -105,12 +109,12 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 //				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				User user = new User();
 				
-				user.setId(request.getParameter("id"));
+				user.setId(request.getParameter("userId"));
 				customerinfor.setCreatedBy(user.getId());
 				customerinfor.setUserId(user.getId());
 				String id =  JnpadCustomerInfoInsertServ‎ice.customerInforInsert(customerinfor);
 				returnMap.put(RECORD_ID, id);
-				returnMap.addGlobalMessage(CREATE_SUCCESS);
+				returnMap.put(JRadConstants.MESSAGE, "添加成功");
 					}
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);

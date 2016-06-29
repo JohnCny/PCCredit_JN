@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -57,13 +58,18 @@ public class JnIpadCustMaintenanceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/custAppInfo/insertMaintenance.json", method = { RequestMethod.GET })
-	public String insertMaintenance(@ModelAttribute MaintenanceForm form, HttpServletRequest request) {
+	public String insertMaintenance( HttpServletRequest request) {
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		try{
-			Maintenance maintenance = form.createModel(Maintenance.class);
-			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-			String createdBy = user.getId();
+			Maintenance maintenance =new Maintenance();
+//			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			
+			String createdBy = request.getParameter("customerManagerId");
+			maintenance.setCustomerManagerId(request.getParameter("customerManagerId"));
 			maintenance.setCreatedBy(createdBy);
+			maintenance.setMaintenanceGoal(request.getParameter("maintenanceGoal"));
+			maintenance.setMaintenanceWay(request.getParameter("createWay"));
+			maintenance.setMaintenanceDay(request.getParameter("maintenanceDay"));
 			String customerManagerId = maintenance.getCustomerManagerId();
 
 			if(customerManagerId!=null && customerManagerId.equals(createdBy)){
