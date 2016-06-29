@@ -47,8 +47,8 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">申请金额</th>
-              <th nowrap="nowrap">最终金额</th>
-              <th nowrap="nowrap">放款额度</th>
+              <th nowrap="nowrap">审贷金额</th>
+              <th nowrap="nowrap">合同金额</th>
          <!--      <th nowrap="nowrap">证件类型</th>-->
               <th nowrap="nowrap">证件号码</th> 
               <th nowrap="nowrap">审核状态</th>
@@ -76,8 +76,8 @@
               <col width="8%"/>
             </colgroup>
            #foreach ($wait in $result.items)
-            <tr ondblclick="viewPiecesInfo();">
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status"/></td>
+            <tr onclick="showButton();">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.applyQuota</td>
               <td nowrap="nowrap">$!wait.finalApproval</td>
@@ -142,9 +142,11 @@
 	function showButton(){
 		if ($(".checkbox :checked").length == 1) {
 			var rowid = $("input[name='checkbox']:checked").val();
-			var status = rowid.split("/")[3]
-			if(status == 'nopass_replenish'){
+			var status = rowid.split("@")[6]
+			if(status == 'returnedToFirst'){
 				$("#id_bc_button").show();
+			}else{
+				$("#id_bc_button").hide();
 			}
 		}
 		else{
@@ -270,7 +272,11 @@
 		$("#id_bc_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
-				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("@")[1]+"&productId="+rowid.split("/")[2]+"&applicationId="+rowid.split("@")[0];
+				if(rowid.split("@")[6] != 'returnedToFirst'){
+					alert("审核状态非退回至客户经理!");
+					return;
+				}
+				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("@")[1]+"&productId="+rowid.split("@")[7]+"&applicationId="+rowid.split("@")[0];
 				if (opsObj.formObj) {
 	                // 回调URL
 	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");

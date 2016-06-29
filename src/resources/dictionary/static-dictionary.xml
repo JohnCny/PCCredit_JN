@@ -524,4 +524,15 @@
 		<item name="历下支行"     title="历下支行" />
 		<item name="润丰支行"     title="润丰支行" />
 	</dictionary>
+	
+	<dictionary name="CUSTTYPEJN" title="客户类型">
+		<item name="01"     title="农户" />
+		<item name="02"     title="个体工商户" />
+		<item name="03"     title="城镇居民" />
+		<item name="04"     title="学生" />
+		<item name="05"     title="军官" />
+		<item name="06"     title="港澳台同胞" />
+		<item name="07"     title="外籍人士" />
+	</dictionary>
+
 </dictionaries>

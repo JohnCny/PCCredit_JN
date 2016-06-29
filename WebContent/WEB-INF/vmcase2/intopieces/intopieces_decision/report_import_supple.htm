@@ -17,9 +17,11 @@
               <li>
                 <span><b>选择excel文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
               </li>
-              
+              <li id="uploadTip" style="display:none;color:red">
+                <span><b>上传中，请稍后... ...</b></span>
+              </li>
               <li class="search_button">
-              <input type="button" value="导入" class="search_button_inquiry" style="height: 26px; line-height: 24px;"
+              <input type="button" value="导入" class="search_button_inquiry" id="uploadButton" style="height: 26px; line-height: 24px;"
               	onclick="importCustomer('${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId=$!result.filter.customerId&productId=$!result.filter.productId&applicationId=$!result.filter.applicationId')"/>
               </li>
             </ul>

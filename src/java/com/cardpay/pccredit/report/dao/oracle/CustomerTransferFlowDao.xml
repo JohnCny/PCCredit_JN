@@ -729,7 +729,7 @@
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as increaseCusSum,
            
        (select count(distinct(b.CUSTID))
@@ -740,7 +740,7 @@
            and c.ty_customer_id = b.CUSTID
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as centreLoansSun,
            
        (select count(distinct(a.custid))
@@ -770,7 +770,7 @@
            and c.ty_customer_id = a.custid
            and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as increaseBalanceTheMonth,
            
        (select sum(a.balamt)
@@ -782,7 +782,7 @@
            and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
            and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as loanBalanceSum,
            
        (select sum(a.balamt)
@@ -793,7 +793,7 @@
            and c.ty_customer_id = a.custid
            and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as contBalace,
            
        (select sum(a.MONEY)
@@ -826,7 +826,7 @@
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
            and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as overdueBalanceTheMon,
            
        (select sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0))
@@ -835,7 +835,7 @@
            and (a.DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or a.DELAYAMTDAYS <![CDATA[ >  ]]> 0)
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
-             and b.USER_ID =#{userId}
+             and c.USER_ID =#{userId}
            </if> ) as overdueBalance,
            
        (select count(a.custid)
