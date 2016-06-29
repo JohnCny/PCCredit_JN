@@ -40,8 +40,13 @@
               <td><input class="rinpsty"  type="text" id="khmc" name="khmc" value="$!customerInfor.custid" /></td>
             </tr>
              <tr>
-              <td class="titlefc3"><label for="rh">客户分类:</label></td>
-              <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.typeid" /></td>
+              <td class="titlefc3"><label for="rh">客户类型:</label></td>
+              <!-- <td><input class="rinpsty"  type="text" id="rh" name="rh" value="$!customerInfor.custtype" /></td> -->
+              <td><select id="CUSTTYPEJN" name="CUSTTYPEJN" class="rinpsty"> 
+              		<option value=""></option>
+              		#dict("CUSTTYPEJN", $!customerInfor.custtype)
+              	  </select>
+              </td>
               <td class="titlefc3"><label for="khlx">客户名称:</label></td>
               <td><input class="rinpsty"  type="text" id="khlx" name="khlx" value="$!customerInfor.cname" /></td>
             </tr>
