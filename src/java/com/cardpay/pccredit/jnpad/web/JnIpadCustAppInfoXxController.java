@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,8 +23,15 @@ import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
+import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
+import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
+import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
+import com.cardpay.pccredit.manager.filter.RetrainingFilter;
+import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
+import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.system.model.SystemUser;
 
 /**
  * ipad interface
@@ -282,6 +290,78 @@ public class JnIpadCustAppInfoXxController {
 		return json.toString();
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/notifiyMessageNum.json", method = { RequestMethod.GET })
+	public String notifiyMessageNum(HttpServletRequest request) {
+		//当前登录用户ID
+		String userId=request.getParameter("userId");
+	
+		NotificationMessageFilter filter = new NotificationMessageFilter();
+		filter.setUserId(userId);
+		filter.setNoticeType("shendaihui");
+		int count1 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+		filter.setNoticeType("yuanshiziliao");
+		int count2 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+		filter.setNoticeType("peixun");
+		int count3 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+		filter.setNoticeType("kaocha");
+		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+		filter.setNoticeType("qita");
+		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+		
+		
+		NotifyMsgListVo vo  = new NotifyMsgListVo();
+		vo.setShendaihui(count1);
+		vo.setYuanshiziliao(count2);
+		vo.setPeixun(count3);
+		vo.setKaocha(count4);
+		vo.setQita(count5);
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(vo, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/findRetraining.json", method = { RequestMethod.GET })
+	public String findRetraining(HttpServletRequest request,RetrainingFilter filter) {
+		//分页参数
+		String currentPage=request.getParameter("currentPage");
+		String pageSize=request.getParameter("pageSize");
+		
+		int page = 0;
+		int limit = 10;
+		if(StringUtils.isNotEmpty(currentPage)){
+			page = Integer.parseInt(currentPage);
+		}
+		if(StringUtils.isNotEmpty(pageSize)){
+			limit = Integer.parseInt(pageSize);
+		}
+		filter.setPage(page);
+		filter.setLimit(limit);
+		
+		
+		List<RetrainingVo> list = appInfoXxService.findRetrainingsVoByFilter(filter);
+		for(RetrainingVo vo :list){
+			List<String> userList = appInfoXxService.findAccountManagerRetraining(vo.getId());
+			SystemUser user = appInfoXxService.findSysUserById(vo.getCreatedBy());
+			vo.setCreatedBy(user.getDisplayName());
+			vo.setUserList(userList);
+		}
+		
+		int totalCount = appInfoXxService.findRetrainingsCountByFilter(filter);
+		
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		result.put("totalCount", totalCount);
+		result.put("result", list);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
 	
 	/**
 	 * 奖励激励信息

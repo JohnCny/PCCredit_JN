@@ -2,6 +2,7 @@ package com.cardpay.pccredit.manager.dao;
 
 import java.util.List;
 
+import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.Retraining;
 import com.wicresoft.util.annotation.Mapper;
@@ -27,4 +28,6 @@ public interface RetrainingDao {
 	 * @return
 	 */
 	public int findRetrainingsCountByFilter(RetrainingFilter filter);
+	
+	public List<RetrainingVo> findRetrainingsVoByFilter(RetrainingFilter filter);
 }
