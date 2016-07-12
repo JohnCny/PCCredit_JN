@@ -53,10 +53,12 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 /** 
  * 程序的简单说明 
+ * 上传文件用 调查模板 影响资料
  */
 public class SFTPUtil {
 	
-	private static String host = "61.34.0.32";  
+	//private static String host = "61.34.0.32";//生产
+	private static String host = "61.98.0.31";//测试
     private static String username="root";  
     private static String password="1234567";  
     private static int port = 22;  
@@ -227,6 +229,80 @@ public class SFTPUtil {
 		map.put("url", path + newFileName);
 		return map;*/
     }
+    
+    /**
+     * 批量上传图片 济南
+     */
+    
+    public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id) throws Exception {
+	/*	Map<String, String> map = new HashMap<String, String>();
+		String newFileName = null;
+		String fileName = null;
+		String serverPath = Constant.FILE_PATH + batch_id + File.separator;
+		File tempDir = new File(serverPath);
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdirs();
+		}
+		// 取得上传文件
+		if (file != null && !file.isEmpty()) {
+			fileName = file.getOriginalFilename();
+			File tempFile = new File(serverPath + fileName);
+			if (tempFile.exists()) {
+				newFileName = IDGenerator.generateID() + "." + fileName.split("\\.")[1];
+			} else {
+				newFileName = fileName;
+			}
+			File localFile = new File(serverPath + newFileName);
+			file.transferTo(localFile);
+		}
+		
+		map.put("fileName", newFileName);
+		map.put("url", serverPath + newFileName);
+		return map;*/
+    	
+    	String newFileName = null;
+		String fileName = null;
+    	Map<String, String> map = new HashMap<String, String>();
+        try {  
+        	if (file != null && !file.isEmpty()) {
+	        	//连接sftp
+	        	connect();
+	        	String path = Constant.FILE_PATH + batch_id;
+	        	try {
+	    			sftp.cd(path);
+				} catch (Exception e) {
+					sftp.cd(Constant.FILE_PATH);
+					sftp.mkdir(batch_id);  
+					sftp.cd(path);
+				}
+	    			
+	    	    fileName = file.getOriginalFilename();
+				File tempFile = new File(path + File.separator + file.getOriginalFilename());
+				if (tempFile.exists()) {
+					newFileName = IDGenerator.generateID() + "."+ file.getOriginalFilename().split("\\.")[1];
+				} else {
+					newFileName = file.getOriginalFilename();
+				}
+	    	   CommonsMultipartFile cf= (CommonsMultipartFile)file;
+	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
+	           File newfile = fi.getStoreLocation();
+	    	   sftp.put(new FileInputStream(newfile), newFileName);
+	    	   System.out.println("上传成功！");
+	    	   disconnect();  
+	           
+	    	   map.put("fileName", fileName);
+	   		   map.put("url", path +File.separator+ newFileName);
+	   		   
+        	}
+        } catch (FileNotFoundException e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        } catch (SftpException e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }  
+          return map;
+	}
     
     /**
      * 下载文件
