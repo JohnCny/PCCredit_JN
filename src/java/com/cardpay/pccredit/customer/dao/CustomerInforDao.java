@@ -262,6 +262,20 @@ public interface CustomerInforDao {
 	
 	public int findCipersonfamilyCount(Map<String, Object> map);
 	public int findCIPERSONBASINFOCount(Map<String, Object> map);
+	/**
+	 * 台帐查询
+	 * @param map
+	 * @return
+	 */
+	public int findMIBUSIDATACount(Map<String, Object> map);
+	
+	/**
+	 * 借据查询
+	 * @param param1
+	 * @param param2
+	 * @return
+	 */
+	public int findFCLOANINFOCount(Map<String, Object> map);
 	
 	public int findAppAuditLog(@Param("param1") String param1,
 							   @Param("param2") String param2);

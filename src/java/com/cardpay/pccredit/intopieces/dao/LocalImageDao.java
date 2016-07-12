@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.Dcbzlr;
 import com.cardpay.pccredit.intopieces.model.Dcddpz;
 import com.cardpay.pccredit.intopieces.model.Dclrjb;
@@ -14,6 +15,9 @@ import com.cardpay.pccredit.intopieces.model.Dzjbzk;
 import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -38,4 +42,11 @@ public interface LocalImageDao {
 	
 	public Dclsfx findDclsfx(@Param("customerId") String customerId,@Param("productId") String productId);
 	
+	
+	public QzApplnAttachmentList findAttachmentListByAppId(@Param("applicationId")String applicationId);
+	public List<QzApplnAttachmentBatch> findAttachmentBatchByAppId(@Param("applicationId")String applicationId);
+	
+	
+	public List<QzApplnAttachmentDetail> findDetailByFilter(IntoPiecesFilter filter);
+	public int findDetailCountByFilter(IntoPiecesFilter filter);
 }

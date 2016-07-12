@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
@@ -61,6 +62,13 @@ public class AfterLoanCollectController extends BaseController{
 	@RequestMapping(value = "browseAll.page", method = { RequestMethod.GET })
 	public AbstractModelAndView browseAll(@ModelAttribute AccLoanCollectFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
+        IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+        
+        //如果当前客户是客户经理角色 userId is not null
+        List<AccountManagerParameter> list = customerTransferFlowService.findManager(user.getId());
+        if(list != null && list.size() > 0){
+        	filter.setUserId(user.getId());
+		}
 		
 		if(StringUtils.isEmpty(filter.getStartDate())){
 			filter.setStartDate("2016-05-01");

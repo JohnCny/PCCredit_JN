@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -24,11 +26,13 @@ import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.LocalExcelDao;
 import com.cardpay.pccredit.intopieces.dao.LocalImageDao;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.Dcbzlr;
@@ -41,6 +45,11 @@ import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
+import com.cardpay.pccredit.intopieces.model.Pic;
+import com.cardpay.pccredit.intopieces.model.PicPojo;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
@@ -390,6 +399,16 @@ public class AddIntoPiecesService {
 		}
 	}
 	
+	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
+		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
+		if(v!=null){
+			//本地测试
+			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			//服务器
+			//SFTPUtil.download(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+		}
+	}
+	
 	//save jy
 	public void saveJy(Dzjy dzjy){
 		commonDao.insertObject(dzjy);
@@ -563,5 +582,145 @@ public class AddIntoPiecesService {
 		applicationInfo.setStatus("audit");
 		commonDao.updateObject(applicationInfo);
 	}
+	
+	public QzApplnAttachmentList findAttachmentListByAppId(String applicationId) {
+		return localImageDao.findAttachmentListByAppId(applicationId);
+	}
+	
+	
+	public List<QzApplnAttachmentBatch> findAttachmentBatchByAppId(String applicationId) {
+		return localImageDao.findAttachmentBatchByAppId(applicationId);
+	}
+	
+	public void addBatchInfo(String appId){
+		QzApplnAttachmentList att = this.findAttachmentListByAppId(appId);
+		if(att != null){
+			for(int i=0 ; i<=30 ; i++){
+				if(att.getBussType().equals("1")){
+					if(att.getChkValue() != null && !att.getChkValue().equals("")){
+						if((Integer.parseInt(att.getChkValue()) & (int)Math.pow(2, i)) == (int)Math.pow(2, i)){
+							QzApplnAttachmentBatch batch = new QzApplnAttachmentBatch();
+							batch.setAttId(att.getId());
+							batch.setName(Constant.ATT_BATCH_1.get((int)Math.pow(2, i)));
+							batch.setType((int)Math.pow(2, i)+"");
+							commonDao.insertObject(batch);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	
+	public String findBatchId(String batch_id){
+		String sql = "select * from QZ_APPLN_ATTACHMENT_LIST where id in "
+				+ "(select att_id from QZ_APPLN_ATTACHMENT_BATCH where id ='"+batch_id+"')";
+		return  commonDao.queryBySql(QzApplnAttachmentList.class, sql, null).get(0).getApplicationId();
+	}
+	
+	
+	public CustomerInfor findBasicCustomerInfor(String custId){
+		String sql = "select * from basic_customer_information where id ='"+custId+"'";
+		return  commonDao.queryBySql(CustomerInfor.class, sql, null).get(0);
+	}
+	//浏览文件并缓存到服务器目录
+	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
+		//Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		String newFileName = map.get("newFileName");
+		String url = map.get("url");
+		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
+		detail.setBatchId(batch_id);
+		detail.setOriginalName(file.getOriginalFilename());
+		detail.setFileName(newFileName);
+		detail.setPicSize(file.getSize() + "");
+		detail.setUrl(url);
+		commonDao.insertObject(detail);
+	}
+	
+	public void browse_folder_complete(String batch_id,HttpServletRequest request){
+		//将is_upload 置为0
+		String sql = "update QZ_APPLN_ATTACHMENT_BATCH set is_upload = '1' where id='"+batch_id+"'";
+		commonDao.queryBySql(sql, null);
+	}
+	
+	
+	public QueryResult<QzApplnAttachmentDetail> display_detail(IntoPiecesFilter filter) {
+		List<QzApplnAttachmentDetail> pList = localImageDao.findDetailByFilter(filter);
+		int size = localImageDao.findDetailCountByFilter(filter);
+		QueryResult<QzApplnAttachmentDetail> queryResult = new QueryResult<QzApplnAttachmentDetail>(size, pList);
+		return queryResult;
+	}
+
+	public QueryResult<PicPojo> display_server(IntoPiecesFilter filter,HttpServletRequest request)  {
+		// TODO Auto-generated mfilter.getBatchId()ethod stub
+		String sql = "select * from QZ_APPLN_ATTACHMENT_BATCH where id = '"+filter.getBatchId()+"'";
+		QzApplnAttachmentBatch batch = commonDao.queryBySql(QzApplnAttachmentBatch.class, sql, null).get(0);
+		sql = "select * from QZ_APPLN_ATTACHMENT_LIST where id = '"+batch.getAttId()+"'";
+		QzApplnAttachmentList att = commonDao.queryBySql(QzApplnAttachmentList.class, sql, null).get(0);
+		
+		String xmlStr = null;
+		/*if(filter.getFirst_flag() != null && filter.getFirst_flag().equals("1")){
+			request.getSession().setAttribute(filter.getBatchId(), null);
+		}
+		String sessionTmp = request.getSession().getAttribute(filter.getBatchId())==null?null:request.getSession().getAttribute(filter.getBatchId()).toString();
+		if(StringUtils.isEmpty(sessionTmp)){
+			xmlStr = sundsHelper.queryBatchFile(filter.getBatchId(),att.getDocid() + batch.getType());
+			request.getSession().setAttribute(filter.getBatchId(), xmlStr);
+		}
+		else{
+			xmlStr = sessionTmp;
+		}
+		Pic pic = sundsHelper.parseXml(xmlStr, filter.getPage(), filter.getLimit(),request,filter.getBatchId(),filter.getFirst_flag());
+		*/
+		Pic pic = this.parseXml(xmlStr, filter.getPage(), filter.getLimit(),request,filter.getBatchId(),filter.getFirst_flag());
+		List<PicPojo> pList = pic.getPics();
+		int size = pic.getTotalCount();
+		QueryResult<PicPojo> queryResult = new QueryResult<PicPojo>(size, pList);
+		
+		return queryResult;
+	}
+	
+	public Pic parseXml(String xmlStr,int page,int limit,HttpServletRequest request,String sessionDocId,String First_flag) {
+		List<PicPojo> pics = new ArrayList<PicPojo>();
+		Pic pic = new Pic();
+		PicPojo pojo = new PicPojo();
+		pojo.setDoc_id("");
+		pojo.setFile_name("");
+		pojo.setFile_no("");
+		pojo.setUrl("/usr/pccreditFile/bda2c4cb55b9196f0155b92548790021/295641646244730420.jpg");
+		pojo.setPic_size("");
+		pics.add(pojo);
+		pic.setTotalCount(2);
+		pic.setPics(pics);
+		return pic;
+	}
+	
+	
+	
+	public void delete_batch(String batchId,HttpServletRequest request) {
+		String sql = "select * from QZ_APPLN_ATTACHMENT_BATCH where id = '"+batchId+"'";
+		QzApplnAttachmentBatch batch = commonDao.queryBySql(QzApplnAttachmentBatch.class, sql, null).get(0);
+		sql = "select * from QZ_APPLN_ATTACHMENT_LIST where id = '"+batch.getAttId()+"'";
+		QzApplnAttachmentList att = commonDao.queryBySql(QzApplnAttachmentList.class, sql, null).get(0);
+		String docId = att.getDocid() + batch.getType();
+		
+		//sundsHelper.delBatch(batchId, docId);
+		
+		//删除对应detail
+		sql = "delete from QZ_APPLN_ATTACHMENT_DETAIL where batch_id = '"+batchId+"'";
+		commonDao.queryBySql(sql, null);
+		//将att的upload_value减去对应的批次值
+		int tmp = Integer.parseInt(att.getUploadValue())-Integer.parseInt(batch.getType());
+		att.setUploadValue(tmp + "");
+		commonDao.updateObject(att);
+		//将对应batch的is_upload状态置为null
+		sql = "update QZ_APPLN_ATTACHMENT_BATCH set is_upload = null where ID = '"+batchId+"'";
+		commonDao.queryBySql(sql, null);
+		
+		
+		request.getSession().setAttribute(batchId, null);
+	}
+	
 	
 }

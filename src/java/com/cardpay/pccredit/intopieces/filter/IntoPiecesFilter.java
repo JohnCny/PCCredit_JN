@@ -19,7 +19,57 @@ public class IntoPiecesFilter extends BusinessFilter{
     
     /*added by sc 节点中文名 */
 	private String nextNodeName;
+	
+	
+	 private String isUpload;
+	 private String first_flag;
+	 private String batchId;
+	 private String viewType;//单张查看 翻页查看
+	 private String type;//操作类型
+	 private String originalName;
     
+	public String getDecision() {
+		return decision;
+	}
+	public void setDecision(String decision) {
+		this.decision = decision;
+	}
+	public String getOriginalName() {
+		return originalName;
+	}
+	public void setOriginalName(String originalName) {
+		this.originalName = originalName;
+	}
+	public String getViewType() {
+		return viewType;
+	}
+	public void setViewType(String viewType) {
+		this.viewType = viewType;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getIsUpload() {
+		return isUpload;
+	}
+	public void setIsUpload(String isUpload) {
+		this.isUpload = isUpload;
+	}
+	public String getFirst_flag() {
+		return first_flag;
+	}
+	public void setFirst_flag(String first_flag) {
+		this.first_flag = first_flag;
+	}
+	public String getBatchId() {
+		return batchId;
+	}
+	public void setBatchId(String batchId) {
+		this.batchId = batchId;
+	}
 	public String getId() {
 		return id;
 	}

@@ -15,6 +15,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -51,6 +52,9 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
+import com.cardpay.pccredit.intopieces.model.PicPojo;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
@@ -63,6 +67,7 @@ import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -82,7 +87,7 @@ import com.wicresoft.util.web.RequestHelper;
 @RequestMapping("/intopieces/intopiecesquery/*")
 @JRadModule("intopieces.intopiecesquery")
 public class IntoPiecesControl extends BaseController {
-
+	public static final Logger logger = Logger.getLogger(IntoPiecesControl.class);
 	@Autowired
 	private IntoPiecesService intoPiecesService;
 
@@ -100,6 +105,10 @@ public class IntoPiecesControl extends BaseController {
 
 	@Autowired
 	private AddIntoPiecesService addIntoPiecesService;
+	
+	@Autowired
+	private CommonDao commonDao;
+	
 	/**
 	 * 浏览页面
 	 * 
@@ -1401,5 +1410,147 @@ public class IntoPiecesControl extends BaseController {
 			}
 
 			return returnMap;
+		}
+		
+/////////////////////////////////////////=================影像资料补扫===================/////////////////////////////////////		
+		//影像
+		@ResponseBody
+		@RequestMapping(value = "sunds_ocx.page")
+		public AbstractModelAndView sunds_ocx(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/sunds_ocx", request);
+			String appId = RequestHelper.getStringValue(request, "appId");
+			String custId = RequestHelper.getStringValue(request, "custId");
+			mv.addObject("appId", appId);
+			//查找sunds_ocx信息
+			List<QzApplnAttachmentBatch> batch_ls = addIntoPiecesService.findAttachmentBatchByAppId(appId);
+			//如果batch_ls为空 说明这是以前录得件 根据chk_value增加batch记录
+			if(batch_ls == null || batch_ls.size() == 0){
+				addIntoPiecesService.addBatchInfo(appId);
+				batch_ls = addIntoPiecesService.findAttachmentBatchByAppId(appId);
+			}
+			//查询客户信息
+			CustomerInfor vo = addIntoPiecesService.findBasicCustomerInfor(custId);
+			mv.addObject("batch_ls", batch_ls);
+			mv.addObject("customerInfor",vo);
+			return mv;
+		}
+		
+		//跳转到选择图片页面
+		@ResponseBody
+		@RequestMapping(value = "browse_folder.page")
+		public AbstractModelAndView browse_folder_page(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/sunds_browse_folder", request);
+			String batch_id = RequestHelper.getStringValue(request, "batch_id");
+			String custId = RequestHelper.getStringValue(request, "custId");
+			mv.addObject("batch_id", batch_id);
+			mv.addObject("custId", custId);
+			String appId = addIntoPiecesService.findBatchId(batch_id);
+			mv.addObject("appId", appId);
+			return mv;
+		}	
+		
+		//浏览图片
+		@ResponseBody
+		@RequestMapping(value = "browse_folder.json")
+		public void browse_folder_json(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception{
+			String batch_id = RequestHelper.getStringValue(request, "batch_id");
+			//更新batch
+			addIntoPiecesService.browse_folder(file,batch_id);
+			response.getWriter().write("true");
+		}
+		
+		
+		//浏览图片完毕  开始通知后台上传影像平台
+		@ResponseBody
+		@RequestMapping(value = "browse_folder_complete.json")
+		public JRadReturnMap browse_folder_complete(HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			try {
+				String batch_id = RequestHelper.getStringValue(request, "batch_id");
+				
+				addIntoPiecesService.browse_folder_complete(batch_id,request);
+				
+				returnMap.put(JRadConstants.SUCCESS, true);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				returnMap.addGlobalMessage("保存失败");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				e.printStackTrace();
+			}
+			return returnMap;
+			
+		}	
+		
+		
+		//查看缓存的图片列表
+		@ResponseBody
+		@RequestMapping(value = "display_detail.page")
+		public AbstractModelAndView diaplsy_detail(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/sunds_display_detail", request);
+			QueryResult<QzApplnAttachmentDetail> result = addIntoPiecesService.display_detail(filter);
+			JRadPagedQueryResult<QzApplnAttachmentDetail> pagedResult = new JRadPagedQueryResult<QzApplnAttachmentDetail>(filter, result);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			
+			return mv;
+		}	
+			
+		//查看已上传的图片列表
+		@ResponseBody
+		@RequestMapping(value = "display_server.page")
+		public AbstractModelAndView display_server(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			filter.setIsUpload("1");
+			
+			QueryResult<PicPojo> result = new QueryResult<PicPojo>(0, null);;
+			try {
+				result = addIntoPiecesService.display_server(filter,request);
+				List<PicPojo> pic_ls = result.getItems();
+				for(PicPojo pojo : pic_ls){
+					String sql = "select * from QZ_APPLN_ATTACHMENT_DETAIL where id = '"+pojo.getFile_name().split("\\.")[0]+"'";
+					QzApplnAttachmentDetail details = commonDao.queryBySql(QzApplnAttachmentDetail.class, sql, null).get(0);
+					pojo.setDetail_id(pojo.getFile_name().split("\\.")[0]);
+					pojo.setFile_name(details.getOriginalName().split("\\.")[0] + "." + pojo.getFile_name().split("\\.")[1]);
+					pojo.setFile_no_local(details.getFileNo());
+				}
+			}
+			 catch (Exception e) {
+				 logger.info("批次["+filter.getBatchId()+"]解析影像平台xml异常:" ,e);
+			}
+			JRadModelAndView mv = null;
+			if(StringUtils.isNotEmpty(filter.getViewType()) && filter.getViewType().equals("1")){//按页查看
+				mv = new JRadModelAndView("/intopieces/sunds_display_server_page", request);
+			}
+			else{//单张查看
+				mv = new JRadModelAndView("/intopieces/sunds_display_server", request);
+			}
+			 
+			JRadPagedQueryResult<PicPojo> pagedResult = new JRadPagedQueryResult<PicPojo>(filter, result);
+			pagedResult.removeQueryParam("first_flag");
+			mv.addObject(PAGED_RESULT, pagedResult);
+			mv.addObject("type",filter.getType());
+			return mv;
+		}
+		
+		
+		//删除影像平台上的文件
+		@ResponseBody
+		@RequestMapping(value = "delete_batch.json")
+		public JRadReturnMap delete_batch(HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			try {
+				String batchId = RequestHelper.getStringValue(request, "batchId");
+				
+				addIntoPiecesService.delete_batch(batchId,request);
+				
+				returnMap.put(JRadConstants.SUCCESS, true);
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				returnMap.addGlobalMessage("删除失败");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				e.printStackTrace();
+			}
+			return returnMap;
+			
 		}
 }

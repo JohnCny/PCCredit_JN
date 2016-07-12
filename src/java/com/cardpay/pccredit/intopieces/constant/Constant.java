@@ -1,5 +1,8 @@
 package com.cardpay.pccredit.intopieces.constant;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Constant {
 	/* 操作失败 */
 	public static String FAIL_MESSAGE = "操作失败";
@@ -87,4 +90,25 @@ public class Constant {
 	/*进件审批记录*/
 	public static String APPSP= "1";//审批客户经理
 	public static String APPFD= "2";//辅调客户经理
+	
+	
+	public static Map<Integer,String> ATT_BATCH_1 = new HashMap<Integer,String>(){{
+		put(1,"合同扫描件");
+		put(2,"贷款申请表");
+		put(4,"调查报告");
+		put(8,"征信查询授权书");
+		put(16,"工作底稿");
+		put(32,"信用报告及联网核查");
+		put(64,"贷审小组决议表");
+		put(128,"规范操作承诺书");
+		put(256,"收入证明文件");
+		put(512,"借款人资产文件、住址证明");
+		put(1024,"借款人及共同借款人身份证复印件");
+		put(2048,"借款人及共同借款人婚姻状况证明");
+		put(4096,"担保人及配偶身份证明复印件");
+		put(8192,"担保人及配偶婚姻状况说明");
+		put(16384,"担保人收入证明");
+		put(1073741824,"其他");
+	}};
+	
 }
