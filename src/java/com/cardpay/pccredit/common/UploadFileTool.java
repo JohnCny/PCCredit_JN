@@ -377,5 +377,34 @@ public class UploadFileTool {
 	}
 
 	
+	
+	//泉州影像上传
+	public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		String newFileName = null;
+		String fileName = null;
+		String serverPath = Constant.FILE_PATH + batch_id + File.separator;
+		File tempDir = new File(serverPath);
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdirs();
+		}
+		// 取得上传文件
+		if (file != null && !file.isEmpty()) {
+			fileName = file.getOriginalFilename();
+			File tempFile = new File(serverPath + fileName);
+			if (tempFile.exists()) {
+				newFileName = IDGenerator.generateID() + "." + fileName.split("\\.")[1];
+			} else {
+				newFileName = fileName;
+			}
+			File localFile = new File(serverPath + newFileName);
+			file.transferTo(localFile);
+		}
+		
+		map.put("fileName", newFileName);
+		map.put("url", serverPath + newFileName);
+		return map;
+	}
+	
 
 }

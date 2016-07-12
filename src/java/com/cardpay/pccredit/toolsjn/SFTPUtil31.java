@@ -27,10 +27,12 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 /** 
  * 程序的简单说明 
+ * 解压 ods下发数据文件
  */
 public class SFTPUtil31 {
 	
-	private static String host = "61.34.0.31";  
+	//private static String host = "61.34.0.31";//生产 
+	private static String host = "61.98.0.32";//测试
     private static String username="root";  
     private static String password="1234567";  
     private static int port = 22;  

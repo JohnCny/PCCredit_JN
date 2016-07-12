@@ -13,6 +13,15 @@
     <result column="CREATED_TIME" property="createdTime" jdbcType="VARCHAR" />
   </resultMap>
   
+    <resultMap id="ResultMapAttachmentDetail" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail">
+		<result property="id" column="ID" />
+		<result property="batchId" column="BATCH_ID" />
+		<result property="originalName" column="ORIGINAL_NAME" />
+		<result property="picSize" column="PIC_SIZE" />
+		<result property="isUpload" column="IS_UPLOAD" />
+		<result property="fileNo" column="FILE_NO" />
+	</resultMap>
+  
   <select id="findByProductAndCustomer" resultMap="BaseResultMap">
       SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
@@ -117,5 +126,92 @@
    <select id="findDclsfx" resultType="com.cardpay.pccredit.intopieces.model.Dclsfx">
      select * from TY_DZ_MODEL_LSFX t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
   </select>
+  
+   
+    <resultMap id="ResultMapAttachmentList" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList">
+        <result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="bussType" column="BUSS_TYPE" />
+		<result property="chkValue" column="CHK_VALUE" />
+		<result property="clientName" column="CLIENT_NAME" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="shopName" column="SHOP_NAME" />
+		<result property="shopId" column="SHOP_ID" />
+		<result property="user_1" column="USER_1" />
+		<result property="user_2" column="USER_2" />
+		<result property="user_3" column="USER_3" />
+		<result property="user_4" column="USER_4" />
+		<result property="docid" column="DOCID" />
+		<result property="uploadValue" column="UPLOAD_VALUE" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+	
+    <resultMap id="ResultMapAttachmentBatch" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch">
+        <result property="id" column="ID" />
+		<result property="attId" column="ATT_ID" />
+		<result property="type" column="TYPE" />
+		<result property="name" column="NAME" />
+		<result property="folder" column="FOLDER" />
+		<result property="isUpload" column="IS_UPLOAD" />
+	</resultMap>
+   
+   <select id="findAttachmentListByAppId" resultMap="ResultMapAttachmentList">
+		 select * 
+		 from qz_appln_attachment_list   
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+	</select>
+	
+	<select id="findAttachmentBatchByAppId" resultMap="ResultMapAttachmentBatch">
+		 select * 
+		 from qz_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from qz_appln_attachment_list 
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+		)
+	</select>
+	
+	
+	<select id="findDetailByFilter" resultMap="ResultMapAttachmentDetail">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			
+	    select * from qz_appln_attachment_detail
+	    where batch_id = #{batchId}
+	    
+	    <if test="originalName != null and originalName != '' ">
+			AND ORIGINAL_NAME=#{originalName}
+		</if>
+		<if test="isUpload != null and isUpload != '' ">
+			AND IS_UPLOAD=#{isUpload}
+		</if>
+	    <![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	<select id="findDetailCountByFilter" resultType="int">
+	    select count(*) from qz_appln_attachment_detail
+	    where batch_id = #{batchId}
+	    
+	    <if test="originalName != null and originalName != '' ">
+			AND ORIGINAL_NAME=#{originalName}
+		</if>
+		<if test="isUpload != null and isUpload != '' ">
+			AND IS_UPLOAD=#{isUpload}
+		</if>
+	</select>
+	
   
 </mapper>

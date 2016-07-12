@@ -953,6 +953,15 @@
 			select count(id) from T_CIPERSONBASINFO where CUSTID = #{custid}
 	</select>
 	
+	<select id="findMIBUSIDATACount" resultType="int" parameterType="map">
+			select count(BUSICODE) from T_MIBUSIDATA where trim(BUSICODE) = #{busicode}
+	</select>
+	
+	<select id="findFCLOANINFOCount" resultType="int" parameterType="map">
+			select count(BUSICODE) from t_fcloaninfo where trim(BUSICODE) = #{busicode}
+	</select>
+	
+	
 	<select id="findAppAuditLog" resultType="int" parameterType="map">
 			select count(id) from T_APP_MANAGER_AUDIT_LOG 
 			where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}

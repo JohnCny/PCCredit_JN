@@ -1,10 +1,14 @@
 package com.cardpay.pccredit.report.service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.report.dao.CustomerTransferFlowDao;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
@@ -21,6 +25,7 @@ import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.report.model.YqhkdktjbbForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.modules.privilege.model.User;
 
 @Service
 public class CustomerTransferFlowService {
@@ -152,4 +157,13 @@ public class CustomerTransferFlowService {
 	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter){
 		return customerTransferFlowDao.getAccLoanCollect(filter);
 	}
+	
+	public List<AccountManagerParameter> findManager(String userId){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		String sql = "select * from account_manager_parameter where user_id = #{userId}";
+		List<AccountManagerParameter> list = commonDao.queryBySql(AccountManagerParameter.class, sql, params);
+		return list;
+	}
+	
 }

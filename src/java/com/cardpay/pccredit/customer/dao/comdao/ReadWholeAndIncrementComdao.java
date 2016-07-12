@@ -2148,8 +2148,315 @@ public class ReadWholeAndIncrementComdao {
 		}
 		
 		
-		
-		
+		/**
+		 * 台帐 update
+		 * @param list
+		 */
+		public void updateMIBUSIDATA(List<Map<String, Object>> list){
+			 final List<Map<String, Object>> shopsList = list;
+		        String sql =    " update  T_MIBUSIDATA set			"+
+		        		"    busicode             = ?   "+
+		        		"   ,busitype             = ?   "+
+		        		"   ,loanaccount          = ?   "+
+		        		"   ,bmcfg                = ?   "+
+		        		"   ,cnlno                = ?   "+
+		        		"   ,dtlnam               = ?   "+
+		        		"   ,custid               = ?   "+
+		        		"   ,cname                = ?   "+
+		        		"   ,typeid               = ?   "+
+		        		"   ,custtype             = ?   "+
+		        		"   ,custidtype           = ?   "+
+		        		"   ,custidno             = ?   "+
+		        		"   ,brhid                = ?   "+
+		        		"   ,custproperty         = ?   "+
+		        		"   ,unitcusttype         = ?   "+
+		        		"   ,industry             = ?   "+
+		        		"   ,city                 = ?   "+
+		        		"   ,districtcounty       = ?   "+
+		        		"   ,town                 = ?   "+
+		        		"   ,community            = ?   "+
+		        		"   ,instcode             = ?   "+
+		        		"   ,deptcode             = ?   "+
+		        		"   ,instcitycode         = ?   "+
+		        		"   ,telephone            = ?   "+
+		        		"   ,syaddr               = ?   "+
+		        		"   ,messageaddr          = ?   "+
+		        		"   ,relaman              = ?   "+
+		        		"   ,isreferagricultural  = ?   "+
+		        		"   ,isrelamanloan        = ?   "+
+		        		"   ,enterprisestatus     = ?   "+
+		        		"   ,ecoattr              = ?   "+
+		        		"   ,custscale            = ?   "+
+		        		"   ,controlmode          = ?   "+
+		        		"   ,contractno           = ?   "+
+		        		"   ,contractmoney        = ?   "+
+		        		"   ,delaytype            = ?   "+
+		        		"   ,loantype             = ?   "+
+		        		"   ,mainassure           = ?   "+
+		        		"   ,assuremanname        = ?   "+
+		        		"   ,creditlevel          = ?   "+
+		        		"   ,reqlmt               = ?   "+
+		        		"   ,isexp                = ?   "+
+		        		"   ,purposeremark        = ?   "+
+		        		"   ,busimanager          = ?   "+
+		        		"   ,assistbusimanager    = ?   "+
+		        		"   ,firstloandate        = ?   "+
+		        		"   ,repayaccount1        = ?   "+
+		        		"   ,repayaccount2        = ?   "+
+		        		"   ,repayaccount3        = ?   "+
+		        		"   ,loandate             = ?   "+
+		        		"   ,startdate            = ?   "+
+		        		"   ,orienddate           = ?   "+
+		        		"   ,enddate              = ?   "+
+		        		"   ,limit                = ?   "+
+		        		"   ,limittype            = ?   "+
+		        		"   ,ratetype             = ?   "+
+		        		"   ,floattype            = ?   "+
+		        		"   ,baserate             = ?   "+
+		        		"   ,baseratetype         = ?   "+
+		        		"   ,crtrate              = ?   "+
+		        		"   ,interest             = ?   "+
+		        		"   ,floatrate            = ?   "+
+		        		"   ,money                = ?   "+
+		        		"   ,currency             = ?   "+
+		        		"   ,balamt               = ?   "+
+		        		"   ,loanpurpose          = ?   "+
+		        		"   ,accountstate         = ?   "+
+		        		"   ,closedate            = ?   "+
+		        		"   ,notcounttype         = ?   "+
+		        		"   ,ofiveclass           = ?   "+
+		        		"   ,fiveclass            = ?   "+
+		        		"   ,otenclass            = ?   "+
+		        		"   ,tenclass             = ?   "+
+		        		"   ,pastratescale        = ?   "+
+		        		"   ,repaytype            = ?   "+
+		        		"   ,repaymethod          = ?   "+
+		        		"   ,delayamtdays         = ?   "+
+		        		"   ,delayinterestdays    = ?   "+
+		        		"   ,firstinterestdate    = ?   "+
+		        		"   ,debtinterest         = ?   "+
+		        		"   ,debtinteresttimes    = ?   "+
+		        		"   ,normalaccno          = ?   "+
+		        		"   ,normalamt            = ?   "+
+		        		"   ,dlayaccno            = ?   "+
+		        		"   ,dlayamt              = ?   "+
+		        		"   ,dlaydt               = ?   "+
+		        		"   ,tovdlyaccno          = ?   "+
+		        		"   ,tovdlyamt            = ?   "+
+		        		"   ,tovdlydt             = ?   "+
+		        		"   ,paydebt              = ?   "+
+		        		"   ,indebtamt            = ?   "+
+		        		"   ,outdebtamt           = ?   "+
+		        		"   ,debtinterestflag     = ?   "+
+		        		"   ,paymode              = ?   "+
+		        		"   ,squareinterestmode   = ?   "+
+		        		"   ,squarestate          = ?   "+
+		        		"   ,isadm                = ?   "+
+		        		"   ,admamt               = ?   "+
+		        		"   ,badtimepriod         = ?   "+
+		        		"   ,badloandate          = ?   "+
+		        		"   ,tobadloanreason      = ?   "+
+		        		"   ,draftstatus          = ?   "+
+		        		"   ,bailamt              = ?   "+
+		        		"   ,assurerate           = ?   "+
+		        		"   ,bailacc              = ?   "+
+		        		"   ,bailcurtype          = ?   "+
+		        		"   ,poundagerate         = ?   "+
+		        		"   ,poundagecurtype      = ?   "+
+		        		"   ,poundageamt          = ?   "+
+		        		"   ,remittername         = ?   "+
+		        		"   ,remitteraccount      = ?   "+
+		        		"   ,createbank           = ?   "+
+		        		"   ,createbankname       = ?   "+
+		        		"   ,payeename            = ?   "+
+		        		"   ,payeeaccbankname     = ?   "+
+		        		"   ,payeeaccbankcode     = ?   "+
+		        		"   ,payeeacc             = ?   "+
+		        		"   ,dftno                = ?   "+
+		        		"   ,autosortresult       = ?   "+
+		        		"   ,lowriskflag          = ?   "+
+		        		"   ,operdatetime         = ?   "+
+		        		"   ,item                 = ?   "+
+		        		"   ,mainbusiness         = ?   "+
+		        		"   ,operator             = ?   "+
+		        		"   ,loanmanager          = ?   "+
+		        		"   ,revoldtimes          = ?   "+
+		        		"   ,firstrevolddate      = ?   "+
+		        		"   ,loancardflag         = ?   "+
+		        		"   ,istrans              = ?   "+
+		        		"   ,firstmanager         = ?   "+
+		        		"   ,isouttableloan       = ?   "+
+		        		"   ,transout             = ?   "+
+		        		"   ,iffnongcard          = ?   "+
+		        		"   ,loanchannel          = ?   "+
+		        		"   ,repaychannel         = ?   "+
+		        		"   ,selfhelploannet      = ?   "+
+		        		"   ,selfhelprepaynet     = ?   "+
+		        		"   ,guarantornames       = ?   "+
+		        		"   ,lmtcode              = ?   "+
+		        		"   ,usemode              = ?   "+
+		        		"   ,contractusemode      = ?   "+
+		        		"   ,clreqlmt             = ?   "+
+		        		"   ,busiflag             = ?   "+
+		        		"   ,create_time          = ?   "+
+		        		" where  trim(busicode) 	      = ?   ";
+
+		        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+		            public void setValues(PreparedStatement ps,int i)throws SQLException
+		            {
+		            	 ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("busicode").toString()); 
+			        	 ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());
+			        	 ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("loanaccount").toString());
+			        	 ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("bmcfg").toString());
+			        	 ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("cnlno").toString());
+			        	 ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("dtlnam").toString());
+			        	 ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+			        	 ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("cname").toString());
+			        	 ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+			        	 ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("custtype").toString());
+			        	 ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("custidtype").toString());
+			        	 ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("custidno").toString());
+			        	 ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("brhid").toString());
+			        	 ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("custproperty").toString());
+			        	 ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("unitcusttype").toString());
+			        	 ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("industry").toString());
+			        	 ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("city").toString());
+			        	 ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("districtcounty").toString());
+			        	 ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("town").toString());
+			        	 ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("community").toString());
+			        	 ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+			        	 ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+			        	 ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+			        	 ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("telephone").toString());
+			        	 ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("syaddr").toString());
+			        	 ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("messageaddr").toString());
+			        	 ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("relaman").toString());
+			        	 ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("isreferagricultural").toString());
+			        	 ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("isrelamanloan").toString());
+			        	 ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("enterprisestatus").toString());
+			        	 ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("ecoattr").toString());
+			        	 ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("custscale").toString());
+			        	 ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("controlmode").toString());
+			        	 ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("contractno").toString());
+			        	 ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("contractmoney").toString());
+			        	 ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("delaytype").toString());
+			        	 ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("loantype").toString());
+			        	 ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("mainassure").toString());
+			        	 ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("assuremanname").toString());
+			        	 ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("creditlevel").toString());
+			        	 ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("reqlmt").toString());
+			        	 ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("isexp").toString());
+			        	 ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("purposeremark").toString());
+			        	 ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());
+			        	 ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("assistbusimanager").toString());
+			        	 ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("firstloandate").toString());
+			        	 ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("repayaccount1").toString());
+			        	 ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("repayaccount2").toString());
+			        	 ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("repayaccount3").toString());
+			        	 ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("loandate").toString());
+			        	 ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("startdate").toString());
+			        	 ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("orienddate").toString());
+			        	 ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("enddate").toString());
+			        	 ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("limit").toString());
+			        	 ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("limittype").toString());
+			        	 ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("ratetype").toString());
+			        	 ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("floattype").toString());
+			        	 ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("baserate").toString());
+			        	 ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("baseratetype").toString());
+			        	 ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("crtrate").toString());
+			        	 ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("interest").toString());
+			        	 ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("floatrate").toString());
+			        	 ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("money").toString());
+			        	 ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("currency").toString());
+			        	 ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("balamt").toString());
+			        	 ps.setString(66, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());
+			        	 ps.setString(67, ((Map<String, Object>)shopsList.get(i)).get("accountstate").toString());
+			        	 ps.setString(68, ((Map<String, Object>)shopsList.get(i)).get("closedate").toString());
+			        	 ps.setString(69, ((Map<String, Object>)shopsList.get(i)).get("notcounttype").toString());
+			        	 ps.setString(70, ((Map<String, Object>)shopsList.get(i)).get("ofiveclass").toString());
+			        	 ps.setString(71, ((Map<String, Object>)shopsList.get(i)).get("fiveclass").toString());
+			        	 ps.setString(72, ((Map<String, Object>)shopsList.get(i)).get("otenclass").toString());
+			        	 ps.setString(73, ((Map<String, Object>)shopsList.get(i)).get("tenclass").toString());
+			        	 ps.setString(74, ((Map<String, Object>)shopsList.get(i)).get("pastratescale").toString());
+			        	 ps.setString(75, ((Map<String, Object>)shopsList.get(i)).get("repaytype").toString());
+			        	 ps.setString(76, ((Map<String, Object>)shopsList.get(i)).get("repaymethod").toString());
+			        	 ps.setString(77, ((Map<String, Object>)shopsList.get(i)).get("delayamtdays").toString());
+			        	 ps.setString(78, ((Map<String, Object>)shopsList.get(i)).get("delayinterestdays").toString());
+			        	 ps.setString(79, ((Map<String, Object>)shopsList.get(i)).get("firstinterestdate").toString());
+			        	 ps.setString(80, ((Map<String, Object>)shopsList.get(i)).get("debtinterest").toString());
+			        	 ps.setString(81, ((Map<String, Object>)shopsList.get(i)).get("debtinteresttimes").toString());
+			        	 ps.setString(82, ((Map<String, Object>)shopsList.get(i)).get("normalaccno").toString());
+			        	 ps.setString(83, ((Map<String, Object>)shopsList.get(i)).get("normalamt").toString());
+			        	 ps.setString(84, ((Map<String, Object>)shopsList.get(i)).get("dlayaccno").toString());
+			        	 ps.setString(85, ((Map<String, Object>)shopsList.get(i)).get("dlayamt").toString());
+			        	 ps.setString(86, ((Map<String, Object>)shopsList.get(i)).get("dlaydt").toString());
+			        	 ps.setString(87, ((Map<String, Object>)shopsList.get(i)).get("tovdlyaccno").toString());
+			        	 ps.setString(88, ((Map<String, Object>)shopsList.get(i)).get("tovdlyamt").toString());
+			        	 ps.setString(89, ((Map<String, Object>)shopsList.get(i)).get("tovdlydt").toString());
+			        	 ps.setString(90, ((Map<String, Object>)shopsList.get(i)).get("paydebt").toString());
+			        	 ps.setString(91, ((Map<String, Object>)shopsList.get(i)).get("indebtamt").toString());
+			        	 ps.setString(92, ((Map<String, Object>)shopsList.get(i)).get("outdebtamt").toString());
+			        	 ps.setString(93, ((Map<String, Object>)shopsList.get(i)).get("debtinterestflag").toString());
+			        	 ps.setString(94, ((Map<String, Object>)shopsList.get(i)).get("paymode").toString());
+			        	 ps.setString(95, ((Map<String, Object>)shopsList.get(i)).get("squareinterestmode").toString());
+			        	 ps.setString(96, ((Map<String, Object>)shopsList.get(i)).get("squarestate").toString());
+			        	 ps.setString(97, ((Map<String, Object>)shopsList.get(i)).get("isadm").toString());
+			        	 ps.setString(98, ((Map<String, Object>)shopsList.get(i)).get("admamt").toString());
+			        	 ps.setString(99, ((Map<String, Object>)shopsList.get(i)).get("badtimepriod").toString());
+			        	 ps.setString(100, ((Map<String, Object>)shopsList.get(i)).get("badloandate").toString());
+			        	 ps.setString(101, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
+			        	 ps.setString(102, ((Map<String, Object>)shopsList.get(i)).get("draftstatus").toString());
+			        	 ps.setString(103, ((Map<String, Object>)shopsList.get(i)).get("bailamt").toString());
+			        	 ps.setString(104, ((Map<String, Object>)shopsList.get(i)).get("assurerate").toString());
+			        	 ps.setString(105, ((Map<String, Object>)shopsList.get(i)).get("bailacc").toString());
+			        	 ps.setString(106, ((Map<String, Object>)shopsList.get(i)).get("bailcurtype").toString());
+			        	 ps.setString(107, ((Map<String, Object>)shopsList.get(i)).get("poundagerate").toString());
+			        	 ps.setString(108, ((Map<String, Object>)shopsList.get(i)).get("poundagecurtype").toString());
+			        	 ps.setString(109, ((Map<String, Object>)shopsList.get(i)).get("poundageamt").toString());
+			        	 ps.setString(110, ((Map<String, Object>)shopsList.get(i)).get("remittername").toString());
+			        	 ps.setString(111, ((Map<String, Object>)shopsList.get(i)).get("remitteraccount").toString());
+			        	 ps.setString(112, ((Map<String, Object>)shopsList.get(i)).get("createbank").toString());
+			        	 ps.setString(113, ((Map<String, Object>)shopsList.get(i)).get("createbankname").toString());
+			        	 ps.setString(114, ((Map<String, Object>)shopsList.get(i)).get("payeename").toString());
+			        	 ps.setString(115, ((Map<String, Object>)shopsList.get(i)).get("payeeaccbankname").toString());
+			        	 ps.setString(116, ((Map<String, Object>)shopsList.get(i)).get("payeeaccbankcode").toString());
+			        	 ps.setString(117, ((Map<String, Object>)shopsList.get(i)).get("payeeacc").toString());
+			        	 ps.setString(118, ((Map<String, Object>)shopsList.get(i)).get("dftno").toString());
+			        	 ps.setString(119, ((Map<String, Object>)shopsList.get(i)).get("autosortresult").toString());
+			        	 ps.setString(120, ((Map<String, Object>)shopsList.get(i)).get("lowriskflag").toString());
+			        	 ps.setString(121, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+			        	 ps.setString(122, ((Map<String, Object>)shopsList.get(i)).get("item").toString());
+			        	 ps.setString(123, ((Map<String, Object>)shopsList.get(i)).get("mainbusiness").toString());
+			        	 ps.setString(124, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+			        	 ps.setString(125, ((Map<String, Object>)shopsList.get(i)).get("loanmanager").toString());
+			        	 ps.setString(126, ((Map<String, Object>)shopsList.get(i)).get("revoldtimes").toString());
+			        	 ps.setString(127, ((Map<String, Object>)shopsList.get(i)).get("firstrevolddate").toString());
+			        	 ps.setString(128, ((Map<String, Object>)shopsList.get(i)).get("loancardflag").toString());
+			        	 ps.setString(129, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+			        	 ps.setString(130, ((Map<String, Object>)shopsList.get(i)).get("firstmanager").toString());
+			        	 ps.setString(131, ((Map<String, Object>)shopsList.get(i)).get("isouttableloan").toString());
+			        	 ps.setString(132, ((Map<String, Object>)shopsList.get(i)).get("transout").toString());
+			        	 ps.setString(133, ((Map<String, Object>)shopsList.get(i)).get("iffnongcard").toString());
+			        	 ps.setString(134, ((Map<String, Object>)shopsList.get(i)).get("loanchannel").toString());
+			        	 ps.setString(135, ((Map<String, Object>)shopsList.get(i)).get("repaychannel").toString());
+			        	 ps.setString(136, ((Map<String, Object>)shopsList.get(i)).get("selfhelploannet").toString());
+			        	 ps.setString(137, ((Map<String, Object>)shopsList.get(i)).get("selfhelprepaynet").toString());
+			        	 ps.setString(138, ((Map<String, Object>)shopsList.get(i)).get("guarantornames").toString());
+			        	 ps.setString(139, ((Map<String, Object>)shopsList.get(i)).get("lmtcode").toString());
+			        	 ps.setString(140, ((Map<String, Object>)shopsList.get(i)).get("usemode").toString());
+			        	 ps.setString(141, ((Map<String, Object>)shopsList.get(i)).get("contractusemode").toString());
+			        	 ps.setString(142, ((Map<String, Object>)shopsList.get(i)).get("clreqlmt").toString());
+			        	 ps.setString(143, ((Map<String, Object>)shopsList.get(i)).get("busiflag").toString());
+			        	 ps.setString(144, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+			        	 ps.setString(145, ((Map<String, Object>)shopsList.get(i)).get("busicode").toString()); 
+		            }
+		            public int getBatchSize()
+		            {
+		                return shopsList.size();
+		            }
+		        });
+			
+		}
 		
 		
 		
@@ -2907,6 +3214,248 @@ public class ReadWholeAndIncrementComdao {
 		
 		
 		
+	 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	//GC合同多方信息表  增量
+	public void insertGCCONTRACTMULTICLIENT(List<Map<String, Object>> list){
+	   final List<Map<String, Object>> shopsList = list;
+	   String sql =   "insert into T_GCCONTRACTMULTICLIENT(keycode,         "+
+					   "                                keytype,            "+
+					   "                                gcbusinesslevel,    "+
+					   "                                gcsyslevel,         "+
+					   "                                sequenceno,         "+
+					   "                                clienttype,         "+
+					   "                                custid,             "+
+					   "                                cname,              "+
+					   "                                isprimaryclient,    "+
+					   "                                spokesman,          "+
+					   "                                inkdate,            "+
+					   "                                keyeffectedstate,   "+
+					   "                                keydatestate,       "+
+					   "                                editionno,          "+
+					   "                                instcitycode,       "+
+					   "                                operdatetime,       "+
+					   "                                istrans,            "+
+					   "                                create_time)        "+
+					   "    values(?,                                       "+
+					   "    			 ?,                                 "+
+					   "    			 ?,                                 "+
+					   "    			 ?,                                 "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?,                                       "+
+					   "           ?)                                       ";
 
+	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+	        public void setValues(PreparedStatement ps,int i)throws SQLException
+	           {
+	        	ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("keycode").toString());     
+	        	ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("keytype").toString());         
+	        	ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("gcbusinesslevel").toString());          
+	        	ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("gcsyslevel").toString());   
+	        	ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("sequenceno").toString());       
+	        	ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("clienttype").toString()); 
+	        	ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("custid").toString()); 
+	        	ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("cname").toString());     
+	        	ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("isprimaryclient").toString());   
+	        	ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("spokesman").toString());   
+	        	ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("inkdate").toString());     
+	        	ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("keyeffectedstate").toString());      
+	        	ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("keydatestate").toString());      
+	        	ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("editionno").toString());  
+	        	ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());  
+	        	ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());      
+	        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+	        	ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString()); 
+	           }
+	           public int getBatchSize()
+	           {
+	            return shopsList.size();
+	           }
+	     });
+	}
+	
+	
+	
+	
+	//GC合同授信品种信息表 
+	public void insertGCCREDITTYPEINFORMATION(List<Map<String, Object>> list){
+	   final List<Map<String, Object>> shopsList = list;
+	   String sql ="insert into T_GCCREDITTYPEINFORMATION(keycode,													"+									
+			   "																		  keytype, 					"+									
+			   "																		  gcbusinesslevel,          "+
+			   "																		  gcsyslevel,               "+
+			   "																		  sequenceno,               "+
+			   "																		  custid,                   "+
+			   "																		  upkeycode,                "+
+			   "																		  upkeytype,                "+
+			   "																		  upgcbusinesslevel,        "+
+			   "																		  upgcsyslevel,             "+
+			   "																		  busitype,                 "+
+			   "																		  money,                    "+
+			   "																		  currency,                 "+
+			   "																		  startdate,                "+
+			   "																		  enddate,                  "+
+			   "																		  limit,                    "+
+			   "																		  limitunit,                "+
+			   "																		  lastdate,                 "+
+			   "																		  usedmethod,               "+
+			   "																		  islimitcontrol,           "+
+			   "																		  busicontrolsequence,      "+
+			   "																		  interest,                 "+
+			   "																		  interestunit,             "+
+			   "																		  keyeffectedstate,         "+
+			   "																		  keydatestate,             "+
+			   "																		  editionno,                "+
+			   "																		  appointedaccount,         "+
+			   "																		  ratetype,                 "+
+			   "																		  floatrate,                "+
+			   "																		  rateajustcycle,           "+
+			   "																		  repaymode,                "+
+			   "																		  repaymethod,              "+
+			   "																		  loanpurpose,              "+
+			   "																		  loanpurposeremark,        "+
+			   "																		  loancardid,               "+
+			   "																		  busibalmoney,             "+
+			   "																		  simulatekeycode,          "+
+			   "																		  deptcode,                 "+
+			   "																		  instcode,                 "+
+			   "																		  instcitycode,             "+
+			   "																		  operdatetime,             "+
+			   "																		  operator,                 "+
+			   "																		  istrans,                  "+
+			   "																		  busimanager,              "+
+			   "																		  create_time)              "+
+			   "			values(?,                                                 		  "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?,                                                "+
+			   "							?)                                                ";
+
+
+	      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+	        public void setValues(PreparedStatement ps,int i)throws SQLException
+	           {
+	        	 ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("keycode").toString());
+	        	 ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("keytype").toString());
+	        	 ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("gcbusinesslevel").toString());
+	        	 ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("gcsyslevel").toString());
+	        	 ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("sequenceno").toString());
+	        	 ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+	        	 ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("upkeycode").toString());
+	        	 ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("upkeytype").toString());
+	        	 ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("upgcbusinesslevel").toString());
+	        	 ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("upgcsyslevel").toString());
+	        	 ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());
+	        	 ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("money").toString());
+	        	 ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("currency").toString());
+	        	 ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("startdate").toString());
+	        	 ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("enddate").toString());
+	        	 ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("limit").toString());
+	        	 ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("limitunit").toString());
+	        	 ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("lastdate").toString());
+	        	 ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("usedmethod").toString());
+	        	 ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("islimitcontrol").toString());
+	        	 ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("busicontrolsequence").toString());
+	        	 ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("interest").toString());
+	        	 ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("interestunit").toString());
+	        	 ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("keyeffectedstate").toString());
+	        	 ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("keydatestate").toString());
+	        	 ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("editionno").toString());
+	        	 ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("appointedaccount").toString());
+	        	 ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("ratetype").toString());
+	        	 ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("floatrate").toString());
+	        	 ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("rateajustcycle").toString());
+	        	 ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("repaymode").toString());
+	        	 ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("repaymethod").toString());
+	        	 ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());
+	        	 ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("loanpurposeremark").toString());
+	        	 ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("loancardid").toString());
+	        	 ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("busibalmoney").toString());
+	        	 ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("simulatekeycode").toString());
+	        	 ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+	        	 ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+	        	 ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+	        	 ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+	        	 ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());
+	        	 ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+	        	 ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());
+	        	 ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+	           }
+
+	           public int getBatchSize()
+	           {
+	            return shopsList.size();
+	           }
+	     });
+	}
+	
+	
 
 }
