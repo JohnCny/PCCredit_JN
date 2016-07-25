@@ -284,7 +284,9 @@ public interface CustomerInforDao {
 								  @Param("param2") String param2,
 								  @Param("user1")  String user1,
 								  @Param("user2")  String user2,
-								  @Param("user3")  String user3);
+								  @Param("user3")  String user3,
+								  @Param("examineAmount")  String examineAmount,
+								  @Param("lv")  String lv);
 	
 	//测试 insertMain
 	public int insertMain(Map<String, Object> map);

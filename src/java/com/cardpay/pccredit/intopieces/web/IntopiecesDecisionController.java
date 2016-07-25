@@ -114,7 +114,7 @@ public class IntopiecesDecisionController extends BaseController {
 		return mv;
 	}
 	
-	//初审进件
+	//初审进件zjBrowse.page
 	@ResponseBody
 	@RequestMapping(value = "csBrowse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -140,7 +140,7 @@ public class IntopiecesDecisionController extends BaseController {
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
 		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
-		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId);
+		List<AppManagerAuditLog> appManagerAuditLog = productService.findAppManagerAuditLog(appId,"1");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
 		
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision", request);
@@ -230,6 +230,141 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("appId", appId);
 		return mv;
 	}
+	
+	
+	
+	
+	
+		//显示部门审批
+		@ResponseBody
+		@RequestMapping(value = "input_decision_bumeng.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView input_decision_bumeng(HttpServletRequest request) {
+			String appId = request.getParameter("appId");
+			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+			CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+			ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+			List<AppManagerAuditLog> appManagerAuditLog1 = productService.findAppManagerAuditLog(appId,"1");
+			List<AppManagerAuditLog> appManagerAuditLog2 = productService.findAppManagerAuditLog(appId,"2");
+			CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+			
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision_bumeng", request);
+			mv.addObject("customerApplicationInfo", customerApplicationInfo);
+			mv.addObject("producAttribute", producAttribute);
+			mv.addObject("customerApplicationProcess", processForm);
+			mv.addObject("appManagerAuditLog1", appManagerAuditLog1.get(0));
+			mv.addObject("appManagerAuditLog2", appManagerAuditLog2.get(0));
+			mv.addObject("custManagerId", customerInfor.getUserId());
+			return mv;
+		}
+		
+		
+		//显示总经理审批
+		@ResponseBody
+		@RequestMapping(value = "input_decision_zjl.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView input_decision_zjl(HttpServletRequest request) {
+			String appId = request.getParameter("appId");
+			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+			CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+			ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+			List<AppManagerAuditLog> appManagerAuditLog1 = productService.findAppManagerAuditLog(appId,"1");
+			List<AppManagerAuditLog> appManagerAuditLog2 = productService.findAppManagerAuditLog(appId,"2");
+			List<AppManagerAuditLog> appManagerAuditLog3 = productService.findAppManagerAuditLog(appId,"3");
+			CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+			
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision_zjl", request);
+			mv.addObject("customerApplicationInfo", customerApplicationInfo);
+			mv.addObject("producAttribute", producAttribute);
+			mv.addObject("customerApplicationProcess", processForm);
+			mv.addObject("appManagerAuditLog1", appManagerAuditLog1.get(0));
+			mv.addObject("appManagerAuditLog2", appManagerAuditLog2.get(0));
+			mv.addObject("appManagerAuditLog3", appManagerAuditLog3.get(0));
+			mv.addObject("custManagerId", customerInfor.getUserId());
+			return mv;
+		}
+		
+		//显示总经理审批
+		@ResponseBody
+		@RequestMapping(value = "input_decision_hz.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView input_decision_hz(HttpServletRequest request) {
+			String appId = request.getParameter("appId");
+			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+			CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+			ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+			List<AppManagerAuditLog> appManagerAuditLog1 = productService.findAppManagerAuditLog(appId,"1");
+			List<AppManagerAuditLog> appManagerAuditLog2 = productService.findAppManagerAuditLog(appId,"2");
+			List<AppManagerAuditLog> appManagerAuditLog3 = productService.findAppManagerAuditLog(appId,"3");
+			List<AppManagerAuditLog> appManagerAuditLog4 = productService.findAppManagerAuditLog(appId,"4");
+			CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+			
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/input_decision_hz", request);
+			mv.addObject("customerApplicationInfo", customerApplicationInfo);
+			mv.addObject("producAttribute", producAttribute);
+			mv.addObject("customerApplicationProcess", processForm);
+			mv.addObject("appManagerAuditLog1", appManagerAuditLog1.get(0));
+			mv.addObject("appManagerAuditLog2", appManagerAuditLog2.get(0));
+			mv.addObject("appManagerAuditLog3", appManagerAuditLog3.get(0));
+			mv.addObject("appManagerAuditLog4", appManagerAuditLog4.get(0));
+			mv.addObject("custManagerId", customerInfor.getUserId());
+			return mv;
+		}
+	
+	
+	
+		//部长审批
+		@ResponseBody
+		@RequestMapping(value = "bzBrowse.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView bzBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			filter.setNextNodeName("部长审批");
+			filter.setUserId(userId);
+			QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecison(filter);
+			JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse3", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
+	
+	
+		//零售业务部总经理审批
+		@ResponseBody
+		@RequestMapping(value = "zjBrowse.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView zjBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			filter.setNextNodeName("零售业务部负责人审批");
+			filter.setUserId(userId);
+			QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecison(filter);
+			JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse4", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
+		
+		
+		//行长审批
+		@ResponseBody
+		@RequestMapping(value = "hzBrowse.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView hzBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			filter.setNextNodeName("行长审批");
+			filter.setUserId(userId);
+			QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecison(filter);
+			JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/intopieces/intopieces_decision/intopieces_browse5", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
 }
 
 	

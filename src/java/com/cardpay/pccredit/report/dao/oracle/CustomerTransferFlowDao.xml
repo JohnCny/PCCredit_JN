@@ -729,6 +729,7 @@
          where trim(a.KEYCODE) = b.KEYCODE
            and c.ty_customer_id = b.CUSTID
            and a.keyeffectedstate ='1'
+           and b.keyeffectedstate ='1'
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
@@ -742,6 +743,7 @@
          where trim(a.KEYCODE) = b.KEYCODE
            and c.ty_customer_id = b.CUSTID
            and a.keyeffectedstate ='1'
+           and b.keyeffectedstate ='1'
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
              and c.USER_ID =#{userId}
@@ -802,6 +804,7 @@
          where trim(a.KEYCODE) = c.KEYCODE
            and c.custid = b.ty_customer_id
            and a.keyeffectedstate ='1'
+           and c.keyeffectedstate ='1'
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
@@ -815,6 +818,7 @@
          where trim(a.KEYCODE) = c.KEYCODE
            and c.custid = b.ty_customer_id
            and a.keyeffectedstate ='1'
+           and c.keyeffectedstate ='1'
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
              and b.USER_ID =#{userId}

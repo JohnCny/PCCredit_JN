@@ -55,6 +55,7 @@ import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.PicPojo;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
@@ -149,7 +150,10 @@ public class IntoPiecesControl extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		QueryResult<IntoPieces> result=null;
 		String userId = user.getId();
-		filter.setUserId(userId);
+		//客户经理
+		if(user.getUserType() ==1){
+			filter.setUserId(userId);
+		}
 		result = intoPiecesService.findintoPiecesByFilter(filter);
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
 				filter, result);
@@ -1421,11 +1425,20 @@ public class IntoPiecesControl extends BaseController {
 			String appId = RequestHelper.getStringValue(request, "appId");
 			String custId = RequestHelper.getStringValue(request, "custId");
 			mv.addObject("appId", appId);
+			
+			QzApplnAttachmentList att = addIntoPiecesService.findAttachmentListByAppId(appId);
+			if(att==null){
+				QzApplnAttachmentList attlist = new QzApplnAttachmentList();
+				attlist.setApplicationId(appId);
+				attlist.setCustomerId(custId);
+				attlist.setChkValue("59");
+				commonDao.insertObject(attlist);
+			}
 			//查找sunds_ocx信息
 			List<QzApplnAttachmentBatch> batch_ls = addIntoPiecesService.findAttachmentBatchByAppId(appId);
 			//如果batch_ls为空 说明这是以前录得件 根据chk_value增加batch记录
 			if(batch_ls == null || batch_ls.size() == 0){
-				addIntoPiecesService.addBatchInfo(appId);
+				addIntoPiecesService.addBatchInfo(appId,custId);
 				batch_ls = addIntoPiecesService.findAttachmentBatchByAppId(appId);
 			}
 			//查询客户信息
@@ -1501,34 +1514,27 @@ public class IntoPiecesControl extends BaseController {
 		public AbstractModelAndView display_server(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
 			filter.setIsUpload("1");
+			String batchId = request.getParameter("batchId");
+			String currentPage=request.getParameter("currentPage");
+			String pageSize=request.getParameter("pageSize");
+			int page = 0;//rowNum
+			int limit = 1;//每页显示图片数
+			if(StringUtils.isNotEmpty(currentPage)){
+				page = Integer.parseInt(currentPage);
+			}
+			if(StringUtils.isNotEmpty(pageSize)){
+				limit = Integer.parseInt(pageSize);
+			}
+			List<QzApplnAttachmentDetail> detaillist = addIntoPiecesService.findQzApplnDetail(page,limit,batchId);
+			int totalCount = addIntoPiecesService.findQzApplnDetailCount(batchId);
 			
-			QueryResult<PicPojo> result = new QueryResult<PicPojo>(0, null);;
-			try {
-				result = addIntoPiecesService.display_server(filter,request);
-				List<PicPojo> pic_ls = result.getItems();
-				for(PicPojo pojo : pic_ls){
-					String sql = "select * from QZ_APPLN_ATTACHMENT_DETAIL where id = '"+pojo.getFile_name().split("\\.")[0]+"'";
-					QzApplnAttachmentDetail details = commonDao.queryBySql(QzApplnAttachmentDetail.class, sql, null).get(0);
-					pojo.setDetail_id(pojo.getFile_name().split("\\.")[0]);
-					pojo.setFile_name(details.getOriginalName().split("\\.")[0] + "." + pojo.getFile_name().split("\\.")[1]);
-					pojo.setFile_no_local(details.getFileNo());
-				}
-			}
-			 catch (Exception e) {
-				 logger.info("批次["+filter.getBatchId()+"]解析影像平台xml异常:" ,e);
-			}
 			JRadModelAndView mv = null;
-			if(StringUtils.isNotEmpty(filter.getViewType()) && filter.getViewType().equals("1")){//按页查看
-				mv = new JRadModelAndView("/intopieces/sunds_display_server_page", request);
-			}
-			else{//单张查看
-				mv = new JRadModelAndView("/intopieces/sunds_display_server", request);
-			}
-			 
-			JRadPagedQueryResult<PicPojo> pagedResult = new JRadPagedQueryResult<PicPojo>(filter, result);
-			pagedResult.removeQueryParam("first_flag");
-			mv.addObject(PAGED_RESULT, pagedResult);
-			mv.addObject("type",filter.getType());
+			mv = new JRadModelAndView("/intopieces/sunds_display_server_page", request);
+	
+			mv.addObject("Id",detaillist.get(0).getId());
+			mv.addObject("rowNum", page);
+			mv.addObject("totalCount",totalCount);
+			mv.addObject("batchId", batchId);
 			return mv;
 		}
 		

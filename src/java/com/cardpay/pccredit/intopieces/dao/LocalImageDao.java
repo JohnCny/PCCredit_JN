@@ -49,4 +49,8 @@ public interface LocalImageDao {
 	
 	public List<QzApplnAttachmentDetail> findDetailByFilter(IntoPiecesFilter filter);
 	public int findDetailCountByFilter(IntoPiecesFilter filter);
+	
+	public List<QzApplnAttachmentDetail> findQzApplnDetail(@Param("page") int currentPage,@Param("limit") int limit,@Param("batchId") String batchId);
+	
+	public int findQzApplnDetailCount(@Param("batchId") String batchId);
 }

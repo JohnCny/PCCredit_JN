@@ -28,7 +28,7 @@ public interface AccessoriesListDao {
 	//根据productId删除产品附件
 	public void deleteAppendixByProductId(@Param("productId") String productId);
 	
-	public List<AppManagerAuditLog> findAppManagerAuditLog(@Param("appId") String appId);
+	public List<AppManagerAuditLog> findAppManagerAuditLog(@Param("appId") String appId,@Param("auditType") String auditType);
 	
 
 }

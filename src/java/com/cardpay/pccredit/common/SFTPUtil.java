@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.common;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -49,6 +52,9 @@ import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 /** 
@@ -57,8 +63,8 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
  */
 public class SFTPUtil {
 	
-	//private static String host = "61.34.0.32";//生产
-	private static String host = "61.98.0.31";//测试
+	private static String host = "61.34.0.32";//生产
+	//private static String host = "61.98.0.31";//测试
     private static String username="root";  
     private static String password="1234567";  
     private static int port = 22;  
@@ -267,11 +273,11 @@ public class SFTPUtil {
         	if (file != null && !file.isEmpty()) {
 	        	//连接sftp
 	        	connect();
-	        	String path = Constant.FILE_PATH + batch_id;
+	        	String path = Constant.FILE_PATH_BS + batch_id;
 	        	try {
 	    			sftp.cd(path);
 				} catch (Exception e) {
-					sftp.cd(Constant.FILE_PATH);
+					sftp.cd(Constant.FILE_PATH_BS);
 					sftp.mkdir(batch_id);  
 					sftp.cd(path);
 				}
@@ -336,6 +342,60 @@ public class SFTPUtil {
 			if (bos != null) {
 				bos.close();
 			}
+			disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void downloadjn(HttpServletResponse response,
+			String filePath, String fileName) {
+		try {
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename="+ java.net.URLEncoder.encode(fileName, "UTF-8"));
+			connect();
+			sftp.cd(filePath.substring(0, 52));
+			
+			String GIF = "image/gif;charset=GB2312";// 设定输出的类型
+			String JPG = "image/jpeg;charset=GB2312";
+			String BMP = "image/bmp";
+		    String PNG = "image/png";
+		    
+			String imagePath = filePath.substring(53, filePath.length());
+			OutputStream output = response.getOutputStream();// 得到输出流
+			if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
+			{
+				response.setContentType(JPG);// 设定输出的类型
+				// 得到图片的真实路径
+
+				// 得到图片的文件流
+				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));
+				// 得到输入的编码器，将文件流进行jpg格式编码
+				JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
+				// 得到编码后的图片对象
+				BufferedImage image = decoder.decodeAsBufferedImage();
+				// 得到输出的编码器
+				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+				encoder.encode(image);// 对图片进行输出编码
+				imageIn.close();// 关闭文件流
+			} 
+
+			else if (imagePath.toLowerCase().endsWith(".png")
+					|| imagePath.toLowerCase().endsWith(".bmp")) {
+				
+				BufferedImage bi = ImageIO.read(sftp.get(filePath.substring(53, filePath.length())));
+				
+				if(imagePath.toLowerCase().endsWith(".png")){
+					response.setContentType(PNG);
+					ImageIO.write(bi, "png", response.getOutputStream());
+				}else{
+					response.setContentType(BMP);
+					ImageIO.write(bi, "bmp", response.getOutputStream());
+				}
+				
+			}
+			output.close();
 			disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -28,14 +28,12 @@
               <col width="15%" />
               <col width="15%" />
               <col width="15%" />
-              <col width="15%" />
               <col />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">文件名称</th>
               <th nowrap="nowrap">图片大小</th>
-              <th nowrap="nowrap">图片状态</th>
               <th nowrap="nowrap">操作</th>
             </tr>
           </table>
@@ -47,7 +45,6 @@
               <col width="15%" />
               <col width="15%" />
               <col width="15%" />
-              <col width="15%" />
               <col />
             </colgroup>
             #foreach ($obj in $result.items)
@@ -55,13 +52,6 @@
               <td class="checkbox"><input type="radio" name="checkbox" value='$!{obj.id}_$!{obj.batchId}'/></td>
               <td nowrap="nowrap">$!obj.originalName</td>
               <td nowrap="nowrap">$!{obj.picSize}字节</td>
-              <td nowrap="nowrap">
-              #if($!obj.isUpload=="1")
-              		已上传
-              #else
-              		未上传
-              #end
-              </td>
               <td nowrap="nowrap">
                <a onclick="handle('$!{obj.id}')" class="btn_g" href="javascript:void(0);" >处理</a>	
               </td>
@@ -91,7 +81,7 @@
 	
 	//
 	function handle(id){
-		var url = "${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJn.json"+"?id="+id;
+		var url = "${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJns.json"+"?id="+id;
 		window.location.href=url; 
    }
 	

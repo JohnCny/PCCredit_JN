@@ -383,7 +383,7 @@ public class UploadFileTool {
 		Map<String, String> map = new HashMap<String, String>();
 		String newFileName = null;
 		String fileName = null;
-		String serverPath = Constant.FILE_PATH + batch_id + File.separator;
+		String serverPath = Constant.FILE_PATH_BS + batch_id + File.separator;
 		File tempDir = new File(serverPath);
 		if (!tempDir.isDirectory()) {
 			tempDir.mkdirs();
