@@ -345,4 +345,15 @@ public class CustomerFirsthendController extends BaseController{
 		}
 		return mv;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "musidataBrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView musidataBrowse(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerLedger/zrrtz", request);
+		return mv;
+	}
 }

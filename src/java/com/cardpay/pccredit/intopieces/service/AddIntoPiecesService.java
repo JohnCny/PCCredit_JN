@@ -1,9 +1,10 @@
 package com.cardpay.pccredit.intopieces.service;
 
-import java.io.BufferedReader;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,13 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +25,6 @@ import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
-import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
@@ -50,13 +49,13 @@ import com.cardpay.pccredit.intopieces.model.PicPojo;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
-import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
 import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
+import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.pccredit.system.service.NodeAuditService;
@@ -67,6 +66,9 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageDecoder;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -402,6 +404,59 @@ public class AddIntoPiecesService {
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
+			//本地
+			this.downLoadFile(response,v);
+			//服务器
+			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+		}
+	}
+	
+	
+	public void downLoadFile(HttpServletResponse response,QzApplnAttachmentDetail v)throws Exception{
+		String GIF = "image/gif;charset=GB2312";// 设定输出的类型
+		String JPG = "image/jpeg;charset=GB2312";
+		String BMP = "image/bmp";
+	    String PNG = "image/png";
+	    
+		String imagePath = v.getUrl();
+		OutputStream output = response.getOutputStream();// 得到输出流
+		if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
+		{
+			response.setContentType(JPG);// 设定输出的类型
+			// 得到图片的真实路径
+
+			// 得到图片的文件流
+			InputStream imageIn = new FileInputStream(new File(imagePath));
+			// 得到输入的编码器，将文件流进行jpg格式编码
+			JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
+			// 得到编码后的图片对象
+			BufferedImage image = decoder.decodeAsBufferedImage();
+			// 得到输出的编码器
+			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+			encoder.encode(image);// 对图片进行输出编码
+			imageIn.close();// 关闭文件流
+		} 
+
+		else if (imagePath.toLowerCase().endsWith(".png")
+				|| imagePath.toLowerCase().endsWith(".bmp")) {
+			
+			BufferedImage bi = ImageIO.read(new File(imagePath));
+			
+			if(imagePath.toLowerCase().endsWith(".png")){
+				response.setContentType(PNG);
+				ImageIO.write(bi, "png", response.getOutputStream());
+			}else{
+				response.setContentType(BMP);
+				ImageIO.write(bi, "bmp", response.getOutputStream());
+			}
+			
+		}
+		output.close();
+	}
+	
+	public void downLoadYxzlJns(HttpServletResponse response,String id) throws Exception{
+		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
+		if(v!=null){
 			//本地测试
 			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			//服务器
@@ -581,6 +636,71 @@ public class AddIntoPiecesService {
 		//更新状态为--audit
 		applicationInfo.setStatus("audit");
 		commonDao.updateObject(applicationInfo);
+		String sql = "select * from dict where dict_type = 'RETRUN_STATUS_PARAM' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		if("1".equals(PARAM)){
+		    //调整流程开关
+			addProcessed(applicationInfo.getId(),applicationInfo.getProductId());
+		}
+	}
+	
+	public void addProcessed(String appId,String productId){
+		String sql = "delete from CUSTOMER_APPLICATION_PROCESS where APPLICATION_ID='"+appId+"'";
+		commonDao.queryBySql(sql, null);
+		//添加申请件流程
+		WfProcessInfo wf=new WfProcessInfo();
+		wf.setProcessType(WfProcessInfoType.process_type);
+		wf.setVersion("1");
+		commonDao.insertObject(wf);
+		List<NodeAudit> list=nodeAuditService.findByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(),productId);
+		boolean startBool=false;
+		boolean endBool=false;
+		//节点id和WfStatusInfo id的映射
+		Map<String, String> nodeWfStatusMap = new HashMap<String, String>();
+		for(NodeAudit nodeAudit:list){
+			if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+				startBool=true;
+			}
+			
+			if(startBool&&!endBool){
+				WfStatusInfo wfStatusInfo=new WfStatusInfo();
+				wfStatusInfo.setIsStart(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setIsClosed(nodeAudit.getIsend().equals(YesNoEnum.YES.name())?"1":"0");
+				wfStatusInfo.setRelationedProcess(wf.getId());
+				wfStatusInfo.setStatusName(nodeAudit.getNodeName());
+				wfStatusInfo.setStatusCode(nodeAudit.getId());
+				commonDao.insertObject(wfStatusInfo);
+				
+				nodeWfStatusMap.put(nodeAudit.getId(), wfStatusInfo.getId());
+				
+				if(nodeAudit.getIsstart().equals(YesNoEnum.YES.name())){
+					//添加初始审核
+					CustomerApplicationProcess customerApplicationProcess=new CustomerApplicationProcess();
+					String serialNumber = processService.start(wf.getId());
+					customerApplicationProcess.setSerialNumber(serialNumber);
+					customerApplicationProcess.setNextNodeId(nodeAudit.getId()); 
+					customerApplicationProcess.setApplicationId(appId);
+					commonDao.insertObject(customerApplicationProcess);
+					
+					CustomerApplicationInfo applicationInfo = commonDao.findObjectById(CustomerApplicationInfo.class, appId);
+					applicationInfo.setSerialNumber(serialNumber);
+					commonDao.updateObject(applicationInfo);
+				}
+			}
+			
+			if(nodeAudit.getIsend().equals(YesNoEnum.YES.name())){
+				endBool=true;
+			}
+		}
+		//节点关系
+		List<NodeControl> nodeControls = nodeAuditService.findNodeControlByNodeTypeAndProductId(NodeAuditTypeEnum.Product.name(), productId);
+		for(NodeControl control : nodeControls){
+			WfStatusResult wfStatusResult = new WfStatusResult();
+			wfStatusResult.setCurrentStatus(nodeWfStatusMap.get(control.getCurrentNode()));
+			wfStatusResult.setNextStatus(nodeWfStatusMap.get(control.getNextNode()));
+			wfStatusResult.setExamineResult(control.getCurrentStatus());
+			commonDao.insertObject(wfStatusResult);
+		}
 	}
 	
 	public QzApplnAttachmentList findAttachmentListByAppId(String applicationId) {
@@ -592,11 +712,11 @@ public class AddIntoPiecesService {
 		return localImageDao.findAttachmentBatchByAppId(applicationId);
 	}
 	
-	public void addBatchInfo(String appId){
+	public void addBatchInfo(String appId,String custId){
 		QzApplnAttachmentList att = this.findAttachmentListByAppId(appId);
 		if(att != null){
 			for(int i=0 ; i<=30 ; i++){
-				if(att.getBussType().equals("1")){
+				//if(att.getBussType().equals("1")){
 					if(att.getChkValue() != null && !att.getChkValue().equals("")){
 						if((Integer.parseInt(att.getChkValue()) & (int)Math.pow(2, i)) == (int)Math.pow(2, i)){
 							QzApplnAttachmentBatch batch = new QzApplnAttachmentBatch();
@@ -606,7 +726,7 @@ public class AddIntoPiecesService {
 							commonDao.insertObject(batch);
 						}
 					}
-				}
+			   //}
 			}
 		}
 	}
@@ -625,8 +745,8 @@ public class AddIntoPiecesService {
 	}
 	//浏览文件并缓存到服务器目录
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
-		//Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
@@ -650,6 +770,18 @@ public class AddIntoPiecesService {
 		int size = localImageDao.findDetailCountByFilter(filter);
 		QueryResult<QzApplnAttachmentDetail> queryResult = new QueryResult<QzApplnAttachmentDetail>(size, pList);
 		return queryResult;
+	}
+	
+	
+	public List<QzApplnAttachmentDetail> findQzApplnDetail(int currentPage,int pageSize,String batchId){
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return localImageDao.findQzApplnDetail(currentPage,pageSize,batchId);
+	}
+	
+	public int findQzApplnDetailCount(String batchId){
+		return localImageDao.findQzApplnDetailCount(batchId);
 	}
 
 	public QueryResult<PicPojo> display_server(IntoPiecesFilter filter,HttpServletRequest request)  {
@@ -711,8 +843,8 @@ public class AddIntoPiecesService {
 		sql = "delete from QZ_APPLN_ATTACHMENT_DETAIL where batch_id = '"+batchId+"'";
 		commonDao.queryBySql(sql, null);
 		//将att的upload_value减去对应的批次值
-		int tmp = Integer.parseInt(att.getUploadValue())-Integer.parseInt(batch.getType());
-		att.setUploadValue(tmp + "");
+		//int tmp = Integer.parseInt(att.getUploadValue())-Integer.parseInt(batch.getType());
+		//att.setUploadValue(tmp + "");
 		commonDao.updateObject(att);
 		//将对应batch的is_upload状态置为null
 		sql = "update QZ_APPLN_ATTACHMENT_BATCH set is_upload = null where ID = '"+batchId+"'";

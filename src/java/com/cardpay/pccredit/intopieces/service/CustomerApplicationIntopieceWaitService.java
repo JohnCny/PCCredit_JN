@@ -151,7 +151,7 @@ public class CustomerApplicationIntopieceWaitService {
 			examineAmount = (Double.parseDouble(examineAmount) * 100) + "";
 		}
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,"","");
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -236,7 +236,7 @@ public class CustomerApplicationIntopieceWaitService {
 		}*/
 		
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,productId,auditType);
 		//更新单据状态
 	    if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 	    		examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -319,6 +319,8 @@ public class CustomerApplicationIntopieceWaitService {
 				log.setUserId_1(cyUser1);
 				log.setUserId_2(cyUser2);
 				log.setUserId_3(fdUser);
+				log.setExamineAmount(examineAmount);
+				log.setExamineLv(lv);
 				commonDao.insertObject(log);
 			}else{
 				//update
@@ -326,7 +328,7 @@ public class CustomerApplicationIntopieceWaitService {
 													auditType,
 													cyUser1,
 													cyUser2,
-													fdUser);
+													fdUser,examineAmount,lv);
 			}
 		}
 	}

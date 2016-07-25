@@ -14,6 +14,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.CustomerApplicationIntopieceWaitDao;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
+import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.workflow.constant.ApproveOperationTypeEnum;
 import com.cardpay.workflow.dao.WfStatusInfoDao;
@@ -111,7 +112,7 @@ public class ProcessService {
 	 * 
 	 * @throws SQLException
 	 */
-	public String examine(String appId,String wfProcessRecordID,String exUserID,String exResult,String exAmount){
+	public String examine(String appId,String wfProcessRecordID,String exUserID,String exResult,String exAmount,String productId,String auditType){
 		//查找当前所处流转状态
 		WfProcessRecord wfProcessRecord = commonDao.findObjectById(WfProcessRecord.class, wfProcessRecordID);
 		WfStatusQueueRecord wfStatusQueueRecord = commonDao.findObjectById(WfStatusQueueRecord.class,wfProcessRecord.getWfStatusQueueRecord());
@@ -138,7 +139,7 @@ public class ProcessService {
 			return ApproveOperationTypeEnum.REJECTAPPROVE.toString();
 		} //通过 
 		else {
-			//根据当前审批结果 查找审批结果表 获取下一个审批状态
+			/*//根据当前审批结果 查找审批结果表 获取下一个审批状态
 			WfStatusResult wfStatusResult = wfStatusResultDao.getNextStatus(wfStatusQueueRecord.getCurrentStatus(), exUserID, exResult);
 			
 			//判断下一个审批批状态是否为结束状态
@@ -165,8 +166,97 @@ public class ProcessService {
 			String wfStatusInfoId = wfStatusResult.getNextStatus();
 			WfStatusInfo nextStatusInfo = commonDao.findObjectById(WfStatusInfo.class, wfStatusInfoId);
 			//返回节点的id
-			return nextStatusInfo.getStatusCode();
+			return nextStatusInfo.getStatusCode();*/
+			
+			//根据金额和产品类型判断段是否继续流程 isContinue
+			if(!isContinue(productId,exAmount,auditType)){
+				wfProcessRecord.setIsClosed("1");
+				commonDao.updateObject(wfProcessRecord);
+				return ApproveOperationTypeEnum.NORMALEND.toString();
+			}else{
+				//根据当前审批结果 查找审批结果表 获取下一个审批状态
+				WfStatusResult wfStatusResult = wfStatusResultDao.getNextStatus(wfStatusQueueRecord.getCurrentStatus(), exUserID, exResult);
+				
+				//判断下一个审批批状态是否为结束状态
+				WfStatusInfo wfStatusInfo = commonDao.findObjectById(WfStatusInfo.class, wfStatusResult.getNextStatus());
+				if(wfStatusInfo.getIsClosed().equals("1")){//标示下一状态为结束
+					//将流程记录表标识为结束
+					wfProcessRecord.setIsClosed("1");
+					commonDao.updateObject(wfProcessRecord);
+					return ApproveOperationTypeEnum.NORMALEND.toString();
+				}
+				
+				//流转表新增一条记录
+				String beforeStatus = wfStatusQueueRecord.getCurrentStatus();
+				wfStatusQueueRecord = new WfStatusQueueRecord();
+				wfStatusQueueRecord.setBeforeStatus(beforeStatus);
+				wfStatusQueueRecord.setCurrentProcess(wfProcessRecordID);
+				wfStatusQueueRecord.setCurrentStatus(wfStatusResult.getNextStatus());
+				commonDao.insertObject(wfStatusQueueRecord);
+				
+				//流程表关联到新的流转
+				wfProcessRecord.setWfStatusQueueRecord(wfStatusQueueRecord.getId());
+				commonDao.updateObject(wfProcessRecord);
+				
+				String wfStatusInfoId = wfStatusResult.getNextStatus();
+				WfStatusInfo nextStatusInfo = commonDao.findObjectById(WfStatusInfo.class, wfStatusInfoId);
+				//返回节点的id
+				return nextStatusInfo.getStatusCode();
+			}
 		}
+	}
+	
+	public boolean isContinue(String productId,String exAmount,String auditType){
+		//查询产品担保方式
+		ProductAttribute product = commonDao.findObjectById(ProductAttribute.class, productId);
+		if("LNM00000000003".equals(product.getAssureMeans())){//信用
+			if(Integer.parseInt(auditType)==3){
+				if(Float.parseFloat(exAmount)<=100000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			if(Integer.parseInt(auditType)==4){
+				if(Float.parseFloat(exAmount)<=200000&&Float.parseFloat(exAmount)>100000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			
+		}else if("LNM00000000004".equals(product.getAssureMeans())){//担保
+			if(Integer.parseInt(auditType)==3){
+				if(Float.parseFloat(exAmount)<=200000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			if(Integer.parseInt(auditType)==4){
+				if(Float.parseFloat(exAmount)<=800000&&Float.parseFloat(exAmount)>200000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}else if("LNM00000000001".equals(product.getAssureMeans())){//抵押
+			if(Integer.parseInt(auditType)==3){
+				if(Float.parseFloat(exAmount)<=500000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			if(Integer.parseInt(auditType)==4){
+				if(Float.parseFloat(exAmount)<=2000000&&Float.parseFloat(exAmount)>500000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}
+		return true;
 	}
 	
 	/**

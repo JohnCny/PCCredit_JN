@@ -14,8 +14,8 @@ import com.jcraft.jsch.SftpException;
  *  下载ods数据文件用
  */
 public class FtpUtils {
-	//public static String bank_ftp_host="61.34.0.33";  	    // ftp地址 生产
-	public static String bank_ftp_host="61.98.0.31";  			// ftp地址 测试
+	public static String bank_ftp_host="61.34.0.33";  	    // ftp地址 生产
+	//public static String bank_ftp_host="61.98.0.31";  			// ftp地址 测试
 	public static int bank_ftp_port = 21;						// ftp端口
 	public static String bank_ftp_username="root";  			// ftp用户名
 	public static String bank_ftp_password="1234567";  			// ftp密码

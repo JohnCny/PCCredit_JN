@@ -1,152 +1,51 @@
 #parse ("common/iframe_page_header5.htm")
 <script src="${contextPath}/js/startMove.js" charset="utf-8"></script>
 <script type="text/javascript">
-window.onload=function(){
-	var aPicLi=document.getElementById('pic_list').getElementsByTagName('li');
-	var aTextLi=document.getElementById('text_list').getElementsByTagName('li');
-	var aIcoLi=document.getElementById('ico_list').getElementsByTagName('li');
-	var oIcoUl=document.getElementById('ico_list').getElementsByTagName('ul')[0];
-	var oPrev=document.getElementById('btn_prev');
-	var oNext=document.getElementById('btn_next');
-	var oDiv=document.getElementById('box');
-	var i=0;
-	var iNowUlLeft=0;
-	var iNow=0;
+	window.onload=function(){
+		var id ='$Id';
+		$("#hugeImages" + 1).attr({
+			src:"${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJn.json"+"?id="+id
+		});
 	
-	oPrev.onclick=function(){
-		if(iNowUlLeft>0){
-			iNowUlLeft--;
-			oUlleft();
-		}
-		oPrev.className=iNowUlLeft==0?'btn':'btn showBtn';
-		oNext.className=iNowUlLeft==(aIcoLi.length-7)?'btn':'btn showBtn';
 	}
 	
-	oNext.onclick=function(){
-		if(iNowUlLeft<aIcoLi.length-7){
-			iNowUlLeft++;
-			oIcoUl.style.left=-aIcoLi[0].offsetWidth*iNowUlLeft+'px';
-		}
-		oPrev.className=iNowUlLeft==0?'btn':'btn showBtn';
-		oNext.className=iNowUlLeft==(aIcoLi.length-7)?'btn':'btn showBtn';
-	}
-	
-	for(i=0;i<aIcoLi.length;i++){
-		aIcoLi[i].index=i;
-		aIcoLi[i].onclick=function(){
-			if(iNow==this.index){
-				return false;
+	$(document).ready(function() {
+		var batchId ='$!batchId';
+		//上一张
+		$("#id_beer_button").click(function() {
+			var currentPage = Number($!rowNum) - Number(1);
+			if(Number(currentPage)<0){
+			    	alert("已经是第一张");
+			    	return;
 			}
-			iNow=this.index;
-			tab();
-		}
-	}
-	
-	function tab(){
-		for(i=0;i<aIcoLi.length;i++){
-			aIcoLi[i].className='';
-			aPicLi[i].style.filter='alpha(opacity:0)';
-			aPicLi[i].style.opacity=0;
-			aTextLi[i].getElementsByTagName('h2')[0].className='';
-			miaovStopMove( aPicLi[i]);
-		}
-		aIcoLi[iNow].className='active';
-		//aPicLi[this.index].style.filter='alpha(opacity:100)';
-		//aPicLi[this.index].style.opacity=1;
-		miaovStartMove(aPicLi[iNow],{opacity:100},MIAOV_MOVE_TYPE.BUFFER);
-		aTextLi[iNow].getElementsByTagName('h2')[0].className='show';
-	}
-	
-	function oUlleft(){
-		oIcoUl.style.left=-aIcoLi[0].offsetWidth*iNowUlLeft+'px';
-	}
-	
-	function autoplay(){
-		iNow++;
-		if(iNow>=aIcoLi.length){
-			iNow=0;
-		}
-		if(iNow<iNowUlLeft){
-			iNowUlLeft=iNow;
-		}else if(iNow>=iNowUlLeft+7){
-			iNowUlLeft=iNow-6;
-		}
-		oPrev.className=iNowUlLeft==0?'btn':'btn showBtn';
-		oNext.className=iNowUlLeft==(aIcoLi.length-7)?'btn':'btn showBtn';
-		oUlleft();
-		tab();
-	}
-	
-	//var time=setInterval(autoplay,3000);
-	//oDiv.onmouseover=function(){
-	//	clearInterval(time);
-	//}
-	//oDiv.onmouseout=function(){
-	//	time=setInterval(autoplay,3000);
-	//}
-
-}
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?currentPage"+currentPage+"&batchId="+batchId;
+			window.location.href = url;s
+		});
+		
+		//下一张
+		$("#id_next_button").click(function() {
+		    var currentPage = Number($!rowNum) +Number(1);
+		    if(Number(currentPage)>=Number($!totalCount)){
+		    	alert("已经是最后一张");
+		    	return;
+		    }
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?currentPage="+currentPage+"&batchId="+batchId;
+			window.location.href = url;
+		});
+	});
 </script>
 
-<div style="width:760px;margin:20px auto; clear:both; text-align:center;  "></div>
-
-<div id="box">
-	<ul id="pic_list">
-		#foreach ($obj in $result.items)
-			<li><a href="javascript:void();"><img width="660" height="330" src="$!{obj.url}" alt="" /></a></li>
-		#end
-	</ul>
-	
-	<div class="mark"></div>
-
-	<ul id="text_list">
-		#foreach ($obj in $result.items)
-        	<li><h2><a href="javascript:void();">$!obj.file_name</a></h2></li>
-        #end
-	</ul>
-	
-	<div id="ico_list">
-		<ul>
-			#foreach ($obj in $result.items)
-				<li><a href="javascript:void(0)"><img width="64" height="34" src="$!{obj.url}" alt="" /></a></li>
-			#end
-		</ul>
-	</div>
-	
-	#if ($result.totalPages > 0)
-			#set ($baseURI = $request.getRequestURI())
-			
-				<div class="page">
-					#set ($pageNo = $result.startPage)
-					#set ($dispPageNo = $result.currentPage + 1)
-					#set ($start = $pageNo*$result.pageSize)
-					#if ($result.currentPage == 0)
-					#set ($previousPageNo = 0 )
-					#else
-					#set ($previousPageNo = $result.currentPage - 1)
-					#end
-					#set ($previous =$previousPageNo*$result.pageSize)
-					#if ($result.currentPage == $result.totalPages - 1)
-					#set ($nextPageNo = $result.currentPage )
-					#else
-					#set ($nextPageNo = $dispPageNo )
-					#end
-					#set ($next =$nextPageNo*$result.pageSize)
-					#set ($endPageNo = $result.totalPages - 1)
-					#set ($end = $endPageNo*$result.pageSize)
-				        
-						<a href="$!{baseURI}${result.baseQueryString}&page=$previousPageNo&limit=$result.pageSize" id="btn_prev" class="btn showBtn"></a>
-						<a href="$!{baseURI}${result.baseQueryString}&page=$nextPageNo&limit=$result.pageSize" id="btn_next" class="btn showBtn"></a>
-				</div>
-			#else
-					<div class="page">	共<b>0</b>条数据，当前第<b>0</b>页</div>
-			#end
-			
-	
+<div id="box" style="text-align:center;">
+		<li><a href="javascript:void();"><img id="hugeImages1" width="660" height="530"  alt="" /></a></li>
+		 <input type="hidden"  name=totalCount value="$!totalCount"/>
+      	 <input type="hidden"  name="rowNum" value="$!rowNum"/>
+      	 <input type="hidden"  name="batchId" value="$!batchId"/>
 </div>
-
-<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
-<p><span>共<b>$result.totalCount</b>条数据，当前第<b>$dispPageNo</b>页</span></p>
+<div class="pagebar">
+<div class="controlbtn" style="text-align:center;">
+          <a id="id_beer_button" class="btn_gr" href="javascript:void(0);" title="上一张">上一张</a>
+          <a id="id_next_button" class="btn_gr" href="javascript:void(0);" title="下一张">下一张</a>
+</div>
 </div>
 </body>
 #parse ("common/iframe_page_footer.htm")

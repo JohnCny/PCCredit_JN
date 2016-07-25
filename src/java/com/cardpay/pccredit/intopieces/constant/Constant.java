@@ -25,6 +25,9 @@ public class Constant {
 	/* 影像资料上传路径 */
 	public static String FILE_PATH = "/usr/pccreditFile/";
 	
+	/* 影像资料补扫上传路径 */
+	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
+	
 	/* 保存进件*/
 	public static String SAVE_INTOPICES = "save";
 	
@@ -93,7 +96,7 @@ public class Constant {
 	
 	
 	public static Map<Integer,String> ATT_BATCH_1 = new HashMap<Integer,String>(){{
-		put(1,"合同扫描件");
+		/*put(1,"合同扫描件");
 		put(2,"贷款申请表");
 		put(4,"调查报告");
 		put(8,"征信查询授权书");
@@ -108,7 +111,23 @@ public class Constant {
 		put(4096,"担保人及配偶身份证明复印件");
 		put(8192,"担保人及配偶婚姻状况说明");
 		put(16384,"担保人收入证明");
-		put(1073741824,"其他");
+		put(1073741824,"其他");*/
+		put(1,"照片1");
+		put(2,"照片2");
+		put(4,"照片");
+		put(8,"照片3");
+		put(16,"照片4");
+		put(32,"照片5");
+		put(64,"照片");
+		put(128,"照片");
+		put(256,"照片");
+		put(512,"照片");
+		put(1024,"照片");
+		put(2048,"照片");
+		put(4096,"照片");
+		put(8192,"照片");
+		put(16384,"照片");
+		put(1073741824,"照片");
 	}};
 	
 }

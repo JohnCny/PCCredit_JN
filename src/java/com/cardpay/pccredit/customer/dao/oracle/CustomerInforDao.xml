@@ -540,12 +540,13 @@
 		       		<!-- select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} -->
 		       		select 1 from RISK_LIST T2 where T1.id = T2.CUSTOMER_ID and T2.product_id =#{productId}
 		       	)
+		       	 <!--
 		       	and  not exists 
 		       	(
 		       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
  		       		and T2.REPAY_STATUS  != '1'
-            	    <!-- and (trunc(sysdate)-trunc(T2.created_time))&lt;180  -->
-		       	)
+            	   and (trunc(sysdate)-trunc(T2.created_time))&lt;180 
+		       	) -->
 	
 		 <![CDATA[		
 							) ROW_
@@ -978,6 +979,12 @@
 		</if>
 		<if test="user3 != null and user3 != '' ">
 			 ,USER_ID_3=#{user3}
+		</if>
+		<if test="examineAmount != null and examineAmount != '' ">
+			 ,EXAMINE_AMOUNT=#{examineAmount}
+		</if>
+		<if test="lv != null and lv != '' ">
+			 ,EXAMINE_LV=#{lv}
 		</if>
 		where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}
 	</update>
