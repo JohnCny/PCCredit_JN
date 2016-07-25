@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -20,10 +21,15 @@ import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.jnpad.dao.JnIpadCustAppInfoXxDao;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
+import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
+import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
+import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.manager.dao.RetrainingDao;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
+import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
 @Service
@@ -40,6 +46,8 @@ public class JnIpadCustAppInfoXxService {
 	
 	@Autowired
 	private RetrainingDao retrainingDao;
+	
+	
 	
 	
 	public int findCustAppInfoXxCount(String userId,String status1,String status2,String status3,String status4){
@@ -162,5 +170,31 @@ public class JnIpadCustAppInfoXxService {
 	public int findRetrainingsCountByFilter(RetrainingFilter filter){
 		return retrainingDao.findRetrainingsCountByFilter(filter);	
 	}
-
+	
+	public CustYunyinVo findYunyinstatus(String userId){
+		List<CustYunyinVo> list = jnIpadCustAppInfoDao.findYunyinstatus(userId);
+		if(list != null && list.size() > 0){
+			return (CustYunyinVo)list.get(0);
+		} else {
+			return null;
+		}
+	}
+	
+	public List<RetrainingVo> findRetrainingsVoByFilter(RetrainingFilter filter){
+		return retrainingDao.findRetrainingsVoByFilter(filter);
+	}
+	
+	
+	public List<String> findAccountManagerRetraining(String id){
+		List<RetrainUserVo> volist = jnIpadCustAppInfoDao.findAccountManagerRetraining(id);
+		List<String> list = new ArrayList<String>();
+		for(RetrainUserVo vo :volist){
+			list.add(vo.getRetrainUserName());
+		}
+		return list;
+	}
+	
+	public SystemUser findSysUserById(String id){
+		return commonDao.findObjectById(SystemUser.class, id) ;
+	}
 }

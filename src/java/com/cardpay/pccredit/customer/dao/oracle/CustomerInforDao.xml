@@ -540,12 +540,13 @@
 		       		<!-- select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} -->
 		       		select 1 from RISK_LIST T2 where T1.id = T2.CUSTOMER_ID and T2.product_id =#{productId}
 		       	)
+		       	 <!--
 		       	and  not exists 
 		       	(
 		       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
  		       		and T2.REPAY_STATUS  != '1'
-            	    <!-- and (trunc(sysdate)-trunc(T2.created_time))&lt;180  -->
-		       	)
+            	   and (trunc(sysdate)-trunc(T2.created_time))&lt;180 
+		       	) -->
 	
 		 <![CDATA[		
 							) ROW_
@@ -590,7 +591,7 @@
 		from basic_customer_information a,customer_application_info
 		b,PRODUCT_ATTRIBUTE c,sys_user d
 		WHERE 1=1 and a.id=b.customer_id and b.product_id=c.id and d.id=a.user_id 
-		and b.status in ('approved','end')
+		<!-- and b.status in ('approved','end') -->
 		<if test="cardId != null and cardId != '' ">
 			AND a.card_id=#{cardId}
 		</if>
@@ -621,7 +622,7 @@
 		from basic_customer_information a,customer_application_info
 		b,PRODUCT_ATTRIBUTE c,sys_user d
 		WHERE 1=1 and a.id=b.customer_id and b.product_id=c.id and d.id=a.user_id
-		and b.status in ('approved','end')
+	<!-- 	and b.status in ('approved','end') -->
 		<if test="cardId != null and cardId != '' ">
 			AND a.card_id=#{cardId}
 		</if>
@@ -953,6 +954,15 @@
 			select count(id) from T_CIPERSONBASINFO where CUSTID = #{custid}
 	</select>
 	
+	<select id="findMIBUSIDATACount" resultType="int" parameterType="map">
+			select count(BUSICODE) from T_MIBUSIDATA where trim(BUSICODE) = #{busicode}
+	</select>
+	
+	<select id="findFCLOANINFOCount" resultType="int" parameterType="map">
+			select count(BUSICODE) from t_fcloaninfo where trim(BUSICODE) = #{busicode}
+	</select>
+	
+	
 	<select id="findAppAuditLog" resultType="int" parameterType="map">
 			select count(id) from T_APP_MANAGER_AUDIT_LOG 
 			where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}
@@ -969,6 +979,12 @@
 		</if>
 		<if test="user3 != null and user3 != '' ">
 			 ,USER_ID_3=#{user3}
+		</if>
+		<if test="examineAmount != null and examineAmount != '' ">
+			 ,EXAMINE_AMOUNT=#{examineAmount}
+		</if>
+		<if test="lv != null and lv != '' ">
+			 ,EXAMINE_LV=#{lv}
 		</if>
 		where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}
 	</update>

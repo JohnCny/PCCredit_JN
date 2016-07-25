@@ -501,13 +501,13 @@ public class ProductService {
 	}
 	
 	
-	public List<AppManagerAuditLog> findAppManagerAuditLog(String appId){
+	public List<AppManagerAuditLog> findAppManagerAuditLog(String appId,String auditType){
 //		String sql = "select s.display_name as USERID_1 ,"
 //				+ "d.display_name as USERID_2,"
 //				+ "g.display_name as USERID_3 from t_app_manager_audit_log t,sys_user s ,sys_user d,sys_user g "
 //				+ "where s.id = t.user_id_1 and d.id = t.user_id_2 and g.id = t.user_id_3 and "
 //				+ " AUDIT_TYPE ='1' and APPLICATION_ID ='"+appId+"'";
 //		return commonDao.queryBySql(AppManagerAuditLog.class, sql, null);
-		return accessoriesListDao.findAppManagerAuditLog(appId);
+		return accessoriesListDao.findAppManagerAuditLog(appId,auditType);
 	}
 }

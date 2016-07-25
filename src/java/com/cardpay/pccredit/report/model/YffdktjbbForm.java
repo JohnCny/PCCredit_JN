@@ -22,7 +22,17 @@ public class YffdktjbbForm extends BaseForm {
 	private String busimanager;   //所属客户经理
 	private String name;          //所属机构
 	 
-	
+	private String accountstate;
+	public String getAccountstate() {
+		return accountstate;
+	}
+
+
+	public void setAccountstate(String accountstate) {
+		this.accountstate = accountstate;
+	}
+
+
 	private String rowIndex;//序号
 
 

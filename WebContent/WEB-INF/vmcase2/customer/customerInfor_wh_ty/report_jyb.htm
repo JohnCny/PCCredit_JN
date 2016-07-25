@@ -91,7 +91,7 @@
 		$("#id_save_button").click(function() {
 			var b = new Base64(); 
 			var content = {'content':b.encode($("#formsId").html())};
-			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_zyyw.json?appId=${appId}";
+			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_jyb.json?appId=${appId}";
 			$.ajax({
 				 url : url,
 				 type : "post",

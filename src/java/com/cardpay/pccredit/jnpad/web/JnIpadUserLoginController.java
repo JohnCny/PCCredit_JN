@@ -21,9 +21,11 @@ import com.cardpay.pccredit.ipad.constant.IpadConstant;
 import com.cardpay.pccredit.ipad.model.Result;
 import com.cardpay.pccredit.ipad.service.CustomerInforForIpadService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
 import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
+import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.web.security.LoginManager;
@@ -45,6 +47,9 @@ public class JnIpadUserLoginController {
 	
 	@Autowired
 	private CustomerInforForIpadService customerInforService;
+	
+	@Autowired
+	private JnIpadCustAppInfoXxService appInfoXxService;
 	
 	/**
 	 * 用户登录
@@ -153,6 +158,25 @@ public class JnIpadUserLoginController {
 		//response
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		result.put("result", customerManagerVo);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 客户运营状况查询
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/user/findYunyinstatus.json")
+	public String findYunyinstatus(HttpServletRequest request) {
+		String userId = RequestHelper.getStringValue(request, "userId");
+		//查询运营状况
+		CustYunyinVo vo =  appInfoXxService.findYunyinstatus(userId);
+		//response
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		result.put("result", vo);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);

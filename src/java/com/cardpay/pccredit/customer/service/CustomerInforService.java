@@ -3206,6 +3206,11 @@ public class CustomerInforService {
      */
     public void saveFCLOANINFODataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
+			/*//add                                                                        
+			List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>(); 
+			//update                                                                     
+			List<Map<String, Object>> updatedatas = new ArrayList<Map<String,Object>>(); */
+
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_FCLOANINFO.xml");
 			// 解析”帐单记录表“数据文件
@@ -3215,6 +3220,25 @@ public class CustomerInforService {
 //			}
 			//save
 			insertFCLOANINFO(datas);
+			/*for(Map<String, Object> map : datas){                                               
+				int count = customerInforDao.findFCLOANINFOCount(map);                            
+				if(count >0){                                                                     
+					log.info("*************************updatedatas*************************");      
+					//put updateMap                                                                 
+					updatedatas.add(map);                                                           
+				}else{                                                                            
+					log.info("*************************insertdatas*************************");      
+					//put insertMap                                                                 
+					insertdatas.add(map);                                                           
+				}                                                                                 
+			}                                                                                   
+			//save                                                                              
+			insertFCLOANINFO(insertdatas);                                   
+			//update                                                                            
+			updateFCLOANINFO(updatedatas);                                   
+			//释放空间                                                                          
+			insertdatas=null;                                                                   
+			updatedatas=null;          */                                                         
 			//释放空间
 			datas=null;
 	}
@@ -3420,6 +3444,157 @@ public class CustomerInforService {
                 ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
                 ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("badloandate").toString());
                 ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+    }
+    
+    
+    /**
+     * 借据月末余额表（结果表）
+     * @param list
+     */
+    public void updateFCLOANINFO(List<Map<String, Object>> list){
+        final List<Map<String, Object>> shopsList = list;
+        String sql =   " update  t_fcloaninfo set			"+
+        		"   keycode             = ?     "+
+        		"   ,year               = ?     "+
+        		"   ,times              = ?     "+
+        		"   ,busicode           = ?     "+
+        		"   ,busitype           = ?     "+
+        		"   ,deptcode           = ?     "+
+        		"   ,instcitycode       = ?     "+
+        		"   ,contractcode       = ?     "+
+        		"   ,custid             = ?     "+
+        		"   ,cname              = ?     "+
+        		"   ,typeid             = ?     "+
+        		"   ,custtype           = ?     "+
+        		"   ,custproperty       = ?     "+
+        		"   ,orgcertcode        = ?     "+
+        		"   ,unitcusttype       = ?     "+
+        		"   ,cardtype           = ?     "+
+        		"   ,cardnum            = ?     "+
+        		"   ,city               = ?     "+
+        		"   ,districtcounty     = ?     "+
+        		"   ,town               = ?     "+
+        		"   ,community          = ?     "+
+        		"   ,instcode           = ?     "+
+        		"   ,currency           = ?     "+
+        		"   ,money              = ?     "+
+        		"   ,balamt             = ?     "+
+        		"   ,debtinterest       = ?     "+
+        		"   ,reqlmt             = ?     "+
+        		"   ,loandate           = ?     "+
+        		"   ,enddate            = ?     "+
+        		"   ,busistate          = ?     "+
+        		"   ,creditlevel        = ?     "+
+        		"   ,industry           = ?     "+
+        		"   ,loanpurpose        = ?     "+
+        		"   ,mainassure         = ?     "+
+        		"   ,busimanager        = ?     "+
+        		"   ,isback             = ?     "+
+        		"   ,isbigcompany       = ?     "+
+        		"   ,state              = ?     "+
+        		"   ,islowrisk          = ?     "+
+        		"   ,validtime          = ?     "+
+        		"   ,sortresult         = ?     "+
+        		"   ,sortresultfive     = ?     "+
+        		"   ,presortresult      = ?     "+
+        		"   ,presortfive        = ?     "+
+        		"   ,autosortresult     = ?     "+
+        		"   ,autosortremark     = ?     "+
+        		"   ,autosortfive       = ?     "+
+        		"   ,isadm              = ?     "+
+        		"   ,custscale          = ?     "+
+        		"   ,overtimes          = ?     "+
+        		"   ,delayamtdays       = ?     "+
+        		"   ,delayinterestdays  = ?     "+
+        		"   ,changeflag         = ?     "+
+        		"   ,categorytype       = ?     "+
+        		"   ,operdatetime       = ?     "+
+        		"   ,operator           = ?     "+
+        		"   ,isworkmanu         = ?     "+
+        		"   ,admdate            = ?     "+
+        		"   ,ajuststate         = ?     "+
+        		"   ,istrans            = ?     "+
+        		"   ,lastyearsortresult = ?     "+
+        		"   ,processid          = ?     "+
+        		"   ,tobadloanreason    = ?     "+
+        		"   ,badloandate        = ?     "+
+        		"   ,create_time        = ?     "+
+        		"where  trim(BUSICODE)   = ?     ";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("keycode").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("year").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("times").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("busicode").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("contractcode").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("cname").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("typeid").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("custtype").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("custproperty").toString());
+                ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("orgcertcode").toString());
+                ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("unitcusttype").toString());
+                ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("cardtype").toString());
+                ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("cardnum").toString());
+                ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("city").toString());
+                ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("districtcounty").toString());
+                ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("town").toString());
+                ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("community").toString());
+                ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());
+                ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("currency").toString());
+                ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("money").toString());
+                ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("balamt").toString());
+                ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("debtinterest").toString());
+                ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("reqlmt").toString());
+                ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("loandate").toString());
+                ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("enddate").toString());
+                ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("busistate").toString());
+                ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("creditlevel").toString());
+                ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("industry").toString());
+                ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());
+                ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("mainassure").toString());
+                ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("busimanager" ).toString());
+                ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("isback").toString());
+                ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("isbigcompany").toString());
+                ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("state").toString());
+                ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("islowrisk").toString());
+                ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("validtime").toString());
+                ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("sortresult").toString());
+                ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("sortresultfive").toString());
+                ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("presortresult").toString());
+                ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("presortfive").toString());
+                ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("autosortresult").toString());
+                ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("autosortremark").toString());
+                ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("autosortfive").toString());
+                ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("isadm").toString());
+                ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("custscale").toString());
+                ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("overtimes").toString());
+                ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("delayamtdays").toString());
+                ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("delayinterestdays").toString());
+                ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("changeflag").toString());
+                ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("categorytype").toString());
+                ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());
+                ps.setString(56, ((Map<String, Object>) shopsList.get(i)).get("operator").toString());
+                ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("isworkmanu").toString());
+                ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("admdate").toString());
+                ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("ajuststate").toString());
+                ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("istrans").toString());
+                ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("lastyearsortresult").toString());
+                ps.setString(62, ((Map<String, Object>)shopsList.get(i)).get("processid").toString());
+                ps.setString(63, ((Map<String, Object>)shopsList.get(i)).get("tobadloanreason").toString());
+                ps.setString(64, ((Map<String, Object>)shopsList.get(i)).get("badloandate").toString());
+                ps.setString(65, ((Map<String, Object>)shopsList.get(i)).get("createTime").toString());
+                ps.setString(66, ((Map<String, Object>)shopsList.get(i)).get("busicode").toString());
             }
             public int getBatchSize()
             {

@@ -912,7 +912,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
 			boolean lock = false;
-			if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+			if(customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
 				lock = true;
 			}
 			mv.addObject("lock", lock);
@@ -1021,6 +1021,34 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		}
 		return null;
 	}
+	
+	
+	//下载影像资料
+	@ResponseBody
+	@RequestMapping(value = "downLoadYxzlJn.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadYxzlJn(HttpServletRequest request,HttpServletResponse response){
+		try {
+			addIntoPiecesService.downLoadYxzlJn(response,request.getParameter(ID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	//下载影像资料
+	@ResponseBody
+	@RequestMapping(value = "downLoadYxzlJns.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadYxzlJns(HttpServletRequest request,HttpServletResponse response){
+		try {
+			addIntoPiecesService.downLoadYxzlJns(response,request.getParameter(ID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+		
 	//base64解码
 	public static String getFromBASE64(String s) { 
     	if (s == null) return null; 

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
+import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
+import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -32,4 +34,8 @@ public interface JnIpadCustAppInfoXxDao {
 	
 	public String getRewardIncentiveInformation(@Param("year") int year,@Param("month") int month,@Param("id") String id);
 	public String getReturnPrepareAmountById(@Param("year") int year,@Param("month") int month,@Param("id") String id);
+	
+	public List<CustYunyinVo> findYunyinstatus(@Param("userId") String userId);
+	
+	public List<RetrainUserVo> findAccountManagerRetraining(@Param("id") String id);
 }

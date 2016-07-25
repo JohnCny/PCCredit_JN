@@ -15,6 +15,22 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String  userId_1;    
 	private String  userId_2;      
 	private String  userId_3;
+	private String  examineAmount;
+	private String  examineLv;
+	
+	
+	public String getExamineAmount() {
+		return examineAmount;
+	}
+	public void setExamineAmount(String examineAmount) {
+		this.examineAmount = examineAmount;
+	}
+	public String getExamineLv() {
+		return examineLv;
+	}
+	public void setExamineLv(String examineLv) {
+		this.examineLv = examineLv;
+	}
 	public String getApplicationId() {
 		return applicationId;
 	}
