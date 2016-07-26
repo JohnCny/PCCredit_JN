@@ -1,26 +1,21 @@
 package com.cardpay.pccredit.jnpad.web;
 
 import java.util.Date;
-
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadRiskCustomerCollectionService;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
-import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.controller.BaseController;
-import com.wicresoft.jrad.base.web.security.LoginManager;
-import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.web.RequestHelper;
-
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -56,7 +51,7 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 	@RequestMapping(value = "/ipad/product/findRiskCustomerCollectionPlansByFilter.json")
 	public String findRiskCustomerCollectionPlansByFilter(@ModelAttribute RiskCustomerCollectionPlanFilter filter,HttpServletRequest request){
 		
-		String id = RequestHelper.getStringValue(request, "id");
+		String id = RequestHelper.getStringValue(request, "userId");
 		filter.setCustomerManagerId(id);
  
 		
@@ -80,6 +75,29 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	/**
+	 * 显示催收计划详细信息
+	 * 
+	 */
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/browerRiskcustomer.json")
+	public String display(HttpServletRequest request) {
+		Map<String, Object> map =new LinkedHashMap<String, Object>();
+		String collectionPlanId = request.getParameter("collectionPlanId");
+		RiskCustomerCollectionPlanForm collectionplan = new RiskCustomerCollectionPlanForm();
+//		if (StringUtils.isNotEmpty(collectionPlanId)) {
+			collectionplan = riskCustomerCollectionService.findRiskCustomerCollectionPlanById(collectionPlanId);
+//			List<RiskCustomerCollectionPlansAction> collectionActions = riskCustomerCollectionService.findRiskCustomerCollectionPlansActionByCollectionPlanId(collectionPlanId);
+			map.put("collectionPlan", collectionplan);
+//			map.put("collectionActions",collectionActions);
+//		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
 

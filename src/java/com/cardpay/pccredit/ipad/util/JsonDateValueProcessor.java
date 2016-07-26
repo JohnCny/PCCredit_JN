@@ -11,7 +11,7 @@ public class JsonDateValueProcessor implements JsonValueProcessor{
 	/**
      * datePattern
      */
-    private String datePattern = "yyyy-MM-dd hh:mm:ss";
+    private String datePattern = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * JsonDateValueProcessor

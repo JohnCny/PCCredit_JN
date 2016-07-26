@@ -39,6 +39,7 @@ public class JnPadProductSelectService {
  */
 	public List<ProductAttribute> selectProductByFilter(JnpadProductFilter filter) {
 		
+		filter.setStatus("Published");
 		return jnPadProductSelectDao.selectProductByFilter(filter);
 	}
 
