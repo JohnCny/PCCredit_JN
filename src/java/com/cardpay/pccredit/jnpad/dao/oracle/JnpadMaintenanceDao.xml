@@ -29,7 +29,7 @@
 		<result property="modifiedBy" column="MODIFIED_BY" />
 	</resultMap>
 	
-	<resultMap id="MaintenanceWebResultMap" type="com.cardpay.pccredit.customer.web.MaintenanceWeb">
+	<resultMap id="MaintenanceWebResultMap" type="com.cardpay.pccredit.customer.web.MaintenanceForm">
 		<result property="id" column="id" />
 		<result property="customerId" column="customer_id" />
 		<result property="chineseName" column="chinese_name" />
@@ -123,6 +123,7 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					  select  b.chinese_name,
+					  		  b.id as customerId,
           					  b.card_id,
           					  p.product_name,
           					  --m.maintenance_endtime-m.maintenance_day as startDay,

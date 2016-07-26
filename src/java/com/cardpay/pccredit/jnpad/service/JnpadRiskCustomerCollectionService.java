@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.jnpad.dao.JnpadRiskCustomerCollectionDao;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
+import com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlansAction;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 @Service
@@ -49,5 +50,12 @@ public class JnpadRiskCustomerCollectionService {
 		
 		return riskCustomerCollectionDao.findRiskViewSubCollectionPlansCountByFilter(filter);
 		
+	}
+
+
+	public List<RiskCustomerCollectionPlansAction> findRiskCustomerCollectionPlansActionByCollectionPlanId(
+			String collectionPlanId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

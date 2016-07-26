@@ -67,6 +67,8 @@ public class JnIpadCustMaintenanceController {
 			String createdBy = request.getParameter("customerManagerId");
 			maintenance.setCustomerManagerId(request.getParameter("customerManagerId"));
 			maintenance.setCreatedBy(createdBy);
+			maintenance.setCustomerId(request.getParameter("customerId"));
+			maintenance.setAppId(request.getParameter("appId"));
 			maintenance.setMaintenanceGoal(request.getParameter("maintenanceGoal"));
 			maintenance.setMaintenanceWay(request.getParameter("createWay"));
 			maintenance.setMaintenanceDay(request.getParameter("maintenanceDay"));
@@ -78,9 +80,9 @@ public class JnIpadCustMaintenanceController {
 				maintenance.setCreateWay(MarketingCreateWayEnum.manager.toString());;
 			}
 			String id = maintenanceService.insertMaintenance(maintenance);
-			result.put("result", "success");
+			result.put("result", "增加成功");
 		}catch (Exception e){
-			result.put("result", "fail");
+			result.put("result", "增加失败");
 		}
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

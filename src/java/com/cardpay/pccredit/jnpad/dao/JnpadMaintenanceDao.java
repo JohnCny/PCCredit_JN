@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
 import com.cardpay.pccredit.customer.web.MaintenanceForm;
+import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.wicresoft.util.annotation.Mapper;

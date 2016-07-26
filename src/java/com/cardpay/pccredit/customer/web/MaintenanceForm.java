@@ -48,8 +48,14 @@ public class MaintenanceForm extends BaseForm{
 	private String repayWay;
 	private String repayStatus;
 	private String productId;
+	private String dkye;
 	
-	
+	public String getDkye() {
+		return dkye;
+	}
+	public void setDkye(String dkye) {
+		this.dkye = dkye;
+	}
 	public String getRepayWay() {
 		return repayWay;
 	}
