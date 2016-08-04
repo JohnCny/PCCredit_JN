@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPYFORM;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCc;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
@@ -28,6 +30,7 @@ import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.product.service.ProductService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -35,7 +38,9 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -55,7 +60,9 @@ public class CustomerFirsthendController extends BaseController{
 	
 	@Autowired
 	private CustomerInforService customerInforService;
-
+	
+	@Autowired
+	private ProductService productService;
 	
 	@Autowired
 	private MaintenanceService maintenanceService;
@@ -354,6 +361,35 @@ public class CustomerFirsthendController extends BaseController{
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerLedger/zrrtz", request);
+		return mv;
+	}
+	
+	
+	/**
+	 * 修改客户原始信息
+	 * @param request
+	 * @return
+	*/
+	@ResponseBody
+	@RequestMapping(value = "showCustomerInfoJn.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView updateCustomerInfoJn(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_12", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CIPERSONBASINFOCOPY base = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
+			if(base == null){
+				//复制
+				customerInforService.findCIPERSONBASINFOCOPYISEXIT(customerInforId);
+				//查询
+				CIPERSONBASINFOCOPY copy = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
+				mv.addObject("customerInfor", copy);
+				mv.addObject("customerNm", copy.getId());
+			}else{
+				mv.addObject("customerInfor", base);
+				mv.addObject("customerNm", base.getId());
+			}
+		}
 		return mv;
 	}
 }

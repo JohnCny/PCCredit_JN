@@ -1036,6 +1036,19 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		return null;
 	}
 	
+	//下载贷后影像
+	@ResponseBody
+	@RequestMapping(value = "downLoadDh.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadDh(HttpServletRequest request,HttpServletResponse response){
+		try {
+			addIntoPiecesService.downLoadDh(response,request.getParameter(ID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	//下载影像资料
 	@ResponseBody
 	@RequestMapping(value = "downLoadYxzlJns.json",method = { RequestMethod.GET })
@@ -1043,6 +1056,19 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 	public AbstractModelAndView downLoadYxzlJns(HttpServletRequest request,HttpServletResponse response){
 		try {
 			addIntoPiecesService.downLoadYxzlJns(response,request.getParameter(ID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	//下载影像资料
+	@ResponseBody
+	@RequestMapping(value = "downLoadYxzlDh.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadYxzlDh(HttpServletRequest request,HttpServletResponse response){
+		try {
+			addIntoPiecesService.downLoadYxzlDh(response,request.getParameter(ID));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

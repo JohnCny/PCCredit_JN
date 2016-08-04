@@ -216,6 +216,9 @@
 	
 	
 	<select id="findCustomerApplicationIntopieceDecisionForm" resultMap="BaseResultMap">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
 			SELECT
 		b.*, U.CHINESE_NAME as chineseName,
 		U.RESIDENTIAL_ADDRESS AS residentialAddress,
@@ -225,17 +228,20 @@
 		A.SERIAL_NUMBER as SERIALNUMBER,
    		N.NODE_NAME as nodeName,
 		A.AUDIT_TIME as auditTime,
-		b.CREATED_TIME   as createdTime
+		b.CREATED_TIME   as createdTime,
+		prod.PRODUCT_NAME as productName
 		FROM
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
 		CUSTOMER_APPLICATION_PROCESS A,
-   		NODE_AUDIT N,NODE_AUDIT_USER p
+   		NODE_AUDIT N,NODE_AUDIT_USER p,
+   		PRODUCT_ATTRIBUTE prod
 		WHERE
 		1=1
 		and U.ID = b.CUSTOMER_ID
 		and a.APPLICATION_ID=b.ID
 		AND N.ID=A.NEXT_NODE_ID
+		and prod.id = b.PRODUCT_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{userId}
 		and b.status='audit' 
 		<if test="cardId!=null and cardId!=''">
@@ -247,6 +253,11 @@
 		<if test="nextNodeName!=null and nextNodeName!=''">
 			and N.NODE_NAME=#{nextNodeName}
 		</if>
+		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
 	</select>
 	<select id="findCustomerApplicationIntopieceDecisionCountForm"
 		resultType="int">
@@ -262,12 +273,14 @@
 		b.APPLY_QUOTA AS applyQuota,
 		A.SERIAL_NUMBER as SERIALNUMBER,
    		N.NODE_NAME as nodeName,
-		A.AUDIT_TIME as auditTime
+		A.AUDIT_TIME as auditTime,
+		prod.PRODUCT_NAME as productName
 		FROM
 		CUSTOMER_APPLICATION_INFO b,
 		BASIC_CUSTOMER_INFORMATION U,
 		CUSTOMER_APPLICATION_PROCESS A,
-   		NODE_AUDIT N,NODE_AUDIT_USER p
+   		NODE_AUDIT N,NODE_AUDIT_USER p,
+   		PRODUCT_ATTRIBUTE prod
 		WHERE
 		1=1
 		and U.ID = b.CUSTOMER_ID
@@ -275,7 +288,7 @@
 		AND N.ID=A.NEXT_NODE_ID
 		and A.NEXT_NODE_ID=p.NODE_ID and p.USER_ID=#{userId}
 		and b.status='audit' 
-		
+		and prod.id = b.PRODUCT_ID
 		<if test="cardId!=null and cardId!=''">
 			and U.card_id=#{cardId}
 		</if>

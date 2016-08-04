@@ -78,22 +78,21 @@
 	});
 	
 	function browseFolder(id,is_upload,custId){
-		var url = "${contextPath}/intopieces/intopiecesquery/browse_folder.page?batch_id="+id+"&custId="+custId;
+		var url = "${contextPath}/postLoan/post/browse_folder.page?batch_id="+id+"&custId="+custId+"&bussType=1";
 		window.location.href = url;
 	}
 	
 	function displayDetail(id,is_upload){
-		var url = "${contextPath}/intopieces/intopiecesquery/display_detail.page?batchId="+id;
+		var url = "${contextPath}/postLoan/post/display_detail.page?batchId="+id;
 		window.location.href = url;
 	}
 	
-	function displayServer(id,is_upload){
-		//Dialog.load();
+	/* function displayServer(id,is_upload){
 		var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?batchId="+id+"&first_flag=1";
 		window.location.href = url;
-	}
+	} */
 	function displayServerPage(id,is_upload){
-		var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?batchId="+id+"&first_flag=1"+"&viewType=1&limit=5";
+		var url = "${contextPath}/postLoan/post/display_server.page?batchId="+id+"&first_flag=1"+"&viewType=1&limit=5";
 		window.open(url,"newwindow");
 	}
 	
@@ -102,7 +101,7 @@
 			function() {
 				Dialog.load();
 				$.ajax({
-					url : "${contextPath}/intopieces/intopiecesquery/delete_batch.json?batchId="+id,
+					url : "${contextPath}/postLoan/post/delete_batch.json?batchId="+id,
 					type : "get",
 					success : function(data) {
 						Dialog.closeLoad();

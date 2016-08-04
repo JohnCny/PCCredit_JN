@@ -17,6 +17,8 @@ import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationCom;
@@ -342,6 +344,23 @@ public class IntoPiecesComdao {
 		
 		return commonDao.queryBySql(ApproveHistoryForm.class, sql, params);
 	}
+	
+	/*public List<AppManagerAuditLogForm> findAuditConfigureById(String id){
+		String sql = "select l.examine_amount as examineAmount ,                     "+
+				"       l.examine_lv as examineLv,l.AUDIT_TYPE as auditType,         "+
+				"       u1.display_name as userName1,               "+
+				"       u2.display_name as userName2,               "+
+				"       u3.display_name as userName3                "+
+				"from                                              "+
+				"    t_app_manager_audit_log l                     "+
+				"  left join  sys_user u1 on l.user_id_1 = u1.id   "+
+				"  left join  sys_user u2 on l.user_id_2 = u2.id   "+
+				"  left join  sys_user u3 on l.user_id_3 = u3.id   "+
+				" where APPLICATION_ID = #{id} 					   ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		return commonDao.queryBySql(AppManagerAuditLogForm.class, sql, params);
+	}*/
 	
 	/**
 	 * 查找进件的审批中的节点

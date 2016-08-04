@@ -540,13 +540,13 @@
 		       		<!-- select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} -->
 		       		select 1 from RISK_LIST T2 where T1.id = T2.CUSTOMER_ID and T2.product_id =#{productId}
 		       	)
-		       	 <!--
+		       	
 		       	and  not exists 
 		       	(
 		       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
- 		       		and T2.REPAY_STATUS  != '1'
-            	   and (trunc(sysdate)-trunc(T2.created_time))&lt;180 
-		       	) -->
+ 		       		and T2.REPAY_STATUS  != '1' and status !='refuse'
+            	    <!--and (trunc(sysdate)-trunc(T2.created_time))&lt;180 -->
+		       	) 
 	
 		 <![CDATA[		
 							) ROW_
@@ -577,7 +577,7 @@
 		and not exists 
        	(
        		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id and T2.product_id =#{productId} 
-       		and T2.REPAY_STATUS  != '1'
+       		and T2.REPAY_STATUS  != '1' and status !='refuse'
             <!-- and (trunc(sysdate)-trunc(T2.created_time))&lt;180 -->
        	)
 	</select>
@@ -655,8 +655,14 @@
 			T1.id,
 			T1.chinese_name as chineseName,
 			T1.card_type as cardType,
-			T1.card_id as cardId,T1.ty_customer_id as tyCustomerId,T1.user_id as userId
-			from BASIC_CUSTOMER_INFORMATION T1 where 1=1
+			T1.card_id as cardId,
+			T1.ty_customer_id as tyCustomerId,
+			<!-- T1.user_id as userId,-->
+ 			u.display_name as userId
+			from BASIC_CUSTOMER_INFORMATION T1,
+			sys_user u
+		  where 1=1
+		   			and  u.id = t1.user_id
 				<if test="chineseName != null and chineseName != '' ">
 					AND T1.chinese_name=#{chineseName}
 				</if>

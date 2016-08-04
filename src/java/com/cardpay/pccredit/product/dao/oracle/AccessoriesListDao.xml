@@ -19,6 +19,7 @@
 		<result property="userId_3" column="USER_ID_3" />
 		<result property="examineAmount" column="EXAMINE_AMOUNT" />
 		<result property="examineLv" 	 column="EXAMINE_LV" />
+		<result property="auditType" 	 column="AUDIT_TYPE" />
 	</resultMap>
 	
 
@@ -43,12 +44,16 @@
         d.display_name as USERID_2,
         g.display_name as USERID_3,
         t.EXAMINE_AMOUNT as EXAMINE_AMOUNT,
-        t.EXAMINE_LV as EXAMINE_LV
+        t.EXAMINE_LV as EXAMINE_LV,
+        t.AUDIT_TYPE as AUDIT_TYPE
    from t_app_manager_audit_log t left join sys_user s on s.id = t.user_id_1
    left join sys_user d on d.id = t.user_id_2
    left join sys_user g on g.id = t.user_id_3
         where 
-        AUDIT_TYPE =#{auditType} and APPLICATION_ID =#{appId}
+        APPLICATION_ID =#{appId}
+        <if test="auditType != null and auditType != '' ">
+			and AUDIT_TYPE =#{auditType}
+		</if>
 	</select>
 
 </mapper>
