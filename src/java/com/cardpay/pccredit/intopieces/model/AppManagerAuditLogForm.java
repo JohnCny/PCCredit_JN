@@ -12,6 +12,8 @@ public class AppManagerAuditLogForm extends BusinessModel{
 	private String  userName1;    
 	private String  userName2;      
 	private String  userName3;
+	private String  examineAmount;
+	private String  examineLv;
 	public String getApplicationId() {
 		return applicationId;
 	}
@@ -44,6 +46,18 @@ public class AppManagerAuditLogForm extends BusinessModel{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getExamineAmount() {
+		return examineAmount;
+	}
+	public void setExamineAmount(String examineAmount) {
+		this.examineAmount = examineAmount;
+	}
+	public String getExamineLv() {
+		return examineLv;
+	}
+	public void setExamineLv(String examineLv) {
+		this.examineLv = examineLv;
 	}
 	
 	

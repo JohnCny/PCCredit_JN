@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
@@ -372,6 +373,11 @@ public class ProductService {
 	public int updateProductAttribute(ProductAttribute productAttribute) {
 		productAttribute.setModifiedTime(Calendar.getInstance().getTime());
 		return commonDao.updateObject(productAttribute);
+	}
+	
+	// 修改客户原始信息
+	public int updateCustomerBase(CIPERSONBASINFOCOPY copy) {
+		return commonDao.updateObject(copy);
 	}
 
 	// 根据productId删除产品附件清单

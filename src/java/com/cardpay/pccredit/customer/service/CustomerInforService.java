@@ -43,6 +43,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
@@ -1426,6 +1427,17 @@ public class CustomerInforService {
 	
 	public CIPERSONBASINFO findCIPERSONBASINFO(String customerInforId){
 		return commonDao.findObjectById(CIPERSONBASINFO.class,customerInforId);
+	}
+	
+	//COPY
+	public CIPERSONBASINFOCOPY findCIPERSONBASINFOCOPY(String customerInforId){
+		return commonDao.findObjectById(CIPERSONBASINFOCOPY.class,customerInforId);
+	}
+	
+	//copy
+	public void findCIPERSONBASINFOCOPYISEXIT(String id){
+		String sql = "insert into t_cipersonbasinfo_copy value (select * from t_cipersonbasinfo where id='"+id+"')";
+		commonDao.queryBySql(CIPERSONBASINFOCOPY.class,sql , null);
 	}
 	
 	/**

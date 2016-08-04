@@ -37,14 +37,14 @@
               <col width="8%" />
               <col width="18%" />
               <col width="17%"/>
-              <!-- <col width="40%" /> -->
+              <col width="40%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">中文姓名</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
-<!--               <th nowrap="nowrap">客户经理工号</th> -->
+              <th nowrap="nowrap">客户经理姓名</th> 
             </tr>
           </table>
         </div>
@@ -55,17 +55,16 @@
               <col width="8%" />
               <col width="18%" />
               <col width="17%"/>
-           <!--    <col width="40%" /> -->
+              <col width="40%" /> 
             </colgroup>
             #foreach ($!{customer} in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"
-                   /></td>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"/></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
               <!-- <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td> -->
-               <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
+              <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
               <td nowrap="nowrap">$!customer.cardId</td>
-              <!-- <td nowrap="nowrap">$!customer.userId</td> -->
+              <td nowrap="nowrap">$!customer.userId</td> 
             </tr>
             #end
           </table>

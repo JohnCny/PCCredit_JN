@@ -39,6 +39,8 @@ import com.cardpay.pccredit.intopieces.constant.IntoPiecesException;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationCom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
@@ -1194,6 +1196,23 @@ public class IntoPiecesControl extends BaseController {
 		mv.addObject("ifHideUser", ifHideUser);
 		return mv;
 	}
+	
+	/**
+	 * 查询审审议结论
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findAuditConfigureById.page", method = { RequestMethod.GET })
+	public AbstractModelAndView findAuditConfigureById(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/approve_history_configure", request);
+		String id = request.getParameter("id");
+		//List<AppManagerAuditLogForm> historyForms = intoPiecesService.findAuditConfigureById(id);
+		List<AppManagerAuditLog> historyForms = productService.findAppManagerAuditLog(id,"");
+		mv.addObject("historyForms", historyForms);
+		return mv;
+	}
+
 
 	/**
 	 * 验证客户商业类型
@@ -1457,6 +1476,7 @@ public class IntoPiecesControl extends BaseController {
 			String custId = RequestHelper.getStringValue(request, "custId");
 			mv.addObject("batch_id", batch_id);
 			mv.addObject("custId", custId);
+			mv.addObject("bussType", RequestHelper.getStringValue(request, "bussType"));
 			String appId = addIntoPiecesService.findBatchId(batch_id);
 			mv.addObject("appId", appId);
 			return mv;

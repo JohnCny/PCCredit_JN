@@ -11,6 +11,9 @@ import com.cardpay.pccredit.intopieces.model.Dcddpz;
 import com.cardpay.pccredit.intopieces.model.Dclrjb;
 import com.cardpay.pccredit.intopieces.model.Dclsfx;
 import com.cardpay.pccredit.intopieces.model.Dcsczt;
+import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentBatch;
+import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentDetail;
+import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.Dzjbzk;
 import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
@@ -44,13 +47,25 @@ public interface LocalImageDao {
 	
 	
 	public QzApplnAttachmentList findAttachmentListByAppId(@Param("applicationId")String applicationId);
+	public DhApplnAttachmentList findDhAttachmentListByAppId(@Param("applicationId")String applicationId);
 	public List<QzApplnAttachmentBatch> findAttachmentBatchByAppId(@Param("applicationId")String applicationId);
+	public List<DhApplnAttachmentBatch> findDhAttachmentBatchByAppId(@Param("applicationId")String applicationId);
 	
 	
 	public List<QzApplnAttachmentDetail> findDetailByFilter(IntoPiecesFilter filter);
 	public int findDetailCountByFilter(IntoPiecesFilter filter);
 	
+	public List<DhApplnAttachmentDetail> findDhDetailByFilter(IntoPiecesFilter filter);
+	public int findDhDetailCountByFilter(IntoPiecesFilter filter);
+	
 	public List<QzApplnAttachmentDetail> findQzApplnDetail(@Param("page") int currentPage,@Param("limit") int limit,@Param("batchId") String batchId);
 	
+	public List<DhApplnAttachmentDetail> findDhApplnDetail(@Param("page") int currentPage,@Param("limit") int limit,@Param("batchId") String batchId);
+	public int findDhApplnDetailCount(@Param("batchId") String batchId);
+	
 	public int findQzApplnDetailCount(@Param("batchId") String batchId);
+	
+	public List<DhApplnAttachmentDetail> findDhApplnDetailPage(@Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
+	public int findDhApplnDetailPageCount(@Param("appId") String appId);
+	
 }

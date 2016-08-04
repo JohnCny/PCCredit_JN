@@ -34,7 +34,7 @@
 				'successTimeout'  : 10,					//上传超时
 				'uploadLimit'     : 500,					//允许上传的最多张数
 				'swf'  : '${contextPath}/common/js/common/uploadify.swf', //swfUpload
-				'uploader': '${contextPath}/intopieces/intopiecesquery/browse_folder.json?batch_id=$!batch_id', //服务器端脚本
+				'uploader': '${contextPath}/postLoan/post/browse_folder.json?batch_id=$!batch_id', //服务器端脚本
 
 
 				//修改formData数据
@@ -92,12 +92,12 @@
 		//开始上传影像平台
 		function browse_folder_complete(custId){
 			$.ajax({
-				url : "${contextPath}/intopieces/intopiecesquery/browse_folder_complete.json?batch_id=$!batch_id",
+				url : "${contextPath}/postLoan/post/browse_folder_complete.json?batch_id=$!batch_id",
 				type : "get",
 				success : function(data) {
 					if (data.success) {
 						topWin.Dialog.message("已提交后台上传！");
-					    window.location.href = "${contextPath}/intopieces/intopiecesquery/sunds_ocx.page?appId=$!appId"+"&custId="+custId;
+						window.location.href = "${contextPath}/postLoan/post/sunds_ocx.page?appId=$!appId"+"&custId="+custId;
 					}
 					else{
 						topWin.Dialog.message("影像提交失败！");

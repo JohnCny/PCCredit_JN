@@ -414,9 +414,13 @@ public class RetrainingController extends BaseController {
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap findManagersByorgId(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
+		String orgId = "";
 		if (returnMap.isSuccess()) {
 			try {
-				String orgId = RequestHelper.getStringValue(request, "orgId");
+				if(!"000000".equals(RequestHelper.getStringValue(request, "orgId"))){
+					 orgId = RequestHelper.getStringValue(request, "orgId");
+				}
+				
 				List<User> users = accountManagerRetrainingService.findUserListByOrgId(orgId);
 				returnMap.put("datas", users);
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
