@@ -188,9 +188,9 @@
 				}
 			}
 			
-			if( status == "nopass_replenish"){
+			if( status == "RETURNAPPROVE"){
 				if($("#decisionRefusereason").val() == ""){
-					 $("#decisionRefusereason").after("<label class='error myerror' generated='true' >补充调查原因不能为空</label>");   
+					 $("#decisionRefusereason").after("<label class='error myerror' generated='true' >退回原因不能为空</label>");   
 					 return;
 				}
 			}
@@ -226,7 +226,7 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(10)").show();
+				$("tr:eq(9)").show();
 				$("tr:eq(12)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
@@ -237,7 +237,7 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(10)").hide();
+				$("tr:eq(9)").hide();
 				$("tr:eq(12)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
@@ -245,7 +245,7 @@
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(10)").hide();
+				$("tr:eq(9)").hide();
 				$("tr:eq(12)").show();
 			}
 			

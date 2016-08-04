@@ -91,7 +91,7 @@ public class JnpadIntopiecesDecisionService {
 		}*/
 
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount);
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,"","");
 		//更新单据状态
 		if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 				examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -181,7 +181,7 @@ public class JnpadIntopiecesDecisionService {
 						auditType,
 						cyUser1,
 						cyUser2,
-						fdUser);
+						fdUser,"","");
 			}
 		}
 

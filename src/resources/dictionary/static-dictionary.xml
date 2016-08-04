@@ -542,5 +542,72 @@
 		<item name="5"     title="结清" />
 		<item name="6"     title="部分逾期" />
 	</dictionary>
-
+	
+	
+	<dictionary name="MINGZHU" title="">
+	    <item name="1"  	title="汉族"			/>
+		<item name="10" 	title="朝鲜族"		/>
+		<item name="11" 	title="满族"			/>
+		<item name="12" 	title="侗族"			/>
+		<item name="13" 	title="瑶族"			/>
+		<item name="14" 	title="白族"			/>
+		<item name="15" 	title="土家族"		/>
+		<item name="16" 	title="哈尼族"		/>
+		<item name="17" 	title="哈萨克族"		/>
+		<item name="18" 	title="傣族"			/>
+		<item name="19" 	title="黎族"			/>
+		<item name="2"  	title="蒙古族"		/>
+		<item name="20" 	title="傈僳族"		/>
+		<item name="21" 	title="佤族"			/>
+		<item name="22" 	title="畲族"			/>
+		<item name="23" 	title="高山族"		/>
+		<item name="24" 	title="拉祜族"		/>
+		<item name="25" 	title="水族"			/>
+		<item name="26" 	title="东乡族"		/>
+		<item name="27" 	title="纳西族"		/>
+		<item name="28" 	title="景颇族"		/>
+		<item name="29" 	title="柯尔克孜族"		/>
+		<item name="3"  	title="回族"			/>
+		<item name="30" 	title="土族"			/>
+		<item name="31" 	title="达斡尔族"		/>
+		<item name="32" 	title="仫佬族"		/>
+		<item name="33" 	title="羌族"			/>
+		<item name="34" 	title="布朗族"		/>
+		<item name="35" 	title="撒拉族"		/>
+		<item name="36" 	title="毛南族"		/>
+		<item name="37" 	title="仡佬族"		/>
+		<item name="38" 	title="锡伯族"		/>
+		<item name="39" 	title="阿昌族"		/>
+		<item name="4"  	title="藏族"			/>
+		<item name="40" 	title="普米族"		/>
+		<item name="41" 	title="塔吉克族"		/>
+		<item name="42" 	title="怒族"			/>
+		<item name="43" 	title="乌兹别克族"		/>
+		<item name="44" 	title="俄罗斯族"		/>
+		<item name="45" 	title="鄂温克族"		/>
+		<item name="46" 	title="德昂族"		/>
+		<item name="47" 	title="保安族"		/>
+		<item name="48" 	title="裕固族"		/>
+		<item name="49" 	title="京族"			/>
+		<item name="5"  	title="维吾尔族"		/>
+		<item name="50" 	title="塔塔尔族"		/>
+		<item name="51" 	title="独龙族"		/>
+		<item name="52" 	title="鄂伦春族"		/>
+		<item name="53" 	title="赫哲族"		/>
+		<item name="54" 	title="门巴族"		/>
+		<item name="55" 	title="珞巴族"		/>
+		<item name="56" 	title="基诺族"		/>
+		<item name="6"  	title="苗族"			/>
+		<item name="7"  	title="彝族"			/>
+		<item name="8"  	title="壮族"			/>
+		<item name="9"  	title="布依族"		/>
+	</dictionary>
+	
+	<dictionary name="APPMANAGERLOG" title="">
+	   <item name="1"  	title="初审"		/>
+	   <item name="2"  	title="审贷"		/>
+	   <item name="3"  	title="部长审批"		/>
+	   <item name="4"  	title="零售业务部负责人审批"/>
+	   <item name="5"  	title="行长审批"		/> 
+	</dictionary>    
 </dictionaries>

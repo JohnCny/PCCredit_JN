@@ -27,6 +27,8 @@ import com.cardpay.pccredit.intopieces.dao.IntoPiecesDao;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.filter.MakeCardFilter;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
+import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
 import com.cardpay.pccredit.intopieces.model.BasicCustomerInformationS;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
@@ -893,6 +895,10 @@ public class IntoPiecesService {
 	public List<ApproveHistoryForm> findApplicationDataImport(String id, String dataType) {
 		return intoPiecesComdao.findApproveHistoryByDataId(id, dataType);
 	}
+	
+	/*public List<AppManagerAuditLogForm> findAuditConfigureById(String id) {
+		//return intoPiecesComdao.findAuditConfigureById(id);
+	}*/
 	
 	public boolean checkApplyQuota(float applyQuota,String userId,String productId){
 		boolean flag = false;

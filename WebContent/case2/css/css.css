@@ -189,6 +189,9 @@ a.btn_w{padding:0px 16px; height:24px;line-height:24px;margin:5px; background:ur
 a.btn_ws{padding:0px 16px; height:24px; width:150px;line-height:24px;margin:5px; overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:url(../images/icon_btn_w_normal.png) repeat-x; color:#333;  border:1px solid #818181; cursor:pointer;float:left;}
 a.btn_w:hover{ background:url(../images/icon_btn_w_hover.png) repeat-x;}
 
+a.btn_gtr{ padding:0px 16px; height:24px;line-height:24px;margin:5px 10px 5px 0; background:url(../images/btn_2_n.png) repeat-x; color:#515151;  border:1px solid #b3b3b3; cursor:pointer;text-shadow:1px 1px 1px #fff; }
+
+
 /*绯荤粺棣栭〉*/
 .content_forms{ float:left;height:100%; width:100%;;margin: 0 -220px 0 0; padding:2%; }
 .contentinner_forms{ }

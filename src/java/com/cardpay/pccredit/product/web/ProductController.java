@@ -20,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.PccOrganizationService;
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPYFORM;
 import com.cardpay.pccredit.customer.model.TyProductType;
 import com.cardpay.pccredit.datapri.web.FlatTreeNode;
 import com.cardpay.pccredit.product.filter.ProductFilter;
@@ -1931,5 +1933,26 @@ public class ProductController extends BaseController {
 
 		return returnMap;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updateBaseCustomer.json", method = { RequestMethod.POST })
+	//@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap updateBaseCustomer(@ModelAttribute CIPERSONBASINFOCOPYFORM from, HttpServletRequest request) {
+
+		JRadReturnMap returnMap = new JRadReturnMap();//WebRequestHelper.requestValidation(getModuleName(), from);
+		if (returnMap.isSuccess()) {
+			try {
+				CIPERSONBASINFOCOPY copy = from.createModel(CIPERSONBASINFOCOPY.class);
+				int i = productService.updateCustomerBase(copy);
+				returnMap.put(MESSAGE, "修改成功");
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	
 
 }
