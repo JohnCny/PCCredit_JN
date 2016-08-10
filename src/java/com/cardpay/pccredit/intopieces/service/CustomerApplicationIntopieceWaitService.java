@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.intopieces.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -219,6 +220,9 @@ public class CustomerApplicationIntopieceWaitService {
 		String lv = request.getParameter("decisionRate");
 		String productId = request.getParameter("productId");
 		
+		//审贷或管理岗支持  修改贷款产品
+		String prodId = request.getParameter("prodId");
+		
 		String custManagerId = request.getParameter("custManagerId");
 		
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
@@ -309,6 +313,14 @@ public class CustomerApplicationIntopieceWaitService {
 		
 		
 		if(applicationStatus.equals("APPROVE")&&!StringUtils.isEmpty(auditType)){
+			//修改进件产品
+			if(!StringUtils.isEmpty(prodId)){
+				updateAppliactionProd(customerApplicationInfo,prodId);
+				//修改local_excel 
+				updateLocalExcel(prodId,applicationId);
+				//修改 local_image
+				updateLocalImage(prodId,applicationId);
+			}
 			//select 
 			int count = customerInforDao.findAppAuditLog(applicationId,auditType);
 			if(count == 0){
@@ -331,6 +343,27 @@ public class CustomerApplicationIntopieceWaitService {
 													fdUser,examineAmount,lv);
 			}
 		}
+	}
+	
+	public void updateAppliactionProd(CustomerApplicationInfo customerApplicationInfo,String prodId){
+		customerApplicationInfo.setProductId(prodId);
+		commonDao.updateObject(customerApplicationInfo);
+	}
+	
+	public void updateLocalExcel(String prodId,String applicationId){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("prodId", prodId);
+		params.put("applicationId", applicationId);
+		String sql = "update LOCAL_EXCEL set PRODUCT_ID=#{prodId} where APPLICATION_ID=#{applicationId}";
+		commonDao.queryBySql(sql, params);
+	}
+	
+	public void updateLocalImage(String prodId,String applicationId){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("prodId", prodId);
+		params.put("applicationId", applicationId);
+		String sql = "update LOCAL_IMAGE set PRODUCT_ID=#{prodId} where APPLICATION_ID=#{applicationId}";
+		commonDao.queryBySql(sql, params);
 	}
 
 }

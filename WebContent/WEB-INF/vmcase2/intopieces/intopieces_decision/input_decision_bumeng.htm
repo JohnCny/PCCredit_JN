@@ -107,12 +107,17 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">部长结论</td></tr>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">小微负责人结论</td></tr>
             <tr>
-              <td  class="titlefc3"><label for="status">部长结论:</label></td>
+              <td  class="titlefc3"><label for="status">小微负责人结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
                   	#dict("intopieces_decision",$!customerApplicationInfo.status)
                   </select></td>
+              <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
+              <td><select id="prodId" name="prodId">
+                    #dict("ProductName", $!producAttribute.id)
+                  </select>
+              </td>
             </tr>
             <tr>
 			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
@@ -225,7 +230,7 @@
 		 	          $.get($($formName).attr("action"), formjson, function(data, textStatus, jqXhr) {
 		 	            if (data.success) {
 		 	            	topWin.Dialog.message("保存成功!");
-		 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/browse.page";
+		 	            	window.location.href="${contextPath}/intopieces/intopiecesdecision/bzBrowse.page";
 		 	            }
 		 	          });
 				}

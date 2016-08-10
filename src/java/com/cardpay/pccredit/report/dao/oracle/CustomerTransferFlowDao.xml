@@ -153,6 +153,10 @@
 	    <result property="overdueCusM2" column="overdueCusM2" />
 	    <result property="overdueCusM3" column="overdueCusM3" />
 	    <result property="overdueCusM4" column="overdueCusM4" />
+	    
+	    <result property="xy" column="xy" />
+	    <result property="bz" column="bz" />
+	    <result property="dy" column="dy" />
 	 </resultMap>
   
 
@@ -910,7 +914,52 @@
          and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
          <if test="userId != null and userId != '' ">
              and b.USER_ID =#{userId}
-         </if> ) as resvIntAccum
+         </if> ) as resvIntAccum,
+         
+        (select nvl(sum(a.BALAMT),0) from 
+           t_mibusidata a,
+           basic_customer_information b,
+           customer_application_info c,
+           product_attribute d
+         where a.custid = b.ty_customer_id
+           and b.id = c.CUSTOMER_ID
+           and d.id = c.product_id
+           and d.assure_means = 'LNM00000000003'
+           and c.status ='approved'
+         <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if>) as xy,
+         
+         (select nvl(sum(a.BALAMT),0) from 
+           t_mibusidata a,
+           basic_customer_information b,
+           customer_application_info c,
+           product_attribute d
+         where a.custid = b.ty_customer_id
+           and b.id = c.CUSTOMER_ID
+           and d.id = c.product_id
+           and d.assure_means = 'LNM00000000004'
+           and c.status ='approved'
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if>) as bz,
+         
+         (select nvl(sum(a.BALAMT),0) from 
+           t_mibusidata a,
+           basic_customer_information b,
+           customer_application_info c,
+           product_attribute d
+         where a.custid = b.ty_customer_id
+           and b.id = c.CUSTOMER_ID
+           and d.id = c.product_id
+           and d.assure_means = 'LNM00000000001'
+           and c.status ='approved'
+           <if test="userId != null and userId != '' ">
+             and b.USER_ID =#{userId}
+         </if>) as dy
+           
+         
+           
   from dual
    
 
