@@ -963,10 +963,64 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		return mv;
 	}
 	
+	//修改影像资料
+	@ResponseBody
+	@RequestMapping(value = "imageImportJy.page")
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView imageImportJy(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		QueryResult<LocalImageForm> result = addIntoPiecesService.findLocalImageByApplication(filter);
+		JRadPagedQueryResult<LocalImageForm> pagedResult = new JRadPagedQueryResult<LocalImageForm>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/image_import_jy",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		
+		//查询权限 非本人只能查看 不能操作
+//		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+//		String userId = user.getId();
+//		boolean lock = false;
+//		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoByApplicationId(filter.getApplicationId());
+//		CustomerInfor infor = customerInforService.findCustomerInforById(customerApplicationInfo.getCustomerId());
+//		if(infor.getUserId().equals(userId)){
+//			lock = true;
+//		}
+//		mv.addObject("lock", lock);
+		
+		return mv;
+	}
+	
 	//上传影像资料
 	@ResponseBody
 	@RequestMapping(value = "imageImport.json")
 	public Map<String, Object> imageImport(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
+		response.setContentType("text/html;charset=utf-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if(file==null||file.isEmpty()){
+				map.put(JRadConstants.SUCCESS, false);
+				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
+				return map;
+			}
+			String applicationId = request.getParameter("applicationId");
+			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(applicationId);
+			addIntoPiecesService.importImage(file,customerApplicationInfo.getProductId(),customerApplicationInfo.getCustomerId(),applicationId);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
+			JSONObject obj = JSONObject.fromObject(map);
+			response.getWriter().print(obj.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+			JSONObject obj = JSONObject.fromObject(map);
+			response.getWriter().print(obj.toString());
+		}
+		return null;
+	}
+	
+	//审贷纪要
+	@ResponseBody
+	@RequestMapping(value = "imageImportJy.json")
+	public Map<String, Object> imageImportJy(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
 		response.setContentType("text/html;charset=utf-8");
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
