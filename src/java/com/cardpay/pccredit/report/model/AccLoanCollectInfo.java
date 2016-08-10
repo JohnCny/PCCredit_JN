@@ -31,7 +31,31 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String contAmt;//累计授信金额
 	private String contBalace;//累计用信余额
 	private String alloverdue;//累计逾期客户数
+	
+	private String  xy;
+	private String  bz;
+	private String  dy;
+	
+	
 
+	public String getXy() {
+		return xy;
+	}
+	public void setXy(String xy) {
+		this.xy = xy;
+	}
+	public String getBz() {
+		return bz;
+	}
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+	public String getDy() {
+		return dy;
+	}
+	public void setDy(String dy) {
+		this.dy = dy;
+	}
 	public String getIncreaseLoancount() {
 		return increaseLoancount;
 	}

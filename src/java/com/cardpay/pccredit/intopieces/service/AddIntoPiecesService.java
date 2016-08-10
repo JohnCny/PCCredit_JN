@@ -58,7 +58,6 @@ import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
-import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
 import com.cardpay.pccredit.system.service.NodeAuditService;
@@ -843,7 +842,9 @@ public class AddIntoPiecesService {
 	}
 	//浏览文件并缓存到服务器目录
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
+		//本地
 		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		//服务器
 		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
@@ -859,7 +860,9 @@ public class AddIntoPiecesService {
 	
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
+		//本地
 		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		//服务器
 		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");

@@ -313,7 +313,7 @@ public class IntopiecesDecisionController extends BaseController {
 	
 	
 	
-		//部长审批
+		//小微负责人审批
 		@ResponseBody
 		@RequestMapping(value = "bzBrowse.page", method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.BROWSE)
@@ -321,7 +321,7 @@ public class IntopiecesDecisionController extends BaseController {
 			filter.setRequest(request);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			String userId = user.getId();
-			filter.setNextNodeName("部长审批");
+			filter.setNextNodeName("小微负责人审批");
 			filter.setUserId(userId);
 			QueryResult<CustomerApplicationIntopieceWaitForm> result = customerApplicationIntopieceWaitService.findCustomerApplicationIntopieceDecison(filter);
 			JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm> pagedResult = new JRadPagedQueryResult<CustomerApplicationIntopieceWaitForm>(filter, result);
