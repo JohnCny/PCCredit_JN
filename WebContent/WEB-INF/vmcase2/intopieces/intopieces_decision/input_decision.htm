@@ -84,6 +84,11 @@
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
                   	#dict("intopieces_decision",$!customerApplicationInfo.status)
                   </select></td>
+               <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
+               <td><select id="prodId" name="prodId">
+                    #dict("ProductName", $!producAttribute.id)
+                  </select>
+               </td>
             </tr>
             <tr>
 			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
@@ -123,6 +128,9 @@
           </table>
         </div>
       </form>
+      <div class="submit">
+      	<a id="id_image_button" class="btn_g" href="javascript:void(0);" title=导入审贷会纪要">导入审贷会纪要</a>
+      </div>
       <div class="submit">
       #if($!customerApplicationInfo.status=='audit')
         <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
@@ -256,6 +264,12 @@
  			} 
 			
 		});
+		
+		//导入审贷会纪要
+		$("#id_image_button").click(function() {
+				var url = "${contextPath}/customer/customerInfor_wh_ty/imageImportJy.page?applicationId=$!customerApplicationInfo.id";
+				window.location.href = url;
+	    });
 	});
 	
 	
