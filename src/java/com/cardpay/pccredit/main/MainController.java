@@ -164,14 +164,12 @@ public class MainController {
 		 level = accountManagerParameter.getLevelInformation();
 		}
 		String pageurl ="";
-		if(level =="MANA005" || level =="MANA003" ){
-			
+		//if(level =="MANA005" || level =="MANA003" ){
+		if(user.getUserType()!=1){
 			pageurl = "home/managerhome";
 		}
 		else{
-			
 			pageurl = "home/home";	
-		
 		}
 		JRadModelAndView mv = new JRadModelAndView(pageurl, request);
 		//统计客户已授信额度
@@ -216,16 +214,23 @@ public class MainController {
 		mv.addObject("riskCustomer",rightHomeData.get("riskCustomer"));
 		mv.addObject("verificationCustomer",rightHomeData.get("verificationCustomer"));
 		
-		if(level =="MANA005" || level =="MANA003" ){
+		//if(level =="MANA005" || level =="MANA003" ){
+		if(user.getUserType()!=1){
+			/* 
 			// 当前进件状况
 			mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
 			// 当前贷款状况
 			mv.addObject("creditStatusJson",statisticalCommonService.getCreditStatusJson());
-			
 			// 当前卡片状况
-			List<NameValueRecord> cardList = statisticalCommonService.statisticalCardStatus();
 			mv.addObject("cardStatusCategoriesJson",statisticalCommonService.getCardStatusCategoriesJson(cardList));
-			mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));
+		    mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));
+			*/
+			
+			// 当前进件状况 济南 sj 20160804
+		    mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
+		    // 统计各行已申请和通过进件数量  济南 sj 20160809
+		    mv.addObject("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson());
+		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
 		}
 		
 		return mv;

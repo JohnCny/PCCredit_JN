@@ -5,132 +5,165 @@
 <!--柱状图-->
   <script>
     $(function () {
-    $('#container').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false
-        },
-        title: {
-            text: '当前进件状况 单位(件)'
-        },
-        tooltip: {
-    	    pointFormat: '<b>{point.y}   {point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    color: '#000000',
-                    connectorColor: '#000000',
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
-            }
-        },
-        series: [{
-            type: 'pie',
-            name: '',
-            data: $!applicationStatusJson
-        }]
-    });
+	    $('#container').highcharts({
+	        chart: {
+	            plotBackgroundColor: null,
+	            plotBorderWidth: null,
+	            plotShadow: false
+	        },
+	        title: {
+	            text: '当前进件状况 单位(件)'
+	        },
+	        tooltip: {
+	    	    pointFormat: '<b>{point.y}   {point.percentage:.1f}%</b>'
+	        },
+	        plotOptions: {
+	            pie: {
+	                allowPointSelect: true,
+	                cursor: 'pointer',
+	                dataLabels: {
+	                    enabled: true,
+	                    color: '#000000',
+	                    connectorColor: '#000000',
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+	                }
+	            }
+	        },
+	        series: [{
+	            type: 'pie',
+	            name: '',
+	            data: $!applicationStatusJson
+	        }]
+	    });
 });				
   </script>
-  <script>
-    $(function () {
-    $('#container_1').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false
-        },
-title: {
-            text: '当前贷款状况 单位(万元)'
-        },
-        tooltip: {
-    	    pointFormat: '<b>{point.y}   {point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    color: '#000000',
-                    connectorColor: '#000000',
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
-            }
-        },
-        series: [{
-            type: 'pie',
-            name: '',
-            data: $!creditStatusJson
-        }]
-    });
-});				
-  </script>
-  <script>
-    $(function () {
-    $('#container_2').highcharts({
-        chart: {
-            type: 'column',
-            margin: [ 50, 50, 100, 80]
-        },
-        title: {
-            text: '当前卡片状况 单位(张)'
-        },
-        xAxis: {
-            categories: $!cardStatusCategoriesJson,
-            labels: {
-                rotation: -45,
-                align: 'right',
-                style: {
-                    fontSize: '20px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
-            }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: '当前卡片状况 单位(张)'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: '<b>{point.y:.1f} </b>',
-        },
-        series: [{
-            name: 'Population',
-            data: $!cardStatusValuesJson,
-            dataLabels: {
-                enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                x: 4,
-                y: 10,
-                style: {
-                    fontSize: '22px',
-                    fontFamily: 'Verdana, sans-serif',
-                    textShadow: '0 0 3px black'
-                }
-            }
-        }]
-    });
-});
 
-  </script>
+
+<script>
+/*     $(function () {
+	    $('#container_2').highcharts({
+	        chart: {
+	            type: 'column',
+	            margin: [ 50, 50, 100, 80]
+	        },
+	        title: {
+	            text: '当前卡片状况 单位(张)'
+	        },
+	        xAxis: {
+	            categories: $!cardStatusCategoriesJson,
+	            labels: {
+	                rotation: -45,
+	                align: 'right',
+	                style: {
+	                    fontSize: '20px',
+	                    fontFamily: 'Verdana, sans-serif'
+	                }
+	            }
+	        },
+	        yAxis: {
+	            min: 0,
+	            title: {
+	                text: '当前卡片状况 单位(张)'
+	            }
+	        },
+	        legend: {
+	            enabled: false
+	        },
+	        tooltip: {
+	            pointFormat: '<b>{point.y:.1f} </b>',
+	        },
+	        series: [{
+	            name: 'Population',
+	            data: $!cardStatusValuesJson,
+	            dataLabels: {
+	                enabled: true,
+	                rotation: -90,
+	                color: '#FFFFFF',
+	                align: 'right',
+	                x: 4,
+	                y: 10,
+	                style: {
+	                    fontSize: '22px',
+	                    fontFamily: 'Verdana, sans-serif',
+	                    textShadow: '0 0 3px black'
+	                }
+	            }
+	        }]
+	    });
+	}); */
+  </script>  
+  
+  <!--3.  -->
+<script language="JavaScript">
+$(document).ready(function() {  
+   var chart = {
+      type: 'column'
+   };
+   var title = {
+      text: '各行已申请和通过的进件数量'   
+   };
+   /* var subtitle = {
+      text: 'Source: runoob.com'  
+   }; */
+   var xAxis = {
+      categories: ['高新','天桥','长清','历城','历下','润丰','槐荫'],
+      crosshair: true
+   };
+   var yAxis = {
+      min: 0,
+      title: {
+         text: 'Num'         
+      }      
+   };
+   var tooltip = {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+         '<td style="padding:0"><b>{point.y:.1f} 件</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+   };
+   var plotOptions = {
+      column: {
+         pointPadding: 0.2,
+         borderWidth: 0
+      }
+   };  
+   var credits = {
+      enabled: false
+   };
+   
+   var series= [
+        {
+        	name: '已申请进件数量',
+            data: $!organApplicationAuditNumJson//[49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6]
+        }, 
+        {
+            name: '通过进件数量',
+            data: $!organApplicationApprovedNumJson//[83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0]
+        }];     
+      
+   var json = {};   
+   json.chart = chart; 
+   json.title = title;   
+   //json.subtitle = subtitle; 
+   json.tooltip = tooltip;
+   json.xAxis = xAxis;
+   json.yAxis = yAxis;  
+   json.series = series;
+   json.plotOptions = plotOptions;  
+   json.credits = credits;
+   $('#container_3').highcharts(json);
+  
+});
+</script>
 </head>
 <body>
 	<div style="display:block; width:1200px; height:400px; margin:0px auto; padding:20px;">
-   <div id="container" style="min-width:500px;height:300px;float:left; margin-right:20px;"></div>
-   <div id="container_1" style="min-width:500px;height:300px;float:left;"></div>
+   		<div id="container" style="min-width:500px;height:300px;float:left; margin-right:20px;"></div>
+   		<!-- <div id="container_1" style="min-width:500px;height:300px;float:left;"></div> -->
 	</div>
-   <div id="container_2" style="min-width:500px;height:330px"></div> 
+    <!-- <div id="container_2" style="min-width:500px;height:330px"></div>  -->
+    <div id="container_3" style="min-width:500px;height:330px"></div> 
 </body>
 </html>
