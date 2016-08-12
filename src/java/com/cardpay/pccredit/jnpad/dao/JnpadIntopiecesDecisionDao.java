@@ -21,5 +21,5 @@ public interface JnpadIntopiecesDecisionDao {
 	public List<ManagerInfoForm> findManagerInfo();
 	
 	//查询参与初审客户经理
-	public AppManagerAuditLog findAppManagerAuditLog(@Param("appId") String appId);
+	public AppManagerAuditLog findAppManagerAuditLog(@Param("appId") String appId,@Param("auditType") String auditType);
 }
