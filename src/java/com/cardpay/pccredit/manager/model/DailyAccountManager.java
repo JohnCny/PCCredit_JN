@@ -20,6 +20,21 @@ public class DailyAccountManager extends BusinessModel{
 	private String afternoonPlan;
 	private String afternoonActual;
 	private String daySummary;
+	private String todayplan;
+	private String tomorrowplan;
+	
+	public String getTodayplan() {
+		return todayplan;
+	}
+	public void setTodayplan(String todayplan) {
+		this.todayplan = todayplan;
+	}
+	public String getTomorrowplan() {
+		return tomorrowplan;
+	}
+	public void setTomorrowplan(String tomorrowplan) {
+		this.tomorrowplan = tomorrowplan;
+	}
 	public String getId() {
 		return id;
 	}

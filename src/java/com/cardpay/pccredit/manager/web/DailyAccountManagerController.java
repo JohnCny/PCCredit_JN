@@ -97,9 +97,9 @@ public class DailyAccountManagerController extends BaseController {
 	@RequestMapping(value = "update.json")
 	@JRadOperation(JRadOperation.CHANGE)
 	public JRadReturnMap update(@ModelAttribute DailyAccountManagerForm dailyAccountManagerForm, HttpServletRequest request) {
-
-		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), dailyAccountManagerForm);
-		if (returnMap.isSuccess()) {
+//		JRadReturnMap returnMap = WebRequestHelper.requestValidation(getModuleName(), dailyAccountManagerForm);
+		JRadReturnMap returnMap =  new JRadReturnMap();
+//		if (returnMap.isSuccess()) {
 			try {
 				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 				String loginId = user.getId();
@@ -111,7 +111,7 @@ public class DailyAccountManagerController extends BaseController {
 			} catch (Exception e) {
 				return WebRequestHelper.processException(e);
 			}
-		}
+//		}
 
 		return returnMap;
 	}

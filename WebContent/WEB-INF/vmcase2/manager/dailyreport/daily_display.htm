@@ -9,7 +9,7 @@
         <div class="forms" id="formsId">
           <!--计划安排-->
           <table class="rule" border="1" bordercolor="#CCCCCC">
-			<caption>展业计划安排</caption>
+			<caption>今日工作内容</caption>
 			   <colgroup>
 			      <col width="10%" />
 			      <col width="40%" />
@@ -17,20 +17,21 @@
 			       <col width="40%" />
 			   </colgroup>
             <tr>
-              <td><label>上午计划:</label></td>
+              <td><textarea rows="5" style="height:200px;width:980px" readonly="readonly">$!dailyAccountManager.todayplan</textarea></td>
+              <!-- <td><label>上午计划:</label></td>
               <td><textarea rows="5" readonly="readonly">$!dailyAccountManager.morningPlan</textarea></td>
             
               <td><label>下午计划:</label></td>
-              <td><textarea rows="5" readonly="readonly">$!dailyAccountManager.afternoonPlan</textarea></td>
+              <td><textarea rows="5" readonly="readonly">$!dailyAccountManager.afternoonPlan</textarea></td> -->
             </tr>
             <tr>
-              <td colspan="4"><h3><b>填写要求：</b>请注明工作内容（拜访客户数量、客户调查数量、进件及上审数量、放款金额）。</h3></td>
+              <td colspan="4"><h3><b>今日工作内容：</b>（工作地点、工作内容明细、工作总结与感悟等）。</h3></td>
             </tr>
           </table>
           
           <!--实际执行-->
       	  <table class="rule" border="1" bordercolor="#CCCCCC">
-          <caption>实际执行情况</caption>
+          <caption>明日工作安排</caption>
             <colgroup>
 			      <col width="10%" />
 			      <col width="40%" />
@@ -38,19 +39,20 @@
 			       <col width="40%" />
 			   </colgroup>
             <tr>
-              <td><label>上午实际情况:</label></td>
+              <td><textarea rows="5" style="height:200px;width:980px" readonly="readonly">$!dailyAccountManager.tomorrowplan</textarea></td>
+             <!--  <td><label>上午实际情况:</label></td>
               <td><textarea rows="5" readonly="readonly">$!dailyAccountManager.morningActual</textarea></td>
     
               <td><label>下午实际情况:</label></td>
-              <td><textarea rows="5" readonly="readonly">$!dailyAccountManager.afternoonActual</textarea></td>
+              <td><textarea rows="5" readonly="readonly">$!dailyAccountManager.afternoonActual</textarea></td> -->
             </tr>
             <tr>
-              <td colspan="4"><h3><b>填写要求：</b>请注明工作内容（拜访客户数量、客户调查数量、进件及上审数量、放款金额）。</h3></td>
+              <td colspan="4"><h3><b>明日工作计划：</b>（工作计划区域、计划工作事项、业务目标等）。</h3></td>
             </tr>
           </table>
           
           <!--当天总结-->
-      	   <table class="rule" border="1" bordercolor="#CCCCCC">
+      	  <!--  <table class="rule" border="1" bordercolor="#CCCCCC">
           <caption>当天工作总结</caption>
             <colgroup>
 			      <col width="10%" />
@@ -69,7 +71,7 @@
             <tr>
               <td colspan="4"><h3><b>填写建议：</b>1、分析计划与实际不符的原因。2、列举改进建议。3、其他因素。</h3></td>
             </tr>
-          </table>
+          </table> -->
         </div>
         
       </form>
