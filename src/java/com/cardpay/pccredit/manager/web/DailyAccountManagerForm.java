@@ -6,6 +6,9 @@ import com.wicresoft.jrad.base.web.form.BaseForm;
 
 public class DailyAccountManagerForm extends BaseForm {
 
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private String id;
 	private String weeklyId;
@@ -22,8 +25,26 @@ public class DailyAccountManagerForm extends BaseForm {
 	private Date modifiedTime;
 	private String createdBy;
 	private String modifiedBy;
+	private String todayplan;
+	private String tomorrowplan;
 
 	
+	public String getTodayplan() {
+		return todayplan;
+	}
+
+	public void setTodayplan(String todayplan) {
+		this.todayplan = todayplan;
+	}
+
+	public String getTomorrowplan() {
+		return tomorrowplan;
+	}
+
+	public void setTomorrowplan(String tomorrowplan) {
+		this.tomorrowplan = tomorrowplan;
+	}
+
 	public String getTitle() {
 		return title;
 	}

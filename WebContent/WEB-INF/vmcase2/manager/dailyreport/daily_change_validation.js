@@ -1,12 +1,15 @@
 var validator = $($formName).validate({
 	rules : {
-		morningPlan : {
+		todayplan : {
+//			morningPlan : {
 			required : true
 		}
 	},
 	messages : {
 		morningPlan : {
-			required : "上午计划不能为空"
+//			morningPlan : {
+//			required : "上午计划不能为空"
+				required : "今日计划不能为空"
 		}
 	},
 	errorPlacement : function(error, element) {

@@ -63,7 +63,8 @@
             </colgroup>
             #foreach ($obj in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.busicode@$!obj.repayamt@$!obj.rapayinterest
+              @$!obj.repaydate@$!obj.operdatetime"
                    /></td>
 <!--               <td nowrap="nowrap">#dictVal("CMMCPLX", $!product.productTypeCode)</td> -->
               <td nowrap="nowrap">$!obj.busicode</td>
@@ -80,6 +81,9 @@
         </div>
       </div>
       <div class="pagebar">
+       <div class="controlbtn">
+          <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a>
+        </div>
         <div class="controlbtn">
         </div>
         #parse ("common/pagination.htm")
@@ -101,7 +105,21 @@
 		opsObj.browseUrl = "${modulePath}/browse.page";
 
 		prepareOperations(opsObj);
-		
+		$("#id_infor_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var busicode = value.split("@")[0];
+				var repayamt = value.split("@")[1];
+				var rapayinterest = value.split("@")[2];
+				var repaydate = value.split("@")[3];
+				var operdatetime = value.split("@")[4];
+				var url = "${modulePath}/liushui_information.page?busicode=" + busicode+"&operdatetime="+operdatetime+"&repayamt="+repayamt+
+						"&rapayinterest="+rapayinterest+"&repaydate="+repaydate;
+				window.location.href = url;
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

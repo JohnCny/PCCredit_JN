@@ -207,6 +207,18 @@
 					]]>
 	</select>
 	
+	<select id="selectRarepaylistfoInfoByBusicode" resultMap="BaseResultMap2" parameterType="com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter">
+
+	    		select a.* from T_RAREPAYLIST a WHERE 1=1 
+						AND a.BUSICODE=#{busiCode}
+		<if test="rapayinterest != null and rapayinterest != '' ">
+		   				AND a.rapayinterest=#{rapayinterest}
+		   				</if>
+		<if test="repayamt != null and repayamt != '' ">
+		   				AND a.repayamt=#{repayamt}
+		   				</if>
+	</select>
+	
 	<select id="findLshJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
 	  	select count(*)  from T_RAREPAYLIST a  WHERE 1=1 
 	  	<if test="busiCode != null and busiCode != '' ">
@@ -214,4 +226,9 @@
 		</if>
 	</select>
 	
+	<select id="findObjectsByBusicode" resultMap="BaseResultMap1">
+	    select *  from t_fcloaninfo a where 1=1 and 
+	    a.BUSICODE=#{busicode}
+	    
+	</select>
 </mapper>

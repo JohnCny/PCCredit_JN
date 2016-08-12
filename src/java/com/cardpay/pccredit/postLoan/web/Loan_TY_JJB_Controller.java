@@ -29,8 +29,10 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -362,6 +364,60 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			}
 			return returnMap;
 		}
+		
+		/**
+		 * 
+		 * 根据busicode查询借据表信息信息
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "jieju_information.page")
+		public AbstractModelAndView jieju_information(@ModelAttribute PostLoanFilter filter ,HttpServletRequest request) {
+			String busicode=request.getParameter("busicode");
+			filter.setBusiCode(busicode);
+			JRadModelAndView mv = new JRadModelAndView("/postLoan/jj_info_browse", request);
+			List<Fcloaninfo> result = postLoanService.selectfcloanifoInfoByBusicode(filter);
+			Fcloaninfo fcloanifo = result.get(0);
+			mv.addObject("fcloanifo", fcloanifo);
+			return mv;
+		
+		}
+		
+		
+		/**
+		 * 
+		 * 根据busicode查询流水表信息信息
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "liushui_information.page")
+		public AbstractModelAndView liushui_information(@ModelAttribute FcloaninfoFilter filter ,HttpServletRequest request) {
+			String busicode=request.getParameter("busicode");
+			String rapayinterest=request.getParameter("rapayinterest");
+			String repayamt=request.getParameter("repayamt");
+			if(rapayinterest.trim().isEmpty()){
+				rapayinterest="";
+			}
+			if(repayamt.trim().isEmpty()){
+				repayamt="";
+			}
+			filter.setBusiCode(busicode);
+			filter.setRapayinterest(rapayinterest);
+			filter.setRepayamt(repayamt);
+			JRadModelAndView mv = new JRadModelAndView("/postLoan/lsh_info_browse", request);
+			List<RarepaylistForm> result = postLoanService.selectRarepaylistfoInfoByBusicode(filter);
+			RarepaylistForm rarepaylist = result.get(0);
+			mv.addObject("rarepaylist", rarepaylist);
+			return mv;
+			
+		}
+		
+		
+		
 }
 
 

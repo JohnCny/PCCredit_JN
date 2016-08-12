@@ -71,7 +71,7 @@
             </colgroup>
             #foreach ($obj in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.busicode@$!obj.cname@$!obj.cardnum"
                    /></td>
               <td nowrap="nowrap">$!obj.busicode</td>
               <td nowrap="nowrap">$!obj.cname</td>
@@ -90,6 +90,9 @@
         </div>
       </div>
       <div class="pagebar">
+      <div class="controlbtn">
+          <a id="id_infor_button" class="btn_g" href="javascript:void(0);" title="查看详细信息">查看详细信息</a>
+        </div>
         <div class="controlbtn">
         </div>
         #parse ("common/pagination.htm")
@@ -112,6 +115,18 @@
 
 		prepareOperations(opsObj);
 		
+		$("#id_infor_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var value = $("input[name='checkbox']:checked").val();
+				var busicode = value.split("@")[0];
+				var url = "${modulePath}/jieju_information.page?busicode=" + busicode;
+				window.location.href = url;
+			}else{
+				Dialog.message("请选择记录!");
+			}
+	    });
 	});
+	
+	
 </script>
 #parse ("common/iframe_page_footer.htm")
