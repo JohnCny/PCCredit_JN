@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
+import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
@@ -76,5 +77,22 @@ public class PostLoanService {
 		int size = postLoanDao.findLshJnListCountByFilter(filter);
 		QueryResult<RarepaylistForm> qr = new QueryResult<RarepaylistForm>(size,lists);
 		return qr;
+	}
+	/**
+	 * 借据表详细信息
+	 * @param filter
+	 * @return
+	 */
+	
+	public List<Fcloaninfo> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
+		// TODO Auto-generated method stub
+		return postLoanDao.findJJJnListByFilter(filter);
+	}
+	
+	
+	public List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter) {
+		// TODO Auto-generated method stub
+		
+		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
 	}
 }

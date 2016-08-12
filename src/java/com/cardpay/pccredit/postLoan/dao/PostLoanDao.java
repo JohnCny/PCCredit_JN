@@ -14,6 +14,7 @@ import com.cardpay.pccredit.customer.model.TyRepayTkmxForm;
 import com.cardpay.pccredit.customer.web.MaintenanceForm;
 import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
+import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
@@ -61,5 +62,15 @@ public interface PostLoanDao {
 	 */
 	List<RarepaylistForm> findLshJnListByFilter(PostLoanFilter filter);
 	int findLshJnListCountByFilter(PostLoanFilter filter);
+	
+	/**
+	 * 查询借据表详细信息
+	 * @param busicode
+	 * @return
+	 */
+	Fcloaninfo findObjectsByBusicode(@Param("busicode") String busicode);
+	
+	
+	List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter);
 	
 }
