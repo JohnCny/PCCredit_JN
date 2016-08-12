@@ -606,7 +606,7 @@
 	<dictionary name="APPMANAGERLOG" title="">
 	   <item name="1"  	title="初审"		/>
 	   <item name="2"  	title="审贷"		/>
-	   <item name="3"  	title="部长审批"		/>
+	   <item name="3"  	title="小微负责人审批"		/>
 	   <item name="4"  	title="零售业务部负责人审批"/>
 	   <item name="5"  	title="行长审批"		/> 
 	</dictionary>    

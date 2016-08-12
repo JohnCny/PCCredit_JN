@@ -133,4 +133,32 @@ public class StatisticalCommonService {
 		}
 		return pList;
 	}
+	
+	
+	
+	public String getOrganApplicationAuditNumJson(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalAuditStatus();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
+	
+	public String getOrganApplicationApprovedNumJson(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalApprovedStatus();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
 }

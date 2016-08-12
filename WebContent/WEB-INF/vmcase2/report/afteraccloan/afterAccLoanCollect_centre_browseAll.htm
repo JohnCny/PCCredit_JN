@@ -35,7 +35,7 @@
         </div>
        
 		<!-------------- 信息显示 ------------------------------------->      
-		<div id="topDiv" class="inquiry_list inquiry_top">
+		<div id="topDiv" class="inquiry_list inquiry_top" >
            <table>
             <colgroup>
               <col width="120"/>
@@ -122,6 +122,17 @@
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
             	
             	
+            </tr>
+            
+             <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">信用类产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.xy)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.bz)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">抵押类产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.dy)</font></td>
             </tr>
              #end
           </table>

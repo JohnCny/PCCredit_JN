@@ -18,7 +18,7 @@
 	       end) value
 	
 	  from (select app_status.name, app_status.id, return_num.value
-	          from (select '新增' as name, 'succeed' as id
+	          from (select '放款成功' as name, 'end' as id
 	                  from dual
 	                union all
 	                select '审批中' as name, 'audit' as id
@@ -27,7 +27,7 @@
 	                select '已审批' as name, 'approved' as id
 	                  from dual
 	                union all
-	                select '退回' as name, 'return' as id
+	                select '退回' as name, 'returnedToFirst' as id
 	                  from dual
 	                union all
 	                select '拒绝' as name, 'refuse' as id from dual) app_status
@@ -83,5 +83,153 @@
 		 where t.year = to_char(sysdate, 'yyyy')
 		   and t.month = to_char(sysdate, 'MM')
 		   and t.activation_status = 1
+	</select>
+	
+	
+	<select id="statisticalAuditStatus" resultMap="ResultMap" >
+	    select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='高新支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='天桥支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='长清支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='历城支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='历下支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='润丰支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='audit' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='槐荫支行'
+	</select>
+	
+	
+	
+	
+	<select id="statisticalApprovedStatus" resultMap="ResultMap" >
+	    select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='高新支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='天桥支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='长清支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='历城支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='历下支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='润丰支行'
+union all
+ 		select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b
+		where status ='approved' 
+		  and a.customer_id = b.id 
+		group by  b.user_id)tt where tt.instcode ='槐荫支行'
 	</select>
 </mapper>
