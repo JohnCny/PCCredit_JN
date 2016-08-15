@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -32,6 +33,7 @@ import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -44,13 +46,14 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	private IntoPiecesService intoPiecesService;
 	@Autowired
 	private ProductService productService;
-	//进件初审
+	
+	//审核信息查询
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/csBrowse.json", method = { RequestMethod.GET })
 	public String csBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 		
 		
-		filter.setNextNodeName("进件初审");
+		filter.setNextNodeName(request.getParameter("nextNodeName"));
 		filter.setUserId(request.getParameter("userId"));
 		QueryResult<CustomerApplicationIntopieceWaitForm> result = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison(filter);
 		JsonConfig jsonConfig = new JsonConfig();
@@ -59,6 +62,8 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		return json.toString();
 		
 	}
+	
+	
 	//显示初审信息
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/csInfo.json", method = { RequestMethod.GET })
@@ -97,12 +102,34 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
-		int size = result.size();
-		map.put("managerInfo", result);
-		map.put("size", size);
+		List<Object> manager = new ArrayList<Object>();
+//		int size = result.size();
+//		map.put("managerInfo",result);
+//		map.put("size", size);
+		Iterator<ManagerInfoForm> it = result.iterator(); 
+		int i = 1;
+		int j = 1;
+		String  s="";
+	        while(it.hasNext()){  
+	        	ManagerInfoForm mana = it.next();
+	        	s =s+"<option value = '"+mana.getID()+"'>"+mana.getEXTERNAL_ID()+mana.getDISPLAY_NAME()
+	        	+"</option>";
+	        	
+	        	 if(i%10==0){
+		                String m = Integer.toString(j);
+		                manager.add(s);
+		                s="";
+		                }
+		                i++;
+	        }
+	       manager.add(s);
+	       map.put("manager", manager);
+	       map.put("size", manager.size());
+	       System.out.println(manager.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		JSONObject json = JSONObject.fromObject(map,jsonConfig);
+//		JSONArray json  = JSONArray.fromObject(result);
 		return json.toString();
 	}
 	
@@ -133,21 +160,21 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	}
 	
 	
-	//审贷决议
-	@ResponseBody
-	@RequestMapping(value = "/ipad/intopieces/sdBrowse.json", method = { RequestMethod.GET })
-	public String sdbrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
-		filter.setRequest(request);
-		String userId = request.getParameter("userId");
-		filter.setNextNodeName("审贷决议");
-		filter.setUserId(userId);
-		QueryResult<CustomerApplicationIntopieceWaitForm> result = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison(filter);
-		JsonConfig jsonConfig = new JsonConfig();
-		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-		JSONObject json = JSONObject.fromObject(result, jsonConfig);
-		return json.toString();
-	}
-	
+//	//审贷决议
+//	@ResponseBody
+//	@RequestMapping(value = "/ipad/intopieces/sdBrowse.json", method = { RequestMethod.GET })
+//	public String sdbrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+//		filter.setRequest(request);
+//		String userId = request.getParameter("userId");
+//		filter.setNextNodeName("审贷决议");
+//		filter.setUserId(userId);
+//		QueryResult<CustomerApplicationIntopieceWaitForm> result = jnpadIntopiecesDecisionService.findCustomerApplicationIntopieceDecison(filter);
+//		JsonConfig jsonConfig = new JsonConfig();
+//		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+//		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+//		return json.toString();
+//	}
+//	
 	//显示审议决议
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/sdjy.json", method = { RequestMethod.GET })
@@ -163,16 +190,99 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 //        String ss = s.toString();
 //		int size = result.size();
 		String appId = request.getParameter("appId");
+		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
-		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+//		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
-		AppManagerAuditLog appManagerAuditLog = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId);
+		AppManagerAuditLog appManagerAuditLog = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"1");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		map.put("customerApplicationInfo", customerApplicationInfo);
 		map.put("producAttribute", producAttribute);
-		map.put("customerApplicationProcess", processForm);
+//		map.put("customerApplicationProcess", processForm);
 		map.put("appManagerAuditLog", appManagerAuditLog);
+		map.put("custManagerId", customerInfor.getUserId());
+		map.put("prodCreditRange",producAttribute.getProdCreditRange());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+
+	
+	
+	//显示部门审批
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/bzsp.json", method = { RequestMethod.GET })
+	public String bumen_decision(HttpServletRequest request) {
+		String appId = request.getParameter("appId");
+		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+//		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		AppManagerAuditLog appManagerAuditLog1 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"1");
+		AppManagerAuditLog appManagerAuditLog2 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"2");
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("customerApplicationInfo", customerApplicationInfo);
+		map.put("producAttribute", producAttribute);
+//		map.put("customerApplicationProcess", processForm);
+		map.put("appManagerAuditLog1", appManagerAuditLog1);
+		map.put("appManagerAuditLog2", appManagerAuditLog2);
+		map.put("custManagerId", customerInfor.getUserId());
+		map.put("prodCreditRange",producAttribute.getProdCreditRange());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	//显示零售部业务负责人审批
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/lsbfzr.json", method = { RequestMethod.GET })
+	public String lingshou_decision(HttpServletRequest request) {
+		String appId = request.getParameter("appId");
+		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+//		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		AppManagerAuditLog appManagerAuditLog1 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"1");
+		AppManagerAuditLog appManagerAuditLog2 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"2");
+		AppManagerAuditLog appManagerAuditLog3 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"3");
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("customerApplicationInfo", customerApplicationInfo);
+		map.put("producAttribute", producAttribute);
+//		map.put("customerApplicationProcess", processForm);
+		map.put("appManagerAuditLog1", appManagerAuditLog1);
+		map.put("appManagerAuditLog2", appManagerAuditLog2);
+		map.put("appManagerAuditLog3", appManagerAuditLog3);
+		map.put("custManagerId", customerInfor.getUserId());
+		map.put("prodCreditRange",producAttribute.getProdCreditRange());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	//显示行长审批
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/hzspjl.json", method = { RequestMethod.GET })
+	public String hangzhang_decision(HttpServletRequest request) {
+		String appId = request.getParameter("appId");
+		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
+//		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
+		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		AppManagerAuditLog appManagerAuditLog1 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"1");
+		AppManagerAuditLog appManagerAuditLog2 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"2");
+		AppManagerAuditLog appManagerAuditLog3 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"3");
+		AppManagerAuditLog appManagerAuditLog4 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"4");
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("customerApplicationInfo", customerApplicationInfo);
+		map.put("producAttribute", producAttribute);
+//		map.put("customerApplicationProcess", processForm);
+		map.put("appManagerAuditLog1", appManagerAuditLog1);
+		map.put("appManagerAuditLog2", appManagerAuditLog2);
+		map.put("appManagerAuditLog3", appManagerAuditLog3);
+		map.put("appManagerAuditLog4", appManagerAuditLog4);
 		map.put("custManagerId", customerInfor.getUserId());
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
 		JsonConfig jsonConfig = new JsonConfig();
