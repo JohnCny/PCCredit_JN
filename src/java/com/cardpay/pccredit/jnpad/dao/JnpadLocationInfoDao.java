@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.jnpad.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.jnpad.model.LocationInfoForm;
@@ -22,7 +24,7 @@ public interface JnpadLocationInfoDao {
 	public ManagerInfoForm selectManagerInforById(@Param(value = "managerId") String managerId);
 
 	//查询指定客户经理位置
-	public LocationInfoForm selectManagerLocationById(@Param(value = "managerId")String userId);
+	public List<LocationInfoForm> selectManagerLocationById(@Param(value = "managerId")String userId);
 
 	
 	

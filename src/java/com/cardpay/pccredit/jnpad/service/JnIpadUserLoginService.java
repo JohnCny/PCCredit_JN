@@ -51,6 +51,7 @@ public class JnIpadUserLoginService {
 			ipad = new JnUserLoginIpad();
 			ipad.setId(user.getId());
 			ipad.setDisplayName(user.getDisplayName());
+			ipad.setUserType(user.getUserType());
 		}
 		return ipad;
 	}

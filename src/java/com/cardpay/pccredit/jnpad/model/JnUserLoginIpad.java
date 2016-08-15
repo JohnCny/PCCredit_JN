@@ -3,6 +3,14 @@ package com.cardpay.pccredit.jnpad.model;
 public class JnUserLoginIpad {
 	private String id;
 	private String displayName;
+	private int userType;
+	
+	public int getUserType() {
+		return userType;
+	}
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
 	public String getId() {
 		return id;
 	}
