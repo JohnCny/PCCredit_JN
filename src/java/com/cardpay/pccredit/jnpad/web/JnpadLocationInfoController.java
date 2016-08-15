@@ -3,6 +3,7 @@ package com.cardpay.pccredit.jnpad.web;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +59,7 @@ public class JnpadLocationInfoController {
 		try {
 			int num = jnpadLocationInfoService.managerCount(managerId);
 
-			if(num==0){
+			if(num!=5){
 				//如果位置信息表中没客户经理信息  插入
 
 				ManagerInfoForm managerInfoForm = jnpadLocationInfoService.selectManagerInforById(managerId);
@@ -71,31 +72,36 @@ public class JnpadLocationInfoController {
 			}else{
 				//更新位置信息
 				jnpadLocationInfoService.updateManagerLocation(locationInfoForm);
-				map.put("message","提交成功");
+				map.put("message","提交位置信息成功");
 			}
 		} catch (Exception e) {
-			map.put("message", "提交失败");
+			map.put("message", "提交位置信息失败");
 		}
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
 		return json.toString();
 	}
-
+/**
+ * 查询位置信息
+ * @param request
+ * @return
+ */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/intopieces/selectLocation.json", method = { RequestMethod.GET })
 	public String selectLocation(HttpServletRequest request){
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 
 
-		LocationInfoForm locationInfoForm=jnpadLocationInfoService.selectManagerLocationById(request.getParameter("userId"));
+		List<LocationInfoForm> locationInfoForm=jnpadLocationInfoService.selectManagerLocationById(request.getParameter("userId"));
 		//判断是否查询到位置信息
-		if(locationInfoForm==null){
+		if(locationInfoForm.size()==0){
 			map.put("success", "false");
 		}else{
 			map.put("success", "true");
 		}
 		map.put("LocationInfoForm", locationInfoForm);
+		map.put("size",locationInfoForm.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);

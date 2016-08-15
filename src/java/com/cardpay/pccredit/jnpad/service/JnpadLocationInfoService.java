@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +39,7 @@ public class JnpadLocationInfoService {
 		
 		return jnpadLocationInfoDao.selectManagerInforById(managerId);
 	}
-	public LocationInfoForm selectManagerLocationById(String userId) {
+	public List<LocationInfoForm> selectManagerLocationById(String userId) {
 		// TODO Auto-generated method stub
 		
 		

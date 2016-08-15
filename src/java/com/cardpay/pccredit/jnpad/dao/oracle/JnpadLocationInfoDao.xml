@@ -56,7 +56,9 @@
         UPDATETIME = #{updateTime},
         LONGITUDE = #{longitude},
         LATITUDE = #{latitude}
-        WHERE USERID = #{userId}
+        WHERE updatetime =(select min(updatetime) 
+        from managerlocationInfo
+         where userid =#{userId})
     </update>
     
     <select id="selectManagerLocationById" resultMap="managerLocation">
