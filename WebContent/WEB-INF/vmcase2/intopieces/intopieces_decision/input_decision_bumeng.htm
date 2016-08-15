@@ -81,7 +81,7 @@
             </colgroup>
               <tr><td class="titlec" colspan="4" style="text-align: center;">审议结论</td></tr>
             <tr>
-			  <td class="titlefc3"><label for="csAmount">审议额度(元):</label></td>
+			  <td class="titlefc3"><label for="csAmount">审贷额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="sdAmount" id="csAmount" value="$!appManagerAuditLog2.examineAmount" disabled="disabled"/></td>
               <td class="titlefc3"><label for="examineLv">利率:</label></td>
               <td><input type="text" class="rinpsty" name="sdexamineLv" id="csexamineLv" value="$!appManagerAuditLog2.examineLv" disabled="disabled"/></td>
@@ -120,13 +120,13 @@
               </td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
+			  <td class="titlefc3"><label for="decisionAmount">小微负责人额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="decisionTerm">贷款期限:</label></td>
+              <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
                   </select>

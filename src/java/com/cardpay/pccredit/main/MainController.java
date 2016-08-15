@@ -231,6 +231,13 @@ public class MainController {
 		    // 统计各行已申请和通过进件数量  济南 sj 20160809
 		    mv.addObject("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson());
 		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
+		    
+		    //授信总金额 逾期总金额 不良总金额  sj 20160810
+		    mv.addObject("organApplicationjineJson",statisticalCommonService.statisticaljine());
+		    //授信总金额 逾期总金额 不良总金额 按支行汇总 sj 20160810
+		    mv.addObject("organApplicationsxJson",statisticalCommonService.statisticalsxorgan());
+		    mv.addObject("organApplicationyqJson",statisticalCommonService.statisticalyqorgan());
+		    mv.addObject("organApplicationblJson",statisticalCommonService.statisticalblorgan());
 		}
 		
 		return mv;
