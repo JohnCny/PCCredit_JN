@@ -91,7 +91,7 @@ public class JnpadIntopiecesDecisionService {
 		}*/
 
 		//applicationStatus 必须是ApproveOperationTypeEnum中的通过，退回，拒绝三个类型
-		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,"","");
+		String examineResutl = processService.examine(applicationId,serialNumber, loginId, applicationStatus, examineAmount,productId,auditType);
 		//更新单据状态
 		if (examineResutl.equals(ApproveOperationTypeEnum.REJECTAPPROVE.toString()) ||
 				examineResutl.equals(ApproveOperationTypeEnum.RETURNAPPROVE.toString()) ||
@@ -174,6 +174,8 @@ public class JnpadIntopiecesDecisionService {
 				log.setUserId_1(cyUser1);
 				log.setUserId_2(cyUser2);
 				log.setUserId_3(fdUser);
+				log.setExamineAmount(examineAmount);
+				log.setExamineLv(lv);
 				commonDao.insertObject(log);
 			}else{
 				//update
@@ -181,7 +183,7 @@ public class JnpadIntopiecesDecisionService {
 						auditType,
 						cyUser1,
 						cyUser2,
-						fdUser,"","");
+						fdUser,examineAmount,lv);
 			}
 		}
 
@@ -189,9 +191,9 @@ public class JnpadIntopiecesDecisionService {
 
 	}
 	//查询参与初审客户经理
-	public AppManagerAuditLog findAppManagerAuditLog(String appId){
+	public AppManagerAuditLog findAppManagerAuditLog(String appId,String auditType){
 		
-		return jnpadIntopiecesDecisionDao.findAppManagerAuditLog(appId);
+		return jnpadIntopiecesDecisionDao.findAppManagerAuditLog(appId,"");
 }
 	
 //	//提交审贷决议

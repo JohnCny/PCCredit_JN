@@ -63,7 +63,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 				CustomerInforFilter filter = new CustomerInforFilter();
 				filter.setCardId(customerinfoForm.getCardId());
 				//身份证号码验证
-				if(customerinfoForm.getCardType()=="0"){
+				if(customerinfoForm.getCardType()=="0"||customerinfoForm.getCardType().equals("0")){
 				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId());
 				if(msg !="" && msg != null){
 					returnMap.put(JRadConstants.MESSAGE, msg);
@@ -122,7 +122,8 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 				JsonConfig jsonConfig = new JsonConfig();
 				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 				JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
-				return json.toString();			}
+				return json.toString();			
+				}
 		}else{
 			returnMap.setSuccess(false);
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
