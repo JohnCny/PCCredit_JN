@@ -91,7 +91,7 @@
                </td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
+			  <td class="titlefc3"><label for="decisionAmount">审贷额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
@@ -114,7 +114,7 @@
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
-              <td class="titlefc3"><label for="decisionTerm">贷款期限:</label></td>
+              <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
                   </select>

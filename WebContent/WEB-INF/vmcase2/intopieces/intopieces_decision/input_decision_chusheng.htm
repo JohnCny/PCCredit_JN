@@ -60,18 +60,18 @@
                   </select></td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
+			  <td class="titlefc3"><label for="decisionAmount">初审额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
             </tr>
              <tr>
-              <td class="titlefc3"><label for="cyUser1">参与审批人:</label></td>
+              <td class="titlefc3"><label for="cyUser1">参与审批客户经理:</label></td>
               <td><select  name="cyUser1" id="cyUser1">
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
-              <td class="titlefc3"><label for="cyUser2">参与审批人:</label></td>
+              <td class="titlefc3"><label for="cyUser2">参与审批客户经理:</label></td>
               <td><select  name="cyUser2" id="cyUser2">
                   	#dict("MANAGERUSERS","")
                   </select>
@@ -83,7 +83,7 @@
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
-              <td class="titlefc3"><label for="decisionTerm">贷款期限:</label></td>
+              <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
                   </select>
