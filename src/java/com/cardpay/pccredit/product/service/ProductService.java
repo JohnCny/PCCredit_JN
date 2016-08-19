@@ -516,4 +516,10 @@ public class ProductService {
 //		return commonDao.queryBySql(AppManagerAuditLog.class, sql, null);
 		return accessoriesListDao.findAppManagerAuditLog(appId,auditType);
 	}
+	
+	public List<AppManagerAuditLog> findAppManagerAuditLogByAppId(String appId){
+		/*String sql = "select * from t_app_manager_audit_log t where APPLICATION_ID ='"+appId+"'";
+		return commonDao.queryBySql(AppManagerAuditLog.class, sql, null);*/
+		return accessoriesListDao.findAppManagerAuditById(appId);
+	}
 }

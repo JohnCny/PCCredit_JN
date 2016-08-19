@@ -94,7 +94,7 @@
 	    (select b.id as id,b.chinese_name as chineseName,b.ty_customer_id as tCustomerId from 
 	    basic_customer_information b where b.user_id=#{userId})t
 	    inner join
-	    (select distinct(CUSTID) as customerId from t_mibusidata where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
+	    (select distinct(CUSTID) as customerId from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
 	    on t.tCustomerId = c.customerId
 	</select>
 	

@@ -12,8 +12,11 @@
         <div class="search">
           <form id="submitForm">
             <ul>
-              <li>
+              <!-- <li>
                 <span>创建日期：<input type="text" name=""  maxlength="30" /></span>
+              </li> -->
+              <li>
+                <span>客户经理姓名：<input type="text" name="displayName"  maxlength="30" /></span>
               </li>
               <li class="search_button">
                 <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"  style="height: 26px; line-height: 24px;" />
@@ -69,7 +72,9 @@
       </div>
        <div class="pagebar">
         <div class="controlbtn">
+        #if($!lock)
           #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">修改</a>#end 
+        #end
           #btnpriv("display")<a id="id_display_button" class="btn_gr" href="javascript:void(0);" title="#i18n('button.display.hint')">#i18n("button.display")</a>#end
         </div>
         #parse ("common/pagination.htm")

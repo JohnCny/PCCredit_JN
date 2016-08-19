@@ -16,7 +16,7 @@
       <input type="hidden" id ="productId" name="productId" value="$!producAttribute.id"/>
       <input type="hidden" name="auditType" id="auditType" value="3" />
       <input type="hidden" name="custManagerId" id="custManagerId" value="$!custManagerId" />
-      	
+      	<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
       	 <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
@@ -95,12 +95,30 @@
             <tr>
 			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
               <td><input  type="text" class="rinpsty" name="sd_fdUser" id="chu_fdUser" value="$!appManagerAuditLog2.userId_3" disabled="disabled"/></td>
+               <td class="titlefc3"><label for="csAmount">审贷老师:</label></td>
+              <td><input  type="text" class="rinpsty" name="sd_sdUser" id="sd_sdUser" value="$!appManagerAuditLog2.userId_4" disabled="disabled"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
+              <td><select  name="decisionTerm" disabled="disabled">
+                  	#dict("decision_term",$!appManagerAuditLog2.qx)
+                  </select>
+              </td>
+              <td class="titlefc3"><label for="decisionTerm">还款方式:</label></td>
+              <td><select  name="hkfs"  disabled="disabled">
+                  	#dict("HKFS",$!appManagerAuditLog2.hkfs)
+                  </select>
+              </td>
+            </tr>
+            <tr>
+            	<td  class="titlefc3"><label id ="sd_beiZhu" for=sd_beizhu>备注:</label></td>
+				<td><textarea disabled="disabled" style="width: 300px; height:50px" name="sd_beiZhu" id="sd_beiZhu">$!appManagerAuditLog2.beiZhu</textarea></td>
             </tr>
           </table>
          </div>
          
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
-          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;height: 250px">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
               <col width="10%" />
               <col width="30%" />
@@ -109,28 +127,32 @@
             </colgroup>
               <tr><td class="titlec" colspan="4" style="text-align: center;">小微负责人结论</td></tr>
             <tr>
-              <td  class="titlefc3"><label for="status">小微负责人结论:</label></td>
+              <td  class="titlefc3"><span style="color:red">*</span><label style="color:red" for="status">小微负责人结论:</label></td>
               <td><select id="status" name="status" onChange="changeDecisionRefusereason();">
                   	#dict("intopieces_decision",$!customerApplicationInfo.status)
                   </select></td>
-              <td  class="titlefc3"><label for="prodId">产品名称:</label></td>
+              <td  class="titlefc3"><span style="color:red">*</span><label style="color:red" for="prodId">产品名称:</label></td>
               <td><select id="prodId" name="prodId">
                     #dict("ProductName", $!producAttribute.id)
                   </select>
               </td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="decisionAmount">小微负责人额度(元):</label></td>
+			  <td class="titlefc3"><span style="color:red">*</span><label style="color:red" for="decisionAmount">小微负责人额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
-              <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
+              <td class="titlefc3"><span style="color:red">*</span><label style="color:red" for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
+              <td class="titlefc3"><span style="color:red">*</span><label style="color:red" for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
                   </select>
               </td>
+            </tr>
+            <tr>
+            	<td  class="titlefc3"><label id ="beiZhu" for=beizhu>备注:</label></td>
+				<td><textarea style="width: 300px; height:50px" name="beiZhu" id="beiZhu">$!appManagerAuditLog3.beiZhu</textarea></td>
             </tr>
             
             <tr style="display :none">
@@ -243,8 +265,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(13)").show();
-				$("tr:eq(15)").hide();
+				$("tr:eq(15)").show();
+				$("tr:eq(18)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -254,16 +276,16 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(13)").hide();
-				$("tr:eq(15)").show();
+				$("tr:eq(15)").hide();
+				$("tr:eq(18)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(13)").hide();
-				$("tr:eq(15)").show();
+				$("tr:eq(15)").hide();
+				$("tr:eq(18)").show();
 			}
 			
  			if(status =='RETURNAPPROVE'){

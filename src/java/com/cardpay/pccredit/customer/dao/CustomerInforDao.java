@@ -286,7 +286,11 @@ public interface CustomerInforDao {
 								  @Param("user2")  String user2,
 								  @Param("user3")  String user3,
 								  @Param("examineAmount")  String examineAmount,
-								  @Param("lv")  String lv);
+								  @Param("lv")  String lv,
+								  @Param("qx")  String qx,
+								  @Param("sdUser") String sdUser,
+								  @Param("hkfs") String hkfs,
+								  @Param("beiZhu") String beiZhu);
 	
 	//测试 insertMain
 	public int insertMain(Map<String, Object> map);

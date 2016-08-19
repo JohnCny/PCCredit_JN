@@ -56,12 +56,18 @@ public class DailyAccountManagerController extends BaseController {
 	public AbstractModelAndView browse(@ModelAttribute DailyAccountManagerFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-		String loginId = user.getId();
-		filter.setLoginId(loginId);
+		boolean lock = false;
+		if(user.getUserType() == 1){
+			String loginId = user.getId();
+			filter.setLoginId(loginId);
+			lock = true;
+		}
+		filter.setDisplayName(request.getParameter("displayName"));
 		QueryResult<DailyAccountManagerForm> result = dailyAccountService.findDailyAccountManagersByFilter(filter);
 		JRadPagedQueryResult<DailyAccountManagerForm> pagedResult = new JRadPagedQueryResult<DailyAccountManagerForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/manager/dailyreport/daily_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject("lock", lock);
 		return mv;
 	}
 

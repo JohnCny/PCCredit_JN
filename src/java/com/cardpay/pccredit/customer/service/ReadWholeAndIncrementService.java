@@ -890,20 +890,20 @@ public class ReadWholeAndIncrementService {
 	public void saveMIBUSIDATADataFile(String fileName,String date) throws Exception {
 			ImportBankDataFileTools tools = new ImportBankDataFileTools();
 			//add
-			List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
+			//List<Map<String, Object>> insertdatas = new ArrayList<Map<String,Object>>();
 			//update
-			List<Map<String, Object>> updatedatas = new ArrayList<Map<String,Object>>();
+			//List<Map<String, Object>> updatedatas = new ArrayList<Map<String,Object>>();
 			// 解析数据文件配置
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_MIBUSIDATA.xml");
 			// 解析”流水号“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			/*for (Map<String, Object> map : datas){
-				customerInforDao.insertMIBUSIDATA(map);
-			}*/
+			for (Map<String, Object> map : datas){
+				andIncrementComdao.insertMIBUSIDATA(datas);
+			}
 			// 批量插入
 			//andIncrementComdao.insertMIBUSIDATA(datas);
 			//for
-			for(Map<String, Object> map : datas){
+			/*for(Map<String, Object> map : datas){
 				int count = customerInforDao.findMIBUSIDATACount(map);
 				if(count >0){
 					log.info("*************************updatedatas*************************");
@@ -914,14 +914,14 @@ public class ReadWholeAndIncrementService {
 					//put insertMap
 					insertdatas.add(map);
 				}
-			}
+			}*/
 			//save
-			andIncrementComdao.insertMIBUSIDATA(insertdatas);
+			//andIncrementComdao.insertMIBUSIDATA(insertdatas);
 			//update
-			andIncrementComdao.updateMIBUSIDATA(updatedatas);
+			//andIncrementComdao.updateMIBUSIDATA(updatedatas);
 			//释放空间
-			insertdatas=null;
-			updatedatas=null;
+			//insertdatas=null;
+			//updatedatas=null;
 			// 释放空间
 			datas=null;
 	}

@@ -21,7 +21,16 @@ public class DailyAccountManagerFilter extends BaseQueryFilter {
 	private String afternoonActual;
 	private String daySummary;
 
+    private String displayName;
+    
 
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
 
 	public String getLoginId() {
 		return loginId;

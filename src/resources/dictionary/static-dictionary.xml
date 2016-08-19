@@ -86,6 +86,7 @@
 		<item name="1" title="客户经理" />
 		<item name="2" title="部门主管" />
 		<item name="3" title="机构主管" />
+		<item name="4" title="微贷团队" />
 	</dictionary>
 	<dictionary name="MarketingEndResult" title="营销计划最终结果">
 		<item name="marketing" title="营销中" />
@@ -609,5 +610,14 @@
 	   <item name="3"  	title="小微负责人审批"		/>
 	   <item name="4"  	title="零售业务部负责人审批"/>
 	   <item name="5"  	title="行长审批"		/> 
+	</dictionary> 
+	
+	<dictionary name="HKFS" title="还款方式">
+	   <item name="01"  	title="定期结息，到期日利随本清"		/>
+	   <item name="02"  	title="定期结息，按合同约定分期还本"		/>
+	   <item name="03"  	title="等额本息"		/>
+	   <item name="04"  	title="等额本金"/>
+	   <item name="05"  	title="利随本清"		/> 
+	   <item name="06"  	title="其他还款方法"		/> 
 	</dictionary>    
 </dictionaries>

@@ -128,9 +128,13 @@ public class ProcessService {
 		if(exResult.equalsIgnoreCase(ApproveOperationTypeEnum.RETURNAPPROVE.toString())){
 			wfProcessRecord.setIsClosed("1");
 			commonDao.updateObject(wfProcessRecord);
-			//审批退回进件到录入
-			//refuse(appId);
-			returnToFirst(appId);
+			if(auditType.equals("1")){
+				//退回到客户经理
+				returnToFirst(appId);
+			}else{
+				//审批退回进件到录入
+				refuse(appId);
+			}
 			return ApproveOperationTypeEnum.RETURNAPPROVE.toString();
 		} //拒绝 
 		else if(exResult.equalsIgnoreCase(ApproveOperationTypeEnum.REJECTAPPROVE.toString())){
@@ -218,7 +222,7 @@ public class ProcessService {
 				}
 			}
 			if(Integer.parseInt(auditType)==4){
-				if(Float.parseFloat(exAmount)<=200000&&Float.parseFloat(exAmount)>100000){
+				if(Float.parseFloat(exAmount)<=200000){//&&Float.parseFloat(exAmount)>100000
 					return false;
 				}else{
 					return true;
@@ -234,7 +238,7 @@ public class ProcessService {
 				}
 			}
 			if(Integer.parseInt(auditType)==4){
-				if(Float.parseFloat(exAmount)<=800000&&Float.parseFloat(exAmount)>200000){
+				if(Float.parseFloat(exAmount)<=800000){//&&Float.parseFloat(exAmount)>200000
 					return false;
 				}else{
 					return true;
@@ -249,7 +253,7 @@ public class ProcessService {
 				}
 			}
 			if(Integer.parseInt(auditType)==4){
-				if(Float.parseFloat(exAmount)<=2000000&&Float.parseFloat(exAmount)>500000){
+				if(Float.parseFloat(exAmount)<=2000000){//&&Float.parseFloat(exAmount)>500000
 					return false;
 				}else{
 					return true;

@@ -183,7 +183,7 @@ public class JnpadIntopiecesDecisionService {
 						auditType,
 						cyUser1,
 						cyUser2,
-						fdUser,examineAmount,lv);
+						fdUser,examineAmount,lv,"","","","");
 			}
 		}
 
