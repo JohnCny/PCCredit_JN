@@ -348,6 +348,45 @@ public class SFTPUtil {
 		}
 	}
 	
+	
+	 /**
+     * 下载文件
+     * @param directory 下载目录
+     * @param downloadFile 下载的文件
+     * @param saveFile 存在本地的路径
+     * @param sftp
+     */
+	public static void downloadDh(HttpServletResponse response,
+			String filePath, String fileName) {
+		try {
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename="
+					+ java.net.URLEncoder.encode(fileName, "UTF-8"));
+			connect();
+//			System.out.println("download1:"+filePath.substring(0, 50));
+//			System.out.println("download2:"+sftp.get(filePath.substring(50, filePath.length())));
+			//System.out.println(filePath.substring(0, 50));
+			sftp.cd(filePath.substring(0, 52));
+			//System.out.println(filePath.substring(51, filePath.length()));
+			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));//filePath.split("\\\\")[4]
+			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+			if (bis != null) {
+				bis.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+			disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void downloadjn(HttpServletResponse response,
 			String filePath, String fileName) {
 		try {

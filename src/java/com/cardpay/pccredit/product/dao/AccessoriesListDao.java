@@ -30,5 +30,7 @@ public interface AccessoriesListDao {
 	
 	public List<AppManagerAuditLog> findAppManagerAuditLog(@Param("appId") String appId,@Param("auditType") String auditType);
 	
+	public List<AppManagerAuditLog> findAppManagerAuditById(@Param("appId") String appId);
+	
 
 }

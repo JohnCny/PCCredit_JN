@@ -28,9 +28,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
+import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.customer.model.CustomerInforUpdateBalanceSheet;
+import com.cardpay.pccredit.customer.model.CustomerInforUpdateCrossExamination;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.constant.CardStatus;
@@ -49,10 +52,12 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantor;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationGuarantorVo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.PicPojo;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
@@ -112,6 +117,8 @@ public class IntoPiecesControl extends BaseController {
 	@Autowired
 	private CommonDao commonDao;
 	
+	@Autowired
+	private CustomerInforDao customerInforDao;
 	/**
 	 * 浏览页面
 	 * 
@@ -150,6 +157,15 @@ public class IntoPiecesControl extends BaseController {
 		
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String startAmt = request.getParameter("startAmt");
+		String endAmt = request.getParameter("endAmt");
+		if(startAmt ==null||startAmt==""){
+			filter.setStartAmt("0");
+		}
+		if(endAmt ==null||endAmt==""){
+			filter.setEndAmt(request.getParameter("endAmt"));
+		}
+		
 		QueryResult<IntoPieces> result=null;
 		String userId = user.getId();
 		//客户经理
@@ -1207,10 +1223,122 @@ public class IntoPiecesControl extends BaseController {
 	public AbstractModelAndView findAuditConfigureById(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/intopieces/approve_history_configure", request);
 		String id = request.getParameter("id");
-		//List<AppManagerAuditLogForm> historyForms = intoPiecesService.findAuditConfigureById(id);
 		List<AppManagerAuditLog> historyForms = productService.findAppManagerAuditLog(id,"");
 		mv.addObject("historyForms", historyForms);
 		return mv;
+	}
+	
+	/**
+	 * 查询审审议结论form 页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findAuditConfigureFormById.page", method = { RequestMethod.GET })
+	public AbstractModelAndView findAuditConfigureFormById(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/input_decision_Form", request);
+		String id = request.getParameter("id");
+		List<AppManagerAuditLog> historyForms = productService.findAppManagerAuditLogByAppId(id);
+		mv.addObject("historyForms", historyForms);
+		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(id);
+		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
+		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		mv.addObject("customerApplicationInfo", customerApplicationInfo);
+		mv.addObject("producAttribute", producAttribute);
+		mv.addObject("custManagerId", customerInfor.getUserId());
+		
+		boolean lock = false;
+		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		if("1".equals(PARAM)){
+			lock = true;
+		}
+		mv.addObject("lock", lock);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updateExamination.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap updateExamination(HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				//修改进件表
+				String id = request.getParameter("id");
+				String applyQuota = request.getParameter("applyQuota");
+				CustomerApplicationInfo info = new CustomerApplicationInfo();
+				info.setApplyQuota(applyQuota);
+				info.setId(id);
+				commonDao.updateObject(info);
+				//修改local_excel表 申请金额
+				intoPiecesService.updateLocalExcel(applyQuota,id);
+				//修改初审结论
+				 customerInforDao.updateAppAuditLog(id,
+													"1",
+													request.getParameter("chu_cyUser1"),
+													request.getParameter("chu_cyUser2"),
+													request.getParameter("chu_fdUser"),
+													request.getParameter("csAmount"),
+													request.getParameter("csexamineLv"),
+													"",
+													"",
+													"",
+													"");
+				//修改审贷结论
+				  customerInforDao.updateAppAuditLog(id,
+													 "2",
+													 request.getParameter("sd_cyUser1"),
+													 request.getParameter("sd_cyUser2"),
+													 request.getParameter("sd_fdUser"),
+													 request.getParameter("sdAmount"),
+													 request.getParameter("sdexamineLv"),
+													 request.getParameter("sddecisionTerm"),
+													 request.getParameter("sd_sdUser"),
+													 request.getParameter("sdhkfs"),
+													 request.getParameter("sd_beizhu"));
+				//修改小微贷负责人结论
+				customerInforDao.updateAppAuditLog(id,
+													"3",
+													"",
+													"",
+													"",
+													request.getParameter("bzAmount"),
+													request.getParameter("bzexamineLv"),
+													request.getParameter("bzdecisionTerm"),
+													"",
+													"",
+													request.getParameter("bz_beiZhu"));
+				//修改总经理结论
+				customerInforDao.updateAppAuditLog(id,
+													"4",
+													"",
+													"",
+													"",
+													request.getParameter("zjlAmount"),
+													request.getParameter("zjlexamineLv"),
+													request.getParameter("zjdecisionTerm"),
+													"",
+													"",
+													request.getParameter("zj_beiZhu"));
+				//修改行长结论
+				customerInforDao.updateAppAuditLog(id,
+													"5",
+													"",
+													"",
+													"",
+													request.getParameter("hzdecisionAmount"),
+													request.getParameter("hzdecisionRate"),
+													request.getParameter("hzdecisionTerm"),
+													"",
+													"",
+													request.getParameter("hzbeiZhu"));
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
 	}
 
 

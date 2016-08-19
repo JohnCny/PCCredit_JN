@@ -27,7 +27,24 @@ public class IntoPiecesFilter extends BusinessFilter{
 	 private String viewType;//单张查看 翻页查看
 	 private String type;//操作类型
 	 private String originalName;
+	 
+	 private String startAmt;
+	 private String endAmt;
+	 
+	 
     
+	public String getStartAmt() {
+		return startAmt;
+	}
+	public void setStartAmt(String startAmt) {
+		this.startAmt = startAmt;
+	}
+	public String getEndAmt() {
+		return endAmt;
+	}
+	public void setEndAmt(String endAmt) {
+		this.endAmt = endAmt;
+	}
 	public String getDecision() {
 		return decision;
 	}
