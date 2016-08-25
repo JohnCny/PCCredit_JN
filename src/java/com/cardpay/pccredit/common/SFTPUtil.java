@@ -46,6 +46,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import sun.misc.BASE64Encoder;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.tools.ImportParameter;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -56,6 +57,7 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.util.spring.Beans;
 
 /** 
  * 程序的简单说明 
@@ -82,7 +84,9 @@ public class SFTPUtil {
             JSch jsch = new JSch();  
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
-            System.out.println("Session created.");  
+            System.out.println("Session created.");
+            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+            password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  
