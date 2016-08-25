@@ -36,8 +36,7 @@
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
-<!-- 			<menu id="080003" name="highriskcustomer" title="高风险客户名单" url="/riskcontrol/highriskcustomer/browse.page" img="" operations="display|browse"/>
- -->		</menu>
+		</menu>
 		
 		
 		<menu id="091000" name="postLoan" title="贷后管理" url="" img="images/icon_sys.gif" operations="">
@@ -49,7 +48,12 @@
 		<menu id="092000" name="performanceManagement" title="绩效管理" url="" img="images/icon_sys.gif" operations="">
 			 <menu id="092001" name="managerPromotionRule" title="客户经理绩效工资参数配置" url="/manager/managerPromotionRule/updatePerformance.page" img="" operations="browse|change|create"/>
 			 <menu id="092002" name="managersalary" title="客户经理工资信息列表" url="/manager/managersalary/browse.page" img="" operations="change|browse"/>
-			 <menu id="092003" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+		     <menu id="092003" name="leveladjustment" title="客户经理级别调整" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+	   <!--  <menu id="092004" name="jbxc" 	 title="客户经理基本薪酬" url="/manager/leveladjustment/browsejnjbxc.page" img="" operations="display|browse"/>
+			 <menu id="092005" name="dkywjx" title="客户经理贷款业务绩效" url="/manager/leveladjustment/jnJxbrowse.page" img="" operations="display|browse"/> -->
+	   <!--  <menu id="092006" name="qtywjx" title="客户经理其他业务员绩效" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+			 <menu id="092007" name="fxbzj"  title="客户经理风险保证金" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/>
+			 <menu id="092008" name="bkkx"   title="客户经理补扣款项" url="/manager/leveladjustment/browse.page" img="" operations="display|browse"/> -->
 		</menu>
 		
 		<menu id="100000" name="report" title="报表管理" url="" img="images/icon_sys.gif" operations="">

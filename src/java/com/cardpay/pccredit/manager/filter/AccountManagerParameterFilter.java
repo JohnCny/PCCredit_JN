@@ -25,6 +25,18 @@ public class AccountManagerParameterFilter extends BaseQueryFilter {
 	private Date createdTime;
 	private String modifiedBy;
 	private Date modifiedTime;
+	
+	private String organName;
+	
+	
+
+	public String getOrganName() {
+		return organName;
+	}
+
+	public void setOrganName(String organName) {
+		this.organName = organName;
+	}
 
 	public String getUserId() {
 		return userId;

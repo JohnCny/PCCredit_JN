@@ -18,6 +18,7 @@ import com.cardpay.pccredit.manager.filter.ManagerBelongMapFilter;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.modules.privilege.model.TreeNode;
@@ -213,5 +214,31 @@ public class ManagerBelongMapService {
 		}
 		
 	}
+	
+	
+	//------------------------------------------------------济南绩效相关start-------------------------------------------//
+	public List<AccountManagerParameterForm>  findSubListManagerByManagerId(IUser user){
+		//客户经理list
+		 List<AccountManagerParameterForm>  forms = new ArrayList<AccountManagerParameterForm>();
+		 
+		 List<ManagerBelongMapForm> childBelongMapList = managerBelongMapDao.findChildId(user.getId());
+		 if(childBelongMapList != null && childBelongMapList.size() > 0){
+				StringBuffer belongChildIds = new StringBuffer();
+				belongChildIds.append("(");
+				for(ManagerBelongMapForm belongMapForm : childBelongMapList){
+					belongChildIds.append("'").append(belongMapForm.getChildId()).append("'").append(",");
+				}
+				belongChildIds = belongChildIds.deleteCharAt(belongChildIds.length() - 1);
+				belongChildIds.append(")");
+				return managerBelongMapDao.findAccountManagerParameterByChildIds(belongChildIds.toString());
+		 }
+		return forms;
+	}
+	
+	
+	public List<AccountManagerParameterForm>  findAllManager(){
+		 return managerBelongMapDao.findAllManager();
+	}
+	//------------------------------------------------------济南绩效相关end --------------------------------------------//
 
 }

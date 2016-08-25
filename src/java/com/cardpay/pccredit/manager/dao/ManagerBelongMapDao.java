@@ -92,4 +92,12 @@ public interface ManagerBelongMapDao {
 	 * 客户经理或客户经理主管logon 查询所属机构
 	 */
 	List<SysOrganizationForm> findManagerOrgan(@Param("userId") String userId);
+	
+	
+	/**
+	 * 找子节点
+	 */
+	public List<ManagerBelongMapForm> findChildId(@Param("id") String userId);
+	
+	List<AccountManagerParameterForm> findAllManager();
 }

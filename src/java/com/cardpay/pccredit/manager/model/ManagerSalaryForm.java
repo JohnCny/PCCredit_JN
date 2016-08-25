@@ -1,35 +1,39 @@
-package com.cardpay.pccredit.manager.filter;
+package com.cardpay.pccredit.manager.model;
 
-import java.util.List;
-
-import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
-import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
+import com.wicresoft.jrad.base.database.model.BusinessModel;
+import com.wicresoft.jrad.base.database.model.ModelParam;
+import com.wicresoft.jrad.base.web.form.BaseForm;
 
 /**
  * @author chenzhifang
  *
- * 2014-11-14下午5:54:55
+ * 2014-11-14下午5:50:49
  */
-public class ManagerSalaryFilter extends BaseQueryFilter {
-
+public class ManagerSalaryForm extends BaseForm {
+	private static final long serialVersionUID = 1L;
+   
+	private String id;
+	
 	private String customerId;
 	// 客户经理姓名
 	private String managerName;
-	
+	// 客户经理奖励激励金额（包含风险准备金 ）= 绩效工资
 	private String rewardIncentiveInformation;
-	
+	// 扣除金额
 	private String deductAmount;
-	
+	// 底薪
 	private String basePay;
-	
+	// 津贴
 	private String allowance;
-	
+	// 责任工资
 	private String dutySalary;
-	
+	// 返还金额
 	private String returnPrepareAmount;
-	
+	// 准备金额总额
 	private String insertPrepareAmount;
-	
+	// 风险准备金余额
+	private String riskReserveBalances;
+	// 罚款
 	private String fine;
 	
 	private String year;
@@ -38,26 +42,24 @@ public class ManagerSalaryFilter extends BaseQueryFilter {
 	
 	private String describe;
 	
-	private String customerManagerId;
-	private List<AccountManagerParameterForm> customerManagerIds;
+	private String own;//本月工资
 	
 	
 
-	public String getCustomerManagerId() {
-		return customerManagerId;
+	public String getId() {
+		return id;
 	}
 
-	public void setCustomerManagerId(String customerManagerId) {
-		this.customerManagerId = customerManagerId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public List<AccountManagerParameterForm> getCustomerManagerIds() {
-		return customerManagerIds;
+	public String getOwn() {
+		return own;
 	}
 
-	public void setCustomerManagerIds(
-			List<AccountManagerParameterForm> customerManagerIds) {
-		this.customerManagerIds = customerManagerIds;
+	public void setOwn(String own) {
+		this.own = own;
 	}
 
 	public String getCustomerId() {
@@ -162,5 +164,13 @@ public class ManagerSalaryFilter extends BaseQueryFilter {
 
 	public void setManagerName(String managerName) {
 		this.managerName = managerName;
+	}
+
+	public String getRiskReserveBalances() {
+		return riskReserveBalances;
+	}
+
+	public void setRiskReserveBalances(String riskReserveBalances) {
+		this.riskReserveBalances = riskReserveBalances;
 	}
 }

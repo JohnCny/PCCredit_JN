@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cardpay.pccredit.manager.dao.AccountManagerParameterDao">
-	<resultMap id="AccountManagerParameterFormMap"
-		type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
+	<resultMap id="AccountManagerParameterFormMap" type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
 		<result property="id" column="ID" />
 		<result property="userId" column="USER_ID" />
 		<result property="displayName" column="DISPLAY_NAME" />
@@ -15,6 +14,7 @@
 		<result property="createdBy" column="CREATED_BY" />
 		<result property="modifiedTime" column="MODIFIED_TIME" />
 		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="instcode" column="INSTCODE" />
 	</resultMap>
 	
 	
@@ -81,7 +81,68 @@
 		WHERE s.USER_TYPE = '1' and t.user_id = #{userId}
 	</select>
 	
+	<!-- 济南绩效相关 -->
+	<select id="findAccountManagerParametersByFilterForJx" resultMap="AccountManagerParameterFormMap">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from(
+			select b.display_name,
+	        	   a.base_pay,
+	        	   a.id,
+	       (select org.name
+	          from sys_organization org
+	         where id in (select t.org_id
+	                        from sys_department t
+	                       where t.id in (select tt.dept_id
+	                                        from sys_dept_user tt
+	                                       where tt.user_id = b.id))) as instcode
+			  from account_manager_parameter a, sys_user b
+			 where a.user_id = b.id)
+		 where 1=1
+		<if test="displayName != null and displayName != '' ">
+			AND DISPLAY_NAME=#{displayName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		order by instcode
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
 	
+	<select id="findAccountManagerParametersCountByFilterForJx"
+		resultType="int"
+		parameterType="com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		select * from (
+			select b.display_name,
+        	   	   a.base_pay,
+       (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+		  from account_manager_parameter a, sys_user b
+		 where a.user_id = b.id)
+		 where 1=1
+		<if test="displayName != null and displayName != '' ">
+			AND DISPLAY_NAME=#{displayName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		order by instcode
+		)
+	</select>
 	
 	
 </mapper>
