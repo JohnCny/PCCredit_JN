@@ -45,6 +45,10 @@
 		prepareOperations(opsObj);
 	
 		$("#id_browse_button").click(function() {
+			if($("#sql").val()==""||$("#sql").val()==null){
+				alert("亲,脚本不能为空!");
+				return;
+			}
 			var url = "${contextPath}/batch/returnrun/excute.json?sql="+$("#sql").val();
 			window.location.href=url;
 		});
