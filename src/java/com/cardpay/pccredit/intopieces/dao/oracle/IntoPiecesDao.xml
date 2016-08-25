@@ -135,10 +135,19 @@
 	<update id="updateCustomerApplicationInfoJn" parameterType="com.cardpay.pccredit.intopieces.model.IntoPieces">
 		update customer_application_info
 		<set>
-			status = #{status} 
+			id = #{id}
 		</set>
-		<if test="reqlmt != null and reqlmt != '' ">
-			,ACTUAL_QUOTE = #{reqlmt} 
+		
+		<if test="status != null and status != '' ">
+			,STATUS = #{status} 
+		</if>
+		
+		<if test="repayStatus != null and repayStatus != '' ">
+			,REPAY_STATUS = #{repayStatus} 
+		</if>
+		
+		<if test="actualAmt != null and actualAmt != '' ">
+			,ACTUAL_QUOTE = #{actualAmt} 
 		</if>
 		where id = #{id}
 	</update>

@@ -3,12 +3,16 @@ package com.cardpay.pccredit.toolsjn;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
+
+import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import com.wicresoft.util.spring.Beans;
 
 /**
  *  下载ods数据文件用
@@ -32,7 +36,9 @@ public class FtpUtils {
 		//如果服务器连接不上，则抛出异常    
 		if (session == null) {        
 			System.out.println("session is null");   
-			}
+		}
+		DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+		bank_ftp_password = dailyReportScheduleService.findServer3();
 		if (bank_ftp_password != null
 				&& !bank_ftp_password.equalsIgnoreCase("")) {
 			session.setPassword(bank_ftp_password);

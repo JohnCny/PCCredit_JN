@@ -197,5 +197,27 @@ public class DailyReportScheduleService {
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}
 	
+	public String findServer1(){
+		String sql = "select * from dict where dict_type = '61.34.0.31' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		return PARAM;
+	}
 	
+	public String findServer2(){
+		String sql = "select * from dict where dict_type = '61.34.0.32' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");	
+		return PARAM;
+    }
+	
+	public String findServer3(){
+		String sql = "select * from dict where dict_type = '61.34.0.33' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		return PARAM;
+	}
+	
+	public String findServer4(){
+		String sql = "select * from dict where dict_type = '61.34.0.34' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		return PARAM;
+	}
 }

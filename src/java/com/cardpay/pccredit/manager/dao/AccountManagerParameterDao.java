@@ -37,4 +37,8 @@ public interface AccountManagerParameterDao {
 	public int findAccountManagerParametersCountByFilter(AccountManagerParameterFilter filter);
 
 	public AccountManagerParameterForm findAccountManagerParameterByUserId(@Param("userId") String userId);
+	
+	//济南绩效相关
+	public List<AccountManagerParameterForm> findAccountManagerParametersByFilterForJx(AccountManagerParameterFilter filter);
+	public int findAccountManagerParametersCountByFilterForJx(AccountManagerParameterFilter filter);
 }

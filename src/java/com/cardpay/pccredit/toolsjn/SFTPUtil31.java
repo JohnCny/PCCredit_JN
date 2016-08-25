@@ -18,12 +18,14 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.util.spring.Beans;
 
 /** 
  * 程序的简单说明 
@@ -50,7 +52,9 @@ public class SFTPUtil31 {
             JSch jsch = new JSch();  
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
-            System.out.println("Session created.");  
+            System.out.println("Session created.");
+            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+            password = dailyReportScheduleService.findServer1();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  

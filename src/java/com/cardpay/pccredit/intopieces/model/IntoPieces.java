@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.intopieces.model;
 
+import java.math.BigDecimal;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 
 public class IntoPieces  extends BusinessModel {
@@ -31,7 +33,11 @@ public class IntoPieces  extends BusinessModel {
     private String jkrq; //对应银行借款日期
     
     
-    private String reqlmt;//省联社放款批准额度 jn
+    private String reqlmt;
+    
+    private BigDecimal actualAmt;
+    
+    private BigDecimal amt;
     
     private String refusqlReason;
     private String fallBackReason;
@@ -57,12 +63,29 @@ public class IntoPieces  extends BusinessModel {
 	public void setFallBackReason(String fallBackReason) {
 		this.fallBackReason = fallBackReason;
 	}
+
 	public String getReqlmt() {
 		return reqlmt;
 	}
 	public void setReqlmt(String reqlmt) {
 		this.reqlmt = reqlmt;
 	}
+
+	
+	public BigDecimal getAmt() {
+		return amt;
+	}
+	public void setAmt(BigDecimal amt) {
+		this.amt = amt;
+	}
+	public BigDecimal getActualAmt() {
+		return actualAmt;
+	}
+	public void setActualAmt(BigDecimal actualAmt) {
+		this.actualAmt = actualAmt;
+	}
+
+
 	private String finalApproval;
     
     

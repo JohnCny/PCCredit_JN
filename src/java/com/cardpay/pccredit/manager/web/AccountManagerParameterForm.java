@@ -27,6 +27,18 @@ public class AccountManagerParameterForm extends BaseForm {
 	private Date createdTime;
 	private String modifiedBy;
 	private Date modifiedTime;
+	
+	private String instcode;
+
+	
+	
+	public String getInstcode() {
+		return instcode;
+	}
+
+	public void setInstcode(String instcode) {
+		this.instcode = instcode;
+	}
 
 	public String getUserId() {
 		return userId;

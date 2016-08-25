@@ -472,7 +472,7 @@ public class IntoPiecesComdao {
 					"       and r.custid = b.ty_customer_id     "+
 					"       and r.CREDITSTATE ='0004'           ";*/
 		String sql = " select a.id,                                  "+
-					 "              sum(c.money)                     "+
+					 "              sum(c.money) as amt              "+
 					 "         from customer_application_info  a,    "+
 					 "              basic_customer_information b,    "+
 					 "              t_gccontractmain           c,    "+

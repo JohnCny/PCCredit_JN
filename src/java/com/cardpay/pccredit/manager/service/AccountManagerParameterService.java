@@ -556,4 +556,13 @@ public class AccountManagerParameterService {
 	}
 	
 	
+	//---------------------------------------------------------济南绩效------------------------------------------------//
+	public QueryResult<AccountManagerParameterForm> findAccountManagerParametersByFilterForJx(AccountManagerParameterFilter filter) {
+		List<AccountManagerParameterForm> accountManagerParameterForm = accountManagerParameterDao.findAccountManagerParametersByFilterForJx(filter);
+		int size = accountManagerParameterDao.findAccountManagerParametersCountByFilterForJx(filter);
+		QueryResult<AccountManagerParameterForm> qs = new QueryResult<AccountManagerParameterForm>(size , accountManagerParameterForm);
+		return qs;
+	}
+	
+	
 }
