@@ -709,8 +709,15 @@
         '' as alloverdue
    from dual -->
    
+    with circle as (
+	    SELECT *
+		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
+   
    select (select count(distinct(a.CUSTID))
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
          and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
          and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
@@ -719,7 +726,7 @@
          </if> ) as increaseLoancount,
          
        (select count(distinct(a.CUSTID))
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
          and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
          <if test="userId != null and userId != '' ">
@@ -754,7 +761,7 @@
            </if> ) as centreLoansSun,
            
        (select count(distinct(a.custid))
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
@@ -764,7 +771,7 @@
            </if> ) as increseOverdueCusTheMon,
            
        (select count(distinct(a.custid))
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
@@ -773,7 +780,7 @@
            </if> ) as alloverdue,
            
        (select sum(a.balamt)/(trunc(to_date(#{endDate},'yyyy-MM-dd'))-trunc(to_date(#{startDate},'yyyy-MM-dd')))
-          from t_mibusidata_view a,
+          from circle a,
                basic_customer_information c
          where c.ty_customer_id = a.custid
            and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
@@ -783,7 +790,7 @@
            </if> ) as increaseBalanceTheMonth,
            
        (select sum(a.balamt)
-          from t_mibusidata_view a,
+          from circle a,
                basic_customer_information c
          where  c.ty_customer_id = a.custid
            and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
@@ -793,7 +800,7 @@
            </if> ) as loanBalanceSum,
            
        (select sum(a.balamt)
-          from t_mibusidata_view a,
+          from circle a,
                basic_customer_information c
          where  c.ty_customer_id = a.custid
            and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
@@ -829,7 +836,7 @@
            </if> ) as contAmt,
            
        (select sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0))
-          from t_mibusidata_view a, basic_customer_information c
+          from circle a, basic_customer_information c
          where a.custid = c.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
@@ -839,7 +846,7 @@
            </if> ) as overdueBalanceTheMon,
            
        (select sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0))
-          from t_mibusidata_view a, basic_customer_information c
+          from circle a, basic_customer_information c
          where a.custid = c.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
@@ -848,7 +855,7 @@
            </if> ) as overdueBalance,
            
        (select count(a.custid)
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <  ]]> 30
@@ -860,7 +867,7 @@
            </if> ) as overdueCusM0,
            
        (select count(a.custid)
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 30
@@ -872,7 +879,7 @@
            </if> ) as overdueCusM1,
            
        (select count(a.custid)
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 60
@@ -884,7 +891,7 @@
            </if> ) as overdueCusM2,
            
        (select count(a.custid)
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 90
@@ -896,7 +903,7 @@
            </if> ) as overdueCusM3,
            
        (select count(a.custid)
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >=  ]]> 120
@@ -908,7 +915,7 @@
            </if> ) as overdueCusM4,
            
        (select sum(a.PAYDEBT)
-          from t_mibusidata_view a, basic_customer_information b
+          from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
          and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
          and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
@@ -917,7 +924,7 @@
          </if> ) as resvIntAccum,
          
         (select nvl(sum(a.BALAMT),0) from 
-           t_mibusidata_view a,
+           circle a,
            basic_customer_information b
          where a.custid = b.ty_customer_id
                and a.MAINASSURE ='C100'
@@ -928,7 +935,7 @@
          </if>) as xy,
          
          (select nvl(sum(a.BALAMT),0) from 
-           t_mibusidata_view a,
+           circle a,
            basic_customer_information b
          where a.custid = b.ty_customer_id
                and a.MAINASSURE ='C101'
@@ -939,7 +946,7 @@
            </if>) as bz,
          
          (select nvl(sum(a.BALAMT),0) from 
-           t_mibusidata_view a,
+           circle a,
            basic_customer_information b
          where a.custid = b.ty_customer_id
                and a.MAINASSURE ='C102'

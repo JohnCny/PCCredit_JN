@@ -175,7 +175,12 @@ public class AddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[7]);
 		localExcel.setSheetYsyf(sheet[8]);
 		localExcel.setJyb(sheet[9]);
-		localExcel.setApproveValue(sheet[10]);
+		
+		if(sheet[10].contains("元")){
+			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		}else{
+		    localExcel.setApproveValue(sheet[10]);
+		}
 		//删除旧模板
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
@@ -229,7 +234,12 @@ public class AddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[7]);
 		localExcel.setSheetYsyf(sheet[8]);
 		localExcel.setJyb(sheet[9]);
-		localExcel.setApproveValue(sheet[10]);
+		
+		if(sheet[10].contains("元")){
+			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		}else{
+		    localExcel.setApproveValue(sheet[10]);
+		}
 		
 		//添加模板
 		commonDao.insertObject(localExcel);
