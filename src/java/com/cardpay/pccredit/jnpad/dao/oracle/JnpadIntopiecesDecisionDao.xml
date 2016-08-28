@@ -80,6 +80,31 @@
 		<result property="examineLv" 	 column="EXAMINE_LV" />
 	</resultMap>
 	
+	 <resultMap id="ProductResultMap"
+	type="com.cardpay.pccredit.jnpad.model.ProductAttributes">
+	<result property="id" column="ID" />
+	<result property="productName" column="PRODUCT_NAME" />
+	<result property="purposeLoan" column="PURPOSE_LOAN" />
+	<result property="creditLine" column="CREDIT_LINE" />
+	<result property="rateRange" column="RATE_RANGE" />
+	<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+	<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+	<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+	<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+	<result property="assureMeans" column="ASSURE_MEANS" />
+	<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+	<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+	<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+	<result property="status" column="STATUS" />
+	<result property="createdTime" column="CREATED_TIME" />
+	<result property="createdBy" column="CREATED_BY" />
+	<result property="modifiedTime" column="MODIFIED_TIME" />
+	<result property="modifiedBy" column="MODIFIED_BY" />
+	<result property="pictureUrl" column="PICTURE_URL" />
+	<result property="pictureName" column="PICTURE_NAME" />
+	<result property="seqno" column="SEQNO" />
+</resultMap>
+	 
 	<select id="findCustomerApplicationIntopieceDecisionForm"
 		resultMap="BaseResultMap">
 		SELECT
@@ -185,4 +210,14 @@
         where 
         AUDIT_TYPE =#{auditType} and APPLICATION_ID =#{appId}
 	</select>
+	
+	<select id="findProductList" resultMap="ProductResultMap">
+	select *
+	from PRODUCT_ATTRIBUTE p
+	where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		)
+</select>
 </mapper>

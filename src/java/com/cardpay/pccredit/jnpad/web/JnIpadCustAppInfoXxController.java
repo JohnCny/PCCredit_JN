@@ -31,6 +31,9 @@ import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
+import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
+import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.system.model.SystemUser;
 
 /**
@@ -309,6 +312,19 @@ public class JnIpadCustAppInfoXxController {
 		filter.setNoticeType("qita");
 		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		
+		//拒绝进件数量
+		filter.setNoticeType("refuse");
+		int refuseCount= appInfoXxService.findNoticeCountByFilter(filter);
+		//补充调查通知
+		filter.setNoticeType("returnedToFirst");
+		int returnCount= appInfoXxService.findNoticeCountByFilter(filter);
+		//风险客户通知
+		RiskCustomerFilter filters = new RiskCustomerFilter();
+		filters.setCustManagerId(userId);
+		filters.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
+	    filters.setRole(RiskControlRole.manager.toString());
+		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
+		
 		
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(count1);
@@ -316,6 +332,9 @@ public class JnIpadCustAppInfoXxController {
 		vo.setPeixun(count3);
 		vo.setKaocha(count4);
 		vo.setQita(count5);
+		vo.setRefuseCount(refuseCount);
+		vo.setReturnCount(returnCount);
+		vo.setRisk(risk);
 		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

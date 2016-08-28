@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cardpay.pccredit.jnpad.dao.JnPadProductSelectDao">
 	<resultMap id="ProductSelectResultMap"
-		type="com.cardpay.pccredit.jnpad.model.ProductAttribute">
+		type="com.cardpay.pccredit.jnpad.model.ProductAttributes">
 		<result property="id" column="ID" />
 		<result property="productName" column="PRODUCT_NAME" />
 		<result property="purposeLoan" column="PURPOSE_LOAN" />

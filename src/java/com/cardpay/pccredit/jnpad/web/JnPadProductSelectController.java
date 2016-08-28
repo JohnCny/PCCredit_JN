@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.JnpadProductFilter;
-import com.cardpay.pccredit.jnpad.model.ProductAttribute;
+import com.cardpay.pccredit.jnpad.model.ProductAttributes;
 import com.cardpay.pccredit.jnpad.service.JnPadProductSelectService;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.util.web.RequestHelper;
@@ -48,7 +48,7 @@ public class JnPadProductSelectController extends BaseController {
 	public String selectProductById(HttpServletRequest request){
 
 		String id = RequestHelper.getStringValue(request, "id");
-		List<ProductAttribute> products = productService.selectProductById(id);
+		List<ProductAttributes> products = productService.selectProductById(id);
 		
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		result.put("result", products);
@@ -82,7 +82,7 @@ public class JnPadProductSelectController extends BaseController {
 //		filter.setType(RequestHelper.getStringValue(request, "type"));
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
-		List<ProductAttribute> products = productService.selectProductByFilter(filter);
+		List<ProductAttributes> products = productService.selectProductByFilter(filter);
 		result.put("result", products);
 		
 		JsonConfig jsonConfig = new JsonConfig();
