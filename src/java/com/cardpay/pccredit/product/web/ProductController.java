@@ -209,7 +209,7 @@ public class ProductController extends BaseController {
 	/**
 	 * 执行产品属性添加
 	 * 
-	 * @param ProductAttribute
+	 * @param ProductAttributes
 	 * @param request
 	 * @return
 	 */
