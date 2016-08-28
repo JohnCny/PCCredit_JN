@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.jnpad.service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.cardpay.pccredit.intopieces.model.TyApplicationLog;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.jnpad.dao.JnpadIntopiecesDecisionDao;
 import com.cardpay.pccredit.jnpad.model.ManagerInfoForm;
+import com.cardpay.pccredit.jnpad.model.ProductAttributes;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -75,6 +77,7 @@ public class JnpadIntopiecesDecisionService {
 		String lv = request.getParameter("decisionRate");
 		String productId = request.getParameter("productId");
 
+		String prodId = request.getParameter("proodId");
 		String custManagerId = request.getParameter("custManagerId");
 
 		CustomerApplicationInfo customerApplicationInfo = new CustomerApplicationInfo();
@@ -164,6 +167,14 @@ public class JnpadIntopiecesDecisionService {
 
 
 		if(applicationStatus.equals("APPROVE")&&!StringUtils.isEmpty(auditType)){
+			//产品种类修改
+			if(!StringUtils.isEmpty(prodId)){
+				updateAppliactionProd(customerApplicationInfo,prodId);
+				//修改local_excel 
+				updateLocalExcel(prodId,applicationId);
+				//修改 local_image
+				updateLocalImage(prodId,applicationId);
+			}
 			//select 
 			int count = customerInforDao.findAppAuditLog(applicationId,auditType);
 			if(count == 0){
@@ -193,9 +204,34 @@ public class JnpadIntopiecesDecisionService {
 	//查询参与初审客户经理
 	public AppManagerAuditLog findAppManagerAuditLog(String appId,String auditType){
 		
-		return jnpadIntopiecesDecisionDao.findAppManagerAuditLog(appId,"");
+		return jnpadIntopiecesDecisionDao.findAppManagerAuditLog(appId,auditType);
 }
 	
+	public void updateAppliactionProd(CustomerApplicationInfo customerApplicationInfo,String prodId){
+		customerApplicationInfo.setProductId(prodId);
+		commonDao.updateObject(customerApplicationInfo);
+	}
+	
+	public void updateLocalExcel(String prodId,String applicationId){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("prodId", prodId);
+		params.put("applicationId", applicationId);
+		String sql = "update LOCAL_EXCEL set PRODUCT_ID=#{prodId} where APPLICATION_ID=#{applicationId}";
+		commonDao.queryBySql(sql, params);
+	}
+	
+	public void updateLocalImage(String prodId,String applicationId){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("prodId", prodId);
+		params.put("applicationId", applicationId);
+		String sql = "update LOCAL_IMAGE set PRODUCT_ID=#{prodId} where APPLICATION_ID=#{applicationId}";
+		commonDao.queryBySql(sql, params);
+	}
+
+	public List<ProductAttributes> findProductList() {
+		// TODO Auto-generated method stub
+		return jnpadIntopiecesDecisionDao.findProductList();
+	}
 //	//提交审贷决议
 //	public void update(CustomerApplicationInfo customerApplicationInfo,HttpServletRequest request) {
 //		String cyUser1 = request.getParameter("cyUser1");

@@ -70,4 +70,18 @@
 		)
         
     </select>
+    
+    <select id="selectlastManagerLocationById" resultMap="managerLocation">
+		 select  * 
+		 from managerlocationInfo
+		 where
+		 updateTime=(
+		 SELECT MAX(updateTime)
+		 FROM managerlocationInfo 
+		 WHERE 1=1
+		 AND (
+		USERID = #{managerId}
+		))
+        
+    </select>
 </mapper>
