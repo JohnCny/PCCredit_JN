@@ -961,7 +961,7 @@
 	</select>
 	
 	<select id="findMIBUSIDATACount" resultType="int" parameterType="map">
-			select count(BUSICODE) from T_MIBUSIDATA where trim(BUSICODE) = #{busicode}
+			select count(BUSICODE) from T_MIBUSIDATA_VIEW where trim(BUSICODE) = #{busicode}
 	</select>
 	
 	<select id="findFCLOANINFOCount" resultType="int" parameterType="map">
@@ -991,6 +991,18 @@
 		</if>
 		<if test="lv != null and lv != '' ">
 			 ,EXAMINE_LV=#{lv}
+		</if>
+		<if test="qx != null and qx != '' ">
+			 ,qx=#{qx}
+		</if>
+		<if test="sdUser != null and sdUser != '' ">
+			 ,USER_ID_4=#{sdUser}
+		</if>
+		<if test="hkfs != null and hkfs != '' ">
+			 ,HKFS=#{hkfs}
+		</if>
+		<if test="beiZhu != null and beiZhu != '' ">
+			 ,BEIZHU=#{beiZhu}
 		</if>
 		where APPLICATION_ID = #{param1} and AUDIT_TYPE = #{param2}
 	</update>

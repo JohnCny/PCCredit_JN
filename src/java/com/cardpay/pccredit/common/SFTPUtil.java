@@ -46,6 +46,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import sun.misc.BASE64Encoder;
 
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.tools.ImportParameter;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -56,6 +57,7 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.util.spring.Beans;
 
 /** 
  * 程序的简单说明 
@@ -82,7 +84,9 @@ public class SFTPUtil {
             JSch jsch = new JSch();  
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
-            System.out.println("Session created.");  
+            System.out.println("Session created.");
+            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+            password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  
@@ -331,6 +335,45 @@ public class SFTPUtil {
 			sftp.cd(filePath.substring(0, 50));
 			//System.out.println(filePath.substring(51, filePath.length()));
 			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));//filePath.split("\\\\")[4]
+			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+				bos.write(buff, 0, bytesRead);
+			}
+			bos.flush();
+			if (bis != null) {
+				bis.close();
+			}
+			if (bos != null) {
+				bos.close();
+			}
+			disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	 /**
+     * 下载文件
+     * @param directory 下载目录
+     * @param downloadFile 下载的文件
+     * @param saveFile 存在本地的路径
+     * @param sftp
+     */
+	public static void downloadDh(HttpServletResponse response,
+			String filePath, String fileName) {
+		try {
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename="
+					+ java.net.URLEncoder.encode(fileName, "UTF-8"));
+			connect();
+//			System.out.println("download1:"+filePath.substring(0, 50));
+//			System.out.println("download2:"+sftp.get(filePath.substring(50, filePath.length())));
+			//System.out.println(filePath.substring(0, 50));
+			sftp.cd(filePath.substring(0, 52));
+			//System.out.println(filePath.substring(51, filePath.length()));
+			BufferedInputStream bis = new BufferedInputStream(sftp.get(filePath.substring(53, filePath.length())));//filePath.split("\\\\")[4]
 			BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
 			while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
 				bos.write(buff, 0, bytesRead);

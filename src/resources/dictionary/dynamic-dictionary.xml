@@ -401,4 +401,13 @@ AND A.USER_TYPE !='0'
 		 where s.id = m.user_id
 	</dictionary>
 	
+	<dictionary name="XWTUDUUSERS" title="小微团队" timeout="10000">
+		select '0' as NAME, '请选择' as title
+      FROM sys_user t where user_type ='4'
+    union
+    select s.id as NAME, s.external_id || s.display_name AS title
+      from  sys_user s
+     where s.user_type ='4'
+	</dictionary>
+	
 </dictionaries>

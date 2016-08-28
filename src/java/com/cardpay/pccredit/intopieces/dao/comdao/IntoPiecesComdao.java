@@ -62,6 +62,16 @@ public class IntoPiecesComdao {
 			sql.append("and b.user_id = #{userId}");
 		}
 		
+		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
+			params.put("startAmt", filter.getStartAmt());
+			sql.append("and t.APPLY_QUOTA >= #{startAmt}");
+		}
+		
+		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
+			params.put("endAmt", filter.getEndAmt());
+			sql.append("and t.APPLY_QUOTA <= #{endAmt}");
+		}
+		
 		String custManagerIds = filter.getCustManagerIds();
 		if(StringUtils.trimToNull(custManagerIds)!=null){
 			sql.append("and b.user_id in ");
@@ -453,21 +463,34 @@ public class IntoPiecesComdao {
 	
 	
 	public List<IntoPieces> findCustomerApplicationInfoJnFk() {
-		String sql ="select t.id,                               "+
+		/*String sql ="select t.id,                               "+
 					"       r.money                             "+
 					"  from customer_application_info  t,       "+
 					"       basic_customer_information b,       "+
 					"       t_gcloancredit r                    "+
 					" where t.customer_id = b.TY_CUSTOMER_ID    "+
 					"       and r.custid = b.ty_customer_id     "+
-					"       and r.CREDITSTATE ='0004'           ";
+					"       and r.CREDITSTATE ='0004'           ";*/
+		String sql = " select a.id,                                  "+
+					 "              sum(c.money) as amt              "+
+					 "         from customer_application_info  a,    "+
+					 "              basic_customer_information b,    "+
+					 "              t_gccontractmain           c,    "+
+					 "              t_gccontractmulticlient    d     "+
+					 "        where a.customer_id = b.id             "+
+					 "        and trim(c.KEYCODE) = d.KEYCODE        "+
+					 "        and b.ty_customer_id = d.CUSTID        "+
+					 "        and c.keyeffectedstate ='1'            "+
+					 "        and d.keyeffectedstate ='1'            "+
+					 "        and a.status = 'approved'              "+
+					 "        group by a.id                          ";
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
 		return list;
 	}
 	
 	
 	public List<IntoPieces> findCustomerApplicationInfoJnHQ() {
-		String sql ="select t.id, c.reqlmt                  " + 
+	/*	String sql ="select t.id, c.reqlmt                  " + 
 					"  from customer_application_info  t,   " +  
 					"       basic_customer_information b,   " +  
 					"       t_cclmtapplyinfo           c,   " +  
@@ -477,7 +500,19 @@ public class IntoPiecesComdao {
 					"   and t.status = 'approved'           " + 
 					"   and c.state = '1'                   " + 
 					"   and c.appcode = m.appcode           " + 
-					"   and m.squarestate ='1'              "; 
+					"   and m.squarestate ='1'              "; */
+		String sql = "select a.id,                                                "+ 
+					 "                        sum(c.money)                        "+ 
+					 "                   from customer_application_info  a,       "+ 
+					 "                        basic_customer_information b,       "+ 
+					 "                        t_gccontractmain           c,       "+ 
+					 "                        t_gccontractmulticlient    d        "+ 
+					 "                  where a.customer_id = b.id                "+ 
+					 "                  and trim(c.KEYCODE) = d.KEYCODE           "+ 
+					 "                  and b.ty_customer_id = d.CUSTID           "+ 
+					 "                  and a.status = 'end'                      "+ 
+					 "                  and c.SQUARESTATE ='1'                    "+ 
+					 "                  group by a.id                             ";
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
 		return list;
 	}
@@ -555,6 +590,16 @@ public class IntoPiecesComdao {
 		if(StringUtils.trimToNull(userId)!=null){
 			params.put("userId", userId);
 			sql.append("and b.user_id = #{userId}");
+		}
+		
+		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
+			params.put("startAmt", filter.getStartAmt());
+			sql.append("and t.APPLY_QUOTA >= #{startAmt}");
+		}
+		
+		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
+			params.put("endAmt", filter.getEndAmt());
+			sql.append("and t.APPLY_QUOTA <= #{endAmt}");
 		}
 		
 		String custManagerIds = filter.getCustManagerIds();

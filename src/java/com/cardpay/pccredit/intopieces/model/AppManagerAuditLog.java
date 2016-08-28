@@ -17,8 +17,24 @@ public class AppManagerAuditLog extends BusinessModel {
 	private String  userId_3;
 	private String  examineAmount;
 	private String  examineLv;
+	private String  qx;
+	private String  userId_4;
+	private String  hkfs;
+	private String  beiZhu;
 	
 	
+	public String getBeiZhu() {
+		return beiZhu;
+	}
+	public void setBeiZhu(String beiZhu) {
+		this.beiZhu = beiZhu;
+	}
+	public String getHkfs() {
+		return hkfs;
+	}
+	public void setHkfs(String hkfs) {
+		this.hkfs = hkfs;
+	}
 	public String getExamineAmount() {
 		return examineAmount;
 	}
@@ -63,6 +79,18 @@ public class AppManagerAuditLog extends BusinessModel {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public String getQx() {
+		return qx;
+	}
+	public void setQx(String qx) {
+		this.qx = qx;
+	}
+	public String getUserId_4() {
+		return userId_4;
+	}
+	public void setUserId_4(String userId_4) {
+		this.userId_4 = userId_4;
 	}
 	
 	

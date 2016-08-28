@@ -56,13 +56,13 @@ public class CustomerApplicationInfoSynchScheduleService {
 		for(IntoPieces intoPieces:intoPiecesList){
 			IntoPieces  pieces = new IntoPieces();
 			pieces.setStatus(Constant.END);//已放款
-			pieces.setReqlmt(intoPieces.getReqlmt());//批准金额
+			pieces.setActualAmt(intoPieces.getAmt());//批准金额
 			pieces.setId(intoPieces.getId());
 			intoPiecesService.updateCustomerApplicationInfoJn(pieces);
 		}
 		logger.info(dateString+"进件状态更新结束（已放款）**********");
 		
-		logger.info(dateString+"进件状态更新开始（已还清）**********");
+		/*logger.info(dateString+"进件状态更新开始（已还清）**********");
 		List<IntoPieces> list = intoPiecesService.findCustomerApplicationInfoJnHQ();
 		for(IntoPieces intoPieces:list){
 			IntoPieces  pieces = new IntoPieces();
@@ -70,7 +70,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 			pieces.setId(intoPieces.getId());
 			intoPiecesService.updateCustomerApplicationInfoJn(pieces);
 		}
-		logger.info(dateString+"进件状态更新结束（已还清）**********");
+		logger.info(dateString+"进件状态更新结束（已还清）**********");*/
 	}
 	
 

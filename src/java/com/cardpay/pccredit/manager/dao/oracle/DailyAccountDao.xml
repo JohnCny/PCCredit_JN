@@ -36,8 +36,12 @@
 		1 = 1
 		AND D .WEEKLY_ID = w. ID
 		AND w.CUSTOMER_MANAGER_ID = s. ID
-		AND w.CUSTOMER_MANAGER_ID = #{loginId}
-		order by d.created_time desc
+		<if test="loginId != null and loginId != '' ">
+			AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		</if>
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME = #{displayName}
+		</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -63,7 +67,12 @@
 		1 = 1
 		AND D .WEEKLY_ID = w. ID
 		AND w.CUSTOMER_MANAGER_ID = s. ID
-		AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		<if test="loginId != null and loginId != '' ">
+			AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		</if>
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME = #{displayName}
+		</if>
 		
 		)
 	</select>

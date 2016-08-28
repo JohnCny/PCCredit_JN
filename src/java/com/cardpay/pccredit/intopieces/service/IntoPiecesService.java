@@ -946,4 +946,11 @@ public class IntoPiecesService {
 	public RiskCustomer findRiskListByCustomerId(String customerId){
 		return intoPiecesComdao.findRiskListByCustomerId(customerId);
 	}
+	
+	public void updateLocalExcel(String applyQuota,String id){
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("applyQuota", applyQuota);
+		params.put("id", id);
+		String sql = "update LOCAL_EXCEL set APPROVE_VALUE=#{applyQuota} where APPLICATION_ID=#{id}";
+	}
 }

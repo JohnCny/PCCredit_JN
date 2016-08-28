@@ -16,6 +16,7 @@
       <input type="hidden" id ="productId" name="productId" value="$!producAttribute.id"/>
       <input type="hidden" name="auditType" id="auditType" value="2" />
       <input type="hidden" name="custManagerId" id="custManagerId" value="$!custManagerId" />
+      <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
       <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
@@ -91,36 +92,51 @@
                </td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="decisionAmount">授信额度(元):</label></td>
+			  <td class="titlefc3"><label for="decisionAmount">审贷额度(元):</label></td>
               <td><input  type="text" class="rinpsty" name="decisionAmount" id="decisionAmount" value="$!customerApplicationInfo.decisionAmount" /></td>
               <td class="titlefc3"><label for="decisionRate">利率(%):</label></td>
               <td><input type="text" class="rinpsty" name="decisionRate" id="decisionRate" value="$!customerApplicationInfo.decisionRate" /></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
-              <td><select  name="cyUser1" id="cyUser1">
+              <td><select  name="cyUser1" id="cyUser1" style="width: 150px;">
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
               <td class="titlefc3"><label for="decisionTerm">参与审批客户经理:</label></td>
-              <td><select  name="cyUser2" id="cyUser2">
+              <td><select  name="cyUser2" id="cyUser2" style="width: 150px;">
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="decisionTerm">辅调客户经理:</label></td>
-              <td><select  name="fdUser" id="fdUser">
+              <td><select  name="fdUser" id="fdUser" style="width: 150px;">
                   	#dict("MANAGERUSERS","")
                   </select>
               </td>
-              <td class="titlefc3"><label for="decisionTerm">贷款期限:</label></td>
+              <td class="titlefc3"><label for="decisionTerm">审贷老师:</label></td>
+              <td><select  name="sdUser" style="width: 150px;">
+                  	#dict("XWTUDUUSERS",$!customerApplicationInfo.decisionTerm)
+                  </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="decisionTerm">期限:</label></td>
               <td><select  name="decisionTerm">
                   	#dict("decision_term",$!customerApplicationInfo.decisionTerm)
                   </select>
               </td>
+              <td class="titlefc3"><label for="decisionTerm">还款方式:</label></td>
+              <td><select  name="hkfs">
+                  	#dict("HKFS",$!customerApplicationInfo.hkfs)
+                  </select>
+              </td>
             </tr>
-            
+            <tr>
+            	<td  class="titlefc3"><label id ="beiZhu" for="beiZhu">备注:</label></td>
+				<td><textarea style="width: 300px;" name="beiZhu" id="beiZhu">$!appManagerAuditLog.beiZhu</textarea></td>
+            </tr>
             <tr style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
               <td><textarea name="decisionRefusereason" id="decisionRefusereason">$!customerApplicationInfo.decisionRefusereason</textarea></td>
@@ -235,7 +251,7 @@
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
 				$("tr:eq(9)").show();
-				$("tr:eq(12)").hide();
+				$("tr:eq(14)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -246,7 +262,7 @@
 			
 			if( status == "REJECTAPPROVE"){
 				$("tr:eq(9)").hide();
-				$("tr:eq(12)").show();
+				$("tr:eq(14)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
@@ -254,7 +270,7 @@
 			
 			if( status == "RETURNAPPROVE"){
 				$("tr:eq(9)").hide();
-				$("tr:eq(12)").show();
+				$("tr:eq(14)").show();
 			}
 			
  			if(status =='RETURNAPPROVE'){

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONArray;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +33,10 @@ import com.cardpay.pccredit.manager.service.ManagerAssessmentScoreService;
 import com.cardpay.pccredit.manager.service.ManagerSalaryService;
 import com.cardpay.pccredit.manager.service.StatisticsScheduleService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.model.NameValueRecord;
 import com.cardpay.pccredit.report.service.StatisticalCommonService;
+import com.cardpay.pccredit.report.web.AfterLoanCollectController;
 import com.cardpay.pccredit.riskControl.dao.NplsInfomationDao;
 import com.cardpay.pccredit.riskControl.service.CustomerOverdueService;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
@@ -60,7 +63,7 @@ import com.wicresoft.util.web.RequestHelper;
  */
 @Controller
 public class MainController {
-
+	private static final Logger logger = Logger.getLogger(MainController.class);
 	@Autowired
 	private GlobalSetting globalSetting;
 
@@ -225,12 +228,22 @@ public class MainController {
 			mv.addObject("cardStatusCategoriesJson",statisticalCommonService.getCardStatusCategoriesJson(cardList));
 		    mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));
 			*/
-			
+			long start = System.currentTimeMillis();
 			// 当前进件状况 济南 sj 20160804
 		    mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
 		    // 统计各行已申请和通过进件数量  济南 sj 20160809
 		    mv.addObject("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson());
 		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
+		    
+		    //授信总金额 逾期总金额 不良总金额  sj 20160810
+		    mv.addObject("organApplicationjineJson",statisticalCommonService.statisticaljine());
+		    //授信总金额 逾期总金额 不良总金额 按支行汇总 sj 20160810
+		    mv.addObject("organApplicationsxJson",statisticalCommonService.statisticalsxorgan());
+		    mv.addObject("organApplicationyqJson",statisticalCommonService.statisticalyqorgan());
+		    mv.addObject("organApplicationblJson",statisticalCommonService.statisticalblorgan());
+		    long end = System.currentTimeMillis();
+			System.out.println("#########################查询时间花费：" + (end - start) + "毫秒");
+			logger.info("#########################查询时间花费：" + (end - start) + "毫秒");
 		}
 		
 		return mv;

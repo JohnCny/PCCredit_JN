@@ -29,6 +29,27 @@
 		<result property="competerPerform" column="competer_perform" />
 	</resultMap>
 	
+	<resultMap id="ResultMapJn" type="com.cardpay.pccredit.manager.model.ManagerSalaryForm">
+		<result property="id" column="id" />
+		<result property="customerId" column="customer_id" />
+		<result property="rewardIncentiveInformation" column="reward_incentive_information" />
+		<result property="deductAmount" column="deduct_amount" />
+		<result property="basePay" column="base_pay" />
+		<result property="allowance" column="allowance" />
+		<result property="dutySalary" column="duty_salary" />
+		<result property="returnPrepareAmount" column="return_prepare_amount" />
+		<result property="insertPrepareAmount" column="insert_prepare_amount" />
+		<result property="fine" column="fine" />
+		<result property="year" column="year" />
+		<result property="month" column="month" />
+		<result property="describe" column="describe" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="createdBy" column="created_by" />
+		<result property="own" column="own" />
+	</resultMap>
+	
 	<select id="findManagerSalarysByFilter" resultMap="ResultMap" 
 			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
 		SELECT * FROM
@@ -366,4 +387,53 @@
 					 order by salary.year desc,salary.month desc,c.name
 		 		
 	</select>
+	
+	
+	<!-- =====================================济南绩效相关start============================= -->
+	<select id="findManagerSalarysByFilterJn" resultMap="ResultMapJn" 
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT salary.*, 
+						   usr.display_name as managerName
+					  FROM manager_salary salary
+					 INNER join sys_user usr
+    				    ON usr.id = salary.customer_id
+					 WHERE 1=1
+					 <if test="managerName != null and managerName != '' ">
+						AND usr.display_name like '%${managerName}%'
+					 </if>
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 order by salary.year desc,salary.month desc
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findManagerSalarysCountByFilterJn" resultType="int"
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		SELECT count(*)
+		   FROM manager_salary salary
+		 INNER join sys_user usr
+ 			ON usr.id = salary.customer_id
+		  WHERE 1=1
+		 <if test="managerName != null and managerName != '' ">
+			AND usr.display_name like '%${managerName}%'
+		 </if>
+		 <if test="month != null and month != '' ">
+			AND salary.month=#{month}
+		 </if>
+		 <if test="year != null and year != '' ">
+			AND salary.year=#{year}
+		 </if>
+	</select>
+	<!-- =====================================济南绩效相关start============================= -->
 </mapper>

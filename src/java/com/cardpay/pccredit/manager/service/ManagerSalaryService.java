@@ -27,6 +27,7 @@ import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.manager.model.ManagerCashConfiguration;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
+import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.cardpay.pccredit.manager.model.ManagerSalaryParameter;
 import com.cardpay.pccredit.manager.model.SalaryParameter;
 import com.cardpay.pccredit.manager.model.TyManagerAssessment;
@@ -504,5 +505,20 @@ public class ManagerSalaryService {
         
         out.close();
 	}
+	
+	
+	//----------------------------------------------济南绩效start----------------------------------------------------//
+	public QueryResult<ManagerSalaryForm> findManagerSalaryByFilterJn(ManagerSalaryFilter filter) {
+		List<ManagerSalaryForm> list = managerSalaryDao.findManagerSalarysByFilterJn(filter);
+		int size = managerSalaryDao.findManagerSalarysCountByFilterJn(filter);
+		QueryResult<ManagerSalaryForm> qs = new QueryResult<ManagerSalaryForm>(size, list);
+		return qs;
+	}
+	
+	
+	public void docalculateMonthlySalaryTy(int year, int month) {
+		
+	}
+	//----------------------------------------------济南绩效end----------------------------------------------------//
 	
 }
