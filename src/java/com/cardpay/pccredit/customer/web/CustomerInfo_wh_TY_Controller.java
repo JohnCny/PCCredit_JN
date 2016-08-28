@@ -181,11 +181,15 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 	public JRadReturnMap change_report_jy(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String appId = RequestHelper.getStringValue(request, "appId");
+		String applyQuota = RequestHelper.getStringValue(request, "applyQuota");
 		try {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
 			localExcel.setSheetJy(request.getParameter("content"));
 			addIntoPiecesService.change_localExcel(localExcel);
-			
+			CustomerApplicationInfo app = new CustomerApplicationInfo();
+			app.setId(appId);
+			app.setApplyQuota(applyQuota);
+			addIntoPiecesService.changeApproveValue(app);
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
 			return WebRequestHelper.processException(e);

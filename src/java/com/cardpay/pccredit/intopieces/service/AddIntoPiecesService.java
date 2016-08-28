@@ -388,8 +388,14 @@ public class AddIntoPiecesService {
 	}
 
 	public void change_localExcel(LocalExcel localExcel) {
-		// TODO Auto-generated method stub
+
+		
 		commonDao.updateObject(localExcel);
+	}
+	
+	public void changeApproveValue (CustomerApplicationInfo customerapplicationinfo){
+		
+		commonDao.updateObject(customerapplicationinfo);
 	}
 	
 	/**
