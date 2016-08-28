@@ -64,7 +64,6 @@ public String selectCustomerInfoByCardId(HttpServletRequest request){
 	        		"<td>"+CardType+"</td>"+
 	        		"<td>"+cus.getCardId()+"</td>"+
                     "<td>"+cus.getTelephone()+"</td>");
-                   
 	        } 
 	     String ss = s.toString();
 	     ss=ss.replace("null", "");
