@@ -38,4 +38,7 @@ public interface JnIpadCustAppInfoXxDao {
 	public List<CustYunyinVo> findYunyinstatus(@Param("userId") String userId);
 	
 	public List<RetrainUserVo> findAccountManagerRetraining(@Param("id") String id);
+
+	//进件列表根据状态查询数量
+	public int findNoticeCountByFilter(NotificationMessageFilter filter);
 }
