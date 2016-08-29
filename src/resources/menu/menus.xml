@@ -31,8 +31,9 @@
 			<menu id="070003" name="dailyaccount" title="客户经理日报" url="/manager/dailyaccount/browse.page" img="" operations="change|display|browse"/>
 			<menu id="070004" name="retraining" title="客户经理培训计划列表" url="/manager/retraining/browse.page" img="" operations="create|change|delete|display|browse"/>
  			<menu id="070005" name="trainmessage" title="培训通知" url="/notificationmessage/trainmessage/browse.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070006" name="performmanceinput" title="业绩进度录入" url="/manager/performmance/insert.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070007" name="performmancebrowse" title="业绩进度查询" url="/manager/performmance/browse.page" img="" operations="checked|display|browse"/>		    
 		</menu>
-		
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
