@@ -188,11 +188,6 @@
 		)
 	</select>
 	<select id ="findManagerInfo" resultMap="managerInfo" >
-	    
-	 <!--   select u.EXTERNAL_ID,u.ID,u.DISPLAY_NAME from sys_user u where 1=1  -->
-	    <!-- select '0' as NAME, '请选择' as title
-		  FROM sys_user
-		union -->
 		select s.id, s.EXTERNAL_ID , s.display_name 
 		  from account_manager_parameter m, sys_user s
 		 where s.id = m.user_id

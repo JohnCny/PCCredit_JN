@@ -90,8 +90,6 @@ public class JnPadProductSelectController extends BaseController {
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
 		return json.toString();
 	}
-	
-	
 		
-	}
+}
 

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
@@ -45,9 +46,10 @@ public class JnpadImageBrowseService {
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
 			//本地
-			this.downLoadFile(response,v);
+//			this.downLoadFile(response,v);
 			//服务器
-			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
 		}
 	}
 	

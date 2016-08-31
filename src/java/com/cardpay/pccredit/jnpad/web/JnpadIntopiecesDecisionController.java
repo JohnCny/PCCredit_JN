@@ -103,7 +103,7 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
-		List<Object> manager = new ArrayList<Object>();
+//		List<Object> manager = new ArrayList<Object>();
 //		int size = result.size();
 //		map.put("managerInfo",result);
 //		map.put("size", size);
@@ -116,17 +116,17 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	        	s =s+"<option value = '"+mana.getID()+"'>"+mana.getEXTERNAL_ID()+mana.getDISPLAY_NAME()
 	        	+"</option>";
 	        	
-	        	 if(i%10==0){
-		                String m = Integer.toString(j);
-		                manager.add(s);
-		                s="";
-		                }
-		                i++;
+//	        	 if(i%10==0){
+//		                String m = Integer.toString(j);
+//		                manager.add(s);
+//		                s="";
+//		                }
+//		                i++;
 	        }
-	       manager.add(s);
-	       map.put("manager", manager);
-	       map.put("size", manager.size());
-	       System.out.println(manager.size());
+//	       manager.add(s);
+	       map.put("manager", s);
+//	       map.put("size", manager.size());
+//	       System.out.println(manager.size());
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map,jsonConfig);

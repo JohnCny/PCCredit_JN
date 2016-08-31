@@ -44,36 +44,24 @@
 						<td class="titlefc3"><label for="signcount">签约数:</label></td>
 						<td class="titlefc3"><label for="givemoneycount">放款数:</label></td>
 						</tr>
+						 #foreach($gxperformList in $!gxperformList)
 						<tr>
-						<td><input class="rinpsty" type="text" id="visitcount"
-							name="visitcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="visitcount"
-							name="visitcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="visitcount"
-							name="visitcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="applycount"
-							name="applycount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="applyrefuse"
-							name="applyrefuse" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="creditcount"
-							name="creditcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="creditrefuse"
-							name="creditrefuse" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}" /></td>
-						<td><input class="rinpsty" type="text" id="realycount"
-							name="realycount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="reportcount"
-							name="reportcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="internalcount"
-							name="internalcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="meetingcout"
-							name="meetingcout" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="passcount"
-							name="passcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="signcount"
-							name="signcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
-						<td><input class="rinpsty" type="text" id="givemoneycount"
-							name="givemoneycount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+						<td>$gxperformList.name</td>
+						<td>$gxperformList.managerName</td>
+						<td>$gxperformList.visitcount</td>
+						<td>$gxperformList.applycount</td>
+						<td>$gxperformList.applyrefuse</td>
+						<td>$gxperformList.creditcount</td>
+						<td>$gxperformList.creditrefuse</td>
+						<td>$gxperformList.realycount</td>
+						<td>$gxperformList.reportcount</td>
+						<td>$gxperformList.internalcount</td>
+						<td>$gxperformList.meetingcout</td>
+						<td>$gxperformList.passcount</td>
+						<td>$gxperformList.signcount</td>
+						<td>$gxperformList.givemoneycount</td>
 					</tr>
+					#end
 				</table>
 			</form>
 			<div class="submit" style="text-align: left;">
