@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
@@ -60,32 +61,36 @@ public class ManagerPerformmanceController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "browse.page")
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView browse(HttpServletRequest request) {  
-		String id ="ff8080815456203101545635015f0011";
+	public AbstractModelAndView browse(HttpServletRequest request) { 
+		List<BankListForm> bankListForm = managerPerformmanceService.findALlbank();
 		Map<Object, Object> map = new LinkedHashMap<Object, Object>();
-		List<DeptMemberForm> gxMumberList = managerPerformmanceService.findMumberByDeptId(id);
 		List<ManagerPerformmanceForm> gxperformList = new ArrayList<ManagerPerformmanceForm>();
+		for(int j=0;j<bankListForm.size();j++){
+//		String id ="ff8080815456203101545635015f0011";
+			String id= bankListForm.get(j).getId();
+		List<DeptMemberForm> gxMumberList = managerPerformmanceService.findMumberByDeptId(id);
 		for(int i=0;i<gxMumberList.size();i++){
 		String managerId =gxMumberList.get(i).getId();
-		ManagerPerformmance managerPerformmance = managerPerformmanceService.finManagerPerformmanceById(managerId);
-		ManagerPerformmanceSum managerPerformmanceSum = managerPerformmanceService.finManagerPerformmanceSumById(managerId);
-		ManagerPerformmanceForm managerPerformmanceForm =new ManagerPerformmanceForm();
-		managerPerformmanceForm.setApplycount(managerPerformmanceSum.getApplycount_s()+"("+managerPerformmance.getApplycount()+")");
-		managerPerformmanceForm.setApplyrefuse(managerPerformmanceSum.getApplyrefuse_s()+"("+managerPerformmance.getApplyrefuse()+")");
-		managerPerformmanceForm.setCreditcount(managerPerformmanceSum.getCreditcount_s()+"("+managerPerformmance.getCreditcount()+")");
-		managerPerformmanceForm.setCreditrefuse(managerPerformmanceSum.getCreditrefuse_s()+"("+managerPerformmance.getCreditrefuse()+")");
-		managerPerformmanceForm.setGivemoneycount(managerPerformmanceSum.getGivemoneycount_s()+"("+managerPerformmance.getGivemoneycount()+")");
-		managerPerformmanceForm.setInternalcount(managerPerformmanceSum.getInternalcount_s()+"("+managerPerformmance.getInternalcount()+")");
-		managerPerformmanceForm.setMeetingcout(managerPerformmanceSum.getMeetingcout_s()+"("+managerPerformmance.getMeetingcout()+")");
-		managerPerformmanceForm.setPasscount(managerPerformmanceSum.getPasscount_s()+"("+managerPerformmance.getPasscount()+")");
-		managerPerformmanceForm.setRealycount(managerPerformmanceSum.getRealycount_s()+"("+managerPerformmance.getRealycount()+")");
-		managerPerformmanceForm.setReportcount(managerPerformmanceSum.getReportcount_s()+"("+managerPerformmance.getReportcount()+")");
-		managerPerformmanceForm.setSigncount(managerPerformmanceSum.getSigncount_s()+"("+managerPerformmance.getSigncount()+")");
-		managerPerformmanceForm.setVisitcount(managerPerformmanceSum.getVisitcount_s()+"("+managerPerformmance.getVisitcount()+")");
+		ManagerPerformmanceForm managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(managerId);
+		if(managerPerformmanceForm==null){
+			continue;
+		}
 		managerPerformmanceForm.setName(gxMumberList.get(i).getOname());
 		managerPerformmanceForm.setManagerName(gxMumberList.get(i).getDisplay_name());
 		gxperformList.add(managerPerformmanceForm);
 		}
+		ManagerPerformmanceForm managerPerformmanceForm1 = managerPerformmanceService.findDeptSumPerformmanceById(id);
+		if(managerPerformmanceForm1==null){
+			continue;
+		}
+		managerPerformmanceForm1.setName(bankListForm.get(j).getName());
+		managerPerformmanceForm1.setManagerName("小计");
+		gxperformList.add(managerPerformmanceForm1);
+		}
+		ManagerPerformmanceForm managerPerformmanceForm2 = managerPerformmanceService.findALLDeptSumPerformmanceById();
+		managerPerformmanceForm2.setName("统计");
+		managerPerformmanceForm2.setManagerName("总计");
+		gxperformList.add(managerPerformmanceForm2);
 		JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmance_sum", request);
 		mv.addObject("gxperformList", gxperformList);
 		return mv;

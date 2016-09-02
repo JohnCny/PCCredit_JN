@@ -45,21 +45,37 @@
 						<td class="titlefc3"><label for="givemoneycount">放款数:</label></td>
 						</tr>
 						 #foreach($gxperformList in $!gxperformList)
-						<tr>
+						 #if($gxperformList.managerName=="小计" || $gxperformList.managerName=="总计")
+						<td class="titlefc3">$gxperformList.name</td>
+						<td class="titlefc3">$gxperformList.managerName</td>
+						<td class="titlefc3">$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
+						<td class="titlefc3">$gxperformList.applycount_s ( $gxperformList.applycount )</td>
+						<td class="titlefc3">$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
+						<td class="titlefc3">$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
+						<td class="titlefc3">$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
+						<td class="titlefc3">$gxperformList.realycount_s ( $gxperformList.realycount )</td>
+						<td class="titlefc3">$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
+						<td class="titlefc3">$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
+						<td class="titlefc3">$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
+						<td class="titlefc3">$gxperformList.passcount_s ( $gxperformList.passcount )</td>
+						<td class="titlefc3">$gxperformList.signcount_s ( $gxperformList.signcount )</td>
+						<td class="titlefc3">$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
+						#else
 						<td>$gxperformList.name</td>
 						<td>$gxperformList.managerName</td>
-						<td>$gxperformList.visitcount</td>
-						<td>$gxperformList.applycount</td>
-						<td>$gxperformList.applyrefuse</td>
-						<td>$gxperformList.creditcount</td>
-						<td>$gxperformList.creditrefuse</td>
-						<td>$gxperformList.realycount</td>
-						<td>$gxperformList.reportcount</td>
-						<td>$gxperformList.internalcount</td>
-						<td>$gxperformList.meetingcout</td>
-						<td>$gxperformList.passcount</td>
-						<td>$gxperformList.signcount</td>
-						<td>$gxperformList.givemoneycount</td>
+						<td>$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
+						<td>$gxperformList.applycount_s ( $gxperformList.applycount )</td>
+						<td>$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
+						<td>$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
+						<td>$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
+						<td>$gxperformList.realycount_s ( $gxperformList.realycount )</td>
+						<td>$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
+						<td>$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
+						<td>$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
+						<td>$gxperformList.passcount_s ( $gxperformList.passcount )</td>
+						<td>$gxperformList.signcount_s ( $gxperformList.signcount )</td>
+						<td>$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
+						#end
 					</tr>
 					#end
 				</table>
@@ -72,29 +88,6 @@
 	</div>
 </body>
  <script type="text/javascript">
- $(document).ready(function() {	
-	 #set ($formName = "'#id_module_form'");
-	 $("#id_save_button").click(function (){
-		 
-		 var formjson = $($formName).serialize();
-   	     var url = $($formName).attr("action");
-		 $.ajax({
-				url : url,
-				type : "get",
-				data : formjson,
-				success : function(data) {
-					if (data.success) {
-						topWin.Dialog.message("保存成功!");
-	   	            	window.location.reload() ;
-					}else{
-						topWin.Dialog.message("保存失败!");
-				    }
-				}
-			});
-	});
-	
- })
- 
  
  </script>
 #parse ("common/iframe_page_footer.htm")

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
+import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
 import com.wicresoft.util.annotation.Mapper;
@@ -20,5 +22,13 @@ public interface ManagerPerformmanceDao {
 	ManagerPerformmanceSum finManagerPerformmanceSumById(@Param(value="managerId") String managerId);
 	
 	void updateManagerPerformmanceSum(ManagerPerformmanceSum managerPerformmance);
+	//查询总进度和当天进度
+	ManagerPerformmanceForm findSumPerformmanceById(@Param(value="managerId")String managerId);
 	
+	//查询指定支行进度
+	ManagerPerformmanceForm findDeptSumPerformmanceById(@Param(value="orgId")String orgId);
+	//查找所有支行
+	List<BankListForm> findALlbank();
+	//查询指定所有支行总进度
+	ManagerPerformmanceForm findALLDeptSumPerformmanceById();
 }
