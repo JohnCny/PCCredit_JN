@@ -169,4 +169,11 @@ public class ManagerPerformmanceController extends BaseController {
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value = "performUpdate.page")
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView performUpdate(HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmanceUpdate", request);
+		return mv;
+	}
 }
