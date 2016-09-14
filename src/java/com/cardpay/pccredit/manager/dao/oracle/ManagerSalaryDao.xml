@@ -48,6 +48,18 @@
 		<result property="modifiedTime" column="modified_time" />
 		<result property="createdBy" column="created_by" />
 		<result property="own" column="own" />
+		<result property="instCode" column="INST_CODE" />
+		<result property="wage" column="WAGE" />
+		<result property="middleAllowance" column="MIDDLE_ALLOWANCE" />
+		<result property="basicTaskBonus" column="BASIC_TASK_BONUS" />
+		<result property="attendDeduct" column="ATTEND_DEDUCT" />
+		<result property="riskReserveBalances" column="RISK_RESERVE_BALANCES" />
+		<result property="rowIndex" column="row_index" />
+		
+		<result property="monthLoanNum" column="MONTH_LOAN_NUM" />
+		<result property="monthTimes"   column="MONTH_TIMES" />
+		<result property="monthEffectNum" column="MONTH_EFFECT_NUM" />
+		<result property="monthOverdueDays" column="MONTH_OVERDUE_DAYS" />
 	</resultMap>
 	
 	<select id="findManagerSalarysByFilter" resultMap="ResultMap" 
@@ -396,10 +408,10 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					SELECT salary.*, 
-						   usr.display_name as managerName
+						   usr.display_name as managerName,
+						   (nvl(salary.base_pay,0) + nvl(salary.reward_incentive_information,0) + nvl(salary.BASIC_TASK_BONUS,0) + nvl(salary.allowance,0) + nvl(salary.MIDDLE_ALLOWANCE,0) +  nvl(salary.fine,0) + nvl(salary.return_prepare_amount,0) - nvl(salary.ATTEND_DEDUCT,0)) as wage
 					  FROM manager_salary salary
-					 INNER join sys_user usr
-    				    ON usr.id = salary.customer_id
+					 INNER join sys_user usr ON usr.id = salary.customer_id
 					 WHERE 1=1
 					 <if test="managerName != null and managerName != '' ">
 						AND usr.display_name like '%${managerName}%'
@@ -410,7 +422,10 @@
 					 <if test="year != null and year != '' ">
 						AND salary.year=#{year}
 					 </if>
-					 order by salary.year desc,salary.month desc
+					 <if test="organName != null and organName != '' ">
+						AND salary.INST_CODE=#{organName}
+					 </if>
+					 order by salary.year desc,salary.month,salary.inst_code desc
 		 		<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -434,6 +449,83 @@
 		 <if test="year != null and year != '' ">
 			AND salary.year=#{year}
 		 </if>
+		 <if test="organName != null and organName != '' ">
+			AND salary.INST_CODE=#{organName}
+		 </if>
 	</select>
-	<!-- =====================================济南绩效相关start============================= -->
+	
+	<select id="getOrganName" resultType="String">
+		   select org.name
+     from sys_organization org
+    where id in (select t.org_id
+                   from sys_department t
+                  where t.id in (select tt.dept_id
+                                   from sys_dept_user tt
+                                  where tt.user_id = #{managerId}))
+	</select>
+	
+	<select id="findManagerSalaryCount" resultType="int">
+		SELECT count(*)
+		   FROM manager_salary salary
+		  WHERE 1=1
+			AND salary.month=#{month}
+			AND salary.year=#{year}
+	</select>
+	
+	
+	<select id="findXbCountByManagerId" resultType="int">
+	  select count(0) from customer_application_info info,
+              t_app_manager_audit_log log
+	  where   info.id = log.application_id 
+	      and info.status = 'approved'
+	      and log.audit_type = '2'
+	      and log .user_id_3 = #{managerId}
+	</select>
+	
+	<select id="findProdLimitAndType" resultType="map">
+		select cname,INTEREST, MAINASSURE                  
+  from t_mibusidata a, basic_customer_information b
+ where a.custid = b.ty_customer_id                 
+   and substr(a.OPERDATETIME, '0', '4') = #{year} 
+   and substr(a.OPERDATETIME, '6', '2') = #{month}  
+   and b.id = #{customerId}  
+	    
+	</select>
+	
+	
+	<select id="findDistinctBusicode" resultType="map">
+		select distinct(t.busicode)
+		  from t_mibusidata t
+		 where substr(OPERDATETIME, '0', '4') = #{year} 
+		   and substr(OPERDATETIME, '6', '2') = #{month}  
+		   and t.custid = #{tyCustomerId}  
+	</select>
+	
+	
+	<select id="findManagerSalaryForm" resultMap="ResultMapJn"  
+	    parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+					SELECT salary.*, 
+						   parmeter.*,
+						   usr.display_name as managerName,
+						   (nvl(salary.base_pay,0) + nvl(salary.reward_incentive_information,0) + nvl(salary.BASIC_TASK_BONUS,0) + nvl(salary.allowance,0) + nvl(salary.MIDDLE_ALLOWANCE,0) +  nvl(salary.fine,0) + nvl(salary.return_prepare_amount,0) - nvl(salary.ATTEND_DEDUCT,0)) as wage
+					  FROM manager_salary salary
+					 INNER join sys_user usr ON usr.id = salary.customer_id
+    				 inner join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id
+					 WHERE 1=1
+					 <if test="managerName != null and managerName != '' ">
+						AND usr.display_name like '%${managerName}%'
+					 </if>
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 <if test="organName != null and organName != '' ">
+						AND salary.INST_CODE=#{organName}
+					 </if>
+					 order by salary.inst_code desc,salary.year desc,salary.month desc
+	</select>
+	
+	<!-- =====================================济南绩效相关end============================= -->
 </mapper>

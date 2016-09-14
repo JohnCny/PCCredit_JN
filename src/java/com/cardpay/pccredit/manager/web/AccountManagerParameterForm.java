@@ -29,9 +29,19 @@ public class AccountManagerParameterForm extends BaseForm {
 	private Date modifiedTime;
 	
 	private String instcode;
+	
+	private String managerType;
 
 	
 	
+	public String getManagerType() {
+		return managerType;
+	}
+
+	public void setManagerType(String managerType) {
+		this.managerType = managerType;
+	}
+
 	public String getInstcode() {
 		return instcode;
 	}

@@ -897,9 +897,7 @@ public class ReadWholeAndIncrementService {
 			List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_MIBUSIDATA.xml");
 			// 解析”流水号“数据文件
 			List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
-			for (Map<String, Object> map : datas){
-				andIncrementComdao.insertMIBUSIDATA(datas);
-			}
+			andIncrementComdao.insertMIBUSIDATA(datas);
 			// 批量插入
 			//andIncrementComdao.insertMIBUSIDATA(datas);
 			//for

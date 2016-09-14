@@ -1,20 +1,13 @@
 package com.cardpay.pccredit.manager.web;
 
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-
 import javax.servlet.http.HttpServletRequest;
-
-
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
 import com.cardpay.pccredit.manager.service.ManagerSalaryService;
@@ -29,9 +22,9 @@ import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 /**
- * @author chenzhifang
+ * @author songchen
  *
- * 2014-11-14下午5:56:37
+ * 2016-08-29下午5:56:37
  */
 @Controller
 @RequestMapping("/manager/managersalary/*")
