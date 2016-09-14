@@ -61,7 +61,9 @@ public class RiskCustomerManagerController extends BaseController {
         
         // 客户经理Id
         //filter.setReportedIdManager(user.getId());
-        filter.setCustManagerId(user.getId());
+        if(user.getUserType() == 1){
+        	filter.setCustManagerId(user.getId());
+        }
         // 风险类型
         filter.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
         // 客户经理

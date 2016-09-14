@@ -1,11 +1,8 @@
 package com.cardpay.pccredit.report.web;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
-import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.security.LoginManager;
@@ -67,7 +62,9 @@ public class AfterLoanCollectController extends BaseController{
         //如果当前客户是客户经理角色 userId is not null
         List<AccountManagerParameter> list = customerTransferFlowService.findManager(user.getId());
         if(list != null && list.size() > 0){
-        	filter.setUserId(user.getId());
+        	if(user.getUserType() ==1){//客户经理
+        		filter.setUserId(user.getId());
+        	}
 		}
 		
 		if(StringUtils.isEmpty(filter.getStartDate())){
@@ -81,7 +78,6 @@ public class AfterLoanCollectController extends BaseController{
 		long start = System.currentTimeMillis();
 		List<AccLoanCollectInfo> accloanList = customerTransferFlowService.getAccLoanCollect(filter);
 		long end = System.currentTimeMillis();
-		System.out.println("#########################贷款汇总查询时间花费：" + (end - start) + "毫秒");
 		logger.info("#########################贷款汇总查询时间花费：" + (end - start) + "毫秒");
 		JRadModelAndView mv = new JRadModelAndView("/report/afteraccloan/afterAccLoanCollect_centre_browseAll", request);
 		mv.addObject("list", accloanList);

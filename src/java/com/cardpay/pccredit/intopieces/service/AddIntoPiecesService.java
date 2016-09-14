@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.omg.CORBA.COMM_FAILURE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +46,7 @@ import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.Dzjbzk;
 import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.Pic;
@@ -240,6 +242,12 @@ public class AddIntoPiecesService {
 		}else{
 		    localExcel.setApproveValue(sheet[10]);
 		}
+		
+		//修改申请金额
+		CustomerApplicationInfo info = new CustomerApplicationInfo();
+		info.setApplyQuota(localExcel.getApproveValue());
+		info.setId(appId);
+		commonDao.updateObject(info);
 		
 		//添加模板
 		commonDao.insertObject(localExcel);
