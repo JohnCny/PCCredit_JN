@@ -41,7 +41,26 @@ public class ManagerSalaryFilter extends BaseQueryFilter {
 	private String customerManagerId;
 	private List<AccountManagerParameterForm> customerManagerIds;
 	
+	private String organName;
 	
+	private String date;
+	
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getOrganName() {
+		return organName;
+	}
+
+	public void setOrganName(String organName) {
+		this.organName = organName;
+	}
 
 	public String getCustomerManagerId() {
 		return customerManagerId;

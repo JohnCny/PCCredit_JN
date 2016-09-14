@@ -30,6 +30,15 @@ public class AccountManagerParameter extends BusinessModel{
 	private Date createdTime;
 	private String modifiedBy;
 	private Date modifiedTime;
+	private String managerType;
+	
+	
+	public String getManagerType() {
+		return managerType;
+	}
+	public void setManagerType(String managerType) {
+		this.managerType = managerType;
+	}
 	public String getUserId() {
 		return userId;
 	}

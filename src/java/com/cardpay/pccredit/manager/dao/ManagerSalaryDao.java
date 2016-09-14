@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.manager.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -90,8 +91,22 @@ public interface ManagerSalaryDao {
 	public String getRewardIncentiveInformation(@Param("year") int year,@Param("month") int month,@Param("id") String id);
 	
 	
-	
+	//济南绩效
 	public List<ManagerSalaryForm> findManagerSalarysByFilterJn(ManagerSalaryFilter filter);
 	public int findManagerSalarysCountByFilterJn(ManagerSalaryFilter filter);
-
+	public String getOrganName(@Param("managerId") String managerId);
+	public int findManagerSalaryCount(@Param("year") String  year, @Param("month") String month);
+	
+	public int findXbCountByManagerId(@Param("managerId") String  managerId);
+	
+	
+	List<Map<String, Object>> findProdLimitAndType(@Param("customerId")String customerId,
+												   @Param("year")String year,
+												   @Param("month")String month);
+	
+	List<Map<String, Object>> findDistinctBusicode(@Param("tyCustomerId")String tyCustomerId,
+												   @Param("year")String year,
+												   @Param("month")String month);
+	
+	public List<ManagerSalaryForm> findManagerSalaryForm(ManagerSalaryFilter filter);
 }

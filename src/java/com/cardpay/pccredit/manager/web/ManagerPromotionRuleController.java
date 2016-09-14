@@ -19,6 +19,7 @@ import com.cardpay.pccredit.manager.model.MaintenanceAccountManager;
 import com.cardpay.pccredit.manager.model.ManagerPromotionDownRule;
 import com.cardpay.pccredit.manager.model.ManagerPromotionRule;
 import com.cardpay.pccredit.manager.model.MangerMonthAssessment;
+import com.cardpay.pccredit.manager.model.TPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyPerformanceCenter;
 import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
@@ -559,6 +560,41 @@ public class ManagerPromotionRuleController {
 		List<DictionaryItem> dictItems = dictionary.getItems();
 		mv.addObject("parmeters",parmeters);
 		mv.addObject("dictItems",dictItems);
+		return mv;
+	}
+	
+	//=====================================济南绩效=======================================//
+	/**
+	 * 济南绩效参数配置
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateJxParam.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView updateJxParam(HttpServletRequest request) {
+		List<TPerformanceParameters> parmeters = managerPerformanceParametersService.getTManagerPerformanceParamers();
+		JRadModelAndView mv = new JRadModelAndView("/manager/performanceParameters/manager_jx_param_actor", request);
+		mv.addObject("parmeters",parmeters);
+		return mv;
+	}
+	
+	
+	/**
+	 * 客户经理绩效参数配置保存
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "saveJxParam.page", method = { RequestMethod.POST })
+	@JRadOperation(JRadOperation.CHANGE)
+	public AbstractModelAndView saveJxParam(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/manager/performanceParameters/manager_jx_param_actor", request);
+		try {
+			managerPerformanceParametersService.updateTManagerPerformanceParamers(request);
+			List<TPerformanceParameters> parmeters = managerPerformanceParametersService.getTManagerPerformanceParamers();
+			mv.addObject("parmeters",parmeters);
+		} catch (Exception e) {
+			logger.error("执行修改客户经理绩效参数"+e.getMessage());
+		}
 		return mv;
 	}
 }

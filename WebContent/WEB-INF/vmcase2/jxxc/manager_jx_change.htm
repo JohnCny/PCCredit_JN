@@ -23,7 +23,15 @@
                   <input type="text" id ="displayName" name="displayName" disabled="disabled" value="$!displayName">
               </td>
               <td><label for="basePay">底薪:</label></td>
-              <td><input class="rinpsty"  type="text" id="basePay" name="basePay" value="$format.formatNumber($!accountManagerParameter.basePay,2,100)" /></td>
+              <td><input class="rinpsty"  type="text" id="basePay" name="basePay" value="$!accountManagerParameter.basePay" /></td>
+             </tr>
+             <tr>
+              <td><label for="userId">客户经理类型：</label></td>
+              <td>
+                  <select  name="managerType"  >
+                  	#dict("MANAGER_TYPE",$!accountManagerParameter.managerType)
+                  </select>
+              </td>
              </tr>
           </table>
         </div>
@@ -57,7 +65,7 @@
 				success : function(data) {
 					if (data.success) {
 						topWin.Dialog.message("保存成功！");
-						window.location.href= contextPath+"/manager/managercreate/browse.page" ;
+						window.location.href= contextPath+"/manager/leveladjustment/browsejnjbxc.page" ;
 					}
 					else{
 						topWin.Dialog.message(data.message);

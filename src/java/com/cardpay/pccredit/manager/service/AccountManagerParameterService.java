@@ -16,8 +16,11 @@ import com.cardpay.pccredit.manager.constant.ManagerTargetType;
 import com.cardpay.pccredit.manager.dao.AccountManagerParameterDao;
 import com.cardpay.pccredit.manager.dao.comdao.AccountManagerParameterComdao;
 import com.cardpay.pccredit.manager.filter.AccountManagerParameterFilter;
+import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.BatchTask;
+import com.cardpay.pccredit.manager.model.TJxParameters;
+import com.cardpay.pccredit.manager.model.TJxSpecificParameters;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -452,9 +455,9 @@ public class AccountManagerParameterService {
 		if(accountManagerParameter != null){
 		String basePay = accountManagerParameter.getBasePay();
 		if(basePay !=null && basePay !=""){
-			Double basePayDouble = Double.parseDouble(basePay) * 100;
-			String basePayValue = basePayDouble.toString();
-			accountManagerParameter.setBasePay(basePayValue);
+			//Double basePayDouble = Double.parseDouble(basePay) * 100;
+			//String basePayValue = basePayDouble.toString();
+			accountManagerParameter.setBasePay(basePay);
 		   }
 		}
 		return commonDao.updateObject(accountManagerParameter);
@@ -556,7 +559,7 @@ public class AccountManagerParameterService {
 	}
 	
 	
-	//---------------------------------------------------------济南绩效------------------------------------------------//
+	//---------------------------------------------------------济南绩效 start------------------------------------------------//
 	public QueryResult<AccountManagerParameterForm> findAccountManagerParametersByFilterForJx(AccountManagerParameterFilter filter) {
 		List<AccountManagerParameterForm> accountManagerParameterForm = accountManagerParameterDao.findAccountManagerParametersByFilterForJx(filter);
 		int size = accountManagerParameterDao.findAccountManagerParametersCountByFilterForJx(filter);
@@ -564,5 +567,21 @@ public class AccountManagerParameterService {
 		return qs;
 	}
 	
+	public QueryResult<TJxParameters> findMonthJx(ManagerSalaryFilter filter) {
+		List<TJxParameters> param = accountManagerParameterDao.findMonthJx(filter);
+		int size = accountManagerParameterDao.findCountMonthJx(filter);
+		QueryResult<TJxParameters> qs = new QueryResult<TJxParameters>(size,param);
+		return qs;
+	}
+	
+	public QueryResult<TJxSpecificParameters> findCustDayBalamt(ManagerSalaryFilter filter) {
+		List<TJxSpecificParameters> jxSpecificParameters = accountManagerParameterDao.findCustDayBalamt(filter);
+		int size = accountManagerParameterDao.findCountCustDayBalamt(filter);
+		QueryResult<TJxSpecificParameters> qs = new QueryResult<TJxSpecificParameters>(size ,jxSpecificParameters);
+		return qs;
+	}
+	
+	
+	//---------------------------------------------------------济南绩效 end------------------------------------------------//
 	
 }

@@ -334,7 +334,7 @@ public class CustomerApplicationIntopieceWaitService {
 				log.setAuditType(auditType);//1-初审 2-审贷
 				log.setUserId_1(cyUser1);
 				log.setUserId_2(cyUser2);
-				log.setUserId_3(fdUser);
+				log.setUserId_3(fdUser);//輔調
 				log.setExamineAmount(examineAmount);
 				log.setExamineLv(lv);
 				log.setUserId_4(sdUser);

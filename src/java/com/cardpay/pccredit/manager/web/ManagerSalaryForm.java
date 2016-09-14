@@ -33,6 +33,39 @@ public class ManagerSalaryForm extends BaseForm  {
 	private String month;
 	
 	private String describe;
+	
+	private String  basicTaskBonus;
+	
+	private String middleAllowance;
+	
+	private String attendDeduct;
+
+	
+	
+	
+	public String getBasicTaskBonus() {
+		return basicTaskBonus;
+	}
+
+	public void setBasicTaskBonus(String basicTaskBonus) {
+		this.basicTaskBonus = basicTaskBonus;
+	}
+
+	public String getMiddleAllowance() {
+		return middleAllowance;
+	}
+
+	public void setMiddleAllowance(String middleAllowance) {
+		this.middleAllowance = middleAllowance;
+	}
+
+	public String getAttendDeduct() {
+		return attendDeduct;
+	}
+
+	public void setAttendDeduct(String attendDeduct) {
+		this.attendDeduct = attendDeduct;
+	}
 
 	public String getCustomerId() {
 		return customerId;
