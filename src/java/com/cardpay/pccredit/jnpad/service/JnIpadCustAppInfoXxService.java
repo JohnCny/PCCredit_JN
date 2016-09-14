@@ -29,6 +29,8 @@ import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.riskControl.dao.RiskCustomerDao;
+import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -47,7 +49,8 @@ public class JnIpadCustAppInfoXxService {
 	@Autowired
 	private RetrainingDao retrainingDao;
 	
-	
+	@Autowired
+	private RiskCustomerDao riskCustomerDao;
 	
 	
 	public int findCustAppInfoXxCount(String userId,String status1,String status2,String status3,String status4){
@@ -196,5 +199,20 @@ public class JnIpadCustAppInfoXxService {
 	
 	public SystemUser findSysUserById(String id){
 		return commonDao.findObjectById(SystemUser.class, id) ;
+	}
+
+
+	public int findNoticeCountByFilter(NotificationMessageFilter filter) {
+		// TODO Auto-generated method stub
+		return jnIpadCustAppInfoDao.findNoticeCountByFilter(filter);
+	}
+	
+
+
+
+
+	public int findRiskNoticeCountByFilter(RiskCustomerFilter filters) {
+		// TODO Auto-generated method stub
+		return riskCustomerDao.findRiskCustomersCountByFilter(filters);
 	}
 }

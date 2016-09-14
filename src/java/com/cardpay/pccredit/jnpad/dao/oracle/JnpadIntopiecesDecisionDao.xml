@@ -69,17 +69,46 @@
 		<result column="EXTERNAL_ID" property="EXTERNAL_ID" />
 		<result column="ID" property="ID" />
 		<result column="DISPLAY_NAME" property="DISPLAY_NAME" />
-
-	</resultMap>
-	
+</resultMap>
 	 <resultMap id="logMap" type="com.cardpay.pccredit.intopieces.model.AppManagerAuditLog">
 		<result property="userId_1" column="USER_ID_1" />
 		<result property="userId_2" column="USER_ID_2" />
 		<result property="userId_3" column="USER_ID_3" />
+		<result property="userId_4" column="USER_ID_4" />
+		<result property="qx" 		column="QX" />
+		<result property="hkfs" 		 column="HKFS" />
+		<result property="beiZhu" 		 column="BEIZHU" />
 		<result property="examineAmount" column="EXAMINE_AMOUNT" />
 		<result property="examineLv" 	 column="EXAMINE_LV" />
+		<result property="auditType" 	 column="AUDIT_TYPE" />
 	</resultMap>
 	
+	
+	 <resultMap id="ProductResultMap"
+	type="com.cardpay.pccredit.jnpad.model.ProductAttributes">
+	<result property="id" column="ID" />
+	<result property="productName" column="PRODUCT_NAME" />
+	<result property="purposeLoan" column="PURPOSE_LOAN" />
+	<result property="creditLine" column="CREDIT_LINE" />
+	<result property="rateRange" column="RATE_RANGE" />
+	<result property="loanTimeLimit" column="LOAN_TIME_LIMIT" />
+	<result property="loanPrincipal" column="LOAN_PRINCIPAL" />
+	<result property="letterPaymentWay" column="LETTER_PAYMENT_WAY" />
+	<result property="numbererestSettlementWay" column="NUMBEREREST_SETTLEMENT_WAY" />
+	<result property="assureMeans" column="ASSURE_MEANS" />
+	<result property="penaltyNumbererest" column="PENALTY_NUMBEREREST" />
+	<result property="productRiskTolerance" column="PRODUCT_RISK_TOLERANCE" />
+	<result property="productTypeCode" column="PRODUCT_TYPE_CODE" />
+	<result property="status" column="STATUS" />
+	<result property="createdTime" column="CREATED_TIME" />
+	<result property="createdBy" column="CREATED_BY" />
+	<result property="modifiedTime" column="MODIFIED_TIME" />
+	<result property="modifiedBy" column="MODIFIED_BY" />
+	<result property="pictureUrl" column="PICTURE_URL" />
+	<result property="pictureName" column="PICTURE_NAME" />
+	<result property="seqno" column="SEQNO" />
+</resultMap>
+	 
 	<select id="findCustomerApplicationIntopieceDecisionForm"
 		resultMap="BaseResultMap">
 		SELECT
@@ -163,26 +192,48 @@
 		)
 	</select>
 	<select id ="findManagerInfo" resultMap="managerInfo" >
-	    
-	 <!--   select u.EXTERNAL_ID,u.ID,u.DISPLAY_NAME from sys_user u where 1=1  -->
-	    <!-- select '0' as NAME, '请选择' as title
-		  FROM sys_user
-		union -->
 		select s.id, s.EXTERNAL_ID , s.display_name 
 		  from account_manager_parameter m, sys_user s
 		 where s.id = m.user_id
 	</select>
 	
-		<select id="findAppManagerAuditLog" resultMap="logMap" parameterType="java.lang.String">
+	<select id ="findteacherInfo" resultMap="managerInfo" >
+		select s.id,s.display_name 
+		 from  sys_user s
+     	 where s.user_type ='4'
+	</select>
+	
+	<select id="findAppManagerAuditLog" resultMap="logMap" parameterType="java.lang.String">
 		 select s.display_name as USERID_1,
         d.display_name as USERID_2,
         g.display_name as USERID_3,
+        h.display_name as USERID_4,
         t.EXAMINE_AMOUNT as EXAMINE_AMOUNT,
-        t.EXAMINE_LV as EXAMINE_LV
-   from t_app_manager_audit_log t left join sys_user s on s.id = t.user_id_1
+        t.EXAMINE_LV as EXAMINE_LV,
+        t.AUDIT_TYPE as AUDIT_TYPE,
+        t.qx as QX,
+        t.hkfs,
+        t.beizhu
+   from t_app_manager_audit_log t 
+   left join sys_user s on s.id = t.user_id_1
    left join sys_user d on d.id = t.user_id_2
    left join sys_user g on g.id = t.user_id_3
+   left join sys_user h on h.id = t.user_id_4
         where 
-        AUDIT_TYPE =#{auditType} and APPLICATION_ID =#{appId}
+        APPLICATION_ID =#{appId}
+        <if test="auditType != null and auditType != '' ">
+			and AUDIT_TYPE =#{auditType}
+		</if>
+		order by audit_type desc
 	</select>
+	
+	<select id="findProductList" resultMap="ProductResultMap">
+	select *
+	from PRODUCT_ATTRIBUTE p
+	where 1=1
+		AND (
+		p.STATUS = 'Published'
+		OR p.STATUS = 'Screen'
+		)
+</select>
 </mapper>

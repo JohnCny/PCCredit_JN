@@ -15,6 +15,8 @@ import com.cardpay.pccredit.notification.constant.NotificationEnum;
 import com.cardpay.pccredit.notification.dao.NotificationMessageDao;
 import com.cardpay.pccredit.notification.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -70,5 +72,5 @@ public class NotificationService {
 		return commonDao.findObjectById(NotificationMessage.class, messageId);
 
 	}
-
+	
 }

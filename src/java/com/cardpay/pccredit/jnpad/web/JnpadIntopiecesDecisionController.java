@@ -25,6 +25,7 @@ import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.CustomerApplicationIntopieceWaitForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.ManagerInfoForm;
+import com.cardpay.pccredit.jnpad.model.ProductAttributes;
 import com.cardpay.pccredit.jnpad.service.JnpadIntopiecesDecisionService;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -102,10 +103,6 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
-		List<Object> manager = new ArrayList<Object>();
-//		int size = result.size();
-//		map.put("managerInfo",result);
-//		map.put("size", size);
 		Iterator<ManagerInfoForm> it = result.iterator(); 
 		int i = 1;
 		int j = 1;
@@ -115,23 +112,38 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	        	s =s+"<option value = '"+mana.getID()+"'>"+mana.getEXTERNAL_ID()+mana.getDISPLAY_NAME()
 	        	+"</option>";
 	        	
-	        	 if(i%10==0){
-		                String m = Integer.toString(j);
-		                manager.add(s);
-		                s="";
-		                }
-		                i++;
 	        }
-	       manager.add(s);
-	       map.put("manager", manager);
-	       map.put("size", manager.size());
-	       System.out.println(manager.size());
+	       map.put("manager", s);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map,jsonConfig);
-//		JSONArray json  = JSONArray.fromObject(result);
 		return json.toString();
 	}
+	
+	//下拉框选择审贷老师信息
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/teacherInfo.json", method = { RequestMethod.GET })
+	public String teacherInfo(HttpServletRequest request){
+		
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findteacherInfo();
+		Iterator<ManagerInfoForm> it = result.iterator(); 
+		int i = 1;
+		int j = 1;
+		String  s="";
+		while(it.hasNext()){  
+			ManagerInfoForm mana = it.next();
+			s =s+"<option value = '"+mana.getID()+"'>"+mana.getDISPLAY_NAME()
+			+"</option>";
+			
+		}
+		map.put("manager", s);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map,jsonConfig);
+		return json.toString();
+	}
+	
 	
 	/**
 	 * 提交信息
@@ -190,7 +202,7 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 //        String ss = s.toString();
 //		int size = result.size();
 		String appId = request.getParameter("appId");
-		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
+		List<ProductAttributes> productList = jnpadIntopiecesDecisionService.findProductList();
 		CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
 //		CustomerApplicationProcessForm  processForm  = intoPiecesService.findCustomerApplicationProcessById(appId);
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
@@ -203,6 +215,7 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		map.put("appManagerAuditLog", appManagerAuditLog);
 		map.put("custManagerId", customerInfor.getUserId());
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
+		map.put("productList",productList);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -222,9 +235,11 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		ProductAttribute producAttribute =  productService.findProductAttributeById(customerApplicationInfo.getProductId());
 		AppManagerAuditLog appManagerAuditLog1 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"1");
 		AppManagerAuditLog appManagerAuditLog2 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"2");
+		List<ProductAttributes> productList = jnpadIntopiecesDecisionService.findProductList();
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		map.put("customerApplicationInfo", customerApplicationInfo);
+		map.put("productList",productList);
 		map.put("producAttribute", producAttribute);
 //		map.put("customerApplicationProcess", processForm);
 		map.put("appManagerAuditLog1", appManagerAuditLog1);
@@ -248,7 +263,9 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		AppManagerAuditLog appManagerAuditLog2 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"2");
 		AppManagerAuditLog appManagerAuditLog3 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"3");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		List<ProductAttributes> productList = jnpadIntopiecesDecisionService.findProductList();
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("productList",productList);
 		map.put("customerApplicationInfo", customerApplicationInfo);
 		map.put("producAttribute", producAttribute);
 //		map.put("customerApplicationProcess", processForm);
@@ -275,7 +292,9 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		AppManagerAuditLog appManagerAuditLog3 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"3");
 		AppManagerAuditLog appManagerAuditLog4 = jnpadIntopiecesDecisionService.findAppManagerAuditLog(appId,"4");
 		CustomerInfor  customerInfor  = intoPiecesService.findCustomerManager(customerApplicationInfo.getCustomerId());
+		List<ProductAttributes> productList = jnpadIntopiecesDecisionService.findProductList();
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		map.put("productList",productList);
 		map.put("customerApplicationInfo", customerApplicationInfo);
 		map.put("producAttribute", producAttribute);
 //		map.put("customerApplicationProcess", processForm);
@@ -306,4 +325,18 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 //
 //		return returnMap;
 //	}
+
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/productInfo.json", method = { RequestMethod.GET })
+	public String productInfo(HttpServletRequest request) {
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<ProductAttributes> result = jnpadIntopiecesDecisionService.findProductList();
+		map.put("result", result);
+		map.put("size", result.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+		
+	}
 }

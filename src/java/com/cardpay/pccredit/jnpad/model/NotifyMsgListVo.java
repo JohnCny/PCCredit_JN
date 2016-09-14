@@ -11,6 +11,40 @@ public class NotifyMsgListVo {
 	private int peixun;///*培训通知*/ 
 	private int kaocha;/*考察成绩通知*/
 	private int qita;/*其他通知*/
+	
+	private int refuseCount;/*拒绝进件数量*/
+	private int returnCount;/*补充调查*/
+	private int risk;/*风险客户数量*/
+	private int sum;/*总和*/
+	
+	
+	
+	
+	
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
+	public int getRisk() {
+		return risk;
+	}
+	public void setRisk(int risk) {
+		this.risk = risk;
+	}
+	public int getRefuseCount() {
+		return refuseCount;
+	}
+	public void setRefuseCount(int refuseCount) {
+		this.refuseCount = refuseCount;
+	}
+	public int getReturnCount() {
+		return returnCount;
+	}
+	public void setReturnCount(int returnCount) {
+		this.returnCount = returnCount;
+	}
 	public int getShendaihui() {
 		return shendaihui;
 	}

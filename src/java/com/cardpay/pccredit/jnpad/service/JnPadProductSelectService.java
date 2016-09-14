@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.jnpad.dao.JnPadProductSelectDao;
 import com.cardpay.pccredit.jnpad.filter.JnpadProductFilter;
-import com.cardpay.pccredit.jnpad.model.ProductAttribute;
+import com.cardpay.pccredit.jnpad.model.ProductAttributes;
 /**
  * pad查询service
  * @author sealy
@@ -23,7 +23,7 @@ public class JnPadProductSelectService {
 	 * @param id
 	 * @return
 	 */
-	public List<ProductAttribute> selectProductById(String id) {
+	public List<ProductAttributes> selectProductById(String id) {
 		
 		return jnPadProductSelectDao.selectProductById(id);
 	}
@@ -37,7 +37,7 @@ public class JnPadProductSelectService {
  * @param filter
  * @return
  */
-	public List<ProductAttribute> selectProductByFilter(JnpadProductFilter filter) {
+	public List<ProductAttributes> selectProductByFilter(JnpadProductFilter filter) {
 		
 		filter.setStatus("Published");
 		return jnPadProductSelectDao.selectProductByFilter(filter);

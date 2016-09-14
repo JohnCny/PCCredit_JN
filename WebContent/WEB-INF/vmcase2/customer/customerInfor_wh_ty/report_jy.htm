@@ -5,6 +5,7 @@
 <script src="${contextPath}/common/js/common/Stack.js"></script>
 <script src="${contextPath}/common/js/common/Tokanizer.js"></script>
 <script src="${contextPath}/common/js/common/Evaluator.js"></script>
+<script src="${contextPath}/common/js/common/EditCell.js"></script>
 <script type="text/javascript">
 	var rules = [
 	            ]
@@ -88,9 +89,11 @@
 	
 	$(document).ready(function() {		
 		$("#id_save_button").click(function() {
+			var applyQuota=$("td[name='E3']").text();
+			alert($("#formsId").html());
 			var b = new Base64(); 
 			var content = {'content':b.encode($("#formsId").html())};
-			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_jy.json?appId=${appId}";
+			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_jy.json?appId=${appId}&applyQuota="+applyQuota;
 			$.ajax({
 				 url : url,
 				 type : "post",

@@ -26,7 +26,9 @@ public interface JnpadLocationInfoDao {
 	//查询指定客户经理位置
 	public List<LocationInfoForm> selectManagerLocationById(@Param(value = "managerId")String userId);
 
-	
+	//查询指定客户经理最新一条位置信息
+		public LocationInfoForm selectlastManagerLocationById(@Param(value = "managerId") String managerId);
+
 	
 	
 }

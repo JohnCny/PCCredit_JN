@@ -59,6 +59,23 @@ public class JnpadLocationInfoController {
 		try {
 			int num = jnpadLocationInfoService.managerCount(managerId);
 
+			if(num!=0){
+				LocationInfoForm lastLocationInfoForm = jnpadLocationInfoService.selectlastManagerLocationById(managerId);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String date1 =sdf.format(new Date());
+				String date2 = sdf.format(lastLocationInfoForm.getUpdateTime());
+				Date currentDate = sdf.parse(date1);
+				Date lastDate = sdf.parse(date2);
+				long minutes = (currentDate.getTime()-lastDate.getTime())/(60*1000);
+				if(minutes<60){
+					
+					map.put("message","更新位置信息间隔不能小于一小时");
+					JsonConfig jsonConfig = new JsonConfig();
+					jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+					JSONObject json = JSONObject.fromObject(map, jsonConfig);
+					return json.toString();
+				}
+				}
 			if(num!=5){
 				//如果位置信息表中没客户经理信息  插入
 

@@ -45,5 +45,10 @@ public class JnpadLocationInfoService {
 		
 		return jnpadLocationInfoDao.selectManagerLocationById(userId);
 	}
+	
+	public LocationInfoForm selectlastManagerLocationById(String managerId) {
+		// TODO Auto-generated method stub
+		return jnpadLocationInfoDao.selectlastManagerLocationById(managerId);
+	}
 
 }
