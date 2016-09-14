@@ -73,6 +73,10 @@ public class JnpadIntopiecesDecisionService {
 		String cyUser1 = request.getParameter("cyUser1");
 		String cyUser2 = request.getParameter("cyUser2");
 		String fdUser = request.getParameter("fdUser");
+		String hkfs = request.getParameter("hkfs");
+		String beiZhu = request.getParameter("beiZhu");
+		String sdUser = request.getParameter("sdUser");
+		String decisionTerm = request.getParameter("decisionTerm");
 		String auditType = request.getParameter("auditType");
 		String lv = request.getParameter("decisionRate");
 		String productId = request.getParameter("productId");
@@ -187,6 +191,10 @@ public class JnpadIntopiecesDecisionService {
 				log.setUserId_3(fdUser);
 				log.setExamineAmount(examineAmount);
 				log.setExamineLv(lv);
+				log.setUserId_4(sdUser);
+				log.setQx(decisionTerm);
+				log.setHkfs(hkfs);
+				log.setBeiZhu(beiZhu);
 				commonDao.insertObject(log);
 			}else{
 				//update
@@ -194,7 +202,7 @@ public class JnpadIntopiecesDecisionService {
 						auditType,
 						cyUser1,
 						cyUser2,
-						fdUser,examineAmount,lv,"","","","");
+						fdUser,examineAmount,lv,decisionTerm,sdUser,hkfs,beiZhu);
 			}
 		}
 
@@ -291,5 +299,10 @@ public class JnpadIntopiecesDecisionService {
 //			commonDao.insertObject(log);
 //		}
 //	}
+
+	public List<ManagerInfoForm> findteacherInfo() {
+		// TODO Auto-generated method stub
+		return jnpadIntopiecesDecisionDao.findteacherInfo();
+	}
 }
 

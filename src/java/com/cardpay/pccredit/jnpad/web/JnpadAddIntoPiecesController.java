@@ -22,6 +22,7 @@ import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.service.JnpadAddIntoPiecesService;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -38,6 +39,9 @@ public class JnpadAddIntoPiecesController {
 	
 	@Autowired
 	private AddIntoPiecesService addIntoPiecesService;
+	
+	@Autowired
+	private JnpadAddIntoPiecesService jnpadaddIntoPiecesService;
 	
 	//选择客户
 	@ResponseBody
@@ -59,7 +63,8 @@ public class JnpadAddIntoPiecesController {
 		@ResponseBody
 		@RequestMapping(value = "/ipad/addIntopieces/imageImport.json")
 		public Map<String, Object> imageImport(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
-			response.setContentType("text/html;charset=gbk");
+			response.setContentType("text/html;charset=utf-8");
+			response.setCharacterEncoding("utf-8");
 			Map<String, Object> map = new HashMap<String, Object>();
 			try {
 				if(file==null||file.isEmpty()){
@@ -67,9 +72,11 @@ public class JnpadAddIntoPiecesController {
 					map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
 					return map;
 				}
+				String fileName =request.getParameter("fileName");
 				String productId = request.getParameter("productId");
 				String customerId = request.getParameter("customerId");
-				addIntoPiecesService.importImage(file,productId,customerId,null);
+				String applicationId = request.getParameter("applicationId");
+				jnpadaddIntoPiecesService.importImage(file,productId,customerId,applicationId,fileName);
 				map.put(JRadConstants.SUCCESS, true);
 				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
 				JSONObject obj = JSONObject.fromObject(map);
@@ -90,17 +97,18 @@ public class JnpadAddIntoPiecesController {
 		@RequestMapping(value = "/ipad/addIntopieces/reportImport.json")
 		public Map<String, Object> reportImport_json(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
 			response.setContentType("text/html;charset=utf-8");
-			response.setCharacterEncoding("utf-8");
 			Map<String, Object> map = new HashMap<String, Object>();
 			try {
 				if(file==null||file.isEmpty()){
 					map.put(JRadConstants.SUCCESS, false);
 					map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
-					return map;
+					JSONObject obj = JSONObject.fromObject(map);
+					response.getWriter().print(obj.toString());
 				}
+				String fileName =request.getParameter("fileName");
 				String productId = request.getParameter("productId");
 				String customerId = request.getParameter("customerId");
-				addIntoPiecesService.importExcel(file,productId,customerId);
+				jnpadaddIntoPiecesService.importExcel(file,productId,customerId,fileName);
 				map.put(JRadConstants.SUCCESS, true);
 				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
 				JSONObject obj = JSONObject.fromObject(map);

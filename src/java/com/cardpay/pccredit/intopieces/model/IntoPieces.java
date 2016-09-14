@@ -44,6 +44,7 @@ public class IntoPieces  extends BusinessModel {
     
     private String repayStatus;
     
+    private String finalApproval;
     
     public String getRepayStatus() {
 		return repayStatus;
@@ -86,7 +87,6 @@ public class IntoPieces  extends BusinessModel {
 	}
 
 
-	private String finalApproval;
     
     
 	public String getFinalApproval() {

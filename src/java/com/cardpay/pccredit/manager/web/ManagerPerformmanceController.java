@@ -63,10 +63,8 @@ public class ManagerPerformmanceController extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(HttpServletRequest request) { 
 		List<BankListForm> bankListForm = managerPerformmanceService.findALlbank();
-		Map<Object, Object> map = new LinkedHashMap<Object, Object>();
 		List<ManagerPerformmanceForm> gxperformList = new ArrayList<ManagerPerformmanceForm>();
 		for(int j=0;j<bankListForm.size();j++){
-//		String id ="ff8080815456203101545635015f0011";
 			String id= bankListForm.get(j).getId();
 		List<DeptMemberForm> gxMumberList = managerPerformmanceService.findMumberByDeptId(id);
 		for(int i=0;i<gxMumberList.size();i++){
@@ -168,12 +166,43 @@ public class ManagerPerformmanceController extends BaseController {
 		return returnMap;
 	}
 	
-	
+	//修改进度页面
 	@ResponseBody
 	@RequestMapping(value = "performUpdate.page")
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView performUpdate(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmanceUpdate", request);
 		return mv;
+	}
+	
+	//执行修改进度
+	@ResponseBody
+	@RequestMapping(value = "performUpdate.json")
+	public JRadReturnMap updateinfo(@ModelAttribute ManagerPerformmanceSum managerPerformmanceSum,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if(managerPerformmanceSum.getManager_id_s().equals("0")){
+			returnMap.put("mess", "请选择客户经理");
+			return returnMap;
+		}
+		try {
+			ManagerPerformmanceSum managerPerformmanceSum2 = managerPerformmanceService.finManagerPerformmanceSumById(managerPerformmanceSum.getManager_id_s());
+		
+			if(managerPerformmanceSum2==null){
+				managerPerformmanceService.insertManagerPerformmanceSum(managerPerformmanceSum);
+				
+			}else{
+				
+//				ManagerPerformmanceSum.setId(managerPerformmanceSum.getId());
+				managerPerformmanceService.updateManagerPerformmanceSumInfor(managerPerformmanceSum);
+				
+				
+			}
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		return returnMap;
 	}
 }

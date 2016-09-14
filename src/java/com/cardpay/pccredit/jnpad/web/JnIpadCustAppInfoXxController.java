@@ -91,9 +91,11 @@ public class JnIpadCustAppInfoXxController {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
 		//refuse
-		String status2=request.getParameter("status2");
+//		String status2=request.getParameter("status2");
+		String status2="refuse";
 		//approved
-		String status3=request.getParameter("status3");
+//		String status3=request.getParameter("status3");
+		String status3="approved";
 		
 		int refuse = appInfoXxService.findCustAppInfoXxCount(userId,null,status2, null,null);
 		int approved = appInfoXxService.findCustAppInfoXxCount(userId,null,null, status3,null);
@@ -325,7 +327,7 @@ public class JnIpadCustAppInfoXxController {
 	    filters.setRole(RiskControlRole.manager.toString());
 		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
 		
-		
+		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(count1);
 		vo.setYuanshiziliao(count2);
@@ -335,6 +337,7 @@ public class JnIpadCustAppInfoXxController {
 		vo.setRefuseCount(refuseCount);
 		vo.setReturnCount(returnCount);
 		vo.setRisk(risk);
+		vo.setSum(sum);
 		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

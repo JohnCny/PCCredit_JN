@@ -8,6 +8,7 @@ import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
  * 2014-10-24下午5:54:43
  */
 public class RiskCustomerFilter extends BaseQueryFilter{
+	
 	private String customerId;
 	
 	private String reportedIdManager;

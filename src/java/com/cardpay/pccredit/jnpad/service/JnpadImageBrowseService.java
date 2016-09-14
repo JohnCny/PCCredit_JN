@@ -35,9 +35,9 @@ public class JnpadImageBrowseService {
 	
 	
 	
-	public List<LocalImageForm> findLocalImage(String customerId) {
+	public List<LocalImageForm> findLocalImage(String customerId,String productId ) {
 		// TODO Auto-generated method stub
-		return jnpadImageBrowseDao.findLocalImage(customerId);
+		return jnpadImageBrowseDao.findLocalImage(customerId,productId);
 	}
 	
 
@@ -47,10 +47,10 @@ public class JnpadImageBrowseService {
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
 			//本地
-//			this.downLoadFile(response,v);
+			this.downLoadFile(response,v);
 			//服务器
 //			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-			JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
+//			JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
 		}
 	}
 	
@@ -96,6 +96,14 @@ public class JnpadImageBrowseService {
 			
 		}
 		output.close();
+	}
+
+
+
+
+	public void deleteImage(String imageId) {
+		
+		jnpadImageBrowseDao.deleteImage(imageId);
 	}
 	
 	

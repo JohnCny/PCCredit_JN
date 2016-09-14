@@ -120,9 +120,9 @@ public class AddIntoPiecesService {
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
 		//本地测试
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -139,9 +139,9 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		//String sheet[] = readExcel.readExcelToHtml1(url, true);
+		String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
-		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+//		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -192,9 +192,9 @@ public class AddIntoPiecesService {
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		//本地
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -216,9 +216,9 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		//String sheet[] = readExcel.readExcelToHtml1(url, true);
+		String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
-		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+//		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -276,9 +276,9 @@ public class AddIntoPiecesService {
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
 		//本地测试
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
@@ -423,9 +423,9 @@ public class AddIntoPiecesService {
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-			//this.downLoadFile(response,v);
+			this.downLoadFile(response,v);
 			//服务器
-			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -433,9 +433,9 @@ public class AddIntoPiecesService {
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-			//this.downLoadFileDh(response,v);
+			this.downLoadFileDh(response,v);
 			//服务器
-			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -528,9 +528,9 @@ public class AddIntoPiecesService {
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地测试
-			//UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			//服务器
-			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -538,9 +538,9 @@ public class AddIntoPiecesService {
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地测试
-			//UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			//服务器
-			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	

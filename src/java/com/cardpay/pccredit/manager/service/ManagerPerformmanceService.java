@@ -54,7 +54,7 @@ public class ManagerPerformmanceService {
 		
 		commonDao.insertObject(managerPerformmance);
 	}
-
+//将当天数量累加到总进度
 	public void updateManagerPerformmanceSum(ManagerPerformmanceSum managerPerformmance) {
 		
 		
@@ -86,5 +86,10 @@ public class ManagerPerformmanceService {
 	public ManagerPerformmanceForm findALLDeptSumPerformmanceById() {
 		// TODO Auto-generated method stub
 		return managerPerformmanceDao.findALLDeptSumPerformmanceById();
+	}
+
+	public void updateManagerPerformmanceSumInfor(ManagerPerformmanceSum managerPerformmanceSum) {
+		
+		managerPerformmanceDao.updateManagerPerformmanceSumInfor(managerPerformmanceSum);
 	}
 }

@@ -17,6 +17,9 @@ import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerInfoForm;
@@ -24,12 +27,18 @@ import com.cardpay.pccredit.jnpad.service.JnpadCustomerInfoInsertServ‎ice;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerSelectService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.auth.IUser;
+import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
+import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
+import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -46,7 +55,8 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	private JnpadCustomerInfoInsertServ‎ice JnpadCustomerInfoInsertServ‎ice;
 	@Autowired
 	private JnpadCustomerSelectService jnpadCustomerSelectService; 
-	
+	@Autowired
+	private IntoPiecesService intoPiecesService;
 	
 	@ResponseBody
 	@RequestMapping(value="/ipad/product/customerInsert.json" ,method = { RequestMethod.GET })
@@ -135,6 +145,33 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 
 	}
 	
+	/**
+	 * 浏览页面
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/browse.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String browse(@ModelAttribute IntoPiecesFilter filter,
+			HttpServletRequest request) {
 	
+		filter.setRequest(request);
+		String userId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		Integer s =new Integer(userType);
+		QueryResult<IntoPieces> result=null;
+		//客户经理
+		if(s==1){
+			filter.setUserId(userId);
+		}
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
 
 }

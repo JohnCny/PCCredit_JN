@@ -158,7 +158,7 @@ public class JNPAD_SFTPUtil {
     /** 
      * upload all the files to the server 
      */  
-    public  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId) {
+    public  static Map<String, String> uploadJn(MultipartFile oldFile,String customerId,String fileName_1) {
     	String newFileName = null;
 		String fileName = null;
     	Map<String, String> map = new HashMap<String, String>();
@@ -175,12 +175,13 @@ public class JNPAD_SFTPUtil {
 					sftp.cd(path);
 				}
 	    			
-	    	    fileName = oldFile.getOriginalFilename();
-				File tempFile = new File(path + File.separator + oldFile.getOriginalFilename());
+//	    	    fileName = oldFile.getOriginalFilename();
+	    	    fileName = fileName_1;
+				File tempFile = new File(path + File.separator + fileName_1);
 				if (tempFile.exists()) {
-					newFileName = IDGenerator.generateID() + "."+ oldFile.getOriginalFilename().split("\\.")[1];
+					newFileName = IDGenerator.generateID() + "."+ fileName_1.split("\\.")[1];
 				} else {
-					newFileName = oldFile.getOriginalFilename();
+					newFileName = fileName_1;
 				}
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)oldFile;
 	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 

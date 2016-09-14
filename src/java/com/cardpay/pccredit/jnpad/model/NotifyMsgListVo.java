@@ -15,7 +15,18 @@ public class NotifyMsgListVo {
 	private int refuseCount;/*拒绝进件数量*/
 	private int returnCount;/*补充调查*/
 	private int risk;/*风险客户数量*/
+	private int sum;/*总和*/
 	
+	
+	
+	
+	
+	public int getSum() {
+		return sum;
+	}
+	public void setSum(int sum) {
+		this.sum = sum;
+	}
 	public int getRisk() {
 		return risk;
 	}

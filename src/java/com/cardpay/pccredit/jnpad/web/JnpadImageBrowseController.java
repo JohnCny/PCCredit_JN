@@ -36,7 +36,7 @@ public class JnpadImageBrowseController {
 	@RequestMapping(value = "/ipad/JnpadImageBrowse/uploadYx.json", method = { RequestMethod.GET })
 	public String display_server(HttpServletRequest request) {
 		
-		List<LocalImageForm> imagerList = jnpadImageBrowseService.findLocalImage(request.getParameter("customerId"));
+		List<LocalImageForm> imagerList = jnpadImageBrowseService.findLocalImage(request.getParameter("customerId"),request.getParameter("productId"));
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put("imagerList",imagerList);
 		map.put("size",imagerList.size());
@@ -62,5 +62,22 @@ public class JnpadImageBrowseController {
 	}
 	
 	
-	
+	//删除已上传图片
+	@ResponseBody
+	@RequestMapping(value = "/ipad/JnpadImageBrowse/deleteImage.json", method = { RequestMethod.GET })
+	public String deleteImage(HttpServletRequest request) {
+		String imageId =request.getParameter("imageId");
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		try {
+		jnpadImageBrowseService.deleteImage(imageId);
+		map.put("mess", "删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			map.put("mess", "删除失败");
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 }

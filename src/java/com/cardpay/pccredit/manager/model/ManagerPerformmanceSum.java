@@ -8,7 +8,11 @@ import com.wicresoft.jrad.base.database.model.ModelParam;
 @ModelParam(table = "manager_performmance_sum")
 public class ManagerPerformmanceSum extends BusinessModel {
 
-	  private String manager_id_s;
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String manager_id_s;
 	  private int visitcount_s;
 	  private int applycount_s;
 	  private int applyrefuse_s;
