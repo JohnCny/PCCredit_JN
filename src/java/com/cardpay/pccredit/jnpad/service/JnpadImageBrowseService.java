@@ -13,10 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.jnpad.dao.JnpadImageBrowseDao;
+import com.cardpay.pccredit.jnpad.model.JNPAD_SFTPUtil;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -33,9 +35,9 @@ public class JnpadImageBrowseService {
 	
 	
 	
-	public List<LocalImageForm> findLocalImage(String customerId) {
+	public List<LocalImageForm> findLocalImage(String customerId,String productId ) {
 		// TODO Auto-generated method stub
-		return jnpadImageBrowseDao.findLocalImage(customerId);
+		return jnpadImageBrowseDao.findLocalImage(customerId,productId);
 	}
 	
 
@@ -47,7 +49,8 @@ public class JnpadImageBrowseService {
 			//本地
 			this.downLoadFile(response,v);
 			//服务器
-			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
 		}
 	}
 	
@@ -93,6 +96,14 @@ public class JnpadImageBrowseService {
 			
 		}
 		output.close();
+	}
+
+
+
+
+	public void deleteImage(String imageId) {
+		
+		jnpadImageBrowseDao.deleteImage(imageId);
 	}
 	
 	

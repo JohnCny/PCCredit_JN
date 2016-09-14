@@ -103,10 +103,6 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findManagerInfo();
-		List<Object> manager = new ArrayList<Object>();
-//		int size = result.size();
-//		map.put("managerInfo",result);
-//		map.put("size", size);
 		Iterator<ManagerInfoForm> it = result.iterator(); 
 		int i = 1;
 		int j = 1;
@@ -116,23 +112,38 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 	        	s =s+"<option value = '"+mana.getID()+"'>"+mana.getEXTERNAL_ID()+mana.getDISPLAY_NAME()
 	        	+"</option>";
 	        	
-	        	 if(i%10==0){
-		                String m = Integer.toString(j);
-		                manager.add(s);
-		                s="";
-		                }
-		                i++;
 	        }
-	       manager.add(s);
-	       map.put("manager", manager);
-	       map.put("size", manager.size());
-	       System.out.println(manager.size());
+	       map.put("manager", s);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map,jsonConfig);
-//		JSONArray json  = JSONArray.fromObject(result);
 		return json.toString();
 	}
+	
+	//下拉框选择审贷老师信息
+	@ResponseBody
+	@RequestMapping(value = "/ipad/intopieces/teacherInfo.json", method = { RequestMethod.GET })
+	public String teacherInfo(HttpServletRequest request){
+		
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
+		List<ManagerInfoForm> result = jnpadIntopiecesDecisionService.findteacherInfo();
+		Iterator<ManagerInfoForm> it = result.iterator(); 
+		int i = 1;
+		int j = 1;
+		String  s="";
+		while(it.hasNext()){  
+			ManagerInfoForm mana = it.next();
+			s =s+"<option value = '"+mana.getID()+"'>"+mana.getDISPLAY_NAME()
+			+"</option>";
+			
+		}
+		map.put("manager", s);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map,jsonConfig);
+		return json.toString();
+	}
+	
 	
 	/**
 	 * 提交信息

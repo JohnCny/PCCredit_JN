@@ -26,5 +26,8 @@ public interface JnpadIntopiecesDecisionDao {
 
 	//查询产品列表
 	public List<ProductAttributes> findProductList();
+	
+	//查询审批老师列表
+	public List<ManagerInfoForm> findteacherInfo();
 
 }
