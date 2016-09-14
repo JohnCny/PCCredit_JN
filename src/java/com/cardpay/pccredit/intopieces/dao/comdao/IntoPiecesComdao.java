@@ -608,6 +608,11 @@ public class IntoPiecesComdao {
 		    sql.append(custManagerIds);
 		}
 		
+		if(StringUtils.trimToNull(status)!=null){
+			params.put("status", status);
+			sql.append("and t.status= #{status}");
+		}
+		
 		if (StringUtils.trimToNull(cardId) != null
 				|| StringUtils.trimToNull(chineseName) != null) {
 			if (StringUtils.trimToNull(cardId) != null
