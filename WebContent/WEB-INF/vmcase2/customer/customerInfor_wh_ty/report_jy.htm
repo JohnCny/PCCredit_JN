@@ -90,7 +90,7 @@
 	$(document).ready(function() {		
 		$("#id_save_button").click(function() {
 			var applyQuota=$("td[name='E3']").text();
-			alert($("#formsId").html());
+			applyQuota=money(applyQuota);
 			var b = new Base64(); 
 			var content = {'content':b.encode($("#formsId").html())};
 			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_jy.json?appId=${appId}&applyQuota="+applyQuota;
@@ -161,6 +161,13 @@
 				exp.Reset();
 			}
 		});
+		function money(str){
+			var b=str.substring(str.length-1,str.length);
+			if(b=="元"){
+			str=str.substring(0,str.length-1);
+			}
+			return str;
+		}
 	});
   </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
