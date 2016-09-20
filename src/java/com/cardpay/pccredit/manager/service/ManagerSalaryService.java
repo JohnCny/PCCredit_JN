@@ -1,7 +1,8 @@
 package com.cardpay.pccredit.manager.service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,36 +14,44 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.Arith;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.manager.constant.ReturnReceiptConstant;
 import com.cardpay.pccredit.manager.dao.ManagerSalaryDao;
 import com.cardpay.pccredit.manager.filter.ManagerCashConfigurationFilter;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
-import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.manager.model.ManagerCashConfiguration;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.cardpay.pccredit.manager.model.ManagerSalaryParameter;
 import com.cardpay.pccredit.manager.model.SalaryParameter;
-import com.cardpay.pccredit.manager.model.TyManagerAssessment;
+import com.cardpay.pccredit.manager.model.TJxParameters;
+import com.cardpay.pccredit.manager.model.TJxSpecificParameters;
+import com.cardpay.pccredit.manager.model.TMibusidata;
+import com.cardpay.pccredit.manager.model.TPerformanceParameters;
+import com.cardpay.pccredit.manager.model.TRiskMargin;
+import com.cardpay.pccredit.manager.model.TRiskMarginSpecific;
 import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyRiskMargin;
 import com.cardpay.pccredit.manager.model.TyRiskMarginSpecific;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
 /**
- * @author chenzhifang
- *
- * 2014-11-14下午5:56:18
+ * @author songchen
+ * 2016-09-01下午5:56:18
  */
 @Service
 public class ManagerSalaryService {
@@ -508,6 +517,7 @@ public class ManagerSalaryService {
 	
 	
 	//----------------------------------------------济南绩效start----------------------------------------------------//
+	
 	public QueryResult<ManagerSalaryForm> findManagerSalaryByFilterJn(ManagerSalaryFilter filter) {
 		List<ManagerSalaryForm> list = managerSalaryDao.findManagerSalarysByFilterJn(filter);
 		int size = managerSalaryDao.findManagerSalarysCountByFilterJn(filter);
@@ -515,10 +525,845 @@ public class ManagerSalaryService {
 		return qs;
 	}
 	
-	
-	public void docalculateMonthlySalaryTy(int year, int month) {
-		
+	public ManagerSalary findManagerSalaryById(String id) {
+		ManagerSalary salary = commonDao.findObjectById(ManagerSalary.class, id);
+		SystemUser user = commonDao.findObjectById(SystemUser.class,salary.getCustomerId());
+		salary.setManagerName(user.getDisplayName());
+		return salary;
 	}
+	
+
+	public int updateManagerSalary(ManagerSalary salary) {
+		return commonDao.updateObject(salary);
+	}
+	
+	/**
+	 * 计算当月绩效
+	 * 客户经理应发薪酬 = 基本薪酬 + 贷款业务绩效 + 其他业务绩效 - 风险保证金
+	 * @param year
+	 * @param month
+	 */
+	public void docalculateMonthlySalaryTy(String year,String month) {
+		
+		//判断该月客户经理月度薪资是否已经存在
+		int count = managerSalaryDao.findManagerSalaryCount(year,month);
+		if(count>0){
+			throw new  RuntimeException("该月客户经理月度薪资已存在！");
+		}
+		
+		//查询客户经理List取得基本薪酬
+		List<AccountManagerParameter> list = commonDao.queryBySql(AccountManagerParameter.class,"select * from account_manager_parameter", null);
+		
+		/*//生成 T_JX_PARAMETERS表数据 
+		for(AccountManagerParameter accountManagerParameter : list){
+			generateJxParameters(accountManagerParameter.getUserId(),year,month);
+		}	
+		
+		//生成 T_JX_SPECIFIC_PARAMETERS表数据 
+		for(AccountManagerParameter accountManagerParameter : list){
+			generateJxSpecificParameters(accountManagerParameter.getUserId(),year,month);
+		}*/
+		
+		//具体计算客户经理的当月工资
+		for(AccountManagerParameter accountManagerParameter : list){
+			doCalculateSalaryExactly(year,month,accountManagerParameter.getUserId(),accountManagerParameter.getBasePay(),accountManagerParameter.getManagerType());
+		}
+	}
+	
+	/**
+	 * 具体计算
+	 * @param year 年份
+	 * @param month  月份
+	 * @param ManagerId 客户经理id
+	 * @param basePay 基本工资
+	 * @param managerType 客户经理类型
+	 */
+	private void doCalculateSalaryExactly(String year,String month,String ManagerId,String basePay,String managerType){
+		
+		//1.查询客户所属机构
+		String organName = managerSalaryDao.getOrganName(ManagerId);
+				
+		//2.计算贷款业务绩效
+		Map<String, Object> map = doCalLoanPerformance(year,month,ManagerId);
+		BigDecimal loanBusinessPerformance = new BigDecimal(map.get("MonthPerformance").toString());
+		
+		//3.计算风险保证金
+		double addRisk = getAddMonthVentureDeposit(loanBusinessPerformance.doubleValue());//本月新增风险保证金
+		
+		//本月问责风险保证金 (走页面调整流程)
+		double deduceRisk = 0;
+		
+		//本月返还风险保证金
+		double outRisk = outMonthVentureDeposit(year,month,ManagerId);
+		
+		//计算得当月风险保证金
+		double monthRisk = addRisk-deduceRisk;
+		
+		//获取总风险保证金
+		TRiskMargin tRiskMargin = getTRiskMarginByCustomerId(ManagerId);
+		
+		//保存风险保证金总表
+		double lastRisk = 0;
+		TRiskMarginSpecific specific = new TRiskMarginSpecific();
+		
+		if(tRiskMargin!=null){
+			double totalRisk = monthRisk + Double.parseDouble(tRiskMargin.getTotalRiskMargin());
+			tRiskMargin.setTotalRiskMargin(String.valueOf(totalRisk));
+			tRiskMargin.setUpdateTime(new Date());
+			commonDao.updateObject(tRiskMargin);
+			specific.setRiskId(tRiskMargin.getId());
+			lastRisk = totalRisk;
+		}else{
+			TRiskMargin riskMargin = new TRiskMargin();
+			riskMargin.setId(IDGenerator.generateID());
+			riskMargin.setCustomerId(ManagerId);
+			riskMargin.setTotalRiskMargin(String.valueOf(monthRisk));
+			riskMargin.setUpdateTime(new Date());
+			riskMargin.setAccountOpenYear(year);
+			riskMargin.setAccountOpenMonth(Integer.parseInt(month)+"");
+			commonDao.insertObject(riskMargin);
+			specific.setRiskId(riskMargin.getId());
+			lastRisk = monthRisk;
+		}
+		
+		//保存log表
+		specific.setInRiskMargin(String.valueOf(addRisk));
+		specific.setOutRiskMargin(String.valueOf(outRisk));
+		specific.setDeductRiskMargin(String.valueOf(deduceRisk));
+		specific.setYear(year);
+		specific.setMonth(month);
+		commonDao.insertObject(specific);
+		
+		//保存当月工资单
+		ManagerSalary salary = new ManagerSalary();
+		salary.setYear(year);
+		salary.setMonth(month);
+		salary.setInstCode(organName);//所属机构
+		salary.setCustomerId(ManagerId);//客户经理
+		salary.setBasePay(basePay);//固定工资
+		//基础任务量奖金-外聘客户经理所有
+		if("2".equals(managerType)){
+			TJxParameters jxParameters = findTJxParameters(year,month,ManagerId);
+			salary.setBasicTaskBonus(Integer.parseInt(jxParameters.getMonthLoanNum())>=2?"500":"0");
+		}
+		salary.setRewardIncentiveInformation(String.valueOf(loanBusinessPerformance));//绩效工资
+		salary.setRiskReserveBalances(String.valueOf(lastRisk));//风险准备金余额总额
+		//salary.setDeductAmount(String.valueOf(deduceRisk));//当月扣除金额
+		salary.setReturnPrepareAmount(String.valueOf(outRisk));//当月返还金额
+		salary.setInsertPrepareAmount(String.valueOf(addRisk));//当月存入的风险准备金
+		salary.setVolumePerformance(map.get("portfolioPerformance").toString());//业务量绩效
+		salary.setProfitDraw(map.get("lr").toString());//利润提成
+		salary.setOverdueDeduct(map.get("overdueDeduct").toString());//逾期扣款
+		commonDao.insertObject(salary);
+	}
+	
+	/**
+	 * 计算贷款业务绩效
+	 */
+	public Map<String, Object> doCalLoanPerformance(String year,String month,String ManagerId){
+		
+		//查询客户经理绩效参数
+		TPerformanceParameters parameters = commonDao.queryBySql(TPerformanceParameters.class,"select * from T_PERFORMANCE_PARAMETERS ",null).get(0);
+		
+		//查询客户经理绩效每月绩效参数表 
+		TJxParameters jxParameters = findTJxParameters(year,month,ManagerId);
+		
+		//查询客户经理详细绩效参数 主要是客户日均贷款余额 产品利率等
+		List<TJxSpecificParameters> list = findTJxSpecificParametersList(year,month,ManagerId);
+		
+		//1.业务量绩效=当月发放贷款户数*计提单价+管户维护奖金
+		//(monthLoanNum-当月发放贷款户数 ;A-主办客户经理计提单价(元/户);B-协办客户经理计提单价(元/户);D-管户维护奖金(元/户);monthEffectNum-当月有效管户数)
+		BigDecimal zb  = new BigDecimal(jxParameters.getMonthLoanNum()).multiply(new BigDecimal(parameters.getA()));//主办  
+		BigDecimal xb  = new BigDecimal(jxParameters.getMonthTimes()).multiply(new BigDecimal(parameters.getB()));//协办  
+		BigDecimal ghwhjj  = new BigDecimal(jxParameters.getMonthEffectNum()).multiply(new BigDecimal(parameters.getD()));//管户维护奖金
+		BigDecimal portfolioPerformance = zb.add(xb).add(ghwhjj);//业务量绩效
+		
+		
+		//2.利润提成=当月日均贷款余额*（产品利率 - FTP价格）/ 12 * A * R 
+		//(E-FTP价格;F-利润提成系数;R-风险保障系数)
+		BigDecimal lr = calLr(list,parameters);
+		
+		//3.逾期、不良贷款扣款
+		BigDecimal overdueBs = new BigDecimal(parameters.getJ()).multiply(new BigDecimal(jxParameters.getMonthOverdueLoannum()));
+		BigDecimal overdueTs = new BigDecimal(parameters.getJ()).multiply(new BigDecimal(jxParameters.getMonthOverdueDays()));
+		BigDecimal overdueDeduct = overdueBs.add(overdueTs);
+		
+		//4.当月贷款业务绩效(贷款业务绩效=业务量绩效+利润提成–逾期扣款)
+		BigDecimal MonthPerformance = portfolioPerformance.add(lr).subtract(overdueDeduct);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("portfolioPerformance", portfolioPerformance);
+		map.put("lr", lr);
+		map.put("overdueDeduct", overdueDeduct);
+		map.put("MonthPerformance", MonthPerformance);
+		return map;
+	}
+	
+	/**
+	 * 查询客户经理绩效每月绩效参数表 
+	 * @param year
+	 * @param month
+	 * @param ManagerId
+	 * @return
+	 */
+	public TJxParameters findTJxParameters(String year,String month,String ManagerId){
+		String sql = "select * from T_JX_PARAMETERS where "+
+					 "year = '"+year+"' "+ 
+					 "and month = '"+month+"' "+ 
+					 "and CUSTOMER_MANAGER_ID = '"+ManagerId+"'";
+		return commonDao.queryBySql(TJxParameters.class, sql, null).get(0);
+	}
+	
+	/**
+	 * 查询客户经理详细绩效参数 主要是客户日均贷款余额 产品利率等
+	 * @param year
+	 * @param month
+	 * @param ManagerId
+	 * @return
+	 */
+	public List<TJxSpecificParameters> findTJxSpecificParametersList(String year,String month,String ManagerId){
+		String sqls = "select * from T_JX_SPECIFIC_PARAMETERS where "+ 
+				  "year = '"+year+"' "+ 
+			      "and month = '"+month+"' "+ 
+	              "and CUSTOMER_MANAGER_ID = '"+ManagerId+"'";
+		return commonDao.queryBySql(TJxSpecificParameters.class, sqls, null);
+	}
+	
+	
+	/**
+	 * 计算利润提成 list 是当月该客户经理下所有客户的集合
+	 * @param list
+	 * @param parameters
+	 * @return
+	 */
+	public BigDecimal calLr(List<TJxSpecificParameters> list,TPerformanceParameters parameters){
+		BigDecimal lrs = new BigDecimal("0");
+		for(TJxSpecificParameters tJxSpecificParameters :list){
+			//风险保障系数-产品
+			String R = returnR(tJxSpecificParameters,parameters);
+			BigDecimal  cha =  new BigDecimal(tJxSpecificParameters.getProdLimit()).subtract(new BigDecimal(parameters.getE()));
+			BigDecimal  ar =  new BigDecimal(ReturnReceiptConstant.lr).multiply(new BigDecimal(parameters.getF())).multiply(new BigDecimal(R));
+			BigDecimal  profit = new BigDecimal(tJxSpecificParameters.getMonthDayAverageCustLoanamt()).multiply(cha).divide(ar,2,BigDecimal.ROUND_HALF_UP);
+			lrs = lrs.add(profit);
+		}
+		return lrs;
+	}
+	
+	
+	/**
+	 * 获取风险保障系数R
+	 */
+	public String returnR(TJxSpecificParameters tJxSpecificParameters,TPerformanceParameters parameters){
+		//判断产品类型 
+		String R ="";
+		if(ReturnReceiptConstant.PR0D_TYPE_C101.equals(tJxSpecificParameters.getProdType())){
+			R = parameters.getH(); //风险保障系数(R-保证类)
+		}else if(ReturnReceiptConstant.PR0D_TYPE_C102.equals(tJxSpecificParameters.getProdType())){
+			R = parameters.getI(); //风险保障系数(R-抵押类)
+		}else{
+			R = parameters.getG(); //风险保障系数(R-信用类)
+		}
+		return R;
+	}
+	
+	/**
+	 * 新增风险保证金计算
+	 */
+	private double getAddMonthVentureDeposit(double monthPerform){
+		double addRisk = 0;
+		if(monthPerform<=2000){
+			addRisk = 2000 * 0.1;
+			
+		}else if(monthPerform>2000&&monthPerform<=5000){
+			addRisk = 2000 * 0.1 + (monthPerform-2000)*0.2;
+			
+		}else if(monthPerform>5000&&monthPerform<=8000) {
+			addRisk = 2000 * 0.1 + 3000*0.2 + (monthPerform-5000)*0.3;
+			
+		}else if(monthPerform>8000&&monthPerform<=15000) {
+			addRisk = 2000 * 0.1 + 3000*0.2 + 3000*0.3 + (monthPerform-8000)*0.4;
+			
+		}else{
+			addRisk = 2000 * 0.1 + 3000*0.2 + 3000*0.3 + 7000*0.4+ (monthPerform-15000)*0.5;
+		}
+		return addRisk;
+	}
+	
+	/**
+	 * 返还风险保证金
+	 * (风险保证金采取延期支付的方式,延期支付年限为三年,即从第四年开始,
+	 * 每年按上年度末风险保证金累计总额（除扣除部分之外）的1/3支付;)
+	 * customerId-客户经理id
+	 */
+	private double outMonthVentureDeposit(String year,String month,String customerId){
+		
+		TPerformanceParameters parameters = commonDao.queryBySql(TPerformanceParameters.class,
+				"select * from T_PERFORMANCE_PARAMETERS ",null).get(0);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.parseInt(year),Integer.parseInt(month),1);
+		calendar.add(Calendar.MONTH, -Integer.parseInt(parameters.getK()));
+		
+		//获取36个月前的时间
+		int  year36 = calendar.get(Calendar.YEAR);
+		int  month36 = calendar.get(Calendar.MONTH);
+		
+		
+		//查询36月前风险保证金
+		TRiskMargin margin = getSpecificRiskMargin(String.valueOf(year36),String.valueOf(month36),customerId);
+		if(margin==null){
+			return 0;
+		}else{
+			int years = Integer.parseInt(parameters.getK())+12;
+			parameters.setK(years+"");
+			commonDao.updateObject(parameters);
+			return Double.parseDouble(margin.getTotalRiskMargin())/3;
+		}
+	}
+	
+	
+	public TRiskMargin getSpecificRiskMargin(String year,String month,String customerId){
+		String sql ="select * from t_risk_margin where CUSTOMER_ID='"+customerId+"'and ACCOUNT_OPEN_YEAR='"+year+"' and ACCOUNT_OPEN_MONTH='"+month+"'";
+		List<TRiskMargin> riskMargins = commonDao.queryBySql(TRiskMargin.class, sql, null);
+		if(riskMargins.size()>0){
+			return riskMargins.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+
+	public TRiskMargin getTRiskMarginByCustomerId(String customerId){
+		String sql = "select * from t_risk_margin where customer_id='"+customerId+"'";
+		List<TRiskMargin> tRiskMarginsList = commonDao.queryBySql(TRiskMargin.class, sql, null);
+		if(tRiskMarginsList.size()>0){
+			return tRiskMarginsList.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	
+	/**
+	 * 生成 T_JX_PARAMETERS表数据
+	 * userId 客户经理
+	 */
+	public void generateJxParameters(String userId,String year,String month){
+		TJxParameters jxParameters = new TJxParameters();
+		jxParameters.setId(IDGenerator.generateID());
+		jxParameters.setYear(year);
+		jxParameters.setMonth(month);
+		jxParameters.setCustomerManagerId(userId);//客户经理ID
+		jxParameters.setMonthLoanNum(findLoanCusts(userId,year,month)+"");//当月发放贷款户数
+		jxParameters.setMonthEffectNum(findEffectLoanCusts(userId,year,month)+"");//当月有效管户数
+		jxParameters.setMonthOverdueLoannum(findOverdueNum(userId,year,month)+"");//当月逾期贷款笔数
+		jxParameters.setMonthOverdueDays(findOverdueDays(userId,year,month)+"");//当月逾期贷款天数
+		//查询当月该客户经理协办次数 approved
+		int xbNum = managerSalaryDao.findXbCountByManagerId(userId);
+		jxParameters.setMonthTimes(xbNum+"");
+		commonDao.insertObject(jxParameters);
+	}
+	
+	/**
+	 * 当月发放贷款户数
+	 */
+	public Integer findLoanCusts(String customerManagerId,String year,String month){
+		String sql = "select count(distinct(a.CUSTID)) as HYK                    "+
+					 "  from t_mibusidata_view a, basic_customer_information b   "+
+					 " where a.custid = b.ty_customer_id                         "+
+					 "   and substr(loandate, '0', '4') = '"+year+"'             "+
+					 "   and substr(loandate, '6', '2') = '"+month+"'            "+
+					 "   and b.USER_ID = '"+customerManagerId+"'                 ";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
+		return b.intValue();
+	}
+	/**
+	 * 当月有效管户数
+	 */
+	public Integer findEffectLoanCusts(String customerManagerId,String year,String month){
+		String sql = " select count(distinct(b.CUSTID))		as HYK			    "+
+					 "        from t_gccontractmain           a,         		"+
+					 "             t_gccontractmulticlient    b,          		"+
+					 "             basic_customer_information c           		"+
+					 "       where trim(a.KEYCODE) = b.KEYCODE            		"+
+					 "         and c.ty_customer_id = b.CUSTID           		"+
+					 "         and a.keyeffectedstate ='1'                		"+
+					 "         and b.keyeffectedstate ='1'                		"+
+					 "         and substr(a.STARTDATE, '0', '4') = '"+year+"' 	"+
+					 "         and substr(a.STARTDATE, '6', '2') = '"+month+"'  "+
+					 "         and c.USER_ID = '"+customerManagerId+"'    		";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
+		return b.intValue();
+	}
+	
+	/**
+	 * 当月逾期贷款笔数
+	 */
+	public Integer findOverdueNum(String customerManagerId,String year,String month){
+		String sql =    " select nvl(sum(DEBTINTERESTTIMES),0)  as HYK             "+
+						"  from t_mibusidata_view a, basic_customer_information b  "+
+						" where a.custid = b.ty_customer_id                        "+
+						"   and substr(loandate, '0', '4') = '"+year+"'            "+
+						"   and substr(loandate, '6', '2') = '"+month+"'           "+
+						"   and b.USER_ID ='"+customerManagerId+"'                 ";
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
+		return b.intValue();
+	}
+	
+	/**
+	 * 当月逾期贷款天数
+	 */
+	public int findOverdueDays(String customerManagerId,String year,String month){
+	   return 0 ;
+	}
+	
+	/**
+	 * 生成 t_jx_specific_parameters
+	 * 按客户id 区分 开
+	 */
+	public void generateJxSpecificParameters(String userId,String year,String month){
+		
+		//查询该客户经理名下的客户
+	    List<CustomerInfor> list = commonDao.queryBySql(CustomerInfor.class, "select * from basic_customer_information where TY_CUSTOMER_ID is not null and USER_ID='"+userId+"' ", null);
+	    
+	    //贷款余额
+	    BigDecimal balamt = new BigDecimal("0");
+	    
+	    for(CustomerInfor fro :list){
+	    	//产品利率
+	    	String prodLimit;
+	    	
+	    	//产品名称
+	    	String prodType;
+	    	
+	    	//客户id
+	    	String customerId = fro.getId();
+	    	
+	    	//行内客户标识id
+	    	String tyCustomerId = fro.getTyCustomerId();
+	    	
+	    	//查询客户贷款产品利率和贷款产品类型
+	    	List<Map<String, Object>> mapList = findProdLimitAndType(customerId,year,month);
+	    	if(mapList == null || mapList.size() ==0){
+	    		prodLimit = "0";
+	    		prodType  = "0";
+	    	}else{
+		    	Map<String, Object> obj = mapList.get(0);
+		    	prodLimit = obj.get("INTEREST").toString();
+		        prodType =  obj.get("MAINASSURE").toString();
+	    	}
+	    	
+	        //计算贷款余额
+	        balamt = findBalamt(tyCustomerId,year,month);
+	        
+	    	//插入t_jx_specific_parameters表数据
+		    TJxSpecificParameters jxSpecificParameters = new TJxSpecificParameters();
+			jxSpecificParameters.setId(IDGenerator.generateID());
+			jxSpecificParameters.setYear(year);
+			jxSpecificParameters.setMonth(month);
+			jxSpecificParameters.setMonthDayAverageCustLoanamt(balamt.toString());//当月客户日均贷款余额
+			jxSpecificParameters.setProdLimit(prodLimit);//产品利率
+			jxSpecificParameters.setProdType(prodType);//产品类型（C101-保证  C102-抵押  C100-信用）
+			jxSpecificParameters.setCustomerId(customerId);//客户id
+			jxSpecificParameters.setCustomerManagerId(userId);//客户经理id
+			commonDao.insertObject(jxSpecificParameters);
+	    }
+	}
+	
+	/**
+	 * 查询产品利率以及产品类型
+	 * @param customerId
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	public List<Map<String, Object>> findProdLimitAndType(String customerId,String year,String month){
+		return managerSalaryDao.findProdLimitAndType(customerId, year, month);
+	}
+	
+	/**
+	 * 查询当月客户日均贷款余额
+	 * tyCustomerId 行内客户标识id
+	 */
+	public BigDecimal findBalamt(String tyCustomerId,String year,String month){
+		//该客户该月的日均贷款余额
+		BigDecimal balamt = new BigDecimal("0");
+		 
+		//查询客户当月生成台帐busicode编号的次数
+		List<Map<String, Object>> mapList =  managerSalaryDao.findDistinctBusicode(tyCustomerId, year, month);
+		
+		//根据busicode再次筛选
+		for (Map<String, Object> obj : mapList){
+			String sql =    " select t.busicode,				   		    		"+				
+							"       t.money,                                		"+
+							"       t.loandate,                             		"+
+							"       t.balamt,                               		"+
+							"       t.operdatetime,                         		"+
+							//"       t.limit,                                		"+
+							"       t.MAINASSURE,                          			"+
+							"       t.custid                                		"+
+							"  from t_mibusidata t                          	    "+
+							" where substr(OPERDATETIME, '0', '4') = '"+year+"'     "+
+							"   and substr(OPERDATETIME, '6', '2') = '"+month+"'    "+
+							"   and custid = '"+tyCustomerId+"'                     "+
+							"   and busicode = '"+obj.get("BUSICODE").toString()+"' "+
+							" order by OPERDATETIME asc                             ";
+			List<TMibusidata> mibusidataList = new ArrayList<TMibusidata>();
+			mibusidataList =  commonDao.queryBySql(TMibusidata.class, sql, null);
+			balamt = balamt.add(doCalAmt(mibusidataList, year, month));
+		}
+		return balamt;
+	}
+	
+	/**
+	 * 筛选计算
+	 * @param mibusidataList
+	 * @return
+	 * 一笔busicode 的list 一笔算
+	 */
+	public BigDecimal doCalAmt(List<TMibusidata> mibusidataList,String year,String month){
+		//获取当月实际天数
+		int  days = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month));
+		
+		//贷款余额
+		String balamt = "";
+		
+		//操作时间
+		String operTime = "";
+		
+		/**
+		 * ∑(贷款余额 x 实际使用天数)/当月实际天数  求和     分段求和
+		 * 30000   2016-08-01
+		 * 20000   2016-08-15
+		 * 10000   2016-08-25
+		 * 	0	   2016-08-31(月末日期)
+		 */
+		List<String> list  = new ArrayList<String>();
+		
+		for(TMibusidata data : mibusidataList){
+		    if(balamt != data.getBalamt().toString()){
+		    	balamt = data.getBalamt().toString();
+		    	operTime = data.getOperdatetime();
+		    	list.add(balamt+"@"+operTime);
+		    }
+		   
+		}
+		
+		//添加月末日期
+		String lastDay = year +"-"+ month +"-"+ days;
+		list.add(0+"@"+lastDay);
+		
+		//汇总busicode单笔台帐的日均贷款余额
+		BigDecimal amt = new BigDecimal("0");
+		BigDecimal amt0  = new BigDecimal("0");
+		BigDecimal amt1  = new BigDecimal("0");
+		
+		//实际使用天数
+		int ts =0;
+		String str0[];
+		String str1[];
+		String time0;
+		String time1;
+	
+		
+		for(int i = 0;i<list.size();i++){
+			//第0个list 的Amt 以及操作时间
+			str0 = list.get(0).split("@");
+			amt0 =  new BigDecimal(str0[0]);
+			time0 = str0[1];
+			
+			//第1个list 的Amt 以及操作时间
+			str1 = list.get(1).split("@");
+			amt1 =  new BigDecimal(str1[0]);
+			time1 = str1[1];
+			
+			//计算两个时间戳的时间差
+		    ts = calMistTime(time0,time1);
+		    
+		    //计算Amt
+			amt = amt.add(amt0.multiply(new BigDecimal(ts)).divide(new BigDecimal(days),2,BigDecimal.ROUND_HALF_UP));
+			
+			//计算完毕移除第0条数据 list的size随之减小
+			list.remove(0);
+		}
+		return amt;
+	}
+	
+	/**
+	 * 获得当月实际使用天数
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	 public static int getMonthLastDay(int year, int month)  
+	  {  
+	      Calendar a = Calendar.getInstance();  
+	      a.set(Calendar.YEAR, year);  
+	      a.set(Calendar.MONTH, month - 1);  
+	      a.set(Calendar.DATE, 1);//把日期设置为当月第一天  
+	      a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天  
+	      int maxDate = a.get(Calendar.DATE);  
+	      return maxDate;  
+	  }  
+	 
+	 /**
+	  * 计算两个时间戳的时间差 即天数 例 2016-09-01 2016-09-05
+	  */
+	 public int calMistTime(String startDate,String endDate){
+		 //创建一个日历对象。
+		 Calendar calendar = Calendar.getInstance();
+		
+		 //start
+		 List<String> startDateList = findYearAndMonthAndDay(startDate);
+		 calendar.set(Integer.parseInt(startDateList.get(0)), 
+				 	  Integer.parseInt(startDateList.get(1)), 
+					  Integer.parseInt(startDateList.get(2))); 
+	     long start = calendar.getTimeInMillis();
+	     
+	     //end
+	     List<String> endDateList = findYearAndMonthAndDay(endDate);
+	     calendar.set(Integer.parseInt(endDateList.get(0)),
+	    		 	  Integer.parseInt(endDateList.get(1)),
+	    			  Integer.parseInt(endDateList.get(2))); 
+	     long end = calendar.getTimeInMillis();
+	     
+	     //时间差
+	     long interdays = (end - start) / (1000 * 60 * 60 * 24);
+	     return new Long(interdays).intValue();
+	 }
+	 
+	 /**
+	  * @param date
+	  * @return
+	  */
+	  public static List<String> findYearAndMonthAndDay(String date){
+		  List<String>  list = new ArrayList<String>();
+		  String year = date.substring(0, 4);
+		  String month = date.substring(6, 7);
+		  String day = date.substring(8, 10);
+		  list.add(year);
+		  list.add(month);
+		  list.add(day);
+		  return list;
+	  }
+	  
+	  
+	  
+	  /**
+	   * 济南绩效导出
+	   * @param filter
+	   * @param response
+	   * @throws Exception
+	   */
+		public void getExportWageData(ManagerSalaryFilter filter,HttpServletResponse response) throws Exception{
+			List<ManagerSalaryForm> salaryList = managerSalaryDao.findManagerSalaryForm(filter);
+			
+			// 第一步，创建一个webbook，对应一个Excel文件  
+	        HSSFWorkbook wb = new HSSFWorkbook();  
+	        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
+	        HSSFSheet sheet = wb.createSheet("sheet1");  
+	        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
+	        HSSFRow row = sheet.createRow((int) 0);  
+	        HSSFCell cellTmp = row.createCell((short) 0);
+			cellTmp.setCellValue("济南农村商业银行客户经理工资");  //设置表格标题
+			
+			// 设置标题字体
+			HSSFFont font16 = wb.createFont();
+			font16.setFontHeightInPoints((short) 20);
+			font16.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font16.setFontName("华文楷体");
+			
+			// 设置标题字体
+			HSSFFont font1 = wb.createFont();
+			font1.setFontHeightInPoints((short) 12);
+			font1.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font1.setFontName("宋体");
+			
+			// 设置单元格居中
+			HSSFCellStyle styleCenter = wb.createCellStyle();
+			styleCenter.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleCenter.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			styleCenter.setFont(font16);
+			
+			// 设置居右
+			HSSFCellStyle styleFirst = wb.createCellStyle();
+			styleFirst.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleFirst.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+			styleFirst.setFont(font1);
+			
+			// 合并单元格
+			CellRangeAddress region = new CellRangeAddress(0, 0, 0,22);
+			sheet.addMergedRegion(region);
+			cellTmp.setCellStyle(styleCenter);
+			
+	        // 第四步，创建单元格，并设置值表头 设置表头居中  
+	        HSSFCellStyle style = wb.createCellStyle();  
+	        // 创建一个居中格式
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style.setWrapText(true);
+	        
+	        // 设置第二行 制表日期
+	        row = sheet.createRow((int) 1);
+	        HSSFCell tmp = row.createCell((short) 18);
+	        tmp.setCellValue("制表日期：");
+	        CellRangeAddress reg = new CellRangeAddress(1, 1, 18,22);
+	        sheet.addMergedRegion(reg);
+	        tmp.setCellStyle(styleFirst);
+	        
+	        // excel 正文内容
+	        row = sheet.createRow((int) 2);
+	        HSSFCell cell = row.createCell((short) 0);  
+	        cell.setCellValue("序号");  
+	        cell.setCellStyle(style);
+	        	        
+	        cell = row.createCell((short) 1);  
+	        cell.setCellValue("管辖行");  
+	        cell.setCellStyle(style);  
+	        
+	        cell = row.createCell((short) 2);  
+	        cell.setCellValue("姓名");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 3);  
+	        cell.setCellValue("岗位");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 4);  
+	        cell.setCellValue("9月基本工资（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(4, 25*256);
+	        
+	        cell = row.createCell((short) 5);  
+	        cell.setCellValue("8月基础/r/n任务量/r/n奖金/r/n（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(5, 25*256);
+	        
+	        cell = row.createCell((short) 6);  
+	        cell.setCellValue("主办放款户数（户）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(6, 25*256);
+	        
+	        cell = row.createCell((short) 7);  
+	        cell.setCellValue("主办放款户数奖金（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(7, 25*256);
+	        
+	        cell = row.createCell((short) 8);  
+	        cell.setCellValue("8月协办放款户数（户）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(8, 25*256);
+	        
+	        cell = row.createCell((short) 9);  
+	        cell.setCellValue("8月协办放款户数奖金（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(9, 25*256);
+	        
+	        cell = row.createCell((short) 10);  
+	        cell.setCellValue("8月有效管户数（户）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(10, 25*256);
+	        
+	        cell = row.createCell((short) 11);  
+	        cell.setCellValue("8月管户维护奖金（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(11, 25*256);
+	        
+	        cell = row.createCell((short) 12);  
+	        cell.setCellValue("8月利润提成（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(12, 25*256);
+	        
+	        cell = row.createCell((short) 13);  
+	        cell.setCellValue("8月逾期天数总数（天）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(13, 25*256);
+	        
+	        cell = row.createCell((short) 14);  
+	        cell.setCellValue("8月逾期扣罚（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(14, 25*256);
+	        
+	        cell = row.createCell((short) 15);  
+	        cell.setCellValue("8月业务量绩效（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(15, 25*256);
+	        
+	        cell = row.createCell((short) 16);  
+	        cell.setCellValue("8月缺勤扣（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(16, 25*256);
+	        
+	        cell = row.createCell((short) 17);  
+	        cell.setCellValue("前期差错补扣（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(17, 25*256);
+	        
+	        cell = row.createCell((short) 18);  
+	        cell.setCellValue("8月其他业务绩效（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(18, 25*256);
+	        
+	        cell = row.createCell((short) 19);  
+	        cell.setCellValue("8月应发绩效（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(19, 25*256);
+	        
+	        cell = row.createCell((short) 20);  
+	        cell.setCellValue("9月应发薪酬（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(20, 25*256);
+	        
+	        cell = row.createCell((short) 21);  
+	        cell.setCellValue("风险保证金（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(21, 25*256);
+	        
+	        cell = row.createCell((short) 22);  
+	        cell.setCellValue("9月实发薪酬（元）");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(22, 25*256);
+	        
+	        for(int i=0;i<salaryList.size();i++){
+	        	row = sheet.createRow((int) i + 3);
+	        	ManagerSalaryForm salary = salaryList.get(i);
+	        	row.createCell((short) 0).setCellValue(i+1);  
+	        	row.createCell((short) 1).setCellValue((String) salary.getInstCode());            //管辖行
+	        	row.createCell((short) 2).setCellValue((String) salary.getManagerName());         //姓名                       
+	        	row.createCell((short) 3).setCellValue("");     						          //岗位  备注： 暂无  后续会设定客户经理级别 级别与基本工资挂钩                     
+	        	row.createCell((short) 4).setCellValue((String) salary.getBasePay());             //9月基本工资（元）          
+	        	row.createCell((short) 5).setCellValue((String) salary.getBasicTaskBonus());      //8月基础任务量奖金（元） 备注:外聘客户经理所有 行编客户经理无   
+	        	row.createCell((short) 6).setCellValue((String) salary.getMonthLoanNum());        //8月主办放款户数（户）      
+	        	row.createCell((short) 7).setCellValue("");       							      //8月主办放款户数奖金（元）  
+	        	row.createCell((short) 8).setCellValue((String) salary.getMonthTimes());          //8月协办放款户数（户）      
+	        	row.createCell((short) 9).setCellValue("");       							      //8月协办放款户数奖金（元）  
+	        	row.createCell((short) 10).setCellValue((String) salary.getMonthEffectNum());     //8月有效管户数（户）        
+	        	row.createCell((short) 11).setCellValue("");  								      //8月管户维护奖金（元）      
+	        	row.createCell((short) 12).setCellValue((String) salary.getProfitDraw());         //8月利润提成（元）          
+	        	row.createCell((short) 13).setCellValue((String) salary.getMonthOverdueDays());   //8月逾期天数总数（天）      
+	        	row.createCell((short) 14).setCellValue("");  									  //8月逾期扣罚（元）          
+	        	row.createCell((short) 15).setCellValue((String) salary.getVolumePerformance());  //8月业务量绩效（元）        
+	        	row.createCell((short) 16).setCellValue("");  									  //8月缺勤扣（元）             手填
+	        	row.createCell((short) 17).setCellValue("");  									  //前期差错补扣（元）        手填
+	        	row.createCell((short) 18).setCellValue("");  									  //8月其他业务绩效（元） 手填
+	        	row.createCell((short) 19).setCellValue("");  									  //8月应发绩效（元）         待确定      
+	        	row.createCell((short) 20).setCellValue("");  									  //9月应发薪酬（元）        待确定        
+	        	row.createCell((short) 21).setCellValue("");  									  //风险保证金（元）           待确定      
+	        	row.createCell((short) 22).setCellValue("");  									  //9月实发薪酬（元）        待确定      
+	        }
+	        response.setHeader("Connection", "close");
+	        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=GBK");
+	        response.setHeader("Content-Disposition", "attachment;filename="
+	        + new String("济南农村商业银行客户经理工资.xls".getBytes(), "iso-8859-1"));
+	        OutputStream out = response.getOutputStream();  
+	        wb.write(out);
+	        out.close();
+		}
+		
+		
 	//----------------------------------------------济南绩效end----------------------------------------------------//
 	
 }

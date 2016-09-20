@@ -3,6 +3,7 @@ package com.cardpay.pccredit.manager.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import com.cardpay.pccredit.manager.filter.ManagerLevelAdjustmentFilter;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.ManagerMonthTargetData;
+import com.cardpay.pccredit.manager.model.ManagerSalary;
+import com.cardpay.pccredit.manager.model.TJxParameters;
+import com.cardpay.pccredit.manager.model.TJxSpecificParameters;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
 import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
@@ -40,7 +44,7 @@ import com.wicresoft.util.web.RequestHelper;
 
 /**
  * 描述 ：客户经理级别调整controller
- * @author sc
+ * @author songchen
  */
 @Controller
 @RequestMapping("/manager/leveladjustment/*")
@@ -132,7 +136,6 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute AccountManagerParameterFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
-
 		QueryResult<AccountManagerParameterForm> result = accountManagerParameterService.findAccountManagerParametersByFilterForJx(filter);
 		JRadPagedQueryResult<AccountManagerParameterForm> pagedResult = new JRadPagedQueryResult<AccountManagerParameterForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_jbxc_browse", request);
@@ -176,12 +179,59 @@ public class ManagerLevelAdjustmentController extends BaseController{
 				accountManagerParameterService.updateAccountManagerParameter(accountManagerParameter);
 				returnMap.put(RECORD_ID, accountManagerParameter.getId());
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+				returnMap.setSuccess(true);
 			}
 			catch (Exception e) {
+				returnMap.setSuccess(false);
 				return WebRequestHelper.processException(e);
 			}
 		}
 		return returnMap;
+	}
+	
+	
+	/**
+	 * 客户经理绩效每月绩效参数
+	 */
+	@ResponseBody
+	@RequestMapping(value = "browseMonthJx.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browseMonthJx(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		
+		String dateStr = RequestHelper.getStringValue(request, "date");
+		if(!StringUtils.isEmpty(dateStr)){
+			filter.setYear(dateStr.substring(0, 4));
+			filter.setMonth( dateStr.substring(5, 7));
+		}
+		QueryResult<TJxParameters> result = accountManagerParameterService.findMonthJx(filter);
+		JRadPagedQueryResult<TJxParameters> pagedResult = new JRadPagedQueryResult<TJxParameters>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_jx_param_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
+	}
+	
+	/**
+	 * 客户每月日均贷款余额
+	 */
+	@ResponseBody
+	@RequestMapping(value = "browseCustDayBalamt.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browseCustDayBalamt(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		
+		String dateStr = RequestHelper.getStringValue(request, "date");
+		if(!StringUtils.isEmpty(dateStr)){
+			filter.setYear(dateStr.substring(0, 4));
+			filter.setMonth( dateStr.substring(5, 7));
+		}
+		QueryResult<TJxSpecificParameters> result = accountManagerParameterService.findCustDayBalamt(filter);
+		JRadPagedQueryResult<TJxSpecificParameters> pagedResult = new JRadPagedQueryResult<TJxSpecificParameters>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_jx_balamt_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
 	}
 	
 	
@@ -217,7 +267,8 @@ public class ManagerLevelAdjustmentController extends BaseController{
 			}
 		}
 		filter.setManagerName(chineseName);
-		JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm> pagedResult = new JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm>(filter, result);
+		JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm> pagedResult =
+				new JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);
 		return mv;
@@ -232,8 +283,9 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	public JRadReturnMap generateData(@ModelAttribute ManagerSalaryForm form, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
-			//do
-			managerSalaryService.docalculateMonthlySalaryTy(Integer.valueOf(form.getYear()), Integer.valueOf(form.getMonth()));
+			String date = request.getParameter("date");
+			managerSalaryService.docalculateMonthlySalaryTy(date.substring(0, 4),date.substring(5, 7));
+			returnMap.setSuccess(true);
 		}
 		catch (Exception e) {
 			returnMap.setSuccess(false);
@@ -241,6 +293,109 @@ public class ManagerLevelAdjustmentController extends BaseController{
 			return returnMap;
 			
 		}
-		return null;
+		return returnMap;
 	}
+	
+	/**
+	 * 跳转到打印页面
+	 */
+	@ResponseBody
+	@RequestMapping(value = "print.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView print(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request) {
+		filter.setRequest(request);
+		int limit = 20;
+		filter.setLimit(limit);
+		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_salary_print", request);
+		String chineseName = request.getParameter("userId");
+		
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		List<AccountManagerParameterForm> forms = managerBelongMapService.findSubListManagerByManagerId(user);
+		String customerManagerId = filter.getCustomerManagerId();
+		
+		QueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm> result = null;
+		if(customerManagerId!=null && !customerManagerId.equals("")){
+			forms =  managerBelongMapService.findAllManager();
+			filter.setCustomerManagerIds(forms);
+			result = managerSalaryService.findManagerSalaryByFilterJn(filter);
+		}else{
+			if(forms.size()>0){
+				filter.setCustomerManagerIds(forms);
+				result = managerSalaryService.findManagerSalaryByFilterJn(filter);
+			}else{
+				forms =  managerBelongMapService.findAllManager();
+				filter.setCustomerManagerIds(forms);
+				result = managerSalaryService.findManagerSalaryByFilterJn(filter);
+			}
+		}
+		filter.setManagerName(chineseName);
+		JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm> pagedResult = 
+				new JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm>(filter, result);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "changeSalary.page")
+	@JRadOperation(JRadOperation.CHANGE)
+	public AbstractModelAndView changeSalary(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_adjust_update", request);
+		String id = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(id)) {
+			ManagerSalary salary = managerSalaryService.findManagerSalaryById(id);
+			mv.addObject("salary", salary);
+			mv.addObject("id", id);
+		}
+		return mv;
+	}
+	
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "updateManagerSalary.json", method = { RequestMethod.POST })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap updateManagerSalary(@ModelAttribute ManagerSalaryForm from, HttpServletRequest request) {
+
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				ManagerSalary salary = from.createModel(ManagerSalary.class);
+				int i = managerSalaryService.updateManagerSalary(salary);
+				returnMap.put(MESSAGE, "修改成功");
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	/**
+	 * 导出excel
+	 * @param form
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "exportData.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap exportData(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		filter.setRequest(request);
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+			    managerSalaryService.getExportWageData(filter,response);
+				
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
+
 }

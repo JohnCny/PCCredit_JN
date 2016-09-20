@@ -11,7 +11,7 @@
       <div class="inquiry">
        <div class="search_tag">贷后监控</div>
         <div class="search">
-          <form id="queryForm" action="${contextPath}/intopieces/intopiecesquery/browse.page" 
+          <form id="queryForm" action="${contextPath}/postLoan/post/dhbrowse.page" 
           			onkeydown="javascript:if(event.keyCode==13) this.submit();">
           <ul>
           	  <li>
@@ -33,9 +33,9 @@
               <col width="5%" />
               <col width="10%" />
               <col width="8%" />
-              <col width="6%" />
-              <col width="6%" />
-              <col width="6%" />
+              <col width="7%" />
+              <col width="7%" />
+              <col width="7%" />
               <col width="13%"/> 
               <col width="8%"/>
               <col width="8%"/>
@@ -46,9 +46,9 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
-              <th nowrap="nowrap">申请金额</th>
-              <th nowrap="nowrap">审贷金额</th>
-              <th nowrap="nowrap">合同金额</th>
+              <th nowrap="nowrap">申请金额(元)</th>
+              <th nowrap="nowrap">审贷金额(元)</th>
+              <th nowrap="nowrap">合同金额(元)</th>
               <th nowrap="nowrap">证件号码</th> 
               <th nowrap="nowrap">审核状态</th>
               <th nowrap="nowrap">节点名称</th>
@@ -63,9 +63,9 @@
               <col width="5%" />
               <col width="10%" />
               <col width="8%" />
-              <col width="6%" />
-              <col width="6%" />
-              <col width="6%" />
+              <col width="7%" />
+              <col width="7%" />
+              <col width="7%" />
               <col width="13%"/> 
               <col width="8%"/>
               <col width="8%"/>
@@ -77,9 +77,9 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
-              <td nowrap="nowrap">$!wait.applyQuota</td>
-              <td nowrap="nowrap">$!wait.finalApproval</td>
-              <td nowrap="nowrap">$!wait.reqlmt</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td> 
+              <td nowrap="nowrap">$format.formatNumber($!wait.finalApproval,2,1)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.reqlmt,2,1)</td>
               <td nowrap="nowrap">$!wait.cardId</td> 
                #if($!wait.status=='returnedToFirst')
                <td nowrap="nowrap">退回至客户经理</td>
@@ -102,7 +102,8 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-          <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory1('NO')">审议结论</a>
+          <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory2('NO')">审议结论</a>
+          <!-- <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory1('NO')">审议结论</a> -->
            #if($!type==1)
           <a class="btn_g" href="javascript:void(0);" title="采集资料" onclick="scan('NO')">采集资料</a>
            #else
@@ -143,6 +144,21 @@
 		if(id!=null){
 			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureById.page?id="+id;
 			Dialog.table(url, "审议结论", "get", null, 800, 340);
+		}else{
+			Dialog.message("请选择要被查看的进件!");
+		}
+	}
+	
+	//审议结论
+	function viewIntoPicesApproveHistory2(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			
+		});
+		if(id!=null){
+			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureFormById.page?id="+id;
+			window.location.href = url;
 		}else{
 			Dialog.message("请选择要被查看的进件!");
 		}

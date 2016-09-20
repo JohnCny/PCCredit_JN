@@ -21,10 +21,22 @@
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
               <li>
-	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7"/>-</span>
+	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7"/></span>
               </li>
+              <span>-</span>
               <li>
                   <span><input type="text" name="endAmt" value=''  maxlength="7"/></span>
+              </li>
+              <li>
+                <span>进件状态：<select id="status" name="status" value="$!result.filter.status" >
+                <option  value="" >ALL</option>
+                <option #if($!result.filter.status=='audit') selected="selected" #end value="audit">已申请 </option>
+                <option #if($!result.filter.status=='refuse') selected="selected" #end value="refuse">被拒绝</option>
+                <option #if($!result.filter.status=='approved') selected="selected" #end value="approved">审批结束</option>
+                <option #if($!result.filter.status=='returnedToFirst') selected="selected" #end value="returnedToFirst">退回至客户经理</option>
+                <option #if($!result.filter.status=='end') selected="selected" #end value="end">放款成功</option>
+                </select>
+                </span>
               </li>
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -52,9 +64,9 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
-              <th nowrap="nowrap">申请金额</th>
-              <th nowrap="nowrap">审贷金额</th>
-              <th nowrap="nowrap">合同金额</th>
+              <th nowrap="nowrap">申请金额(元)</th>
+              <th nowrap="nowrap">审贷金额(元)</th>
+              <th nowrap="nowrap">合同金额(元)</th>
               <th nowrap="nowrap">证件号码</th> 
               <th nowrap="nowrap">审核状态</th>
               <th nowrap="nowrap">节点名称</th>
@@ -83,9 +95,9 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
-              <td nowrap="nowrap">$!wait.applyQuota</td>
-              <td nowrap="nowrap">$!wait.finalApproval</td>
-              <td nowrap="nowrap">$!wait.reqlmt</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.finalApproval,2,1)</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.reqlmt,2,1)</td>
               <td nowrap="nowrap">$!wait.cardId</td> 
                #if($!wait.status=='returnedToFirst')
                <td nowrap="nowrap">退回至客户经理</td>

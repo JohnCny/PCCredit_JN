@@ -40,7 +40,7 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
-              <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">申请金额(元)</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
               <th nowrap="nowrap">审核状态</th>
@@ -67,7 +67,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
-              <td nowrap="nowrap">$!wait.applyQuota</td>
+              <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td>
               <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>
               <td nowrap="nowrap">#dictVal("applicationStatus",$!wait.status) </td>

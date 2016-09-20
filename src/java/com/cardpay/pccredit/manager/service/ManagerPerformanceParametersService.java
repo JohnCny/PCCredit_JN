@@ -13,6 +13,7 @@ import org.xhtmlrenderer.util.GeneralUtil;
 import com.cardpay.pccredit.manager.dao.comdao.ManagerMonthAssessmentComdao;
 import com.cardpay.pccredit.manager.dao.comdao.ManagerPerformanceParamersComdao;
 import com.cardpay.pccredit.manager.model.MangerMonthAssessment;
+import com.cardpay.pccredit.manager.model.TPerformanceParameters;
 import com.cardpay.pccredit.manager.model.TyPerformanceCenter;
 import com.cardpay.pccredit.manager.model.TyPerformanceParameters;
 import com.wicresoft.jrad.base.auth.IUser;
@@ -109,8 +110,49 @@ public class ManagerPerformanceParametersService {
 	 * @return
 	 */
 	public List<TyPerformanceCenter> getManagerPerformanceCenter(){
-	
 		return managerPerformanceParamersComdao.getManagerPerformanceCenter();
+	}
+	
+	//=====================================济南绩效=======================================//
+	public List<TPerformanceParameters> getTManagerPerformanceParamers(){
+		return managerPerformanceParamersComdao.getTManagerPerformanceParamers();
+	}
+	
+	
+	/**
+	 * 客户经理绩效参数配置
+	 * @param request
+	 */
+	public void updateTManagerPerformanceParamers(HttpServletRequest request) {
+		//获取参数
+		String[] ids= request.getParameterValues("id");
+		String[] As= request.getParameterValues("A");
+		String[] Bs= request.getParameterValues("B");
+		String[] Ds= request.getParameterValues("D");
+		String[] Es= request.getParameterValues("E");
+		String[] Fs= request.getParameterValues("F");
+		String[] Gs= request.getParameterValues("G");
+		String[] Hs= request.getParameterValues("H");
+		String[] Is= request.getParameterValues("I");
+		String[] Js= request.getParameterValues("J");
+		String[] Ks= request.getParameterValues("K");
 		
+		//删除历史记录
+		managerPerformanceParamersComdao.deleteTList();
+		
+		for(int i=0;i<ids.length;i++){
+		    TPerformanceParameters parameters = new TPerformanceParameters();
+			parameters.setA(As[i]);
+			parameters.setB(Bs[i]);
+			parameters.setD(Ds[i]);
+			parameters.setE(Es[i]);
+			parameters.setF(Fs[i]);
+			parameters.setG(Gs[i]);
+			parameters.setH(Hs[i]);
+			parameters.setI(Is[i]);
+			parameters.setJ(Js[i]);
+			parameters.setK(Ks[i]);
+			commonDao.insertObject(parameters);		
+		}
 	}
 }

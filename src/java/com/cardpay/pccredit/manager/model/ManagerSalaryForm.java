@@ -1,11 +1,9 @@
 package com.cardpay.pccredit.manager.model;
 
-import com.wicresoft.jrad.base.database.model.BusinessModel;
-import com.wicresoft.jrad.base.database.model.ModelParam;
 import com.wicresoft.jrad.base.web.form.BaseForm;
 
 /**
- * @author chenzhifang
+ * @author songchen
  *
  * 2014-11-14下午5:50:49
  */
@@ -35,16 +33,140 @@ public class ManagerSalaryForm extends BaseForm {
 	private String riskReserveBalances;
 	// 罚款
 	private String fine;
-	
+	//年份
 	private String year;
-	
+	//月份
 	private String month;
-	
+	//备注
 	private String describe;
+	//本月工资
+	private String wage;
+	//机构
+	private String instCode;
 	
-	private String own;//本月工资
+    private String basicTaskBonus;
 	
+	private String middleAllowance;
 	
+	private String attendDeduct;
+	
+	private String rowIndex;
+	
+	private String  monthLoanNum;
+
+	private String  monthEffectNum;
+ 
+	private String  monthOverdueDays;  
+
+	private String  monthTimes;
+	
+	//业务量绩效
+	private String volumePerformance;
+	//利润提成
+	private String profitDraw;
+	//逾期扣款
+	private String overdueDeduct;
+	
+
+	public String getVolumePerformance() {
+		return volumePerformance;
+	}
+
+	public void setVolumePerformance(String volumePerformance) {
+		this.volumePerformance = volumePerformance;
+	}
+
+	public String getProfitDraw() {
+		return profitDraw;
+	}
+
+	public void setProfitDraw(String profitDraw) {
+		this.profitDraw = profitDraw;
+	}
+
+	public String getOverdueDeduct() {
+		return overdueDeduct;
+	}
+
+	public void setOverdueDeduct(String overdueDeduct) {
+		this.overdueDeduct = overdueDeduct;
+	}
+
+	public String getMonthLoanNum() {
+		return monthLoanNum;
+	}
+
+	public void setMonthLoanNum(String monthLoanNum) {
+		this.monthLoanNum = monthLoanNum;
+	}
+
+	public String getMonthEffectNum() {
+		return monthEffectNum;
+	}
+
+	public void setMonthEffectNum(String monthEffectNum) {
+		this.monthEffectNum = monthEffectNum;
+	}
+
+	public String getMonthOverdueDays() {
+		return monthOverdueDays;
+	}
+
+	public void setMonthOverdueDays(String monthOverdueDays) {
+		this.monthOverdueDays = monthOverdueDays;
+	}
+
+	public String getMonthTimes() {
+		return monthTimes;
+	}
+
+	public void setMonthTimes(String monthTimes) {
+		this.monthTimes = monthTimes;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getRowIndex() {
+		return rowIndex;
+	}
+
+	public void setRowIndex(String rowIndex) {
+		this.rowIndex = rowIndex;
+	}
+
+	public String getBasicTaskBonus() {
+		return basicTaskBonus;
+	}
+
+	public void setBasicTaskBonus(String basicTaskBonus) {
+		this.basicTaskBonus = basicTaskBonus;
+	}
+
+	public String getMiddleAllowance() {
+		return middleAllowance;
+	}
+
+	public void setMiddleAllowance(String middleAllowance) {
+		this.middleAllowance = middleAllowance;
+	}
+
+	public String getAttendDeduct() {
+		return attendDeduct;
+	}
+
+	public void setAttendDeduct(String attendDeduct) {
+		this.attendDeduct = attendDeduct;
+	}
+
+	public String getInstCode() {
+		return instCode;
+	}
+
+	public void setInstCode(String instCode) {
+		this.instCode = instCode;
+	}
 
 	public String getId() {
 		return id;
@@ -54,12 +176,13 @@ public class ManagerSalaryForm extends BaseForm {
 		this.id = id;
 	}
 
-	public String getOwn() {
-		return own;
+	
+	public String getWage() {
+		return wage;
 	}
 
-	public void setOwn(String own) {
-		this.own = own;
+	public void setWage(String wage) {
+		this.wage = wage;
 	}
 
 	public String getCustomerId() {
