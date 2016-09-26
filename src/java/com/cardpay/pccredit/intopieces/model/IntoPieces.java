@@ -46,7 +46,25 @@ public class IntoPieces  extends BusinessModel {
     
     private String finalApproval;
     
-    public String getRepayStatus() {
+    private String managerName;
+    
+    private String organName;
+    
+    
+    
+    public String getOrganName() {
+		return organName;
+	}
+	public void setOrganName(String organName) {
+		this.organName = organName;
+	}
+	public String getManagerName() {
+		return managerName;
+	}
+	public void setManagerName(String managerName) {
+		this.managerName = managerName;
+	}
+	public String getRepayStatus() {
 		return repayStatus;
 	}
 	public void setRepayStatus(String repayStatus) {

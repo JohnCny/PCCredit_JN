@@ -87,6 +87,7 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -1267,9 +1268,13 @@ public class IntoPiecesControl extends BaseController {
 				//修改进件表
 				String id = request.getParameter("id");
 				String applyQuota = request.getParameter("applyQuota");
+				String createdTime = request.getParameter("createdTime");//修改申请时间
 				CustomerApplicationInfo info = new CustomerApplicationInfo();
 				info.setApplyQuota(applyQuota);
 				info.setId(id);
+				if(createdTime!=null && !createdTime.equals("")){
+					info.setCreatedTime(DateHelper.getDateFormat(createdTime, "yyyy-MM-dd HH:mm:ss"));
+				}
 				commonDao.updateObject(info);
 				//修改local_excel表 申请金额
 				intoPiecesService.updateLocalExcel(applyQuota,id);

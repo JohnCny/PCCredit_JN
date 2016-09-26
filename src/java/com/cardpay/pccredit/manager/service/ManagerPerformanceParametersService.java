@@ -136,6 +136,7 @@ public class ManagerPerformanceParametersService {
 		String[] Is= request.getParameterValues("I");
 		String[] Js= request.getParameterValues("J");
 		String[] Ks= request.getParameterValues("K");
+		String[] Ls= request.getParameterValues("L");
 		
 		//删除历史记录
 		managerPerformanceParamersComdao.deleteTList();
@@ -152,6 +153,7 @@ public class ManagerPerformanceParametersService {
 			parameters.setI(Is[i]);
 			parameters.setJ(Js[i]);
 			parameters.setK(Ks[i]);
+			parameters.setL(Ls[i]);
 			commonDao.insertObject(parameters);		
 		}
 	}

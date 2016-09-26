@@ -83,6 +83,9 @@
                #if($!manager.prodType=='C100')
                <td nowrap="nowrap">信用</td>
                #end
+               #if($!manager.prodType=='0')
+               <td nowrap="nowrap"></td>
+               #end
               <td nowrap="nowrap">$!manager.customerId</td>
               <td nowrap="nowrap">$!manager.customerManagerId</td>
               <td nowrap="nowrap">$!manager.instcode</td>
@@ -93,7 +96,6 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
-         <!--  #btnpriv("change")<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.change.hint')">#i18n("button.change")</a>#end  -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

@@ -38,6 +38,19 @@
                 </select>
                 </span>
               </li>
+              
+              <li>
+                <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              </li>
+              
+              <li>
+                <span>客户经理：
+                	<select  name="custManagerId" id="custManagerId" style="width: 150px;" >
+                  	#dict("MANAGERUSERS","")
+                  </select>
+                </span>
+              </li>
+              
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
@@ -49,8 +62,9 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
               <col width="8%" />
+              <col width="7%" />
+              <col width="6%" />
               <col width="7%" />
               <col width="7%" />
               <col width="7%" />
@@ -64,6 +78,7 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">客户经理</th>
               <th nowrap="nowrap">申请金额(元)</th>
               <th nowrap="nowrap">审贷金额(元)</th>
               <th nowrap="nowrap">合同金额(元)</th>
@@ -79,8 +94,9 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
               <col width="8%" />
+              <col width="7%" />
+              <col width="6%" />
               <col width="7%" />
               <col width="7%" />
               <col width="7%" />
@@ -95,6 +111,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
+              <td nowrap="nowrap">$!wait.displayName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.finalApproval,2,1)</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.reqlmt,2,1)</td>
