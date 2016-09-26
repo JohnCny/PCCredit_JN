@@ -53,6 +53,10 @@ public class ManagerSalary extends BusinessModel {
 	private String profitDraw;
 	//逾期扣款
 	private String overdueDeduct;
+	//岗位津贴
+	private String subsidies;
+	//审贷笔数
+	private String auditNum;
 	
 	// 个人完成度
 	private String competerPet;
@@ -74,8 +78,18 @@ public class ManagerSalary extends BusinessModel {
 	private String shortName;
 	
 	
-	
-	
+	public String getAuditNum() {
+		return auditNum;
+	}
+	public void setAuditNum(String auditNum) {
+		this.auditNum = auditNum;
+	}
+	public String getSubsidies() {
+		return subsidies;
+	}
+	public void setSubsidies(String subsidies) {
+		this.subsidies = subsidies;
+	}
 	public String getVolumePerformance() {
 		return volumePerformance;
 	}

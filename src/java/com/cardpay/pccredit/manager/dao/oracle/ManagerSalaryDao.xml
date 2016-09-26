@@ -55,11 +55,16 @@
 		<result property="attendDeduct" column="ATTEND_DEDUCT" />
 		<result property="riskReserveBalances" column="RISK_RESERVE_BALANCES" />
 		<result property="rowIndex" column="row_index" />
-		
 		<result property="monthLoanNum" column="MONTH_LOAN_NUM" />
 		<result property="monthTimes"   column="MONTH_TIMES" />
 		<result property="monthEffectNum" column="MONTH_EFFECT_NUM" />
 		<result property="monthOverdueDays" column="MONTH_OVERDUE_DAYS" />
+		<result property="volumePerformance" column="VOLUME_PERFORMANCE" />
+		<result property="profitDraw" column="PROFIT_DRAW" />
+		<result property="overdueDeduct" column="OVERDUE_DEDUCT" />
+		<result property="managerType" column="MANAGER_TYPE" />
+		<result property="subsidies" column="SUBSIDIES" />
+		<result property="auditNum"  column="AUDIT_NUM" />
 	</resultMap>
 	
 	<select id="findManagerSalarysByFilter" resultMap="ResultMap" 
@@ -408,8 +413,7 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					SELECT salary.*, 
-						   usr.display_name as managerName,
-						   (nvl(salary.base_pay,0) + nvl(salary.reward_incentive_information,0) + nvl(salary.BASIC_TASK_BONUS,0) + nvl(salary.allowance,0) + nvl(salary.MIDDLE_ALLOWANCE,0) +  nvl(salary.fine,0) + nvl(salary.return_prepare_amount,0) - nvl(salary.ATTEND_DEDUCT,0)) as wage
+						   usr.display_name as managerName
 					  FROM manager_salary salary
 					 INNER join sys_user usr ON usr.id = salary.customer_id
 					 WHERE 1=1
@@ -480,6 +484,8 @@
 	      and info.status = 'approved'
 	      and log.audit_type = '2'
 	      and log .user_id_3 = #{managerId}
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'0','4') = #{year}
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'5','2') = #{month}
 	</select>
 	
 	<select id="findProdLimitAndType" resultType="map">
@@ -507,10 +513,11 @@
 					SELECT salary.*, 
 						   parmeter.*,
 						   usr.display_name as managerName,
-						   (nvl(salary.base_pay,0) + nvl(salary.reward_incentive_information,0) + nvl(salary.BASIC_TASK_BONUS,0) + nvl(salary.allowance,0) + nvl(salary.MIDDLE_ALLOWANCE,0) +  nvl(salary.fine,0) + nvl(salary.return_prepare_amount,0) - nvl(salary.ATTEND_DEDUCT,0)) as wage
+						   acc.manager_type
 					  FROM manager_salary salary
 					 INNER join sys_user usr ON usr.id = salary.customer_id
-    				 inner join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id
+    				 left join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id
+    				 inner join account_manager_parameter acc on acc.user_id = usr.id
 					 WHERE 1=1
 					 <if test="managerName != null and managerName != '' ">
 						AND usr.display_name like '%${managerName}%'
@@ -524,7 +531,23 @@
 					 <if test="organName != null and organName != '' ">
 						AND salary.INST_CODE=#{organName}
 					 </if>
+					 <if test="managerType != null and managerType != '' ">
+						AND acc.MANAGER_TYPE=#{managerType}
+					 </if>
 					 order by salary.inst_code desc,salary.year desc,salary.month desc
+	</select>
+	
+	
+	<select id="findSdAprovedCountByManagerId" resultType="int">
+	  select count(0) from 
+	          customer_application_info info,
+              t_app_manager_audit_log log
+	  where   info.id = log.application_id 
+	      and info.status = 'approved'
+	      and log.audit_type = '2'
+	      and (log.user_id_1 = #{managerId} or log.user_id_2 = #{managerId})
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'0','4') = #{year}
+	      and substr(to_char(info.created_time,'yyyyMMdd'),'5','2') = #{month}
 	</select>
 	
 	<!-- =====================================济南绩效相关end============================= -->

@@ -187,6 +187,7 @@
 			         a.MONTH,
 			         b.display_name as CUSTOMER_MANAGER_ID,
 			         a.MONTH_TIMES,
+			         b.id as USER_ID,
 			         (select org.name
           from sys_organization org
          where id in (select t.org_id
@@ -209,6 +210,9 @@
 		</if>
 		<if test="month != null and month != '' ">
 			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND USER_ID=#{customerId}
 		</if>
 		order by instcode
 		 <![CDATA[		
@@ -233,6 +237,7 @@
 			         a.MONTH,
 			         b.display_name as CUSTOMER_MANAGER_ID,
 			         a.MONTH_TIMES,
+			         b.id as USER_ID,
 			         (select org.name
           from sys_organization org
          where id in (select t.org_id
@@ -256,6 +261,9 @@
 		<if test="month != null and month != '' ">
 			AND MONTH=#{month}
 		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND USER_ID=#{customerId}
+		</if>
 		order by instcode
 		)
 	</select>
@@ -275,6 +283,7 @@
 			       a.prod_type,
 			       c.chinese_name as customer_id,
 			       b.display_name as customer_manager_id,
+			       b.id as manger_id,
 			       (select org.name
           from sys_organization org
          where id in (select t.org_id
@@ -301,6 +310,9 @@
 		<if test="month != null and month != '' ">
 			AND MONTH=#{month}
 		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND MANGER_ID=#{customerId}
+		</if>
 		order by instcode
 		 <![CDATA[		
 							) ROW_
@@ -316,26 +328,29 @@
 		FROM
 		(
 		select * from(
-		   select    a.id,
-			         a.MONTH_LOAN_NUM,
-			         a.MONTH_EFFECT_NUM,
-			         a.MONTH_OVERDUE_LOANNUM,
-			         a.MONTH_OVERDUE_DAYS,
-			         a.YEAR,
-			         a.MONTH,
-			         b.display_name as CUSTOMER_MANAGER_ID,
-			         a.MONTH_TIMES,
-			         (select org.name
+			select a.id,
+				   a.year,
+			       a.month,
+			       a.month_day_average_cust_loanamt,
+			       a.prod_limit,
+			       a.prod_type,
+			       c.chinese_name as customer_id,
+			       b.display_name as customer_manager_id,
+			       b.id as manger_id,
+			       (select org.name
           from sys_organization org
          where id in (select t.org_id
                         from sys_department t
                        where t.id in (select tt.dept_id
                                         from sys_dept_user tt
                                        where tt.user_id = b.id))) as instcode
-			    from T_JX_PARAMETERS a,
-			         SYS_USER b
-			   where a.customer_manager_id = b.id)
-	    where 1=1
+			 from 
+			       t_jx_specific_parameters a,
+			       sys_user b,
+			       basic_customer_information c
+			where a.CUSTOMER_MANAGER_ID= b.id
+			  and c.id = a.customer_id )
+	     where 1=1 
 		<if test="managerName != null and managerName != '' ">
 			AND CUSTOMER_MANAGER_ID =#{managerName}
 		</if>
@@ -347,6 +362,9 @@
 		</if>
 		<if test="month != null and month != '' ">
 			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND MANGER_ID=#{customerId}
 		</if>
 		order by instcode
 		)

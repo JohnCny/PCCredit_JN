@@ -17,7 +17,13 @@
                 <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
               </li>
               <li>
-	          	<span>日期:&nbsp;<input type="text" id ="date" name="date" value='$!date.format("yyyy-MM-dd",$!result.filter.startDate)' 
+              	  <span style="color:red">客户经理类型：<select  name="managerType" id ="managerType">
+              	    <option value=""></option>
+                  	#dict("MANAGER_TYPE","")
+                  </select></span>
+              </li>
+              <li>
+	          	<span style="color:red">日期:&nbsp;<input type="text" id ="date" name="date" value='$!date.format("yyyy-MM-dd",$!result.filter.startDate)' 
 	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
               <li class="search_button">
@@ -36,9 +42,14 @@
               <col width="4%" />
               <col width="4%" />
               <col width="4%" />
-              <col width="4%" />
               <col width="5%" />
-              <col width="3%" />
+              
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -47,9 +58,14 @@
               <th nowrap="nowrap">管辖行</th>
               <th nowrap="nowrap">客户经理</th>
               <th nowrap="nowrap">基本工资(元)</th>
-              <th nowrap="nowrap">贷款业务绩效</th>
               <th nowrap="nowrap">基础任务量奖金</th>
-              <th nowrap="nowrap"><span style="color:red">当月工资(元)</span></th>
+              
+              <th nowrap="nowrap">业务量绩效</th>
+              <th nowrap="nowrap">利润提成</th>
+              <th nowrap="nowrap">逾期扣款</th>
+              <th nowrap="nowrap">风险准备金余额</th>
+              <th nowrap="nowrap">返还风险准备金</th>
+              <th nowrap="nowrap">存入风险准备金</th>
             </tr>
           </table>
         </div>
@@ -62,9 +78,14 @@
               <col width="4%" />
               <col width="4%" />
               <col width="4%" />
-              <col width="4%" />
               <col width="5%" />
-              <col width="3%" />
+              
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
+              <col width="5%" />
             </colgroup>
             #foreach ($managerSalary in $result.items)
             <tr>
@@ -74,9 +95,14 @@
               <td nowrap="nowrap">$!managerSalary.instCode</td>
               <td nowrap="nowrap">$!managerSalary.managerName</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basePay)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.rewardIncentiveInformation)</td>
               <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.basicTaskBonus)</td>
-              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.wage)</td>
+              
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.volumePerformance)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.profitDraw)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.overdueDeduct)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.riskReserveBalances)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.returnPrepareAmount)</td>
+              <td nowrap="nowrap">$format.formatNumber(2,$!managerSalary.insertPrepareAmount)</td>
             </tr>
             #end
           </table>
@@ -86,8 +112,8 @@
         <div class="controlbtn">
            <input id="id_genertae_button" type="button" value="生成数据" class="search_button_inquiry"
                   title="生成数据" style="height: 26px; line-height: 24px;" />
-           <input id="id_update_button" type="button" value="工资调整" class="search_button_inquiry"
-                  title="工资调整" style="height: 26px; line-height: 24px;" />
+           <input id="id_update_button" type="button" value="查看详情" class="search_button_inquiry"
+                  title="查看详情" style="height: 26px; line-height: 24px;" /> 
            <input id="id_export_button" type="button" value="导出EXCEL" class="search_button_inquiry"
                   title="导出工资单" style="height: 26px; line-height: 24px;" />
           <!--  <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
@@ -122,10 +148,10 @@
 		        });
 		}
 		
-		//生活工资
+		//生成工资
 		$("#id_genertae_button").click(function() {
 	    	if($('#date').val() == "" || $('#date').val() == null){
-	    		Dialog.message("请输入年份和月份");
+	    		Dialog.message("请输入日期");
 	    	}else{
 	    		Dialog.load();
 				$.ajax({
@@ -134,9 +160,8 @@
 					data:{'date': $('#date').val()},
 					success:function(data){
 						Dialog.closeLoad();
-						debugger;
 						if(data.success == true){
-							Dialog.message("成功");
+							//Dialog.message("成功");
 							window.location.href="${modulePath}/jnJxbrowse.page";
 						}else{
 							Dialog.message(data.errors.errors[0].message);
@@ -150,13 +175,36 @@
 		
 	 	//导出
 		$("#id_export_button").click(function() {
-			if($('#date').val() == "" || $('#date').val() == null){
-	    		Dialog.message("请输入年份和月份");
+			/* if($('#date').val() == "" || $('#date').val() == null){
+	    		Dialog.message("请输入日期");
 	    	}else{
 	    		var url = opsObj.exportUrl;
             	document.getElementById("submitForm").action = url;
             	document.getElementById("submitForm").submit();
+	    	} */
+	    	
+			if($('#date').val() == "" || $('#date').val() == null){
+	    		Dialog.message("请输入日期");
+	    		return;
 	    	}
+	    	
+			if($('#managerType').val() == "" || $('#managerType').val() == null){
+	    		Dialog.message("请选择客户经理类型");
+	    		return;
+	    	}
+	       
+			if($('#managerType').val() == '3'){
+				//风险岗
+				var url = "${modulePath}/exportDatas.json";
+          		document.getElementById("submitForm").action = url;
+          		document.getElementById("submitForm").submit();
+			}else{
+				//行编及外聘客户经理
+   				var url = opsObj.exportUrl;
+          		document.getElementById("submitForm").action = url;
+          		document.getElementById("submitForm").submit();
+			}
+	    	
 	    }); 
 	 	
 	 	//打印
@@ -189,7 +237,7 @@
             } else {
                 Dialog.message("请选择一行");
             }
-        });
+        }); 
  	
 		
 	});

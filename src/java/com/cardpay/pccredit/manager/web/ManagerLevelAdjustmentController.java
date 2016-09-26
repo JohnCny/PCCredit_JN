@@ -198,12 +198,18 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browseMonthJx(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = user.getId();
+		if(user.getUserType() == 1){
+			filter.setCustomerId(userId);
+		}
 		
 		String dateStr = RequestHelper.getStringValue(request, "date");
 		if(!StringUtils.isEmpty(dateStr)){
 			filter.setYear(dateStr.substring(0, 4));
 			filter.setMonth( dateStr.substring(5, 7));
 		}
+		
 		QueryResult<TJxParameters> result = accountManagerParameterService.findMonthJx(filter);
 		JRadPagedQueryResult<TJxParameters> pagedResult = new JRadPagedQueryResult<TJxParameters>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_jx_param_browse", request);
@@ -220,6 +226,12 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browseCustDayBalamt(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
+		
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = user.getId();
+		if(user.getUserType() == 1){
+			filter.setCustomerId(userId);
+		}
 		
 		String dateStr = RequestHelper.getStringValue(request, "date");
 		if(!StringUtils.isEmpty(dateStr)){
@@ -385,10 +397,36 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	public JRadReturnMap exportData(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request,HttpServletResponse response) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		filter.setRequest(request);
+		String date = request.getParameter("date");
+		filter.setYear(date.substring(0, 4));
+		filter.setMonth(date.substring(5, 7));
 		returnMap.setSuccess(true);
 		if (returnMap.isSuccess()) {
 			try {
 			    managerSalaryService.getExportWageData(filter,response);
+				
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "exportDatas.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap exportDatas(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		filter.setRequest(request);
+		String date = request.getParameter("date");
+		filter.setYear(date.substring(0, 4));
+		filter.setMonth(date.substring(5, 7));
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+			    managerSalaryService.getExportWageDatas(filter,response);
 				
 			}
 			catch (Exception e) {

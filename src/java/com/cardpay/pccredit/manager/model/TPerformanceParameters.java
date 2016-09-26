@@ -56,7 +56,15 @@ public class TPerformanceParameters extends BusinessModel {
 	
 	private String K;
 	
+	private String L;
 	
+	
+	public String getL() {
+		return L;
+	}
+	public void setL(String l) {
+		L = l;
+	}
 	public String getK() {
 		return K;
 	}

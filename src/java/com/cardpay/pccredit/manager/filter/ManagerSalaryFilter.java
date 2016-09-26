@@ -45,6 +45,16 @@ public class ManagerSalaryFilter extends BaseQueryFilter {
 	
 	private String date;
 	
+	private String managerType;
+	
+
+	public String getManagerType() {
+		return managerType;
+	}
+
+	public void setManagerType(String managerType) {
+		this.managerType = managerType;
+	}
 
 	public String getDate() {
 		return date;
