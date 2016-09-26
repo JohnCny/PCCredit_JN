@@ -33,6 +33,10 @@
               <td class="titlefc3"><label for="applyQuota">申请额度(元):</label></td>
 	          <td><input  type="text" class="rinpsty" name="applyQuota" id="applyQuota" 
 	              value="$!customerApplicationInfo.applyQuota" /></td>
+	          <td class="titlefc3"><label for="createdTime">申请时间:</label></td>
+	          <td><input  type="text" class="rinpsty" name="createdTime" id="createdTime" 
+	              value="$!date.format("yyyy-MM-dd HH:mm:ss",$!customerApplicationInfo.createdTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" /></td>
+	              
               </tr>
               <tr>
               <td class="titlefc3"><label for="prodName" >产品名称:</label></td>
