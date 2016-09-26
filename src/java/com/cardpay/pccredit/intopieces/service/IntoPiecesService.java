@@ -82,9 +82,10 @@ public class IntoPiecesService {
 	 */
 	public QueryResult<IntoPieces> findintoPiecesByFilter(
 			IntoPiecesFilter filter) {
-		QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
+		//QueryResult<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesByFilter(filter);
+		List<IntoPieces> queryResult = intoPiecesComdao.findintoPiecesListByFilter(filter);
 		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
-		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult.getItems());
+		QueryResult<IntoPieces> qs = new QueryResult<IntoPieces>(sum, queryResult);
 		List<IntoPieces> intoPieces = qs.getItems();
 		for(IntoPieces pieces : intoPieces){
 			if(pieces.getStatus()==null){
