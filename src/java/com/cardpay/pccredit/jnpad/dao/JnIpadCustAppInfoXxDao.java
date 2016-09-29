@@ -41,4 +41,7 @@ public interface JnIpadCustAppInfoXxDao {
 
 	//进件列表根据状态查询数量
 	public int findNoticeCountByFilter(NotificationMessageFilter filter);
+
+
+	public void changeIsLook(@Param("id")String id,@Param("cardId") String cardId);
 }

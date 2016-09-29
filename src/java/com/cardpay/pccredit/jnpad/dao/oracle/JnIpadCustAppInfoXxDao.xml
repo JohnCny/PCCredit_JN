@@ -48,7 +48,10 @@
 		left join
 		basic_customer_information b
 		on c.customer_id = b.id
-		where b.user_id=#{userId}
+		where 1=1
+		<if test="userId!=null and userId!=''">
+		and b.user_id=#{userId}
+		</if>
 		<if test="status1!=null and status1!=''">
 			and STATUS = #{status1}
 		</if>
@@ -273,4 +276,8 @@
 		AND customer_id in(
 		SELECT b.id FROM BASIC_CUSTOMER_INFORMATION b WHERE user_Id =#{userId})
 	</select>
+	<update id="changeIsLook">
+	    
+	    UPDATE T_CIPERSONBASINFO_COPY SET islook ='0' WHERE id=#{id} and cardnum=#{cardId}
+	</update>
 </mapper> 
