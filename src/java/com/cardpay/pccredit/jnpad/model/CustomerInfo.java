@@ -38,6 +38,7 @@ public class CustomerInfo extends BusinessModel{
 	
 	private String tyUserId;
 
+
 	public String getCode() {
 		return code;
 	}

@@ -6,6 +6,28 @@
 			<div class="place">
 				<div class="title">客户经理业绩进度总览</div>
 			</div>
+			<div class="search">
+          <form id="submitForm" >
+            <ul>
+              <li>
+	          	<span>开始日期:&nbsp;<input type="text" id ="date" name="startdate" value='$!date.format("yyyy-MM-dd",$!satrtDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+	          	<span>结束日期:&nbsp;<input type="text" id ="enddate" name="enddate" value='$!date.format("yyyy-MM-dd",$!endDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li class="search_button">
+                <input id="export_button" type="button" value="导出Excle" class="search_button_inquiry"
+                  title="导出Excle" style="height: 26px; line-height: 24px;" />
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
 			<form id="id_module_form"
 				action="${contextPath}/manager/performmance/update.json" />
 			
@@ -45,7 +67,7 @@
 						<td class="titlefc3"><label for="givemoneycount">放款数:</label></td>
 						</tr>
 						 #foreach($gxperformList in $!gxperformList)
-						 #if($gxperformList.managerName=="小计" || $gxperformList.managerName=="总计")
+						 #if($gxperformList.managerName=="汇总" || $gxperformList.managerName=="总计")
 						<td class="titlefc3">$gxperformList.name</td>
 						<td class="titlefc3">$gxperformList.managerName</td>
 						<td class="titlefc3">$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
@@ -85,11 +107,25 @@
 					value="修改业绩进度" class="current" /> -->
 					<a class="btn_g" href="${contextPath}/manager/performmance/performUpdate.page" title="修改业绩进度" 
 					>修改业绩进度</a>
+					<!-- <a class="btn_g" href="${contextPath}/manager/performmance/performexport.json?startdate=" title="导出Excle" 
+					>导出Excle</a> -->
 			</div>
 		</div>
 	</div>
 </body>
  <script type="text/javascript">
+ $(document).ready(function() {
+ $("#id_browse_button").click(function() {
+     var url = "${contextPath}/manager/performmance/browse.page";
+     document.getElementById("submitForm").action = url;
+     document.getElementById("submitForm").submit();
+ });
+ $("#export_button").click(function() {
+     var exporturl = "${contextPath}/manager/performmance/performexport.json?startdate="+$("#date").val()+"&enddate="+$("#enddate").val();
+     window.location.href = exporturl;
+
+ });
  
+ })
  </script>
 #parse ("common/iframe_page_footer.htm")

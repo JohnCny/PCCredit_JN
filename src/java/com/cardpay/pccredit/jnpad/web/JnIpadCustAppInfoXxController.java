@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
+import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
 import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
@@ -90,13 +92,17 @@ public class JnIpadCustAppInfoXxController {
 	public String browse1(HttpServletRequest request) {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
+		String userType=request.getParameter("userType");
 		//refuse
 //		String status2=request.getParameter("status2");
 		String status2="refuse";
 		//approved
 //		String status3=request.getParameter("status3");
 		String status3="approved";
-		
+		Integer s =new Integer(userType);
+		if(s!=1){
+			userId="";
+		}
 		int refuse = appInfoXxService.findCustAppInfoXxCount(userId,null,status2, null,null);
 		int approved = appInfoXxService.findCustAppInfoXxCount(userId,null,null, status3,null);
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
@@ -326,8 +332,10 @@ public class JnIpadCustAppInfoXxController {
 		filters.setRiskCreateType(RiskCreateTypeEnum.manual.toString());
 	    filters.setRole(RiskControlRole.manager.toString());
 		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
-		
-		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk;
+		//客户资料变更
+		List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
+		int count6 = cuslist.size();
+		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(count1);
 		vo.setYuanshiziliao(count2);
@@ -338,6 +346,8 @@ public class JnIpadCustAppInfoXxController {
 		vo.setReturnCount(returnCount);
 		vo.setRisk(risk);
 		vo.setSum(sum);
+		vo.setZiliaobiangeng(count6);
+		vo.setBianggeng(cuslist);
 		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -427,6 +437,26 @@ public class JnIpadCustAppInfoXxController {
 		
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		result.put("return_prepare_amount",return_prepare_amount);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/changestate.json", method = { RequestMethod.GET })
+	public String change(HttpServletRequest request) {
+		//当前登录用户ID
+		String id=request.getParameter("id");
+		String cardId=request.getParameter("cardId");
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		try {
+			appInfoXxService.changeIsLook(id,cardId);
+			result.put("mess","操作成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			result.put("mess","操作失败");
+		}
+		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
