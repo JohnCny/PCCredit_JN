@@ -60,10 +60,48 @@
 							<td><input type="text" id="basePay" name="basePay"
 								value="$!salary.basePay" disabled="disabled"/></td>
 							<td></td>
+							<td><label for="name">基础任务量奖金(外聘):</label></td>
+							<td><input type="text" id="basicTaskBonus" name="basicTaskBonus"
+								value="$!salary.basicTaskBonus" disabled="disabled"/></td>
+						</tr>
+						
+						<tr>
+							<td><label for="name">岗位津贴(风险岗):</label></td>
+							<td><input type="text" id="subsidies" name="subsidies"
+								value="$!salary.subsidies" disabled="disabled"/></td>
+							<td></td>
+						</tr>
+						
+						
+						<tr>
 							<td><label for="name">贷款业务绩效:</label></td>
 							<td><input type="text" id="rewardIncentiveInformation" name="rewardIncentiveInformation"
 								value="$!salary.rewardIncentiveInformation" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">业务量绩效:</label></td>
+							<td><input type="text" id="volumePerformance" name="volumePerformance"
+								value="$!salary.volumePerformance" disabled="disabled"/></td>
 						</tr>
+						
+						<tr>
+							<td><label for="name">利润提成:</label></td>
+							<td><input type="text" id="profitDraw" name="profitDraw"
+								value="$!salary.profitDraw" disabled="disabled"/></td>
+							<td></td>
+							<td><label for="name">逾期扣款:</label></td>
+							<td><input type="text" id="overdueDeduct" name="overdueDeduct"
+								value="$!salary.overdueDeduct" disabled="disabled"/></td>
+						</tr>
+						
+						
+						
+						<tr>
+							<td><label for="name">风险准备金余额:</label></td>
+							<td><input type="text" id="riskReserveBalances" name="riskReserveBalances"
+								value="$!salary.riskReserveBalances" disabled="disabled"/></td>
+							<td></td>
+						</tr>
+						
 						
 						<tr>
 							<td><label for="name">新增风险保证金:</label></td>
@@ -75,17 +113,7 @@
 								value="$!salary.returnPrepareAmount" disabled="disabled"/></td>
 						</tr>
 						
-						<tr>
-							<td><label for="name">风险准备金余额:</label></td>
-							<td><input type="text" id="riskReserveBalances" name="riskReserveBalances"
-								value="$!salary.riskReserveBalances" disabled="disabled"/></td>
-							<td></td>
-						    <td><label for="name">基础任务量奖金:</label></td>
-							<td><input type="text" id="basicTaskBonus" name="basicTaskBonus"
-								value="$!salary.basicTaskBonus" disabled="disabled"/></td>
-						</tr>
-						
-						<tr>
+						<!-- <tr>
 							<td><label for="name">奖金(劳动):</label></td>
 							<td><input class="rinpsty" type="text" id="allowance" name="allowance"
 								value="$!salary.allowance" /></td>
@@ -108,16 +136,16 @@
 						<tr>
 							<td  class="titlefc3"><label id ="name" for="name">备注:</label></td>
               				<td><textarea style="height:80px;" name="describe" id="describe">$!salary.describe</textarea></td>
-						</tr>
+						</tr> -->
 						
 					</table>
 				</div>
 			</form>
 		
-			<div class="submit">
-			  <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+			 <div class="submit">
+			    <!--<input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />-->
 				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
-			</div>
+			</div> 
 		</div>
 	</div>
 	

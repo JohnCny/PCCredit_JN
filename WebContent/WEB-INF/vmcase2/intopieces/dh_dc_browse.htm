@@ -31,29 +31,31 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
               <col width="8%" />
+              <col width="7%" />
+              <col width="6%" />
               <col width="7%" />
               <col width="7%" />
               <col width="7%" />
               <col width="13%"/> 
               <col width="8%"/>
               <col width="8%"/>
-              <col width="10%"/>
-              <col width="10%"/>
+              <!-- <col width="10%"/>
+              <col width="10%"/> -->
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">客户经理</th>
               <th nowrap="nowrap">申请金额(元)</th>
               <th nowrap="nowrap">审贷金额(元)</th>
               <th nowrap="nowrap">合同金额(元)</th>
               <th nowrap="nowrap">证件号码</th> 
               <th nowrap="nowrap">审核状态</th>
               <th nowrap="nowrap">节点名称</th>
-              <th nowrap="nowrap">退回原因</th>
-              <th nowrap="nowrap">拒绝原因</th>
+             <!--  <th nowrap="nowrap">退回原因</th>
+              <th nowrap="nowrap">拒绝原因</th> -->
             </tr>
           </table>
         </div>
@@ -61,22 +63,24 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
               <col width="8%" />
+              <col width="7%" />
+              <col width="6%" />
               <col width="7%" />
               <col width="7%" />
               <col width="7%" />
               <col width="13%"/> 
               <col width="8%"/>
               <col width="8%"/>
-              <col width="10%"/>
-              <col width="10%"/>
+              <!-- <col width="10%"/>
+              <col width="10%"/> -->
             </colgroup>
            #foreach ($wait in $result.items)
             <tr onclick="showButton();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
+              <td nowrap="nowrap">$!wait.displayName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td> 
               <td nowrap="nowrap">$format.formatNumber($!wait.finalApproval,2,1)</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.reqlmt,2,1)</td>
@@ -91,8 +95,8 @@
                #else
                <td nowrap="nowrap">$!wait.nodeName</td>
                #end
-                <td nowrap="nowrap">$!wait.fallBackReason</td>
-                <td nowrap="nowrap">$!wait.refusqlReason</td>
+             <!--    <td nowrap="nowrap">$!wait.fallBackReason</td>
+                <td nowrap="nowrap">$!wait.refusqlReason</td> -->
             </tr>
             #end
 

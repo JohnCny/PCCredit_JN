@@ -66,7 +66,35 @@ public class ManagerSalaryForm extends BaseForm {
 	private String profitDraw;
 	//逾期扣款
 	private String overdueDeduct;
+	private String managerType;
 	
+	private String subsidies;
+	private String auditNum;
+
+	
+	public String getAuditNum() {
+		return auditNum;
+	}
+
+	public void setAuditNum(String auditNum) {
+		this.auditNum = auditNum;
+	}
+
+	public String getSubsidies() {
+		return subsidies;
+	}
+
+	public void setSubsidies(String subsidies) {
+		this.subsidies = subsidies;
+	}
+
+	public String getManagerType() {
+		return managerType;
+	}
+
+	public void setManagerType(String managerType) {
+		this.managerType = managerType;
+	}
 
 	public String getVolumePerformance() {
 		return volumePerformance;

@@ -97,7 +97,9 @@ public interface ManagerSalaryDao {
 	public String getOrganName(@Param("managerId") String managerId);
 	public int findManagerSalaryCount(@Param("year") String  year, @Param("month") String month);
 	
-	public int findXbCountByManagerId(@Param("managerId") String  managerId);
+	public int findXbCountByManagerId(@Param("managerId") String  managerId,
+									  @Param("year")String year,
+									  @Param("month")String month);
 	
 	
 	List<Map<String, Object>> findProdLimitAndType(@Param("customerId")String customerId,
@@ -109,4 +111,13 @@ public interface ManagerSalaryDao {
 												   @Param("month")String month);
 	
 	public List<ManagerSalaryForm> findManagerSalaryForm(ManagerSalaryFilter filter);
+	
+	
+	/**
+	 * 风险岗
+	 * 查询当月参与审贷会审议通过笔数
+	 */
+	public int findSdAprovedCountByManagerId(@Param("managerId") String  managerId,
+									  		 @Param("year")String year,
+									  		 @Param("month")String month);
 }
