@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.SFTPUtil;
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CIPERSONFAMILY;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
@@ -22,6 +23,7 @@ import com.cardpay.pccredit.jnpad.dao.JnIpadCustAppInfoXxDao;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
+import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.manager.dao.RetrainingDao;
@@ -214,5 +216,19 @@ public class JnIpadCustAppInfoXxService {
 	public int findRiskNoticeCountByFilter(RiskCustomerFilter filters) {
 		// TODO Auto-generated method stub
 		return riskCustomerDao.findRiskCustomersCountByFilter(filters);
+	}
+
+
+	public List<JnpadCustomerBianGeng> findbiangengCountByManagerId(String userId) {
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		String sql ="select * from T_CIPERSONBASINFO_COPY t inner join BASIC_CUSTOMER_INFORMATION b on t.custid = b.ty_customer_id where b.user_id=#{userId} AND t.islook IS null";
+		sql=sql+" order by t.id asc";
+		return commonDao.queryBySql(JnpadCustomerBianGeng.class, sql, params);
+	}
+
+
+	public void changeIsLook(String id, String cardId) {
+		jnIpadCustAppInfoDao.changeIsLook(id,cardId);
 	}
 }

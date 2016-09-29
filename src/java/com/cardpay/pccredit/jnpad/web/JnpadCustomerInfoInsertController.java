@@ -155,10 +155,9 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "/ipad/customerIntopiece/browse.json", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public String browse(@ModelAttribute IntoPiecesFilter filter,
-			HttpServletRequest request) {
-	
-		filter.setRequest(request);
+	public String browse( HttpServletRequest request) {
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+//		filter.setRequest(request);
 		String userId = request.getParameter("userId");
 		String userType = request.getParameter("userType");
 		Integer s =new Integer(userType);

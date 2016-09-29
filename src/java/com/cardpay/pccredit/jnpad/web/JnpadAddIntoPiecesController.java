@@ -64,13 +64,13 @@ public class JnpadAddIntoPiecesController {
 		@RequestMapping(value = "/ipad/addIntopieces/imageImport.json")
 		public Map<String, Object> imageImport(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
 			response.setContentType("text/html;charset=utf-8");
-			response.setCharacterEncoding("utf-8");
 			Map<String, Object> map = new HashMap<String, Object>();
 			try {
 				if(file==null||file.isEmpty()){
 					map.put(JRadConstants.SUCCESS, false);
 					map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTEMPTY);
-					return map;
+					JSONObject obj = JSONObject.fromObject(map);
+					response.getWriter().print(obj.toString());
 				}
 				String fileName =request.getParameter("fileName");
 				String productId = request.getParameter("productId");
