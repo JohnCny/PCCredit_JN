@@ -1,5 +1,9 @@
 package com.cardpay.pccredit.jnpad.model;
 
+import java.util.List;
+
+import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+
 /**
  * 通知
  * @author songchen
@@ -17,10 +21,24 @@ public class NotifyMsgListVo {
 	private int risk;/*风险客户数量*/
 	private int sum;/*总和*/
 	
+	private int ziliaobiangeng;
+	private List<JnpadCustomerBianGeng> bianggeng;
 	
 	
 	
-	
+	public int getZiliaobiangeng() {
+		return ziliaobiangeng;
+	}
+	public void setZiliaobiangeng(int ziliaobiangeng) {
+		this.ziliaobiangeng = ziliaobiangeng;
+	}
+
+	public List<JnpadCustomerBianGeng> getBianggeng() {
+		return bianggeng;
+	}
+	public void setBianggeng(List<JnpadCustomerBianGeng> bianggeng) {
+		this.bianggeng = bianggeng;
+	}
 	public int getSum() {
 		return sum;
 	}
