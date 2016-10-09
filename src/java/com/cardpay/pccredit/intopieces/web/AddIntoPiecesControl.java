@@ -99,6 +99,8 @@ import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.log.model.OperationLog;
+import com.wicresoft.jrad.modules.log.service.UserLogService;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
@@ -125,6 +127,9 @@ public class AddIntoPiecesControl extends BaseController {
 	
 	@Autowired
 	private CustomerInforUpdateService customerInforUpdateService;
+	
+	@Autowired
+	private UserLogService userLogService;
 	
 	//选择产品
 	@ResponseBody
@@ -249,13 +254,31 @@ public class AddIntoPiecesControl extends BaseController {
 	@RequestMapping(value = "addIntopieces.json", method = { RequestMethod.GET })
 	public JRadReturnMap addIntopieces(@ModelAttribute AddIntoPiecesForm addIntoPiecesForm,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String loginId = user.getId();
 		try {
-			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
-			String loginId = user.getId();
 			addIntoPiecesService.addIntopieces(addIntoPiecesForm,loginId);
+			//日志记录
+			OperationLog ol = new OperationLog();
+			ol.setUser_id(loginId);
+		    ol.setUser_login(user.getDisplayName());
+		    ol.setModule("进件新增");
+		    ol.setOperation_result("SUCCESS");
+		    ol.setOperation_name("ADD");
+		    ol.setIp_address(request.getRemoteAddr());
+			userLogService.addUserLog(ol);
 			
 			returnMap.addGlobalMessage(CHANGE_SUCCESS);
 		} catch (Exception e) {
+			//日志记录
+			OperationLog ol = new OperationLog();
+			ol.setUser_id(loginId);
+		    ol.setUser_login(user.getDisplayName());
+		    ol.setModule("进件新增");
+		    ol.setOperation_result("FAIL");
+		    ol.setOperation_name("ADD");
+		    ol.setIp_address(request.getRemoteAddr());
+			userLogService.addUserLog(ol);
 			return WebRequestHelper.processException(e);
 		}
 

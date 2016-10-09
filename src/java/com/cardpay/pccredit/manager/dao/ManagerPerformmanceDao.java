@@ -41,4 +41,16 @@ public interface ManagerPerformmanceDao {
 	ManagerPerformmance findDeptTodayPerformmanceById(@Param(value="orgId") String id);
 	//总行当天进度
 	ManagerPerformmance findDeptTodaySumPerformmanceById();
+	
+	
+	//统计当天的申请拒绝数
+	int queryRefuse(@Param(value="userId") String userId);
+	//统计当天的申请数
+	int queryApply(@Param(value="userId") String userId);
+	//统计当天的内审次数
+	int queryAudit(@Param(value="userId") String userId);
+	//统计当天的上会数
+	int queryWill(@Param(value="userId") String userId);
+	//统计当天的通过数
+	int queryPass(@Param(value="userId") String userId);
 }

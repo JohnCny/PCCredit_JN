@@ -32,6 +32,8 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.log.model.OperationLog;
+import com.wicresoft.jrad.modules.log.service.UserLogService;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
@@ -44,6 +46,10 @@ public class CustomerInforInsertController extends BaseController{
 	
 	@Autowired
 	private CustomerInforService customerInforService;
+	
+	@Autowired
+	private UserLogService userLogService;
+	
 	/**
 	 * 跳转到增加客户信息页面
 	 * 
@@ -121,6 +127,17 @@ public class CustomerInforInsertController extends BaseController{
 				customerinfor.setCreatedBy(user.getId());
 				customerinfor.setUserId(user.getId());
 				String id = customerInforService.insertCustomerInfor(customerinfor);
+				
+				//日志记录
+				OperationLog ol = new OperationLog();
+				ol.setUser_id(user.getId());
+			    ol.setUser_login(user.getDisplayName());
+			    ol.setModule("客户新增");
+			    ol.setOperation_result("SUCCESS");
+			    ol.setOperation_name("ADD");
+			    ol.setIp_address(request.getRemoteAddr());
+				userLogService.addUserLog(ol);
+				
 				returnMap.put(RECORD_ID, id);
 				returnMap.addGlobalMessage(CREATE_SUCCESS);
 			}catch (Exception e) {

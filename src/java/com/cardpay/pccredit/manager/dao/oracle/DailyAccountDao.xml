@@ -42,6 +42,7 @@
 		<if test="displayName != null and displayName != '' ">
 			AND s.DISPLAY_NAME = #{displayName}
 		</if>
+		order by d.created_time desc 
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

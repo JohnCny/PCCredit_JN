@@ -32,7 +32,9 @@
 			<menu id="070004" name="retraining" title="客户经理培训计划列表" url="/manager/retraining/browse.page" img="" operations="create|change|delete|display|browse"/>
  			<menu id="070005" name="trainmessage" title="培训通知" url="/notificationmessage/trainmessage/browse.page" img="" operations="checked|display|browse"/>		    
  			<menu id="070006" name="performmanceinput" title="业绩进度录入" url="/manager/performmance/insert.page" img="" operations="checked|display|browse"/>		    
- 			<menu id="070007" name="performmancebrowse" title="业绩进度查询" url="/manager/performmance/browse.page" img="" operations="checked|display|browse"/>		    
+ 			<menu id="070007" name="performmancebrowse" title="业绩进度查询" url="/manager/performmance/browse.page" img="" operations="checked|display|browse"/>
+ 			<menu id="070008" name="trainmessage" title="管辖客户管理" url="/manager/khgl/browse.page" img="" operations="checked|display|browse"/>
+ 			<menu id="070009" name="model" title="四维授信评估模型" url="/manager/khgl/dimensionsCreditModel.page" img="" operations="checked|display|browse"/>		    
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
@@ -44,6 +46,7 @@
 			<menu id="091001" name="postLoan1" title="借据表信息" url="/postLoan/post/browse.page" img="" operations="create|change|display|browse"/>
 			<menu id="091002" name="postLoan2" title="流水表信息" url="/postLoan/post/lshbrowse.page" img="" operations="create|change|display|browse"/>
 			<menu id="091003" name="postLoan3" title="贷后监控" url="/postLoan/post/dhbrowse.page" img="" operations="create|addbatch|change|display|import|approveloguser|approvelog|browse"/>
+			<menu id="091004" name="postLoan4" title="台帐表信息" url="/postLoan/post/tzbrowse.page" img="" operations="create|change|display|browse"/>
 		</menu>
 		
 		<menu id="092000" name="performanceManagement" title="绩效管理" url="" img="images/icon_sys.gif" operations="">

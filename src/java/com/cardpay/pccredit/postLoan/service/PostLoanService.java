@@ -12,6 +12,7 @@ import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -78,6 +79,20 @@ public class PostLoanService {
 		QueryResult<RarepaylistForm> qr = new QueryResult<RarepaylistForm>(size,lists);
 		return qr;
 	}
+	
+	/**
+	 * 台帐表
+	 * JN
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter){
+		List<MibusidataForm> lists = postLoanDao.findTzJnListByFilter(filter);
+		int size = postLoanDao.findTzJnListCountByFilter(filter);
+		QueryResult<MibusidataForm> qr = new QueryResult<MibusidataForm>(size,lists);
+		return qr;
+	}
+	
 	/**
 	 * 借据表详细信息
 	 * @param filter
@@ -87,6 +102,11 @@ public class PostLoanService {
 	public List<Fcloaninfo> selectfcloanifoInfoByBusicode(PostLoanFilter filter) {
 		// TODO Auto-generated method stub
 		return postLoanDao.findJJJnListByFilter(filter);
+	}
+	
+	public List<MibusidataForm> selectTz(PostLoanFilter filter) {
+		// TODO Auto-generated method stub
+		return postLoanDao.findTzJnListByFilter(filter);
 	}
 	
 	

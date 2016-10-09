@@ -17,6 +17,7 @@ import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.wicresoft.util.annotation.Mapper;
@@ -62,6 +63,16 @@ public interface PostLoanDao {
 	 */
 	List<RarepaylistForm> findLshJnListByFilter(PostLoanFilter filter);
 	int findLshJnListCountByFilter(PostLoanFilter filter);
+	
+	
+	/**
+	 * JN
+	 * 台帐表
+	 * @param filter
+	 * @return
+	 */
+	List<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter);
+	int findTzJnListCountByFilter(PostLoanFilter filter);
 	
 	/**
 	 * 查询借据表详细信息

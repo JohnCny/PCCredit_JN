@@ -299,5 +299,72 @@
 
 
 	</update>
+	
+	
+	<!--统计当天的拒绝申请次数  -->
+	<select id="queryRefuse" resultType="int">
+	select count(status) from CUSTOMER_APPLICATION_INFO a,
+	basic_customer_information b
+  	where status='end'
+  	and a.CUSTOMER_ID = b.id
+    and ((select trunc (sysdate) from dual)=trunc (a.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (a.MODIFIED_TIME))
+    and b.USER_ID=#{userId}
+	</select>
+	
+	<!--统计当天的申请次数  -->
+	<select id="queryApply" resultType="int">
+	select count(*) from Node_Audit na,
+	CUSTOMER_APPLICATION_INFO cai,
+	customer_application_process cap,
+	basic_customer_information b
+	where na.id=cap.next_node_id
+	and cap.application_id=cai.id
+	and cai.CUSTOMER_ID = b.id
+	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
+	and b.USER_ID=#{userId}
+	</select>
+	
+	<!--统计当天的内审次数  -->
+	<select id="queryAudit" resultType="int">
+	select count(*) from Node_Audit na,
+	CUSTOMER_APPLICATION_INFO cai,
+	customer_application_process cap,
+	basic_customer_information b
+	where na.id=cap.next_node_id
+	and cap.application_id=cai.id
+	and cai.CUSTOMER_ID = b.id
+	and  na.NODE_NAME !='进件初审'
+	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
+	and b.USER_ID=#{userId}
+	</select>
+	
+	<!--统计当天的上会次数  -->
+	<select id="queryWill" resultType="int">
+	select count(*) from Node_Audit na,
+	CUSTOMER_APPLICATION_INFO cai,
+	customer_application_process cap,
+	basic_customer_information b
+	where na.id=cap.next_node_id
+	and cap.application_id=cai.id
+	and cai.CUSTOMER_ID = b.id
+	and na.NODE_NAME !='进件初审' 
+	and na.NODE_NAME !='审贷决议'
+	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
+	and b.USER_ID=#{userId}
+	</select>
+	
+	<!--统计当天的通过次数  -->
+	<select id="queryPass" resultType="int">
+	select count(*) from Node_Audit na,
+	CUSTOMER_APPLICATION_INFO cai,
+	customer_application_process cap,
+	basic_customer_information b
+	where na.id=cap.next_node_id
+	and cap.application_id=cai.id
+	and cai.CUSTOMER_ID = b.id
+	and na.NODE_NAME ='结束'
+	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
+	and b.USER_ID=#{userId}
+	</select>
 
 </mapper>

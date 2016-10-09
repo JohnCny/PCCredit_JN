@@ -3,7 +3,10 @@ package com.cardpay.pccredit.manager.web;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
@@ -53,6 +58,25 @@ public class ManagerPerformmanceController extends BaseController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView create(HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmanceInsert", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		//统计每天申请拒绝数
+		int refuseNum=managerPerformmanceService.queryRefuse(user.getId());
+		//统计每天申请数
+		int applyNum= managerPerformmanceService.queryApply(user.getId());
+		//统计每天内审数
+		int auditNum=managerPerformmanceService.queryAudit(user.getId());
+		//统计每天上会数
+		int willNum=managerPerformmanceService.queryWill(user.getId());
+		//统计每天通过数
+		int passNum=managerPerformmanceService.queryPass(user.getId());
+		Map<String, Integer> map=new HashMap<String, Integer>();
+		map.put("applyNum", applyNum);
+		map.put("refuseNum", refuseNum);
+		map.put("auditNum", auditNum);
+		map.put("willNum", willNum);
+		map.put("passNum", passNum);
+		mv.addObject("ssss", map);
 		return mv;
 	}
 	/**
@@ -218,8 +242,7 @@ public class ManagerPerformmanceController extends BaseController {
 
 	//导出业绩进度信息
 	@ResponseBody
-	@RequestMapping(value = "performexport.json")
-	@JRadOperation(JRadOperation.BROWSE)
+	@RequestMapping(value = "performexport.json", method = { RequestMethod.GET })
 	public JRadReturnMap JRadReturnMap(HttpServletRequest request,HttpServletResponse response) {        
 
 		JRadReturnMap returnMap = new JRadReturnMap();
