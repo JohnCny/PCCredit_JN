@@ -91,6 +91,40 @@
 		<result column="CREATE_TIME" 	property="create_time" 		jdbcType="VARCHAR" />
 		<result column="PARAM1" 	    property="param1" 			jdbcType="VARCHAR" />
  	 </resultMap>
+ 	 
+ 	 
+ 	 <resultMap id="BaseResultMap3" type="com.cardpay.pccredit.postLoan.model.MibusidataForm" >
+   		 <result column="BUSICODE"        property="busicode"    jdbcType="VARCHAR" />         
+		 <result column="CUSTID"        property="custid"    jdbcType="VARCHAR" />         
+		 <result column="CNAME"        property="cname"    jdbcType="VARCHAR" />         
+		 <result column="DEPTCODE"        property="deptcode"    jdbcType="VARCHAR" />         
+		 <result column="MAINASSURE"        property="mainassure"    jdbcType="VARCHAR" />         
+		 <result column="REQLMT"        property="reqlmt"    jdbcType="VARCHAR" />         
+		 <result column="LOANDATE"        property="loandate"    jdbcType="VARCHAR" />         
+		 <result column="STARTDATE"        property="startdate"    jdbcType="VARCHAR" />         
+		 <result column="ORIENDDATE"        property="orienddate"    jdbcType="VARCHAR" />         
+		 <result column="ENDDATE"        property="enddate"    jdbcType="VARCHAR" />         
+		 <result column="MONEY"        property="money"    jdbcType="VARCHAR" />         
+		 <result column="BALAMT"        property="balamt"    jdbcType="VARCHAR" />         
+		 <result column="STATE"        property="accountstate"    jdbcType="VARCHAR" />         
+		 <result column="CLOSEDATE"        property="closedate"    jdbcType="VARCHAR" />         
+		 <result column="FIVECLASS"        property="fiveclass"    jdbcType="VARCHAR" />         
+		 <result column="DELAYAMTDAYS"        property="delayamtdays"    jdbcType="VARCHAR" />         
+		 <result column="DELAYINTERESTDAYS"        property="delayinterestdays"    jdbcType="VARCHAR" />         
+		 <result column="FIRSTINTERESTDATE"        property="firstinterestdate"    jdbcType="VARCHAR" />         
+		 <result column="DEBTINTEREST"        property="debtinterest"    jdbcType="VARCHAR" />         
+		 <result column="DEBTINTERESTTIMES"        property="debtinteresttimes"    jdbcType="VARCHAR" />         
+		 <result column="DLAYAMT"        property="dlayamt"    jdbcType="VARCHAR" />         
+		 <result column="DLAYDT"        property="dlaydt"    jdbcType="VARCHAR" />         
+		 <result column="PAYDEBT"        property="paydebt"    jdbcType="VARCHAR" />         
+		 <result column="INDEBTAMT"        property="indebtamt"    jdbcType="VARCHAR" />         
+		 <result column="OUTDEBTAMT"        property="outdebtamt"    jdbcType="VARCHAR" />         
+		 <result column="BALAMT"        property="balamt"    jdbcType="VARCHAR" />         
+		 <result column="CREATE_TIME"        property="create_time"    jdbcType="VARCHAR" />    
+		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
+		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
+		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+ 	 </resultMap>
 
 	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
@@ -230,5 +264,38 @@
 	    select *  from t_fcloaninfo a where 1=1 and 
 	    a.BUSICODE=#{busicode}
 	    
+	</select>
+	
+	
+	
+	<select id="findTzJnListByFilter" resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select a.*,trim(a.ACCOUNTSTATE) as STATE from t_mibusidata_view a where 1=1
+					 <if test="busiCode != null and busiCode != '' ">
+						AND trim(a.BUSICODE)=#{busiCode}
+					 </if>
+					 
+					 <if test="customerName != null and customerName != '' ">
+						AND cname =#{customerName}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findTzJnListCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from t_mibusidata_view where 1=1
+	  	<if test="busiCode != null and busiCode != '' ">
+			AND trim(BUSICODE)=#{busiCode}
+		</if>
+		
+	  	<if test="customerName != null and customerName != '' ">
+			AND cname =#{customerName}
+		 </if>
 	</select>
 </mapper>

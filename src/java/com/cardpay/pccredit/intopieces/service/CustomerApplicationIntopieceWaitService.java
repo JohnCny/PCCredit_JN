@@ -38,6 +38,8 @@ import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.modules.log.model.OperationLog;
+import com.wicresoft.jrad.modules.log.service.UserLogService;
 import com.wicresoft.util.spring.Beans;
 
 /**
@@ -75,6 +77,8 @@ public class CustomerApplicationIntopieceWaitService {
 	@Autowired
 	private CustomerInforDao customerInforDao;
 	
+	@Autowired
+	private UserLogService userLogService;
 
 	// 查询所有的进件包括审核的及未审核的
 	public QueryResult<CustomerApplicationIntopieceWaitForm> findCustomerApplicationIntopieceWaitForm(CustomerApplicationProcessFilter filter) {
@@ -334,7 +338,7 @@ public class CustomerApplicationIntopieceWaitService {
 				log.setAuditType(auditType);//1-初审 2-审贷
 				log.setUserId_1(cyUser1);
 				log.setUserId_2(cyUser2);
-				log.setUserId_3(fdUser);//輔調
+				log.setUserId_3(fdUser);//辅调
 				log.setExamineAmount(examineAmount);
 				log.setExamineLv(lv);
 				log.setUserId_4(sdUser);
@@ -351,6 +355,28 @@ public class CustomerApplicationIntopieceWaitService {
 													fdUser,examineAmount,lv,decisionTerm,sdUser,hkfs,beiZhu);
 			}
 		}
+		
+		//日志记录
+		OperationLog ol = new OperationLog();
+	    ol.setUser_id(loginId);
+	    ol.setUser_login(user.getDisplayName());
+	    
+	    if(auditType.equals("1")){
+	    	ol.setModule("进件初审");
+	    }else if(auditType.equals("2")){
+	    	ol.setModule("审贷决议");
+	    }else if(auditType.equals("3")){
+	    	ol.setModule("小微负责人审批");
+	    }else if(auditType.equals("4")){
+	    	ol.setModule("零售业务部负责人审批");
+	    }else if(auditType.equals("5")){
+	    	ol.setModule("行长审批");
+	    }
+	    
+	    ol.setOperation_result(applicationStatus);
+	    ol.setOperation_name("AUDIT");
+	    ol.setIp_address(request.getRemoteAddr());
+		userLogService.addUserLog(ol);
 	}
 	
 	public void updateAppliactionProd(CustomerApplicationInfo customerApplicationInfo,String prodId){

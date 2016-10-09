@@ -32,6 +32,7 @@ import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
@@ -123,6 +124,51 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		mv.addObject(PAGED_RESULT, pagedResult);
 
 		return mv;
+	}
+	
+	
+	/**
+	 * 台帐表
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "tzbrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView tzbrowse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = user.getId();
+
+		QueryResult<MibusidataForm> result = postLoanService.findTzJnListByFilter(filter);
+		JRadPagedQueryResult<MibusidataForm> pagedResult = new JRadPagedQueryResult<MibusidataForm>(filter, result);
+
+		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_browse", request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+
+		return mv;
+	}
+	
+	
+	/**
+	 * 
+	 * 根据busicode查询台帐表信息
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "tz_information.page")
+	public AbstractModelAndView tz_information(@ModelAttribute PostLoanFilter filter ,HttpServletRequest request) {
+		String busicode=request.getParameter("busicode");
+		filter.setBusiCode(busicode);
+		JRadModelAndView mv = new JRadModelAndView("/postLoan/tz_info_browse", request);
+		List<MibusidataForm> result = postLoanService.selectTz(filter);
+		MibusidataForm form = result.get(0);
+		mv.addObject("fcloanifo", form);
+		return mv;
+	
 	}
 	
 	
@@ -275,6 +321,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	
 			mv.addObject("Id",detaillist.get(0).getId());
 			mv.addObject("rowNum", page);
+			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);
 			mv.addObject("batchId", batchId);
 			return mv;

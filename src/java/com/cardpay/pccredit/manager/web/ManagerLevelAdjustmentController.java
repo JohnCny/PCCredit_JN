@@ -259,6 +259,12 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_salary_jx_browse", request);
 		String chineseName = request.getParameter("userId");
 		
+		String date = request.getParameter("date");
+		if(StringUtils.isNotEmpty(date)){
+			filter.setYear(date.substring(0, 4));
+			filter.setMonth(date.substring(5, 7));
+		}
+		
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		List<AccountManagerParameterForm> forms = managerBelongMapService.findSubListManagerByManagerId(user);
 		String customerManagerId = filter.getCustomerManagerId();
