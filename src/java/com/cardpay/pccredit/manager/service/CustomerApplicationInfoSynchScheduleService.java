@@ -2,10 +2,10 @@
  * 
  */
 package com.cardpay.pccredit.manager.service;
-
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,14 +14,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
-import com.cardpay.pccredit.intopieces.model.TyApplicationLog;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
-import com.cardpay.pccredit.manager.model.ManagerSalaryParameter;
-import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
-import com.wicresoft.jrad.base.database.id.IDGenerator;
 
 /**
  * 描述 ：同步系统中的进件的statusservice
@@ -30,12 +30,15 @@ import com.wicresoft.jrad.base.database.id.IDGenerator;
 @Service
 public class CustomerApplicationInfoSynchScheduleService {
 	
+
 	private Logger logger = Logger.getLogger(CustomerApplicationInfoSynchScheduleService.class);
 	
 	@Autowired
 	private IntoPiecesService intoPiecesService;
+	
 	@Autowired
 	private AccountManagerParameterService accountManagerParameterService;
+	
 	@Autowired
 	private CommonDao commonDao;
 	
@@ -46,7 +49,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 	 * 已放款
 	 * 贷款已结清
 	 */
-	private void dosynchJnCustAppInfoMethod(){
+	public void dosynchJnCustAppInfoMethod(){
 		//获取今日日期
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
 		String dateString = format.format(new Date());
@@ -104,10 +107,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 		logger.info(dateString+"进件状态更新结束（已放款）**********");
 	}*/
 	
-/*	*//**
-	 * 同步进件状态（还款已结束）
-	 * @throws IOException 
-	 *//*
+/*	
 	private void dosynchMethodEnd() throws IOException{
 		//获取今日日期
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
@@ -126,10 +126,10 @@ public class CustomerApplicationInfoSynchScheduleService {
 		logger.info(dateString+"进件状态更新结束（还款结束）**********");
 	}*/
 	
-	/*
+	/**
 	 * 每月定时计算客户经理管户、主调、辅调等信息
 	 */
-	private void monthParmter() throws Exception{
+	/*private void monthParmter() throws Exception{
 		//获取所有客户经理
 		List<AccountManagerParameterForm> accountList = accountManagerParameterService.findAccountManagerParameterAll();
 	      //yyyyMMdd格式
@@ -188,12 +188,12 @@ public class CustomerApplicationInfoSynchScheduleService {
 			parameter.setCompeterCount(zdCount+"");//完成笔数不折算，按实际笔数
 			commonDao.insertObject(parameter);
 		}
-}
+}*/
 	
 	/*
 	 * 笔数折算
 	 */
-	private int countCompeter(String quote){
+	/*private int countCompeter(String quote){
 		Double amount = Double.parseDouble(quote);
 		if(5000<amount&&amount<100000){
 			return 1;
@@ -207,4 +207,295 @@ public class CustomerApplicationInfoSynchScheduleService {
 			return 6;
 		}
 	}
+	*/
+	
+	//================================================济南项目=======================================//
+	/**
+	 * 还款提醒 不包含随借随还的贷款
+	 * 批处理 每月月初生成 还款提醒记录
+	 * @author songchen 
+	 * @datetime 20161009 下午 14:00:00
+	 * TODO 待测试
+	 */
+	public void reimbursement(){
+		/**
+		 * 1.定期结息，到期日利随本清（即按月付息 到期还本） 每月20号扣款  25再扣一次 ,如果是循环的 随借随还  还使用期限的利息和本金
+		 * 2.等额本息 例:10月7号放款 下月 10月7日扣款  客户经理需提前两三天提醒客户还款 提前存入指定账户
+		 */
+		
+		//获取今日日期
+		DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		String dateString = format.format(new Date());
+		logger.info(dateString+"还款提醒生成数据start**********");
+		
+		//1.查询未结清的贷款且非循环的贷款 2.循环的贷款可以随借随还难以控制
+		String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='1'";
+		List<MibusidataForm> lists = commonDao.queryBySql(MibusidataForm.class,sql, null);
+		
+		
+		for(MibusidataForm mibu:lists){
+			//台帐号
+			String busiCode = mibu.getBusicode();
+			
+			//贷款发放日期
+			String loandate = mibu.getLoandate();
+			
+			//利率
+			String lv = mibu.getInterest().toString();
+			
+			//贷款期限 
+			String qx = mibu.getLimit().toString();
+			
+			//发放金额（核心）
+			String money = mibu.getMoney().toString();
+			
+			//还款方法(01-定期结息，到期日利随本清;03-等额本息;)    
+			String repayMethod = mibu.getRepaymethod();
+			
+			//还款日期
+			String  repaydate ="";
+			
+			//还款本金
+			String repaybj ="";
+			
+			//还款利息
+			String repaylx ="";
+			
+			//计算使用天数
+			String day="";
+			
+			//等额本息 还款总额
+			String repayZe ="";
+			
+			/**
+			 * 1).等额本息 ：
+			 * 例：贷款发放日 10.07 下次还款日期 11.07
+			 * 2).按月付息 到期还本 
+			 * 1.22前的贷款   例：贷款发放日期10月07日     下次还款日  11月20日  计息周期（10月7日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
+			 * 2.22后的贷款   例：贷款发放日期10月23日     下次还款日  11月20日  计息周期（10月23日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
+			 */
+			if("03".equals(repayMethod)){//等额本息
+				repaydate = getDeBx(loandate);
+				day = "31";
+				repayZe = getAmt(money,lv,qx);
+				
+			}else{//按月付息,到期还本
+				if(loandate.substring(0, 4).equals(dateString.substring(0, 4))
+				 &&loandate.substring(5, 7).equals(dateString.substring(4, 6))){
+					repaydate = getAnyueBx(loandate);
+					day = calMistTime(loandate,repaydate)+"";
+					repaybj ="";//一年清一次本金
+					repaylx = gotLx(money, lv,day);
+				}else{
+					day = "31";
+					repaydate = getAnyueBx2(dateString);
+					repaybj ="";//一年清一次本金
+					repaylx = gotLx(money, lv,day);
+				}
+			}
+			
+			/**
+			 * 查询客户经理 id name
+			 */
+			String customerManagerId ="";
+			String customerManagerName ="";
+			String mysql = "select *                                                             "+
+						   "  from sys_user                                                      "+
+						   " where id = (select t.USER_ID                                        "+
+						   "               from basic_customer_information t          			 "+
+						   "              where t.ty_customer_id = '"+mibu.getCustid()+"')       ";
+			List<SystemUser> alist = commonDao.queryBySql(SystemUser.class,mysql, null);
+			
+			if(alist !=null&&alist.size()>0){
+				customerManagerId=alist.get(0).getId();
+				customerManagerName=alist.get(0).getDisplayName();
+			}
+			
+			/**
+			 * 插入还款计划提醒表
+			 */
+			REIMBURSEMENT re = new REIMBURSEMENT();
+			re.setCustomerId(mibu.getCustid());//ty_customer_id
+			re.setCustomerName(mibu.getCname());
+			re.setCustomerManagerId(customerManagerId);
+			re.setCustomerManagerName(customerManagerName);
+			re.setLoandate(loandate);
+			re.setMoney(money);
+			re.setLv(lv);
+			re.setRepayTime(repaydate);
+			re.setRepayBj(repaybj);
+			re.setRepayLx(repaylx);
+			re.setRepayMethod(repayMethod);
+			re.setRepayMzee(repayZe);
+			re.setBusiCode(busiCode);
+			commonDao.insertObject(re);
+		}
+		logger.info(dateString+"还款提醒生成数据end**********");
+	}
+	
+	
+	
+	/**
+	 * 按月付息,到期还款计算还款日
+	 * loandate 2016-09-11
+	 */
+	
+	public String getAnyueBx(String dateString){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.parseInt(dateString.substring(0, 4)),
+				     Integer.parseInt(dateString.substring(5, 7)), 
+				     Integer.parseInt(dateString.substring(8, 10)));
+	    calendar.add(Calendar.MONTH, 1);
+	    String year_1 = calendar.get(Calendar.YEAR)+"";
+		String month_1 = calendar.get(Calendar.MONTH)+"";
+		
+		if(month_1.length()==1){
+			month_1 = "0"+month_1;
+		}
+		
+		//获得当月的还款日期
+		String repaydate = year_1+"-"+month_1+"-"+"20";
+		
+		return repaydate;
+	}
+	
+	/**
+	 * 按月付息,到期还款计算还款日
+	 * loandate 2016-09-11
+	 */
+	
+	public String getAnyueBx2(String dateString){
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.parseInt(dateString.substring(0, 4)),
+				     Integer.parseInt(dateString.substring(4, 6)), 
+				     Integer.parseInt(dateString.substring(6, 8)));
+	    calendar.add(Calendar.MONTH, 1);
+	    String year_1 = calendar.get(Calendar.YEAR)+"";
+		String month_1 = calendar.get(Calendar.MONTH)+"";
+		
+		if(month_1.length()==1){
+			month_1 = "0"+month_1;
+		}
+		
+		//获得当月的还款日期
+		String repaydate = year_1+"-"+month_1+"-"+"20";
+		
+		return repaydate;
+	}
+	
+	
+	
+	/**
+	 * 等额本息还款计算还款日
+	 */
+	
+	public String getDeBx(String dateString){
+		//获得下个扣款日的年份和月份
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.parseInt(dateString.substring(0, 4)), 
+				     Integer.parseInt(dateString.substring(5, 7)), 
+				     Integer.parseInt(dateString.substring(8, 10)));
+	    calendar.add(Calendar.MONTH, 1);
+	    calendar.add(Calendar.DATE, 0);
+	    String year_1 = calendar.get(Calendar.YEAR)+"";
+		String month_1 = calendar.get(Calendar.MONTH)+"";
+		String day_1 = calendar.get(Calendar.DATE)+"";
+		
+		if(day_1.length()==1){day_1 = "0"+day_1;}
+		
+		if(month_1.length()==1){month_1 = "0"+month_1;}
+		
+		//获得当月的还款日期
+		String repaydate = year_1+"-"+month_1+"-"+day_1;
+		return repaydate;
+	}
+	
+	
+	/**
+	 * 计算还款利息
+	 * bj-本金
+	 * lv-利率
+	 * day-使用天数
+	 */
+	public String gotLx(String bj,String lv,String day){
+	   /**
+		 * if ($('#int-type')[0].selectedIndex == 0) {
+		 *		interest = interest / (360*100);
+		 *	} else if ($('#int-type')[0].selectedIndex == 1) {
+		 *		interest = interest / (30*1000);
+		 *	} else if ($('#int-type')[0].selectedIndex == 2) {
+		 *		interest = interest / 10000;
+		 *	} 
+		 */
+		
+		BigDecimal lx = new BigDecimal("0");
+		//日利率
+		BigDecimal daliyLv = new BigDecimal(lv).divide(new BigDecimal("36000"));
+		//利息
+		lx = new BigDecimal(bj).multiply(daliyLv).multiply(new BigDecimal(day)).setScale(2,BigDecimal.ROUND_HALF_UP);
+		return lx.toString();
+	}
+
+
+
+
+
+
+
+	public int calMistTime(String startDate,String endDate){
+		 // 创建一个日历对象。
+		 Calendar calendar = Calendar.getInstance();
+		
+		 // start
+		 List<String> startDateList = findYearAndMonthAndDay(startDate);
+		 calendar.set(Integer.parseInt(startDateList.get(0)), 
+				 	  Integer.parseInt(startDateList.get(1)), 
+					  Integer.parseInt(startDateList.get(2))); 
+	     long start = calendar.getTimeInMillis();
+	     
+	     // end
+	     List<String> endDateList = findYearAndMonthAndDay(endDate);
+	     calendar.set(Integer.parseInt(endDateList.get(0)),
+	    		 	  Integer.parseInt(endDateList.get(1)),
+	    			  Integer.parseInt(endDateList.get(2))); 
+	     long end = calendar.getTimeInMillis();
+	     
+	     // 时间差
+	     long interdays = (end - start) / (1000 * 60 * 60 * 24);
+	     return new Long(interdays).intValue();
+	 }
+	 
+	 public static List<String> findYearAndMonthAndDay(String date){
+		  List<String>  list = new ArrayList<String>();
+		  String year = date.substring(0, 4);
+		  String month = date.substring(6, 7);
+		  String day = date.substring(8, 10);
+		  list.add(year);
+		  list.add(month);
+		  list.add(day);
+		  return list;
+	  }
+	
+	 
+	 /**
+	  * 等额本息计划还款金额
+	  * bj  本金
+	  * lv  利率
+	  * qx  期限
+	  */
+	 public String getAmt(String bj,String lv,String qx){
+		//月利率 
+		BigDecimal  monthLv = new BigDecimal(lv).divide(new BigDecimal("12")).divide(new BigDecimal("100"));
+		
+		BigDecimal lvs = new BigDecimal("1").add(monthLv);
+		
+		BigDecimal part1 = new BigDecimal(bj).multiply(monthLv).multiply(lvs.pow(Integer.parseInt(qx)));
+		
+		BigDecimal part2 = lvs.pow(12).subtract(new BigDecimal("1"));
+		
+	    BigDecimal hk= part1.divide(part2,2,BigDecimal.ROUND_HALF_UP);
+	    
+	    return hk+""; 
+	 }
+	
 }

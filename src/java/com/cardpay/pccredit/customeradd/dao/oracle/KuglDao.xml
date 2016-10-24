@@ -77,6 +77,23 @@
 		
 		<result property="dkye" column="dkye" />
 	</resultMap>
+	
+	
+	<resultMap id="RMap" type="com.cardpay.pccredit.manager.model.FourMonthModel">
+		<result property="a1"  column="a1" />
+		<result property="a2"  column="a2" />
+		<result property="a3"  column="a3" />
+		<result property="a4"  column="a4" />
+		<result property="a5"  column="a5" />
+		<result property="a6"  column="a6" />
+		<result property="a7"  column="a7" />
+		<result property="a8"  column="a8" />
+		<result property="a9"  column="a9" />
+		<result property="a10" column="a10" />
+		<result property="a11" column="a11" />
+		<result property="a12" column="a12" />
+		<result property="a13" column="a13" />
+	</resultMap>
 
 
 
@@ -152,4 +169,102 @@
 			AND b.user_id=#{customerManagerId}
 		</if>
 	</select>
+	
+
+
+	<select id="findModelList" resultMap="RMap" parameterType="com.cardpay.pccredit.customer.filter.ModelFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select  * from four_month_model where 1=1 
+					  <if test="a1 != null and a1 != '' ">
+						AND a1 =#{a1}
+					  </if>
+					  <if test="a2 != null and a2 != '' ">
+						AND a2 =#{a2}
+					  </if>
+					  <if test="a3 != null and a3 != '' ">
+						AND a3 =#{a3}
+					  </if>
+					  <if test="a4 != null and a4 != '' ">
+						AND a4 =#{a4}
+					  </if>
+					  <if test="a5 != null and a5 != '' ">
+						AND a5 =#{a5}
+					  </if>
+					  <if test="a6 != null and a6 != '' ">
+						AND a6 =#{a6}
+					  </if>
+					  <if test="a7 != null and a7 != '' ">
+						AND a7 =#{a7}
+					  </if>
+					  <if test="a8 != null and a8 != '' ">
+						AND a8 =#{a8}
+					  </if>
+					  <if test="a9 != null and a9 != '' ">
+						AND a9 =#{a9}
+					  </if>
+					  <if test="a10 != null and a10 != '' ">
+						AND a10 =#{a10}
+					  </if>
+					  <if test="a11 != null and a11 != '' ">
+						AND a11 =#{a11}
+					  </if>
+					  <if test="a12 != null and a12 != '' ">
+						AND a12 =#{a12}
+					  </if>
+					  <if test="a13 != null and a13 != '' ">
+						AND a13 =#{a13}
+					  </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findModelCountList" resultType="int" parameterType="com.cardpay.pccredit.customer.filter.ModelFilter">
+		  			select  count(*) from four_month_model where 1=1
+		  			 <if test="a1 != null and a1 != '' ">
+						AND a1 =#{a1}
+					  </if>
+					  <if test="a2 != null and a2 != '' ">
+						AND a2 =#{a2}
+					  </if>
+					  <if test="a3 != null and a3 != '' ">
+						AND a3 =#{a3}
+					  </if>
+					  <if test="a4 != null and a4 != '' ">
+						AND a4 =#{a4}
+					  </if>
+					  <if test="a5 != null and a5 != '' ">
+						AND a5 =#{a5}
+					  </if>
+					  <if test="a6 != null and a6 != '' ">
+						AND a6 =#{a6}
+					  </if>
+					  <if test="a7 != null and a7 != '' ">
+						AND a7 =#{a7}
+					  </if>
+					  <if test="a8 != null and a8 != '' ">
+						AND a8 =#{a8}
+					  </if>
+					  <if test="a9 != null and a9 != '' ">
+						AND a9 =#{a9}
+					  </if>
+					  <if test="a10 != null and a10 != '' ">
+						AND a10 =#{a10}
+					  </if>
+					  <if test="a11 != null and a11 != '' ">
+						AND a11 =#{a11}
+					  </if>
+					  <if test="a12 != null and a12 != '' ">
+						AND a12 =#{a12}
+					  </if>
+					  <if test="a13 != null and a13 != '' ">
+						AND a13 =#{a13}
+					  </if>
+	</select>
+	
 </mapper>

@@ -1,11 +1,14 @@
 package com.cardpay.pccredit.postLoan.model;
 
+import java.math.BigDecimal;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 /**
  * 台帐表Form
  * @author sc
  */
 public class MibusidataForm extends BusinessModel {
+
 	private String busicode;
 	private String busitype;
 	private String loanaccount;
@@ -37,7 +40,7 @@ public class MibusidataForm extends BusinessModel {
 	private String isrelamanloan;
 	private String enterprisestatus;
 	private String ecoattr;
-	private String custscale ;
+	private String custscale;
 	private String controlmode;
 	private String contractno;
 	private String contractmoney;
@@ -46,7 +49,7 @@ public class MibusidataForm extends BusinessModel {
 	private String mainassure;
 	private String assuremanname;
 	private String creditlevel;
-	private String reqlmt;
+	private BigDecimal reqlmt;
 	private String isexp;
 	private String purposeremark;
 	private String busimanager;
@@ -59,18 +62,18 @@ public class MibusidataForm extends BusinessModel {
 	private String startdate;
 	private String orienddate;
 	private String enddate;
-	private String limit;
+	private Integer limit;
 	private String limittype;
 	private String ratetype;
 	private String floattype;
 	private String baserate;
 	private String baseratetype;
 	private String crtrate;
-	private String interest;
+	private BigDecimal interest;
 	private String floatrate;
-	private String money;
+	private BigDecimal money;
 	private String currency;
-	private String balamt;
+	private BigDecimal balamt;
 	private String loanpurpose;
 	private String accountstate;
 	private String closedate;
@@ -82,22 +85,22 @@ public class MibusidataForm extends BusinessModel {
 	private String pastratescale;
 	private String repaytype;
 	private String repaymethod;
-	private String delayamtdays;
-	private String delayinterestdays;
+	private Integer delayamtdays;
+	private Integer delayinterestdays;
 	private String firstinterestdate;
-	private String debtinterest;
-	private String debtinteresttimes;
+	private BigDecimal debtinterest;
+	private Integer debtinteresttimes;
 	private String normalaccno;
-	private String normalamt;
+	private BigDecimal normalamt;
 	private String dlayaccno;
-	private String dlayamt;
+	private BigDecimal dlayamt;
 	private String dlaydt;
 	private String tovdlyaccno;
 	private String tovdlyamt;
 	private String tovdlydt;
-	private String paydebt;
-	private String indebtamt;
-	private String outdebtamt;
+	private BigDecimal paydebt;
+	private BigDecimal indebtamt;
+	private BigDecimal outdebtamt;
 	private String debtinterestflag;
 	private String paymode;
 	private String squareinterestmode;
@@ -390,10 +393,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setCreditlevel(String creditlevel) {
 		this.creditlevel = creditlevel;
 	}
-	public String getReqlmt() {
+	public BigDecimal getReqlmt() {
 		return reqlmt;
 	}
-	public void setReqlmt(String reqlmt) {
+	public void setReqlmt(BigDecimal reqlmt) {
 		this.reqlmt = reqlmt;
 	}
 	public String getIsexp() {
@@ -468,10 +471,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setEnddate(String enddate) {
 		this.enddate = enddate;
 	}
-	public String getLimit() {
+	public Integer getLimit() {
 		return limit;
 	}
-	public void setLimit(String limit) {
+	public void setLimit(Integer limit) {
 		this.limit = limit;
 	}
 	public String getLimittype() {
@@ -510,10 +513,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setCrtrate(String crtrate) {
 		this.crtrate = crtrate;
 	}
-	public String getInterest() {
+	public BigDecimal getInterest() {
 		return interest;
 	}
-	public void setInterest(String interest) {
+	public void setInterest(BigDecimal interest) {
 		this.interest = interest;
 	}
 	public String getFloatrate() {
@@ -522,10 +525,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setFloatrate(String floatrate) {
 		this.floatrate = floatrate;
 	}
-	public String getMoney() {
+	public BigDecimal getMoney() {
 		return money;
 	}
-	public void setMoney(String money) {
+	public void setMoney(BigDecimal money) {
 		this.money = money;
 	}
 	public String getCurrency() {
@@ -534,10 +537,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
-	public String getBalamt() {
+	public BigDecimal getBalamt() {
 		return balamt;
 	}
-	public void setBalamt(String balamt) {
+	public void setBalamt(BigDecimal balamt) {
 		this.balamt = balamt;
 	}
 	public String getLoanpurpose() {
@@ -606,16 +609,16 @@ public class MibusidataForm extends BusinessModel {
 	public void setRepaymethod(String repaymethod) {
 		this.repaymethod = repaymethod;
 	}
-	public String getDelayamtdays() {
+	public Integer getDelayamtdays() {
 		return delayamtdays;
 	}
-	public void setDelayamtdays(String delayamtdays) {
+	public void setDelayamtdays(Integer delayamtdays) {
 		this.delayamtdays = delayamtdays;
 	}
-	public String getDelayinterestdays() {
+	public Integer getDelayinterestdays() {
 		return delayinterestdays;
 	}
-	public void setDelayinterestdays(String delayinterestdays) {
+	public void setDelayinterestdays(Integer delayinterestdays) {
 		this.delayinterestdays = delayinterestdays;
 	}
 	public String getFirstinterestdate() {
@@ -624,16 +627,16 @@ public class MibusidataForm extends BusinessModel {
 	public void setFirstinterestdate(String firstinterestdate) {
 		this.firstinterestdate = firstinterestdate;
 	}
-	public String getDebtinterest() {
+	public BigDecimal getDebtinterest() {
 		return debtinterest;
 	}
-	public void setDebtinterest(String debtinterest) {
+	public void setDebtinterest(BigDecimal debtinterest) {
 		this.debtinterest = debtinterest;
 	}
-	public String getDebtinteresttimes() {
+	public Integer getDebtinteresttimes() {
 		return debtinteresttimes;
 	}
-	public void setDebtinteresttimes(String debtinteresttimes) {
+	public void setDebtinteresttimes(Integer debtinteresttimes) {
 		this.debtinteresttimes = debtinteresttimes;
 	}
 	public String getNormalaccno() {
@@ -642,10 +645,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setNormalaccno(String normalaccno) {
 		this.normalaccno = normalaccno;
 	}
-	public String getNormalamt() {
+	public BigDecimal getNormalamt() {
 		return normalamt;
 	}
-	public void setNormalamt(String normalamt) {
+	public void setNormalamt(BigDecimal normalamt) {
 		this.normalamt = normalamt;
 	}
 	public String getDlayaccno() {
@@ -654,10 +657,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setDlayaccno(String dlayaccno) {
 		this.dlayaccno = dlayaccno;
 	}
-	public String getDlayamt() {
+	public BigDecimal getDlayamt() {
 		return dlayamt;
 	}
-	public void setDlayamt(String dlayamt) {
+	public void setDlayamt(BigDecimal dlayamt) {
 		this.dlayamt = dlayamt;
 	}
 	public String getDlaydt() {
@@ -684,22 +687,22 @@ public class MibusidataForm extends BusinessModel {
 	public void setTovdlydt(String tovdlydt) {
 		this.tovdlydt = tovdlydt;
 	}
-	public String getPaydebt() {
+	public BigDecimal getPaydebt() {
 		return paydebt;
 	}
-	public void setPaydebt(String paydebt) {
+	public void setPaydebt(BigDecimal paydebt) {
 		this.paydebt = paydebt;
 	}
-	public String getIndebtamt() {
+	public BigDecimal getIndebtamt() {
 		return indebtamt;
 	}
-	public void setIndebtamt(String indebtamt) {
+	public void setIndebtamt(BigDecimal indebtamt) {
 		this.indebtamt = indebtamt;
 	}
-	public String getOutdebtamt() {
+	public BigDecimal getOutdebtamt() {
 		return outdebtamt;
 	}
-	public void setOutdebtamt(String outdebtamt) {
+	public void setOutdebtamt(BigDecimal outdebtamt) {
 		this.outdebtamt = outdebtamt;
 	}
 	public String getDebtinterestflag() {
@@ -1014,8 +1017,6 @@ public class MibusidataForm extends BusinessModel {
 	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
 	}
-
 	
 	
-	  
 }

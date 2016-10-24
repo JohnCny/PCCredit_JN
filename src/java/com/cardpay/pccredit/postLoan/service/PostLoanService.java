@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
@@ -114,5 +115,26 @@ public class PostLoanService {
 		// TODO Auto-generated method stub
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
+	}
+	
+	
+	/**
+	 * 还款提醒
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<REIMBURSEMENT> findReimbListByFilter(PostLoanFilter filter){
+		List<REIMBURSEMENT> lists = postLoanDao.findReimbListByFilter(filter);
+		int size = postLoanDao.findReimbCountListByFilter(filter);
+		QueryResult<REIMBURSEMENT> qr = new QueryResult<REIMBURSEMENT>(size,lists);
+		return qr;
+	}
+	
+	/**
+	 * 更新每月还款提醒表
+	 */
+	public void updateNotice(String id){
+		String sql  = "update t_reimbursement set HAS_TELL ='1' where id = '"+id+"'";
+		commonDao.queryBySql(sql, null);
 	}
 }

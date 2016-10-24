@@ -116,7 +116,9 @@
                   title="查看详情" style="height: 26px; line-height: 24px;" /> 
            <input id="id_export_button" type="button" value="导出EXCEL" class="search_button_inquiry"
                   title="导出工资单" style="height: 26px; line-height: 24px;" />
-          <!--  <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
+           <!-- <input id="id_go_button" type="button" value="四维授信" class="search_button_inquiry"
+                  title="四维授信" style="height: 26px; line-height: 24px;" /> -->
+           <!--  <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
                   title="打印" style="height: 26px; line-height: 24px;" /> -->
         </div>
         #parse ("common/pagination.htm")
@@ -170,6 +172,26 @@
 					}
 				});
 	    	}
+	    });
+		
+		
+		//四维授信生成数据
+		$("#id_go_button").click(function() {
+    		Dialog.load();
+			$.ajax({
+				type:'GET',
+				url:"${modulePath}/doGet.json",
+				data:"",
+				success:function(data){
+					Dialog.closeLoad();
+					if(data.success == true){
+						window.location.href="${modulePath}/jnJxbrowse.page";
+					}else{
+						Dialog.message(data.errors.errors[0].message);
+					}
+					
+				}
+			});
 	    });
 		
 		

@@ -160,11 +160,8 @@
 		$("#id_update_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
-				if(rowid.split("_")[2]==''||rowid.split("_")[2]==null){
-					Dialog.message("基本信息尚未同步!");
-					return;
-				}
-				var url ="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id=" + rowid.split("_")[2];
+				
+				var url ="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id=" + rowid.split("_")[1];
 				window.location.href = url;
 			}
 			else{

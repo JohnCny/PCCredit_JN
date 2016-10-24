@@ -13,6 +13,7 @@ import com.cardpay.pccredit.customer.model.TyRepayTkmx;
 import com.cardpay.pccredit.customer.model.TyRepayTkmxForm;
 import com.cardpay.pccredit.customer.web.MaintenanceForm;
 import com.cardpay.pccredit.customer.web.MaintenanceWeb;
+import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
@@ -83,5 +84,9 @@ public interface PostLoanDao {
 	
 	
 	List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter);
+	
+	
+	List<REIMBURSEMENT> findReimbListByFilter(PostLoanFilter filter);
+	int findReimbCountListByFilter(PostLoanFilter filter);
 	
 }

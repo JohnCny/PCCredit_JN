@@ -125,6 +125,24 @@
 		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
 		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
  	 </resultMap>
+ 	 
+ 	 
+ 	 <resultMap id="BaseResultMap4" type="com.cardpay.pccredit.manager.model.REIMBURSEMENT" >
+   		 <result column="ID"        property="id"    jdbcType="VARCHAR" />         
+		 <result column="CUSTOMER_ID"          property="customerId"    jdbcType="VARCHAR" /> 
+		 <result column="CUSTOMER_NAME"          property="customerName"    jdbcType="VARCHAR" />  
+		 <result column="CUSTOMER_MANAGER_ID"          property="customerManagerId"    jdbcType="VARCHAR" />  
+		 <result column="CUSTOMER_MANAGER_NAME"          property="customerManagerName"    jdbcType="VARCHAR" />  
+		 <result column="LOANDATE"          property="loandate"    jdbcType="VARCHAR" />  
+		 <result column="MONEY"          property="money"    jdbcType="VARCHAR" />  
+		 <result column="LV"          property="lv"    jdbcType="VARCHAR" />  
+		 <result column="REPAY_TIME"          property="repayTime"    jdbcType="VARCHAR" />  
+		 <result column="REPAY_BJ"          property="repayBj"    jdbcType="VARCHAR" />  
+		 <result column="REPAY_LX"          property="repayLx"    jdbcType="VARCHAR" />  
+		 <result column="REPAY_METHOD"          property="repayMethod"    jdbcType="VARCHAR" />  
+		 <result column="REPAY_MZEE"          property="repayMzee"    jdbcType="VARCHAR" />  
+		 <result column="BUSI_CODE"          property="busiCode"    jdbcType="VARCHAR" />  
+ 	 </resultMap>
 
 	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
@@ -296,6 +314,44 @@
 		
 	  	<if test="customerName != null and customerName != '' ">
 			AND cname =#{customerName}
+		 </if>
+	</select>
+	
+	
+	
+	
+	<select id="findReimbListByFilter" resultMap="BaseResultMap4" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					  select a.* from t_reimbursement a where 1=1 and has_tell !=1
+					 <if test="customerName != null and customerName != '' ">
+						AND CUSTOMER_NAME =#{customerName}
+					 </if>
+					 <if test="customerManagerName != null and customerManagerName != '' ">
+						AND CUSTOMER_MANAGER_NAME =#{customerManagerName}
+					 </if>
+					 <if test="userId != null and userId != '' ">
+						AND CUSTOMER_MANAGER_ID =#{userId}
+					 </if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	
+	<select id="findReimbCountListByFilter" resultType="int" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	  	select count(*)  from t_reimbursement where 1=1 and has_tell !=1
+	  	<if test="customerName != null and customerName != '' ">
+			AND CUSTOMER_NAME =#{customerName}
+		 </if>
+		 <if test="customerManagerName != null and customerManagerName != '' ">
+			AND CUSTOMER_MANAGER_NAME =#{customerManagerName}
+		 </if>
+		 <if test="userId != null and userId != '' ">
+			AND CUSTOMER_MANAGER_ID =#{userId}
 		 </if>
 	</select>
 </mapper>

@@ -314,6 +314,28 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		return returnMap;
 	}
 	
+	
+	/**
+	 * 四维授信模型生成数据
+	 */
+	@ResponseBody
+	@RequestMapping(value = "doGet.json")
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap doGet(@ModelAttribute ManagerSalaryForm form, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			managerSalaryService.doGet();
+			returnMap.setSuccess(true);
+		}
+		catch (Exception e) {
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(e.getMessage());
+			return returnMap;
+		}
+		return returnMap;
+	}
+	
+	
 	/**
 	 * 跳转到打印页面
 	 */
