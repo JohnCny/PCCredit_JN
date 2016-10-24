@@ -217,42 +217,50 @@
 	</select>
 
 	<select id="findYunyinstatus" resultMap="YunyinstatusResultMap">
-		select (select nvl(sum(nvl(a.MONEY,0)),0)
-		from t_gccontractmain a,
-		basic_customer_information b,
-		t_gcloancredit c
-		where c.UPKEYCODE = a.keycode
-		and c.custid = b.ty_customer_id
+	    
+	     with circle as (
+	    SELECT *
+		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
+	    
+		select 
+		(select nvl(sum(a.MONEY),0)
+          from t_gccontractmain           a,
+               basic_customer_information b,
+               t_gccontractmulticlient    c
+         where trim(a.KEYCODE) = c.KEYCODE
+           and c.custid = b.ty_customer_id
+           and a.keyeffectedstate ='1'
+           and c.keyeffectedstate ='1'
 		<if test="userId != null and userId != '' ">
 			and b.USER_ID =#{userId}
 		</if>
 		) as ksze,
 
-		(select nvl(sum(nvl(a.balamt,0)),0)
-		from t_fcloaninfo a,
-		t_gccontractmain b,
-		basic_customer_information c
-		where a.CONTRACTCODE = b.KEYCODE
-		and c.ty_customer_id = a.custid
+		(select nvl(sum(a.balamt),0)
+          from circle a,
+               basic_customer_information c
+         where  c.ty_customer_id = a.custid
 		<if test="userId != null and userId != '' ">
 			and c.USER_ID =#{userId}
 		</if>
 		) as kyze,
 
-		(select nvl(sum(nvl(a.DLAYAMT, 0) + nvl(a.INDEBTAMT, 0) +
-		nvl(a.OUTDEBTAMT, 0)),0)
-		from t_mibusidata a, basic_customer_information c
-		where a.custid = c.ty_customer_id
-		and (a.DELAYINTERESTDAYS > 0 or a.DELAYAMTDAYS > 0)
+		(select nvl(sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0)),0)
+          from circle a, basic_customer_information c
+         where a.custid = c.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
 		<if test="userId != null and userId != '' ">
 			and c.USER_ID =#{userId}
 		</if>
 		) as kyyeze,
 
 		(select count(distinct(a.custid))
-		from t_mibusidata a, basic_customer_information b
-		where a.custid = b.ty_customer_id
-		and (a.DELAYINTERESTDAYS > 0 or a.DELAYAMTDAYS > 0)
+          from circle a, basic_customer_information b
+         where a.custid = b.ty_customer_id
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
 		<if test="userId != null and userId != '' ">
 			and b.USER_ID =#{userId}
 		</if>

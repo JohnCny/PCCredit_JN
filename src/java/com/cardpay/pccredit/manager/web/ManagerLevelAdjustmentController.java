@@ -259,6 +259,12 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_salary_jx_browse", request);
 		String chineseName = request.getParameter("userId");
 		
+		String date = request.getParameter("date");
+		if(StringUtils.isNotEmpty(date)){
+			filter.setYear(date.substring(0, 4));
+			filter.setMonth(date.substring(5, 7));
+		}
+		
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		List<AccountManagerParameterForm> forms = managerBelongMapService.findSubListManagerByManagerId(user);
 		String customerManagerId = filter.getCustomerManagerId();
@@ -307,6 +313,28 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		}
 		return returnMap;
 	}
+	
+	
+	/**
+	 * 四维授信模型生成数据
+	 */
+	@ResponseBody
+	@RequestMapping(value = "doGet.json")
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap doGet(@ModelAttribute ManagerSalaryForm form, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			managerSalaryService.doGet();
+			returnMap.setSuccess(true);
+		}
+		catch (Exception e) {
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(e.getMessage());
+			return returnMap;
+		}
+		return returnMap;
+	}
+	
 	
 	/**
 	 * 跳转到打印页面

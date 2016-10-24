@@ -19,10 +19,37 @@ public class PostLoanFilter extends BaseQueryFilter{
 	private String busiCode;
 	private String cardNum;
 	
+	private String customerName;
+	
+	private String userId;
+	private String customerManagerName;
 	
 	
 	
-	
+
+	public String getCustomerManagerName() {
+		return customerManagerName;
+	}
+
+	public void setCustomerManagerName(String customerManagerName) {
+		this.customerManagerName = customerManagerName;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 
 	public String getCardNum() {
 		return cardNum;

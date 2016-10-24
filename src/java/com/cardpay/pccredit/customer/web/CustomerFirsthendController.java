@@ -374,7 +374,7 @@ public class CustomerFirsthendController extends BaseController{
 	@RequestMapping(value = "showCustomerInfoJn.page")
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView updateCustomerInfoJn(HttpServletRequest request) {
-		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_12", request);
+		/*JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_12", request);
 		String customerInforId = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CIPERSONBASINFOCOPY base = customerInforService.findCIPERSONBASINFOCOPY(customerInforId);
@@ -389,6 +389,15 @@ public class CustomerFirsthendController extends BaseController{
 				mv.addObject("customerInfor", base);
 				mv.addObject("customerNm", base.getId());
 			}
+		}
+		return mv;*/
+		
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_12", request);
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(customerInforId)) {
+			CustomerInfor cust = customerInforService.findBasicCustomerInformation(customerInforId);
+			mv.addObject("customerInfor", cust);
+			mv.addObject("customerNm", cust.getId());
 		}
 		return mv;
 	}

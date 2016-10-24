@@ -764,6 +764,7 @@
           from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           and a.ACCOUNTSTATE !='5'
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
            and a.DLAYDT <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
@@ -773,6 +774,7 @@
        (select count(distinct(a.custid))
           from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
+           and a.ACCOUNTSTATE !='5'
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and a.DLAYDT <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
@@ -857,6 +859,7 @@
        (select count(a.custid)
           from circle a, basic_customer_information b
          where a.custid = b.ty_customer_id
+           and  a.ACCOUNTSTATE !='5'
            and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
            and nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ <  ]]> 30
            and nvl(a.DELAYAMTDAYS,0) <![CDATA[ < ]]> 30

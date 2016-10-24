@@ -8,10 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
 import com.cardpay.pccredit.postLoan.model.RarepaylistForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -78,6 +80,20 @@ public class PostLoanService {
 		QueryResult<RarepaylistForm> qr = new QueryResult<RarepaylistForm>(size,lists);
 		return qr;
 	}
+	
+	/**
+	 * 台帐表
+	 * JN
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter){
+		List<MibusidataForm> lists = postLoanDao.findTzJnListByFilter(filter);
+		int size = postLoanDao.findTzJnListCountByFilter(filter);
+		QueryResult<MibusidataForm> qr = new QueryResult<MibusidataForm>(size,lists);
+		return qr;
+	}
+	
 	/**
 	 * 借据表详细信息
 	 * @param filter
@@ -89,10 +105,36 @@ public class PostLoanService {
 		return postLoanDao.findJJJnListByFilter(filter);
 	}
 	
+	public List<MibusidataForm> selectTz(PostLoanFilter filter) {
+		// TODO Auto-generated method stub
+		return postLoanDao.findTzJnListByFilter(filter);
+	}
+	
 	
 	public List<RarepaylistForm> selectRarepaylistfoInfoByBusicode(FcloaninfoFilter filter) {
 		// TODO Auto-generated method stub
 		
 		return postLoanDao.selectRarepaylistfoInfoByBusicode(filter);
+	}
+	
+	
+	/**
+	 * 还款提醒
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<REIMBURSEMENT> findReimbListByFilter(PostLoanFilter filter){
+		List<REIMBURSEMENT> lists = postLoanDao.findReimbListByFilter(filter);
+		int size = postLoanDao.findReimbCountListByFilter(filter);
+		QueryResult<REIMBURSEMENT> qr = new QueryResult<REIMBURSEMENT>(size,lists);
+		return qr;
+	}
+	
+	/**
+	 * 更新每月还款提醒表
+	 */
+	public void updateNotice(String id){
+		String sql  = "update t_reimbursement set HAS_TELL ='1' where id = '"+id+"'";
+		commonDao.queryBySql(sql, null);
 	}
 }

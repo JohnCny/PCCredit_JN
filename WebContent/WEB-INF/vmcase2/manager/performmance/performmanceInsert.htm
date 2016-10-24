@@ -26,12 +26,12 @@
 							name="visitcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
 						<td class="titlefc3"><label for="applycount">申请数:</label></td>
 						<td><input class="rinpsty" type="text" id="applycount"
-							name="applycount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+							name="applycount" value="$!ssss.applyNum" readonly="readonly"/></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="applyrefuse">申请拒绝数:</label></td>
 						<td><input class="rinpsty" type="text" id="applyrefuse"
-							name="applyrefuse" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+							name="applyrefuse" value="$!ssss.refuseNum" readonly="readonly"/></td>
 						<td class="titlefc3"><label for="creditcount">征信数:</label></td>
 						<td><input class="rinpsty" type="text" id="creditcount"
 							name="creditcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
@@ -50,15 +50,15 @@
 							name="reportcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
 						<td class="titlefc3"><label for="internalcount">内审数:</label></td>
 						<td><input class="rinpsty" type="text" id="internalcount"
-							name="internalcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+							name="internalcount" value="$!ssss.auditNum" readonly="readonly"/></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="meetingcout">上会数:</label></td>
 						<td><input class="rinpsty" type="text" id="meetingcout"
-							name="meetingcout" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+							name="meetingcout" value="$!ssss.willNum" readonly="readonly"/></td>
 						<td class="titlefc3"><label for="passcount">通过数:</label></td>
 						<td><input class="rinpsty" type="text" id="passcount"
-							name="passcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
+							name="passcount" value="$!ssss.passNum" readonly="readonly"/></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="signcount">签约数:</label></td>

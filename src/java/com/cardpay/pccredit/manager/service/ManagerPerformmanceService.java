@@ -103,7 +103,36 @@ public class ManagerPerformmanceService {
 		
 		managerPerformmanceDao.updateManagerPerformmanceSumInfor(managerPerformmanceSum);
 	}
-//导出excle
+
+	
+	//业务进度入录 数据自动读取 查询方法
+	public int queryRefuse(String userId) {
+		// TODO Auto-generated method stub
+		return managerPerformmanceDao.queryRefuse(userId);
+	}
+
+	public int queryApply(String userId) {
+		// TODO Auto-generated method stub
+		return managerPerformmanceDao.queryApply(userId);
+	}
+
+	public int queryAudit(String userId) {
+		// TODO Auto-generated method stub
+		return managerPerformmanceDao.queryAudit(userId);
+	}
+
+	public int queryWill(String userId) {
+		// TODO Auto-generated method stub
+		return managerPerformmanceDao.queryWill(userId);
+	}
+
+	public int queryPass(String userId) {
+		// TODO Auto-generated method stub
+		return managerPerformmanceDao.queryPass(userId);
+	}
+
+
+	//导出excel
 	public void getExportWageData(List<ManagerPerformmanceForm> gxperformList, HttpServletResponse response,String satrtDate,String endDate) {
 		
 		
@@ -264,14 +293,13 @@ public class ManagerPerformmanceService {
 		// TODO Auto-generated method stub
 		return managerPerformmanceDao.findDeptTodayPerformmanceById(id);
 	}
-//总行当天进度
+    //总行当天进度
 	public ManagerPerformmance findDeptTodaySumPerformmanceById() {
 		// TODO Auto-generated method stub
 		return managerPerformmanceDao.findDeptTodaySumPerformmanceById();
 	}
 		
 	}
-
 
 
 

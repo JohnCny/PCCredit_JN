@@ -37,9 +37,9 @@ public interface StatisticalCommonDao {
 	//统计各行 通过进件数量
 	public List<NameValueRecord> statisticalApprovedStatus();
 	
-	//统计授信总金额  逾期总金额  不良总金额
+	//统计放款总金额  逾期总金额  不良总金额
 	public List<NameValueRecord> statisticaljine();
-	//统计 各支行授信总金额
+	//统计 各支行放款总金额
 	public List<NameValueRecord> statisticalsxorgan();
 	//统计 各支行逾期总金额
 	public List<NameValueRecord> statisticalyqorgan();
