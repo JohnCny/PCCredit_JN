@@ -58,9 +58,9 @@ public class JnpadCustomerSelectService {
 	}
 
 
-	public CustomerFirsthendBase findCustomerFirsthendById(String customerInforId) {
+	public CIPERSONBASINFO findCustomerFirsthendById(String customerInforId) {
 		// TODO Auto-generated method stub
-		 return commonDao.findObjectById(CustomerFirsthendBase.class,customerInforId);
+		 return commonDao.findObjectById(CIPERSONBASINFO.class,customerInforId);
 	}
 
 //按身份证号和客户经理ID

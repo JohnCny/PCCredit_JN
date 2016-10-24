@@ -146,7 +146,7 @@ public class JnpadAddIntoPiecesService {
 //		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
-				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
+				throw new RuntimeException("001");
 			}
 		}
 		/*localExcel.setSheetJy(sheet[0]);
@@ -194,9 +194,9 @@ public class JnpadAddIntoPiecesService {
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		//本地
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -409,15 +409,15 @@ public class JnpadAddIntoPiecesService {
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
 			//本地测试
-			/*UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 			String url = v.getUri();
 			if(url.contains("pccreditFile")){
 				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 			}else{
 				SFTPUtil.download(response, v.getUri(), v.getAttachment());
-			}*/
+			}
 			//服务器
-			SFTPUtil.download(response, v.getUri(), v.getAttachment());
+//			SFTPUtil.download(response, v.getUri(), v.getAttachment());
 		}
 	}
 	
@@ -425,9 +425,9 @@ public class JnpadAddIntoPiecesService {
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-			this.downLoadFile(response,v);
+//			this.downLoadFile(response,v);
 			//服务器
-//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -435,9 +435,9 @@ public class JnpadAddIntoPiecesService {
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-			this.downLoadFileDh(response,v);
+//			this.downLoadFileDh(response,v);
 			//服务器
-//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	

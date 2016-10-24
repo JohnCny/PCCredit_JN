@@ -47,7 +47,10 @@ public class JnpadDailyAccountManagerController {
 	public String browse(@ModelAttribute DailyAccountManagerFilter filter, HttpServletRequest request) {
 		filter.setRequest(request);
 		String loginId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		if(userType.equals("1")){
 		filter.setLoginId(loginId);
+		}
 		QueryResult<DailyAccountManagerForm> result = jnpadDailyAccountManagerService.findDailyAccountManagersByFilter(filter);
 		
 		JsonConfig jsonConfig = new JsonConfig();

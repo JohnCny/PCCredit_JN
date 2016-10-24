@@ -116,7 +116,7 @@ public class JnpadAddIntoPiecesController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				map.put(JRadConstants.SUCCESS, false);
-				map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
+				map.put(JRadConstants.MESSAGE,e.getMessage());
 				JSONObject obj = JSONObject.fromObject(map);
 				response.getWriter().print(obj.toString());
 			}

@@ -11,6 +11,7 @@ import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.riskControl.model.RiskCustomerCollectionPlansAction;
 import com.cardpay.pccredit.riskControl.web.RiskCustomerCollectionPlanForm;
+import com.cardpay.pccredit.system.model.Dict;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 @Service
 public class JnpadRiskCustomerCollectionService {
@@ -68,5 +69,11 @@ public class JnpadRiskCustomerCollectionService {
 		//return commonDao.findObjectsByFilter(RiskCustomer.class, filter);
 		List<RiskCustomer> riskCustomers = riskCustomerCollectionDao.findRiskCustomersByFilter(filter);
 		return riskCustomers;
+	}
+
+
+	public List<Dict> getProductIdAndName(String customerId) {
+		// TODO Auto-generated method stub
+		 return riskCustomerCollectionDao.getProductIdAndName(customerId);
 	}
 }

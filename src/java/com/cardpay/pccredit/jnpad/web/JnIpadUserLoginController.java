@@ -154,10 +154,13 @@ public class JnIpadUserLoginController {
 		customerManagerVo.setExternalId(user.getExternalId());//客户经理编号
 		customerManagerVo.setSxqx("");//授信权限
 		customerManagerVo.setFkze("");//放款总额
+		//查询上次登录时间
+		String LastLogin =userService.findLastLogin(loginId);
 		
 		//response
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		result.put("result", customerManagerVo);
+		result.put("LastLogin", LastLogin);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
