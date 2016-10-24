@@ -190,10 +190,26 @@ H6 {
         	alert("请选择[家庭年收入]!");	
         	return;
 	    } 
-		//cal
-		alert(Number(hj)+Number(nl)+Number(xl)+Number(hyzk)+Number(znvqk)
-		     +Number(dwxz)+Number(fc)+Number(cfqk)+Number(jkxy)+Number(ywwl)
-		     +Number(jynx)+Number(zcfzl)+Number(zcfzl)+"分"); 
+		
+		//得分
+		var score = Number(hj)+Number(nl)+Number(xl)+Number(hyzk)+Number(znvqk)
+	     +Number(dwxz)+Number(fc)+Number(cfqk)+Number(jkxy)+Number(ywwl)
+	     +Number(jynx)+Number(zcfzl)+Number(jtnsr);
+		
+		//post
+		$.ajax({
+			url : "${contextPath}/manager/khgl/getScore.json?score="+score,
+			type : "get",
+			async: false,
+			success : function(data) {
+				if (data.success) {
+					alert(data.isInList);
+				}else{
+					window.top.Dialog.message("系统出现异常,请联系管理员");
+		    	}
+			}
+        });
+		
 	}
 	
 	//重置

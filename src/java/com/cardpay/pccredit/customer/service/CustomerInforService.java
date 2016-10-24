@@ -1440,6 +1440,10 @@ public class CustomerInforService {
 		commonDao.queryBySql(CIPERSONBASINFOCOPY.class,sql , null);
 	}
 	
+	public CustomerInfor findBasicCustomerInformation(String id){
+		return commonDao.findObjectById(CustomerInfor.class,id);
+	}
+	
 	/**
 	 * 按客户内码id查找相应的客户基本信息（太原）
 	 * @param customerInforId

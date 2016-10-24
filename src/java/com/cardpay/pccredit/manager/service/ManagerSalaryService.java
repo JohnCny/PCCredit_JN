@@ -2,6 +2,8 @@ package com.cardpay.pccredit.manager.service;
 
 import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -21,6 +23,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.Arith;
@@ -30,6 +34,7 @@ import com.cardpay.pccredit.manager.dao.ManagerSalaryDao;
 import com.cardpay.pccredit.manager.filter.ManagerCashConfigurationFilter;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.FourMonthModel;
 import com.cardpay.pccredit.manager.model.ManagerCashConfiguration;
 import com.cardpay.pccredit.manager.model.ManagerSalary;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
@@ -70,8 +75,12 @@ public class ManagerSalaryService {
 	
 	@Autowired
 	private ManagerPerformanceParametersService managerPerformanceParametersService;
+	
 	@Autowired
 	private AccountManagerParameterService accountManagerParameterService;
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;  
 	/**
 	 * 过滤查询
 	 * @param filter
@@ -537,6 +546,145 @@ public class ManagerSalaryService {
 	public int updateManagerSalary(ManagerSalary salary) {
 		return commonDao.updateObject(salary);
 	}
+	
+	/**
+	 * 四维授信模型生成数据
+	 */
+	public void doGet() {
+		String arg0[] = {"外地人","本省外地人","济南本地"};//户籍
+		String arg1[] = {"25岁以下","25-30","30-35","35-50","50以上"};//年龄
+		String arg2[] = {"专科以下","专科","本科,","研究生及以上"};//学历
+		String arg3[] = {"离异","未婚","已婚"};//婚姻状况
+		String arg4[] = {"无子女","有未成年子女","有成年子女"};//子女情况
+		String arg5[] = {"公务员及事业编","央企、国企","上市公司","世界五百强企业","公立学院、公立医院员工","银行员工","证券、保险非销售岗","其他"};//单位性质
+		String arg6[] = {"无房","有1套房","2套及以上"};//房 产
+		String arg7[] = {"无车","有车（私家车"};//车产情况
+		String arg8[] = {"无逾期","有逾期（次数）"};//借款人24个月信用情况
+		String arg9[] = {"无","有"};//与我行业务往来
+		String arg10[] = {"1年-3年","3年-5年","5年以上"};//经营年限
+		String arg11[] = {"50%-70%","50%（含）以下"};//资产负债率
+		String arg12[] = {"10万以下","10-20万","20-30万","30-50万","50万以上"};//家庭年收入
+		
+		String str;
+		int i = 0;
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(int a1 =0;a1<arg0.length;a1++){
+			for(int a2 =0;a2<arg1.length;a2++){
+				for(int a3 =0;a3<arg2.length;a3++){
+					for(int a4 =0;a4<arg3.length;a4++){
+						for(int a5 =0;a5<arg4.length;a5++){
+							for(int a6 =0;a6<arg5.length;a6++){
+								for(int a7 =0;a7<arg6.length;a7++){
+									for(int a8 =0;a8<arg7.length;a8++){
+										for(int a9 =0;a9<arg8.length;a9++){
+											for(int a10 =0;a10<arg9.length;a10++){
+												for(int a11 =0;a11<arg10.length;a11++){
+													for(int a12 =0;a12<arg11.length;a12++){
+														for(int a13 =0;a13<arg12.length;a13++){
+															str = arg0[a1]+","+arg1[a2]+","+arg2[a3]+","+arg3[a4]+","+arg4[a5]+","+
+																	   arg5[a6]+","+arg6[a7]+","+arg7[a8]+","+arg8[a9]+","+arg9[a10]+","+
+																	   arg10[a11]+","+arg11[a12]+","+arg12[a13];
+															goData(str);//生成数据
+															/*map.put("a1", str.split(",")[0]);
+															map.put("a2", str.split(",")[1]);
+															map.put("a3", str.split(",")[2]);
+															map.put("a4", str.split(",")[3]);
+															map.put("a5", str.split(",")[4]);
+															map.put("a6", str.split(",")[5]);
+															map.put("a7", str.split(",")[6]);
+															map.put("a8", str.split(",")[7]);
+															map.put("a9", str.split(",")[8]);
+															map.put("a10", str.split(",")[9]);
+															map.put("a11", str.split(",")[10]);
+															map.put("a12", str.split(",")[11]);
+															map.put("a13", str.split(",")[12]);
+															list.add(map);*/
+															System.out.println(i++);
+															/*insertCIPERSONBADRECORD(list);
+															System.out.println(i++);*/
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		insertCIPERSONBADRECORD(list);
+	}
+	
+	public void goData(String str){
+		FourMonthModel model= new FourMonthModel();
+		model.setA1(str.split(",")[0]);
+		model.setA2(str.split(",")[1]);
+		model.setA3(str.split(",")[2]);
+		model.setA4(str.split(",")[3]);
+		model.setA5(str.split(",")[4]);
+		model.setA6(str.split(",")[5]);
+		model.setA7(str.split(",")[6]);
+		model.setA8(str.split(",")[7]);
+		model.setA9(str.split(",")[8]);
+		model.setA10(str.split(",")[9]);
+		model.setA11(str.split(",")[10]);
+		model.setA12(str.split(",")[11]);
+		model.setA13(str.split(",")[12]);
+		commonDao.insertObject(model);
+	}
+	
+	
+	/**
+     * 对私客户不良记录
+     * @param list 
+     */
+    public void insertCIPERSONBADRECORD(List<Map<String, Object>> list){
+        final List<Map<String, Object>> shopsList = list;
+        String sql =    "  insert into FOUR_MONTH_MODEL 	(a1,                "+
+                "											a2,                 "+
+                "									        a3,                 "+
+                "									        a4,                 "+
+                "										    a5,                 "+
+                "											a6,                 "+
+                "											a7,                 "+
+                "										    a8,                 "+
+                "					                        a9,a10,a11,a12,a13) "+
+				"            values                        (?,                  "+
+				"    		    						    ?,                  "+
+				"    		                                ?,                  "+
+				"    		                                ?,                  "+
+				"    		                                ?,                  "+
+				"    		                                ?,                  "+
+				"    		                                ?,                  "+
+				"    		                                ?,                  "+
+				"    		                                ?,?,?,?,?)          ";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+            public void setValues(PreparedStatement ps,int i)throws SQLException
+            {
+                ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("a1").toString());
+                ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("a2").toString());
+                ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("a3").toString());
+                ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("a4").toString());
+                ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("a5").toString());
+                ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("a6").toString());
+                ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("a7").toString());
+                ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("a8").toString());
+                ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("a9").toString());
+                ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("a10").toString());
+                ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("a11").toString());
+                ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("a12").toString());
+                ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("a13").toString());
+            }
+            public int getBatchSize()
+            {
+                return shopsList.size();
+            }
+        });
+    }
 	
 	/**
 	 * 计算当月绩效
@@ -1477,9 +1625,9 @@ public class ManagerSalaryService {
 	        }
 	        title = title+".xls";
 	        response.setHeader("Connection", "close");
-	        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=utf-8");
+	        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=gbk");
 	        response.setHeader("Content-Disposition", "attachment;filename="
-	        + new String(title.getBytes(), "iso-8859-1"));
+	        + new String(title.getBytes("gbk"), "iso-8859-1"));
 	        OutputStream out = response.getOutputStream();  
 	        wb.write(out);
 	        out.close();
@@ -1672,9 +1820,9 @@ public class ManagerSalaryService {
 	        }
 	        title = title+".xls";
 	        response.setHeader("Connection", "close");
-	        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=utf-8");
+	        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=gbk");
 	        response.setHeader("Content-Disposition", "attachment;filename="
-	        + new String(title.getBytes(), "iso-8859-1"));
+	        + new String(title.getBytes("gbk"), "iso-8859-1"));
 	        OutputStream out = response.getOutputStream();  
 	        wb.write(out);
 	        out.close();

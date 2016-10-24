@@ -3,9 +3,11 @@ package com.cardpay.pccredit.customeradd.dao;
 import java.util.List;
 
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
+import com.cardpay.pccredit.customer.filter.ModelFilter;
 import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.manager.model.FourMonthModel;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.wicresoft.util.annotation.Mapper;
 @Mapper
@@ -34,5 +36,9 @@ public interface KuglDao {
 	List<MaintenanceForm> findMaintenancePlansList(MaintenanceFilter filter);
 	
 	int findMaintenancePlansCountList(MaintenanceFilter filter);
+	
+	
+	List<FourMonthModel> findModelList(ModelFilter filter);
+	int findModelCountList(ModelFilter filter);
 	
 }

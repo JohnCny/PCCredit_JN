@@ -22,7 +22,9 @@ import com.cardpay.pccredit.common.PccOrganizationService;
 import com.cardpay.pccredit.common.UploadFileTool;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPYFORM;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.model.TyProductType;
+import com.cardpay.pccredit.customer.web.CustomerInforForm;
 import com.cardpay.pccredit.datapri.web.FlatTreeNode;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.AccessoriesList;
@@ -1937,13 +1939,13 @@ public class ProductController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "updateBaseCustomer.json", method = { RequestMethod.POST })
 	//@JRadOperation(JRadOperation.CHANGE)
-	public JRadReturnMap updateBaseCustomer(@ModelAttribute CIPERSONBASINFOCOPYFORM from, HttpServletRequest request) {
+	public JRadReturnMap updateBaseCustomer(@ModelAttribute CustomerInforForm from, HttpServletRequest request) {
 
-		JRadReturnMap returnMap = new JRadReturnMap();//WebRequestHelper.requestValidation(getModuleName(), from);
+		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				CIPERSONBASINFOCOPY copy = from.createModel(CIPERSONBASINFOCOPY.class);
-				int i = productService.updateCustomerBase(copy);
+				CustomerInfor copy = from.createModel(CustomerInfor.class);
+				int i = productService.updateCustomerInfor(copy);
 				returnMap.put(MESSAGE, "修改成功");
 			} catch (Exception e) {
 				return WebRequestHelper.processException(e);
