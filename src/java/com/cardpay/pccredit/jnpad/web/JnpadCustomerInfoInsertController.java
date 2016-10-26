@@ -172,5 +172,49 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
 		return json.toString();
 	}
+	//退回进件列表
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/returnToFirst.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String returnIntopiece( HttpServletRequest request) {
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+//		filter.setRequest(request);
+		String userId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		Integer s =new Integer(userType);
+		QueryResult<IntoPieces> result=null;
+		//客户经理
+		if(s==1){
+			filter.setUserId(userId);
+		}
+		filter.setStatus("returnToFirst");
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	//拒绝进件列表
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/refuse.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String refuseIntopiece( HttpServletRequest request) {
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+//		filter.setRequest(request);
+		String userId = request.getParameter("userId");
+		String userType = request.getParameter("userType");
+		Integer s =new Integer(userType);
+		QueryResult<IntoPieces> result=null;
+		//客户经理
+		if(s==1){
+			filter.setUserId(userId);
+		}
+		filter.setStatus("refuse");
+		result = JnpadCustomerInfoInsertServ‎ice.findintoPiecesByFilter(filter);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
 
 }

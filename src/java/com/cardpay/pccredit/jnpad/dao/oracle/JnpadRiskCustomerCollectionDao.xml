@@ -157,4 +157,18 @@
 					
 	</select>
 	
+	<select id="getProductIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
+		<!-- select 
+		p.id as TypeCode,p.product_name as TypeName
+		from
+		customer_overdue c
+		left join
+		product_attribute p
+		on c.product_id=p.id
+		where c.customer_id=#{customerId} -->
+		
+		select  p.id as TypeCode,p.product_name as TypeName
+		from
+		product_attribute p
+	</select>
 	</mapper>

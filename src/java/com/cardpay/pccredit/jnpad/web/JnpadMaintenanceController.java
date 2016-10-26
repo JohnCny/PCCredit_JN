@@ -93,6 +93,9 @@ public class JnpadMaintenanceController extends BaseController{
 	public String getMaintenance( @ModelAttribute CustomerInforFilter filter,HttpServletRequest request) {
 		String id =RequestHelper.getStringValue(request, "userId");
 		int userType = RequestHelper.getIntValue(request, "userType");
+		if(userType!=1){
+			filter.setUserId("");
+		}
 		//查询下属客户经理
 		List<AccountManagerParameterForm> forms = jnpadMaintenanceService.selectSubListManagerByManagerId(id,userType);
 		
@@ -101,7 +104,9 @@ public class JnpadMaintenanceController extends BaseController{
 		}else{
 			filter.setCustomerManagerIds(null);		
 		}
-
+		if(userType!=1){
+			filter.setUserId("");
+		}
 		QueryResult<MaintenanceLog> result = jnpadMaintenanceService.findCustomerByFilter(filter);
 //		JRadPagedQueryResult<MaintenanceLog> pagedResult = new JRadPagedQueryResult<MaintenanceLog>(filter, result);
 //		JRadModelAndView mv = new JRadModelAndView("/customer/maintenance/maintenance_plan_log", request);

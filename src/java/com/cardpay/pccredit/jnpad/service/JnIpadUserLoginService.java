@@ -22,6 +22,7 @@ import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.model.ProductsAgencyAssociation;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.modules.privilege.model.Organization;
 import com.wicresoft.jrad.modules.privilege.model.User;
@@ -36,6 +37,8 @@ public class JnIpadUserLoginService {
 	@Autowired
 	private OrganizationService organizationService;
 	
+	@Autowired
+	 private CommonDao commonDao;
 	
 	@Autowired
 	private ProductDao productDao;
@@ -105,5 +108,22 @@ public class JnIpadUserLoginService {
 	
 	public SystemUser findUser(String userId){
 		return jnIpadUserLoginDao.findUser(userId);
+	}
+
+
+
+	public String findLastLogin(String loginId) {
+		
+		String sql ="SELECT action_time FROM SYS_LOGIN_LOG WHERE action_time =( SELECT max(action_time) FROM SYS_LOGIN_LOG s  INNER JOIN SYS_USER u ON s.login = u.LOGIN WHERE u.ID = '"+loginId+"')";
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		String time="";
+		List<HashMap<String, Object>> LastLogin = commonDao.queryBySql(sql, null);
+		if(LastLogin.size()>0){
+		params =LastLogin.get(0);
+		time = params.get("ACTION_TIME").toString();
+		}else{
+			time="无上次登录信息";
+		}
+		return time;
 	}
 }
