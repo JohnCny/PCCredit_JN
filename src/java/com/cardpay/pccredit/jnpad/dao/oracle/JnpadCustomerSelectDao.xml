@@ -160,8 +160,10 @@
 		<if test="chineseName != null and chineseName != '' ">
 		AND c.CHINESE_NAME=#{chineseName}
 		</if>
+		<if test="userId != null and userId != '' ">
 		 AND 
 		c.USER_ID=#{userId}
+		</if>
 		) ROW_)
 
 </select>
