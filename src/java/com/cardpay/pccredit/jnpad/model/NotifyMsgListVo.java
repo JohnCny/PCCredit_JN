@@ -3,6 +3,7 @@ package com.cardpay.pccredit.jnpad.model;
 import java.util.List;
 
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 
 /**
  * 通知
@@ -22,10 +23,16 @@ public class NotifyMsgListVo {
 	private int sum;/*总和*/
 	
 	private int ziliaobiangeng;
-	private List<JnpadCustomerBianGeng> bianggeng;
+	private List<CustomerInfor> bianggeng;
 	
 	
 	
+	public List<CustomerInfor> getBianggeng() {
+		return bianggeng;
+	}
+	public void setBianggeng(List<CustomerInfor> bianggeng) {
+		this.bianggeng = bianggeng;
+	}
 	public int getZiliaobiangeng() {
 		return ziliaobiangeng;
 	}
@@ -33,12 +40,7 @@ public class NotifyMsgListVo {
 		this.ziliaobiangeng = ziliaobiangeng;
 	}
 
-	public List<JnpadCustomerBianGeng> getBianggeng() {
-		return bianggeng;
-	}
-	public void setBianggeng(List<JnpadCustomerBianGeng> bianggeng) {
-		this.bianggeng = bianggeng;
-	}
+	
 	public int getSum() {
 		return sum;
 	}

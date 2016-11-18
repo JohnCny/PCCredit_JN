@@ -40,7 +40,14 @@ public class CustomerInfor extends BusinessModel{
 	private String spmc;
 	
 	private String tyUserId;
+	private String islook;
 	
+	public String getIslook() {
+		return islook;
+	}
+	public void setIslook(String islook) {
+		this.islook = islook;
+	}
 	public String getChineseName() {
 		return chineseName;
 	}

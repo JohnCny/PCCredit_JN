@@ -194,9 +194,9 @@ public class JnpadAddIntoPiecesService {
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		//本地
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -425,9 +425,9 @@ public class JnpadAddIntoPiecesService {
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-//			this.downLoadFile(response,v);
+			this.downLoadFile(response,v);
 			//服务器
-			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -435,9 +435,9 @@ public class JnpadAddIntoPiecesService {
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-//			this.downLoadFileDh(response,v);
+			this.downLoadFileDh(response,v);
 			//服务器
-			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -861,9 +861,9 @@ public class JnpadAddIntoPiecesService {
 	//浏览文件并缓存到服务器目录
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
 		//本地
-		//Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-		//服务器
-		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+//		服务器
+//		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
@@ -879,9 +879,9 @@ public class JnpadAddIntoPiecesService {
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
 		//本地
-		//Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
 		//服务器
-		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+//		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		DhApplnAttachmentDetail detail = new DhApplnAttachmentDetail();

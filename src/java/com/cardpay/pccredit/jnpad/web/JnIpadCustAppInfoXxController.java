@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
@@ -333,7 +334,7 @@ public class JnIpadCustAppInfoXxController {
 	    filters.setRole(RiskControlRole.manager.toString());
 		int risk = appInfoXxService.findRiskNoticeCountByFilter(filters);
 		//客户资料变更
-		List<JnpadCustomerBianGeng> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
+		List<CustomerInfor> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
 		int count6 = cuslist.size();
 		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();

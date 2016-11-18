@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CIPERSONFAMILY;
+import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
@@ -134,7 +135,7 @@ public class JnIpadCustAppInfoXxService {
 	 */
 	public void importImage(MultipartFile file, String productId,String customerId,String applicationId) {
 		//本地测试上传
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
@@ -177,12 +178,13 @@ public class JnIpadCustAppInfoXxService {
 	}
 	
 	public CustYunyinVo findYunyinstatus(String userId){
-		List<CustYunyinVo> list = jnIpadCustAppInfoDao.findYunyinstatus(userId);
-		if(list != null && list.size() > 0){
-			return (CustYunyinVo)list.get(0);
-		} else {
-			return null;
-		}
+//		List<CustYunyinVo> list = jnIpadCustAppInfoDao.findYunyinstatus(userId);
+//		if(list != null && list.size() > 0){
+//			return (CustYunyinVo)list.get(0);
+//		} else {
+//			return null;
+//		}
+		return jnIpadCustAppInfoDao.findYunyinstatus(userId);
 	}
 	
 	public List<RetrainingVo> findRetrainingsVoByFilter(RetrainingFilter filter){
@@ -219,12 +221,12 @@ public class JnIpadCustAppInfoXxService {
 	}
 
 
-	public List<JnpadCustomerBianGeng> findbiangengCountByManagerId(String userId) {
+	public List<CustomerInfor> findbiangengCountByManagerId(String userId) {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
-		String sql ="select * from T_CIPERSONBASINFO_COPY t inner join BASIC_CUSTOMER_INFORMATION b on t.custid = b.ty_customer_id where b.user_id=#{userId} AND t.islook IS null";
+		String sql ="select * from  BASIC_CUSTOMER_INFORMATION t where t.user_id=#{userId} AND t.islook ='1'";
 		sql=sql+" order by t.id asc";
-		return commonDao.queryBySql(JnpadCustomerBianGeng.class, sql, params);
+		return commonDao.queryBySql(CustomerInfor.class, sql, params);
 	}
 
 
