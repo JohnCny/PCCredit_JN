@@ -286,6 +286,6 @@
 	</select>
 	<update id="changeIsLook">
 	    
-	    UPDATE T_CIPERSONBASINFO_COPY SET islook ='0' WHERE id=#{id} and cardnum=#{cardId}
+	    UPDATE BASIC_CUSTOMER_INFORMATION SET islook ='0' WHERE id=#{id} and card_Id=#{cardId}
 	</update>
 </mapper> 

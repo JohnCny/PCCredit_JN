@@ -21,11 +21,15 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadAddIntoPiecesService;
+import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.result.JRadReturnMap;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -34,6 +38,9 @@ import net.sf.json.JsonConfig;
 @Controller
 public class JnpadAddIntoPiecesController {
 
+	@Autowired
+	private IntoPiecesService intoPiecesService;
+	
 	@Autowired
 	private CustomerInforService customerInforservice;
 	
@@ -123,5 +130,25 @@ public class JnpadAddIntoPiecesController {
 			return null;
 		}
 		
-		
+		@ResponseBody
+		@RequestMapping(value = "/ipad/addIntopiece/isInRiskList.json")
+		public String isInRiskList(HttpServletRequest request) {
+			String customerId = request.getParameter("customerId");
+			Map<String, Object> map = new HashMap<String, Object>();
+				try {
+					RiskCustomer riskCustomer = intoPiecesService.findRiskListByCustomerId(customerId);
+					if(riskCustomer != null){
+						map.put("isInList", true);
+					}
+					
+				}catch (Exception e) {
+					map.put("notException", true);
+					map.put("mess","系统异常");
+					
+				}
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(map, jsonConfig);
+			return json.toString();
+		}
 }

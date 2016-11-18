@@ -3,6 +3,7 @@ package com.cardpay.pccredit.jnpad.web;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +26,12 @@ import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
+import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -39,6 +42,34 @@ public class JnpadManagerPerformmanceController {
 	@Autowired
 	private ManagerPerformmanceService managerPerformmanceService;
 	
+	
+	//录入前查询
+	@ResponseBody
+	@RequestMapping(value = "/ipad/performmance/insertSelect.json")
+	@JRadOperation(JRadOperation.BROWSE)
+	public String create(HttpServletRequest request) {        
+		String userId = request.getParameter("userId");
+		//统计每天申请拒绝数
+		int refuseNum=managerPerformmanceService.queryRefuse(userId);
+		//统计每天申请数
+		int applyNum= managerPerformmanceService.queryApply(userId);
+		//统计每天内审数
+		int auditNum=managerPerformmanceService.queryAudit(userId);
+		//统计每天上会数
+		int willNum=managerPerformmanceService.queryWill(userId);
+		//统计每天通过数
+		int passNum=managerPerformmanceService.queryPass(userId);
+		Map<String, Integer> map=new HashMap<String, Integer>();
+		map.put("applyNum", applyNum);
+		map.put("refuseNum", refuseNum);
+		map.put("auditNum", auditNum);
+		map.put("willNum", willNum);
+		map.put("passNum", passNum);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
 	/**
 	 * 执行录入
 	 * @param managerPerformmance
