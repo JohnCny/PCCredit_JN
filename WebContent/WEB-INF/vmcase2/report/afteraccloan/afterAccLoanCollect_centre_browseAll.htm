@@ -35,7 +35,7 @@
         </div>
        
 		<!-------------- 信息显示 ------------------------------------->      
-		<div id="topDiv" class="inquiry_list inquiry_top" >
+		<div id="topDiv" class="inquiry_list inquiry_top" style="height: 350px;overflow:auto">
            <table>
             <colgroup>
               <col width="120"/>
@@ -121,6 +121,13 @@
             	<td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
             	
+            	<!--  批处理每日更新一次 -->
+            	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
+            	
+            	<!--  批处理每日更新一次 -->
+            	<td nowrap="nowrap" style="background:#99CCFF">截止到今天的日均用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
             	
             </tr>
             
@@ -133,6 +140,13 @@
             	
             	<td nowrap="nowrap" style="background:#99CCFF">抵押类产品贷款余额</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.dy)</font></td>
+            	
+            </tr>
+            
+             <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">pos流水贷产品贷款余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.pos)</font></td>
+            	
             </tr>
              #end
           </table>

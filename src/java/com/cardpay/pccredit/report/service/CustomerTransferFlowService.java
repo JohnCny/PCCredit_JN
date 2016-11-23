@@ -1,14 +1,20 @@
 package com.cardpay.pccredit.report.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.customer.constant.CommonConstant;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.cardpay.pccredit.report.dao.CustomerTransferFlowDao;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
@@ -23,6 +29,7 @@ import com.cardpay.pccredit.report.model.XdlctjbbForm;
 import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.report.model.YqhkdktjbbForm;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.modules.privilege.model.User;
@@ -164,6 +171,42 @@ public class CustomerTransferFlowService {
 		String sql = "select * from account_manager_parameter where user_id = #{userId}";
 		List<AccountManagerParameter> list = commonDao.queryBySql(AccountManagerParameter.class, sql, params);
 		return list;
+	}
+	
+	
+	/**
+	 * 查询 post流水贷产品的贷款余额
+	 */
+	public BigDecimal  findSubListManagerByManagerId(IUser user){
+		Map<String, Object> params = new HashMap<String, Object>();
+		String userId ="";
+		if(CommonConstant.USER_TYPE.USER_TYPE_1 == user.getUserType()){
+			userId = user.getId();
+		}
+		params.put("userId", userId);
+		
+	   StringBuffer sql = new StringBuffer("  select nvl(sum(nvl(t.BALAMT, 0)), 0) as   pslsd  "+
+			   "      from t_mibusidata_view t                                                 "+
+			   "     where t.CUSTID  in (select distinct(cust.ty_customer_id) as user_id from   "+
+			   "  customer_application_info info,                                              "+
+			   "  basic_customer_information cust,                                             "+
+			   "  product_attribute prod ,                                                     "+
+			   "  sys_user u                                                                   "+
+			   "  where info.customer_id = cust.id                                             "+
+			   "    and info.product_id = prod.id                                              "+
+			   "    and u.id = cust.user_id                                                    "+
+			   "    and prod.product_name ='POS流水贷'                                           ");
+	   
+	    if(StringUtils.trimToNull(userId)!=null){
+			sql.append(" and cust.user_id =#{userId}");
+		}
+	    sql.append(" ) ");
+		List<AccLoanCollectInfo> list = commonDao.queryBySql(AccLoanCollectInfo.class, sql.toString(), params);
+		
+		if(list!=null&&list.size()>0){
+			return list.get(0).getPslsd();
+		}
+		return null;
 	}
 	
 }

@@ -962,7 +962,27 @@
          
            
   from dual
-   
-
  	 </select>
+ 	 
+	 <resultMap id="AccountManagerParameterFormMap" type="com.cardpay.pccredit.manager.web.AccountManagerParameterForm">
+		<result property="id" column="ID" />
+		<result property="userId" column="USER_ID" />
+	</resultMap>
+	 
+	<select id="findAccountManagerParameterByUserId" resultMap="AccountManagerParameterFormMap">
+	select distinct(u.external_id) as user_id from 
+	customer_application_info info,
+	basic_customer_information cust,
+	product_attribute prod ,
+	sys_user u
+	where info.customer_id = cust.id
+	  and info.product_id = prod.id
+	  and u.id = cust.user_id
+	  --and prod.product_name ='POS流水贷'
+	   <if test="userId != null and userId != '' ">
+            and cust.user_id =#{userId}
+       </if>
+ 
+	</select>
+	
 </mapper>

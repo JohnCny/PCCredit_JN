@@ -429,7 +429,7 @@
 					 <if test="organName != null and organName != '' ">
 						AND salary.INST_CODE=#{organName}
 					 </if>
-					 order by salary.year desc,salary.month,salary.inst_code desc
+					 order by salary.year desc,salary.month desc,salary.inst_code desc
 		 		<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -516,9 +516,11 @@
 						   acc.manager_type
 					  FROM manager_salary salary
 					 INNER join sys_user usr ON usr.id = salary.customer_id
-    				 left join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id
+    				 left join t_jx_parameters parmeter on parmeter.customer_manager_id = salary.customer_id 
+    				 and salary.month = parmeter.month and salary.year = parmeter.year
     				 inner join account_manager_parameter acc on acc.user_id = usr.id
 					 WHERE 1=1
+					  
 					 <if test="managerName != null and managerName != '' ">
 						AND usr.display_name like '%${managerName}%'
 					 </if>

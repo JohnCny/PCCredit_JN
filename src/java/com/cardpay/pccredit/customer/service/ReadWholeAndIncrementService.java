@@ -202,61 +202,61 @@ public class ReadWholeAndIncrementService {
 									if(fn.startsWith("cclmtapplyinfo")){
 										log.info("*****************Cc授信申请基本信息（结果表）********************");
 										customerInforService.saveCCLMTAPPLYINFODataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("CIPERSONBADRECORD")){
 										log.info("*****************对私客户不良记录********************");
 										customerInforService.saveCIPERSONBADRECORDDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("cipersonbasinfo")){
 										log.info("*****************对私客户基本信息********************");
 										customerInforService.saveCIPERSONBASINFODataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("FCLOANINFO")){
 										log.info("*****************借据月末余额表（结果表）********************");
 										customerInforService.saveFCLOANINFODataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("FCRESULTHIS")){
 										log.info("*****************认定结果表（历史表）********************");
 										customerInforService.saveFCRESULTHISDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("gccontractmain")){
 										log.info("*****************GC合同基本表********************");
 										saveGCCONTRACTMAINDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("GCASSUREMULTICLIENT")){
 										log.info("*****************GC从合同多方信息表********************");
 										saveGCASSUREMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("mibusidata")){
 										log.info("*****************台账——综合业务信息表  ********************");
 										saveMIBUSIDATADataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("rarepaylist")){
 										log.info("*****************还款情况表  ********************");
 										saveRAREPAYLISTDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("sarm_specialasset")){
 										log.info("*****************不良贷款信息  ********************");
 										saveSPECIALASSETDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("cipersonfamily")){
 										log.info("*****************对私家庭成员信息********************");
 										customerInforService.saveCIPERSONFAMILYDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("gcloancredit")){
 										log.info("*****************Gc凭证信息表 ********************");
 										saveGCLOANCREDITDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									else if(fn.startsWith("GCCONTRACTMULTICLIENT")){
 										log.info("*****************GC合同多方信息表  ********************");
 										saveGCCONTRACTMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									else if(fn.startsWith("GCCREDITTYPEINFORMATION")){
 										log.info("*****************GC合同授信品种信息表********************");
 										saveGCCREDITTYPEINFORMATIONDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 								}
 							}catch(Exception e){
@@ -378,61 +378,61 @@ public class ReadWholeAndIncrementService {
 									if(fn.startsWith("cclmtapplyinfo")){
 										log.info("*****************Cc授信申请基本信息（结果表）********************");
 										customerInforService.saveCCLMTAPPLYINFODataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("CIPERSONBADRECORD")){
 										log.info("*****************对私客户不良记录********************");
 										customerInforService.saveCIPERSONBADRECORDDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("cipersonbasinfo")){
 										log.info("*****************对私客户基本信息********************");
 										customerInforService.saveCIPERSONBASINFODataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("FCLOANINFO")){
 										log.info("*****************借据月末余额表（结果表）********************");
 										customerInforService.saveFCLOANINFODataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("FCRESULTHIS")){
 										log.info("*****************认定结果表（历史表）********************");
 										customerInforService.saveFCRESULTHISDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("gccontractmain")){
 										log.info("*****************GC合同基本表********************");
 										saveGCCONTRACTMAINDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("GCASSUREMULTICLIENT")){
 										log.info("*****************GC从合同多方信息表********************");
 										saveGCASSUREMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("mibusidata")){
 										log.info("*****************台账——综合业务信息表  ********************");
 										saveMIBUSIDATADataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("rarepaylist")){
 										log.info("*****************还款情况表  ********************");
 										saveRAREPAYLISTDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("sarm_specialasset")){
 										log.info("*****************不良贷款信息  ********************");
 										saveSPECIALASSETDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("cipersonfamily")){
 										log.info("*****************对私家庭成员信息********************");
 										customerInforService.saveCIPERSONFAMILYDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}else if(fn.startsWith("gcloancredit")){
 										log.info("*****************Gc凭证信息表 ********************");
 										saveGCLOANCREDITDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									else if(fn.startsWith("GCCONTRACTMULTICLIENT")){
 										log.info("*****************GC合同多方信息表  ********************");
 										saveGCCONTRACTMULTICLIENTDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									else if(fn.startsWith("GCCREDITTYPEINFORMATION")){
 										log.info("*****************GC合同授信品种信息表********************");
 										saveGCCREDITTYPEINFORMATIONDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									
 								}

@@ -1,8 +1,11 @@
 package com.cardpay.pccredit.report.web;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.axis.utils.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
@@ -45,12 +49,12 @@ public class AfterLoanCollectController extends BaseController{
 	 * @param filter
 	 * @param request
 	 * @return
-	 * 新增用信客户:首次提款时间在选定时间段内的客户		 |新增用信余额:提款时间在选定时间段内 且在结束时间前未还清的借据
-	 * 累计用信客户:结束时间前提过款的客户                                             |累计用信余额:结束时间前未还清的所有借据
-	 * 新增授信客户:授信时间在选定时间段内的客户                              |新增授信余额:授信时间在选定时间段内的合同,且结束日期前未结束的合同
+	 * 新增用信客户:首次提款时间在选定时间段内的客户		  |新增用信余额:提款时间在选定时间段内 且在结束时间前未还清的借据
+	 * 累计用信客户:结束时间前提过款的客户                                              |累计用信余额:结束时间前未还清的所有借据
+	 * 新增授信客户:授信时间在选定时间段内的客户                                  |新增授信余额:授信时间在选定时间段内的合同,且结束日期前未结束的合同
 	 * 累计授信客户:结束时间前授信的客户                                                  |累计授信总额:结束时间前授信的合同,且结束日期前未结束的合同
-	 * 新增逾期客户数:逾期时间在选定时间段内的客户                         |新增逾期余额:逾期时间在选定时间段内的借据
-	 * 累计逾期客户数:逾期时间在结束时间前的客户                              |累计逾期余额:逾期时间在结束时间前的借据
+	 * 新增逾期客户数:逾期时间在选定时间段内的客户                              |新增逾期余额:逾期时间在选定时间段内的借据
+	 * 累计逾期客户数:逾期时间在结束时间前的客户                                  |累计逾期余额:逾期时间在结束时间前的借据
 	 * 用信余额（日均):(选定时间段内每天的用信余额求和)/时间段的天数
 	 */
 	@ResponseBody
@@ -77,6 +81,11 @@ public class AfterLoanCollectController extends BaseController{
 		
 		long start = System.currentTimeMillis();
 		List<AccLoanCollectInfo> accloanList = customerTransferFlowService.getAccLoanCollect(filter);
+		//查询 pos流水贷产品的贷款余额
+		BigDecimal pslsd = customerTransferFlowService.findSubListManagerByManagerId(user);
+		for(AccLoanCollectInfo acc :accloanList){
+			acc.setPos(pslsd.toString());
+		}
 		long end = System.currentTimeMillis();
 		logger.info("#########################贷款汇总查询时间花费：" + (end - start) + "毫秒");
 		JRadModelAndView mv = new JRadModelAndView("/report/afteraccloan/afterAccLoanCollect_centre_browseAll", request);
