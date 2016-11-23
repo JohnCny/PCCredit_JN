@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.report.model;
 
+import java.math.BigDecimal;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 
 /**
@@ -32,12 +34,25 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String contBalace;//累计用信余额
 	private String alloverdue;//累计逾期客户数
 	
-	private String  xy;
-	private String  bz;
-	private String  dy;
-	
-	
+	private String  xy;//信用產品貸款餘額
+	private String  bz;//保證產品貸款餘額
+	private String  dy;//擔保產品貸款餘額
+	private BigDecimal  pslsd;//post流水產品貸款餘額
+	private String pos;
 
+	
+	public String getPos() {
+		return pos;
+	}
+	public void setPos(String pos) {
+		this.pos = pos;
+	}
+	public BigDecimal getPslsd() {
+		return pslsd;
+	}
+	public void setPslsd(BigDecimal pslsd) {
+		this.pslsd = pslsd;
+	}
 	public String getXy() {
 		return xy;
 	}

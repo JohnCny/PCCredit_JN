@@ -36,6 +36,7 @@ import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
 import com.cardpay.pccredit.manager.filter.BatchRunFilter;
 import com.cardpay.pccredit.manager.model.BatchTask;
+import com.cardpay.pccredit.manager.service.CustomerApplicationInfoSynchScheduleService;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
 import com.cardpay.pccredit.toolsjn.OdsTools_jn;
@@ -78,6 +79,9 @@ public class BatchReturnRunController extends BaseController{
 	
 	@Autowired
 	OdsTools_jn  odsTools_jn;
+	
+	@Autowired
+	CustomerApplicationInfoSynchScheduleService  applicationInfoSynchScheduleService;
 	/**
 	 * 查看批处理信息
 	 * @param request
@@ -132,6 +136,9 @@ public class BatchReturnRunController extends BaseController{
 			}/*else if(batchCode.equals("whole")){
 				incrementService.doReadFileWholeByDate(dateString);
 			}*/
+		    else if(batchCode.equals("hk")){
+		    	applicationInfoSynchScheduleService.returnReimbursement(dateString);
+		    }
 			//同步进件状态
 			//绩效
 			

@@ -214,8 +214,8 @@ public class CustomerApplicationInfoSynchScheduleService {
 	 * 还款提醒 不包含随借随还的贷款
 	 * 批处理 每月月初生成 还款提醒记录
 	 * @author songchen 
-	 * @datetime 20161009 下午 14:00:00
-	 * TODO 待测试
+	 * @datetime 2016-10-09 下午 14:00:00
+	 * 批处理自动
 	 */
 	public void reimbursement(){
 		/**
@@ -229,7 +229,132 @@ public class CustomerApplicationInfoSynchScheduleService {
 		logger.info(dateString+"还款提醒生成数据start**********");
 		
 		//1.查询未结清的贷款且非循环的贷款 2.循环的贷款可以随借随还难以控制
-		String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='1'";
+		String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='0001'";
+		List<MibusidataForm> lists = commonDao.queryBySql(MibusidataForm.class,sql, null);
+		
+		
+		for(MibusidataForm mibu:lists){
+			//台帐号
+			String busiCode = mibu.getBusicode();
+			
+			//贷款发放日期
+			String loandate = mibu.getLoandate();
+			
+			//利率
+			String lv = mibu.getInterest().toString();
+			
+			//贷款期限 
+			String qx = mibu.getLimit().toString();
+			
+			//发放金额（核心）
+			String money = mibu.getMoney().toString();
+			
+			//还款方法(01-定期结息，到期日利随本清;03-等额本息;)    
+			String repayMethod = mibu.getRepaymethod();
+			
+			//还款日期
+			String  repaydate ="";
+			
+			//还款本金
+			String repaybj ="";
+			
+			//还款利息
+			String repaylx ="";
+			
+			//计算使用天数
+			String day="";
+			
+			//等额本息 还款总额
+			String repayZe ="";
+			
+			/**
+			 * 1).等额本息 ：
+			 * 例：贷款发放日 10.07 下次还款日期 11.07
+			 * 2).按月付息 到期还本 
+			 * 1.22前的贷款   例：贷款发放日期10月07日     下次还款日  10月20日  计息周期（10月7日  至  10月20日） 这个时间段  下次 还款日期11月20日（10月20日  下次还款日  12月20日）
+			 * 2.22后的贷款   例：贷款发放日期10月23日     下次还款日  11月20日  计息周期（10月23日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
+			 */
+			if("03".equals(repayMethod)){//等额本息
+				repaydate = getDeBx(dateString,loandate);
+				day = "31";
+				repayZe = getAmt(money,lv,qx);
+				
+			}else{//按月付息,到期还本
+				if(loandate.substring(0, 4).equals(dateString.substring(0, 4))
+				 &&loandate.substring(5, 7).equals(dateString.substring(4, 6))){//当年当月的放款
+					//TODO 按月付息 放款日期不固定 跑批时间难设定
+				}else{
+					day = "31";
+					repaydate = getAnyueBx2(dateString);
+					repaybj ="";//一年清一次本金
+					repaylx = gotLx(money, lv,day);
+				}
+			}
+			
+			/**
+			 * 查询客户经理 id name
+			 */
+			String customerManagerId ="";
+			String customerManagerName ="";
+			String mysql = "select *                                                             "+
+						   "  from sys_user                                                      "+
+						   " where id = (select t.USER_ID                                        "+
+						   "               from basic_customer_information t          			 "+
+						   "              where t.ty_customer_id = '"+mibu.getCustid()+"')       ";
+			List<SystemUser> alist = commonDao.queryBySql(SystemUser.class,mysql, null);
+			
+			if(alist !=null&&alist.size()>0){
+				customerManagerId=alist.get(0).getId();
+				customerManagerName=alist.get(0).getDisplayName();
+			}
+			
+			/**
+			 * 插入还款计划提醒表
+			 */
+			REIMBURSEMENT re = new REIMBURSEMENT();
+			re.setCustomerId(mibu.getCustid());//ty_customer_id
+			re.setCustomerName(mibu.getCname());
+			re.setCustomerManagerId(customerManagerId);
+			re.setCustomerManagerName(customerManagerName);
+			re.setLoandate(loandate);
+			re.setMoney(money);
+			re.setLv(lv);
+			re.setRepayTime(repaydate);
+			re.setRepayBj(repaybj);
+			re.setRepayLx(repaylx);
+			re.setRepayMethod(repayMethod);
+			re.setRepayMzee(repayZe);
+			re.setBusiCode(busiCode);
+			re.setHasTell("0");
+			commonDao.insertObject(re);
+		}
+		//succ
+		//accountManagerParameterService.updBatchTaskFlow("100","hk",dateString);
+		logger.info(dateString+"还款提醒生成数据end**********");
+	}
+	
+	
+	
+	/**
+	 * 还款提醒 不包含随借随还的贷款
+	 * 批处理 每月月初生成 还款提醒记录
+	 * @author songchen 
+	 * @datetime 2016-10-09 下午 14:00:00
+	 * 批处理手工
+	 */
+	public void returnReimbursement(String dateString){
+		/**
+		 * 1.定期结息，到期日利随本清（即按月付息 到期还本） 每月20号扣款  25再扣一次 ,如果是循环的 随借随还  还使用期限的利息和本金
+		 * 2.等额本息 例:10月7号放款 下月 10月7日扣款  客户经理需提前两三天提醒客户还款 提前存入指定账户
+		 */
+		
+		//获取今日日期
+		//DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		//String dateString = format.format(new Date());
+		logger.info(dateString+"还款提醒生成数据start**********");
+		
+		//1.查询未结清的贷款且非循环的贷款 2.循环的贷款可以随借随还难以控制
+		String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='0001'";
 		List<MibusidataForm> lists = commonDao.queryBySql(MibusidataForm.class,sql, null);
 		
 		
@@ -275,17 +400,14 @@ public class CustomerApplicationInfoSynchScheduleService {
 			 * 2.22后的贷款   例：贷款发放日期10月23日     下次还款日  11月20日  计息周期（10月23日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
 			 */
 			if("03".equals(repayMethod)){//等额本息
-				repaydate = getDeBx(loandate);
+				repaydate = getDeBx(dateString,loandate);
 				day = "31";
 				repayZe = getAmt(money,lv,qx);
 				
 			}else{//按月付息,到期还本
 				if(loandate.substring(0, 4).equals(dateString.substring(0, 4))
 				 &&loandate.substring(5, 7).equals(dateString.substring(4, 6))){
-					repaydate = getAnyueBx(loandate);
-					day = calMistTime(loandate,repaydate)+"";
-					repaybj ="";//一年清一次本金
-					repaylx = gotLx(money, lv,day);
+					//TODO 按月付息 放款日期不固定 跑批时间难设定
 				}else{
 					day = "31";
 					repaydate = getAnyueBx2(dateString);
@@ -328,8 +450,11 @@ public class CustomerApplicationInfoSynchScheduleService {
 			re.setRepayMethod(repayMethod);
 			re.setRepayMzee(repayZe);
 			re.setBusiCode(busiCode);
+			re.setHasTell("0");
 			commonDao.insertObject(re);
 		}
+		//succ
+		accountManagerParameterService.updBatchTaskFlow("100","hk",dateString);
 		logger.info(dateString+"还款提醒生成数据end**********");
 	}
 	
@@ -343,11 +468,11 @@ public class CustomerApplicationInfoSynchScheduleService {
 	public String getAnyueBx(String dateString){
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Integer.parseInt(dateString.substring(0, 4)),
-				     Integer.parseInt(dateString.substring(5, 7)), 
+				     Integer.parseInt(dateString.substring(5, 7))-1, 
 				     Integer.parseInt(dateString.substring(8, 10)));
 	    calendar.add(Calendar.MONTH, 1);
 	    String year_1 = calendar.get(Calendar.YEAR)+"";
-		String month_1 = calendar.get(Calendar.MONTH)+"";
+		String month_1 = calendar.get(Calendar.MONTH)+1+"";
 		
 		if(month_1.length()==1){
 			month_1 = "0"+month_1;
@@ -361,17 +486,17 @@ public class CustomerApplicationInfoSynchScheduleService {
 	
 	/**
 	 * 按月付息,到期还款计算还款日
-	 * loandate 2016-09-11
+	 * loandate 20160911
 	 */
 	
 	public String getAnyueBx2(String dateString){
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Integer.parseInt(dateString.substring(0, 4)),
-				     Integer.parseInt(dateString.substring(4, 6)), 
+				     Integer.parseInt(dateString.substring(4, 6))-1, 
 				     Integer.parseInt(dateString.substring(6, 8)));
-	    calendar.add(Calendar.MONTH, 1);
+	    //calendar.add(Calendar.MONTH, 1);
 	    String year_1 = calendar.get(Calendar.YEAR)+"";
-		String month_1 = calendar.get(Calendar.MONTH)+"";
+		String month_1 = calendar.get(Calendar.MONTH)+1+"";
 		
 		if(month_1.length()==1){
 			month_1 = "0"+month_1;
@@ -387,18 +512,21 @@ public class CustomerApplicationInfoSynchScheduleService {
 	
 	/**
 	 * 等额本息还款计算还款日
+	 * 2016-09-09
+	 * loandate 贷款日期yyyy-MM-dd
+	 * dateString 跑批日期 yyyyMMdd
 	 */
 	
-	public String getDeBx(String dateString){
+	public String getDeBx(String dateString,String loanDate){
 		//获得下个扣款日的年份和月份
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Integer.parseInt(dateString.substring(0, 4)), 
-				     Integer.parseInt(dateString.substring(5, 7)), 
-				     Integer.parseInt(dateString.substring(8, 10)));
-	    calendar.add(Calendar.MONTH, 1);
+				     Integer.parseInt(dateString.substring(4, 6))-1, 
+				     Integer.parseInt(dateString.substring(6, 8)));
+	    //calendar.add(Calendar.MONTH, 1);
 	    calendar.add(Calendar.DATE, 0);
 	    String year_1 = calendar.get(Calendar.YEAR)+"";
-		String month_1 = calendar.get(Calendar.MONTH)+"";
+		String month_1 = calendar.get(Calendar.MONTH)+1+"";
 		String day_1 = calendar.get(Calendar.DATE)+"";
 		
 		if(day_1.length()==1){day_1 = "0"+day_1;}
@@ -406,7 +534,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 		if(month_1.length()==1){month_1 = "0"+month_1;}
 		
 		//获得当月的还款日期
-		String repaydate = year_1+"-"+month_1+"-"+day_1;
+		String repaydate = year_1+"-"+month_1+"-"+loanDate.substring(8, 10);
 		return repaydate;
 	}
 	
@@ -430,7 +558,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 		
 		BigDecimal lx = new BigDecimal("0");
 		//日利率
-		BigDecimal daliyLv = new BigDecimal(lv).divide(new BigDecimal("36000"));
+		BigDecimal daliyLv = new BigDecimal(lv).divide(new BigDecimal("36000"),4,BigDecimal.ROUND_HALF_UP);
 		//利息
 		lx = new BigDecimal(bj).multiply(daliyLv).multiply(new BigDecimal(day)).setScale(2,BigDecimal.ROUND_HALF_UP);
 		return lx.toString();
@@ -485,17 +613,33 @@ public class CustomerApplicationInfoSynchScheduleService {
 	  */
 	 public String getAmt(String bj,String lv,String qx){
 		//月利率 
-		BigDecimal  monthLv = new BigDecimal(lv).divide(new BigDecimal("12")).divide(new BigDecimal("100"));
+		BigDecimal  monthLv = new BigDecimal(lv).divide(new BigDecimal("100")).divide(new BigDecimal("12"),4,BigDecimal.ROUND_HALF_UP);
 		
 		BigDecimal lvs = new BigDecimal("1").add(monthLv);
 		
-		BigDecimal part1 = new BigDecimal(bj).multiply(monthLv).multiply(lvs.pow(Integer.parseInt(qx)));
+		BigDecimal part1 = new BigDecimal(bj).multiply(monthLv).multiply(lvs.pow(Integer.parseInt(qx))).setScale(4,BigDecimal.ROUND_HALF_UP);
 		
-		BigDecimal part2 = lvs.pow(12).subtract(new BigDecimal("1"));
+		BigDecimal part2 = lvs.pow(12).subtract(new BigDecimal("1")).setScale(4,BigDecimal.ROUND_HALF_UP);
 		
 	    BigDecimal hk= part1.divide(part2,2,BigDecimal.ROUND_HALF_UP);
 	    
 	    return hk+""; 
 	 }
-	
+	 
+	 
+	 
+	 /**
+	  * 用信余额
+	  * 1.补充当月截止到今天的用信余额.
+	  * 2.补充业务开展以来截止到今天的用信余额.
+	  */
+	 public void dosynchyxyeMethod(){
+			//获取今日日期
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			String dateString = format.format(new Date());
+			//1.当月截止到今天的用信余额
+			
+			//2.补充业务开展以来截止到今天的用信余额
+		}
+		
 }

@@ -186,11 +186,16 @@
 		
 			<div class="submit">
 			  <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
-				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+				<input class="current" type="button" onclick="toBrowse();" value="#i18n('button.back')" />
 			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
+	//返回
+	function toBrowse(){
+		var url = "${modulePath}/browse.page?";
+		navigateTo(url);
+	}
 	
 	function viewPicture(url){
 		url+='&tempid='+Math.random();
