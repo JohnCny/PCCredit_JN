@@ -1945,6 +1945,7 @@ public class ProductController extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				CustomerInfor copy = from.createModel(CustomerInfor.class);
+				copy.setIslook("1");
 				int i = productService.updateCustomerInfor(copy);
 				returnMap.put(MESSAGE, "修改成功");
 			} catch (Exception e) {

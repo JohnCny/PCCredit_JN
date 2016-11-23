@@ -35,7 +35,7 @@ public interface JnIpadCustAppInfoXxDao {
 	public String getRewardIncentiveInformation(@Param("year") int year,@Param("month") int month,@Param("id") String id);
 	public String getReturnPrepareAmountById(@Param("year") int year,@Param("month") int month,@Param("id") String id);
 	
-	public List<CustYunyinVo> findYunyinstatus(@Param("userId") String userId);
+	public CustYunyinVo findYunyinstatus(@Param("userId") String userId);
 	
 	public List<RetrainUserVo> findAccountManagerRetraining(@Param("id") String id);
 
