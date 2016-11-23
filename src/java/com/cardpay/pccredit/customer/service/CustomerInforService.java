@@ -2122,12 +2122,12 @@ public class CustomerInforService {
 									if(fn.startsWith("cxd_rygl")){
 										log.info("*****************人员管理参数表********************");  
 										saveRyglDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									if(fn.startsWith("kkh_grxx")){
 										log.info("*****************客户基本表********************");  
 										saveBaseDataFile(gzFile+File.separator+fn,dateString);
-										System.gc();
+										//System.gc();
 									}
 									if(fn.startsWith("kkh_grjtcy")){
 										log.info("*****************客户家庭关系表********************");  
@@ -2519,7 +2519,7 @@ public class CustomerInforService {
 							"select id from sys_user where external_id='"+map.get("busimanager").toString()+"'", null);
 					List<CustomerInfor> infoList = commonDao.queryBySql(CustomerInfor.class, 
 							"select * from basic_customer_information where card_id='"+map.get("cardnum").toString()+"' and CARD_TYPE='"+map.get("cardtype").toString()+"'", null);
-					//存在则更新客户经理id
+					//存在则更新客户经理id 是否要同步客户经理信息还是管理系统走转交流程
 					if(infoList.size()>0){
 						CustomerInfor info = infoList.get(0);
 						info.setUserId(user.size() > 0?user.get(0).getId():map.get("busimanager").toString());

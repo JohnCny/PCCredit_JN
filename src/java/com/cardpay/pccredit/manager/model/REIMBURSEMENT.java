@@ -23,10 +23,16 @@ public class REIMBURSEMENT extends BusinessModel {
 	private String  repayMethod;
 	private String  repayMzee;
 	private String  busiCode;
+	private String  hasTell;
 	
 	
 	
-	
+	public String getHasTell() {
+		return hasTell;
+	}
+	public void setHasTell(String hasTell) {
+		this.hasTell = hasTell;
+	}
 	public String getBusiCode() {
 		return busiCode;
 	}

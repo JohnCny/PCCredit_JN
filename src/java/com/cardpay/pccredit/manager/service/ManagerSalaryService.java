@@ -1119,15 +1119,23 @@ public class ManagerSalaryService {
 					 "         and substr(a.STARTDATE, '0', '4') = '"+year+"' 	"+
 					 "         and substr(a.STARTDATE, '6', '2') = '"+month+"'  "+
 					 "         and c.USER_ID = '"+customerManagerId+"'    		";*/
-		String sql =    "select count(distinct(t.custid)) as HYK                  "+
+	/*	String sql =    "select count(distinct(t.custid)) as HYK                  "+
 						"  from t_mibusidata t, basic_customer_information b      "+
 						" where 1 = 1                                             "+
 						"   and substr(t.operdatetime, '0', '4') = '"+year+"'     "+
 						"   and substr(t.operdatetime, '6', '2') = '"+month+"'    "+
 						"   and t.custid = b.ty_customer_id                       "+
 						"   and nvl(PAYDEBT, 0) > 0                               "+
-						"   and b.user_id = '"+customerManagerId+"'    			  ";
-		List<HashMap<String, Object>> list = commonDao.queryBySql(sql, null);
+						"   and b.user_id = '"+customerManagerId+"'    			  ";*/
+		
+ String sql1  =     " select count(*)  as HYK            					       "+
+				    "         from t_jx_specific_parameters t           		   "+
+				    "        where t.year = '"+year+"'         					   "+
+				    "          and t.month = '"+month+"'       					   "+
+				    "          and t.CUSTOMER_MANAGER_ID = '"+customerManagerId+"' "+
+				    "          and t.month_day_average_cust_loanamt >0             ";
+
+		List<HashMap<String, Object>> list = commonDao.queryBySql(sql1, null);
 		BigDecimal b = (BigDecimal) list.get(0).get("HYK");
 		return b.intValue();
 	}
@@ -1405,9 +1413,9 @@ public class ManagerSalaryService {
 			// 计算当月的下一个月
 			String nextMonth = "";
 			Calendar calendar = Calendar.getInstance();
-			calendar.set(Integer.parseInt(year),Integer.parseInt(month),1);
+			calendar.set(Integer.parseInt(year),Integer.parseInt(month)-1,1);
 			calendar.add(Calendar.MONTH, 1);
-			nextMonth = calendar.get(Calendar.MONTH)+"";
+			nextMonth = calendar.get(Calendar.MONTH)+1+"";
 			
 			// 判断客户经理 类型
 			String title ="";
@@ -1654,9 +1662,9 @@ public class ManagerSalaryService {
 			//计算当月的下一个月
 			String nextMonth = "";
 			Calendar calendar = Calendar.getInstance();
-			calendar.set(Integer.parseInt(year),Integer.parseInt(month),1);
+			calendar.set(Integer.parseInt(year),Integer.parseInt(month)-1,1);
 			calendar.add(Calendar.MONTH, 1);
-			nextMonth = calendar.get(Calendar.MONTH)+"";
+			nextMonth = calendar.get(Calendar.MONTH)+1+"";
 			
 			//判断客户经理 类型
 			String title ="";

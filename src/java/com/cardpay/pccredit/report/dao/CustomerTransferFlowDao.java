@@ -2,6 +2,9 @@ package com.cardpay.pccredit.report.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
+import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
@@ -53,4 +56,7 @@ public interface CustomerTransferFlowDao {
 	public List<XdlctjbbForm> getXdlctjbbFormList(ReportFilter filter);
 	
 	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter);
+	
+	
+	List<AccountManagerParameterForm> findAccountManagerParameterByUserId(@Param("userId") String userId);
 }
