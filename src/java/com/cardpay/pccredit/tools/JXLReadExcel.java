@@ -684,7 +684,7 @@ public class JXLReadExcel {
     
   public String[] readExcelToHtml1(String filePath, boolean isWithStyle){
         
-    	String sheet[] = new String[11];
+    	String sheet[] = new String[13];
         InputStream is = null;
         String approveValue="";
 //        String htmlExcel = null;
@@ -898,7 +898,57 @@ public class JXLReadExcel {
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[9] = content_base64;
 				}
-            	sheet[10] = approveValue;
+				else if(wb.getSheetAt(i).getSheetName().indexOf("抵贷通经营表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+						XSSFWorkbook xWb = (XSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(10);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
+						map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddtscjy,ImportParameter.editAble_ddtscjy,false);
+					}else if(wb instanceof HSSFWorkbook){
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(10);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
+						HSSFWorkbook hWb = (HSSFWorkbook) wb;
+						map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddtscjy,ImportParameter.editAble_ddtscjy,false);
+					}
+					String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[10] = content_base64;
+				}
+				else if(wb.getSheetAt(i).getSheetName().indexOf("抵贷通消费表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+						XSSFWorkbook xWb = (XSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(11);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
+						map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddtgrxf,ImportParameter.editAble_ddtgrxf,false);
+					}else if(wb instanceof HSSFWorkbook){
+						HSSFWorkbook hWb = (HSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(11);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
+						map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddtgrxf,ImportParameter.editAble_ddtgrxf,false);
+					}
+					String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[11] = content_base64;
+				}
+            	sheet[12] = approveValue;
             }
             
         } catch (Exception e) {
