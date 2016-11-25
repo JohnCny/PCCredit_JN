@@ -65,8 +65,8 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-	private static String host = "61.34.0.32";//生产
-//	private static String host = "61.98.0.31";//测试
+//	private static String host = "192.168.1.113";//生产
+	private static String host = "61.98.0.32";//测试
     private static String username="root";  
     private static String password="JNnsyh0825";  
     private static int port = 22;  
@@ -85,8 +85,8 @@ public class SFTPUtil {
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
             System.out.println("Session created.");
-            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-            password = dailyReportScheduleService.findServer2();
+//            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+//            password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  
@@ -462,7 +462,7 @@ public class SFTPUtil {
      */
     public static  String[] readExcelToHtml(String filePath, boolean isWithStyle){
         
-    	String sheet[] = new String[11];
+    	String sheet[] = new String[13];
         BufferedInputStream is = null;
         String approveValue="";
         Map<String, String> map = new HashMap<String, String>();
@@ -677,7 +677,29 @@ public class SFTPUtil {
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[9] = content_base64;
 				}
-            	sheet[10] = approveValue;
+				else if(wb.getSheetAt(i).getSheetName().indexOf("抵贷通经营表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+						XSSFWorkbook xWb = (XSSFWorkbook) wb;
+						map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddtscjy,ImportParameter.editAble_ddtscjy,false);
+					}else if(wb instanceof HSSFWorkbook){
+						HSSFWorkbook hWb = (HSSFWorkbook) wb;
+						map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddtscjy,ImportParameter.editAble_ddtscjy,false);
+					}
+					String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[10] = content_base64;
+				}
+				else if(wb.getSheetAt(i).getSheetName().indexOf("抵贷通消费表")>=0){
+					if (wb instanceof XSSFWorkbook) {
+						XSSFWorkbook xWb = (XSSFWorkbook) wb;
+						map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddtgrxf,ImportParameter.editAble_ddtgrxf,false);
+					}else if(wb instanceof HSSFWorkbook){
+						HSSFWorkbook hWb = (HSSFWorkbook) wb;
+						map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddtgrxf,ImportParameter.editAble_ddtgrxf,false);
+					}
+					String content_base64 = getBASE64(map.get("computerData").toString());
+					sheet[11] = content_base64;
+				}
+            	sheet[12] = approveValue;
             }
             
         } catch (Exception e) {
