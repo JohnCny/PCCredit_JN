@@ -655,6 +655,7 @@ public class SFTPUtil {
                 	String content_base64 = getBASE64(map.get("computerData").toString());
 					sheet[8] = content_base64;
 				}
+            	
 				/*else if(wb.getSheetAt(i).getSheetName().indexOf("流水分析")>=0){
 					if (wb instanceof XSSFWorkbook) {
                         XSSFWorkbook xWb = (XSSFWorkbook) wb;
