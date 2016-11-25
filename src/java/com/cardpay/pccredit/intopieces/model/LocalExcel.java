@@ -33,6 +33,22 @@ public class LocalExcel extends BusinessModel {
 	private String sheetLsfx;
 	private String jyb;
 	private String approveValue;
+	private String sheetDdtjy;
+	private String sheetDdtxf;
+	
+	
+	public String getSheetddtjy() {
+		return sheetDdtjy;
+	}
+	public void setSheetddtjy(String sheetddtjy) {
+		this.sheetDdtjy = sheetddtjy;
+	}
+	public String getSheetddtxf() {
+		return sheetDdtxf;
+	}
+	public void setSheetddtxf(String sheetddtxf) {
+		this.sheetDdtxf = sheetddtxf;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

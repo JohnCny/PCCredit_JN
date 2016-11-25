@@ -34,10 +34,10 @@
 	                </select>
 					</span>
 	              </li>
-	              <li class="search_button">
+	           <!--    <li class="search_button">
 	                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
 	                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
-	              </li>
+	              </li> -->
 	            </ul>
 	          </form>
 	        </div>
@@ -287,7 +287,7 @@
 	/*
 	* 点击筛选按钮
 	*/
-	$("#id_browse_button").click(function() {
+	$("#orgId").change(function() {
 		var para = $("#submitForm").serialize();
 		if($("#orgId").val() == ""){
 			Dialog.message("机构不能为空");
