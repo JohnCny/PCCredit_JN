@@ -103,7 +103,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/intopieces_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
-
+		mv.addObject("forms", forms);
 		return mv;
 	}
 	

@@ -42,7 +42,16 @@ public class CustomerInforFilter extends BaseQueryFilter{
 	private List<AccountManagerParameterForm> customerManagerIds;
 	
 	private String moveStatus;
+	private String customerManagerId;
 	
+	
+	
+	public String getCustomerManagerId() {
+		return customerManagerId;
+	}
+	public void setCustomerManagerId(String customerManagerId) {
+		this.customerManagerId = customerManagerId;
+	}
 	public String getUserId() {
 		return userId;
 	}

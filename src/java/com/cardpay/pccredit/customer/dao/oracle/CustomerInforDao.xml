@@ -672,6 +672,9 @@
 				<if test="cardId != null and cardId != '' ">
 					AND T1.card_id=#{cardId}
 				</if>
+				<if test="customerManagerId != null and customerManagerId != '' ">
+						AND t1.user_id = #{customerManagerId}
+				</if>
 				<if test="customerManagerIds != null and customerManagerIds != '' ">  
  		    		and T1.user_id in  
 	 	    		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
@@ -698,6 +701,9 @@
 		</if>
 		<if test="cardId != null and cardId != '' ">
 			AND card_id=#{cardId}
+		</if>
+		<if test="customerManagerId != null and customerManagerId != '' ">
+						AND t1.user_id = #{customerManagerId}
 		</if>
 		<if test="customerManagerIds != null and customerManagerIds != '' ">  
  		    AND T1.user_id in  

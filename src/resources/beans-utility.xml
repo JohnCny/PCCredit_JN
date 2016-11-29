@@ -210,7 +210,29 @@
             <ref bean="reimbursementStatusJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 15 10 1 * ?</value><!--每月1日上午10:15触发  --><!--0 15 10 1 * ?  -->
+            <value>0 00 02 ? * *</value>
+        </property>
+    </bean>
+    
+    
+    <!--7.每日生成月日均用信余额-->
+    <bean id="attentiveBalanceJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="statisticsAttentiveBalanceSynchScheduleService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>dosynchyxyeMethod</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="attentiveBalanceTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="attentiveBalanceJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 54 18 ? * *</value>
         </property>
     </bean>
     
@@ -220,12 +242,13 @@
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-            	 <ref bean="taskTigger"/><!--每日跑批任务生成  -->
-                 <ref bean="downAndtargzScheduleTigger"/><!--每日下载和解压数据  -->
-                 <ref bean="readWholeAndIncrementScheduleTigger"/><!--ods增量数据  -->
-                 <ref bean="dailyReportScheduleTigger"/><!--客户经理日报  -->
-                 <ref bean="updateCustomerAppInfoStatusTigger"/><!--同步进件信息  -->
-                 <ref bean="reimbursementStatusTigger"/>   <!--生成还款提醒  -->
+            	 <ref bean="taskTigger"/>
+                 <ref bean="downAndtargzScheduleTigger"/>
+                 <ref bean="readWholeAndIncrementScheduleTigger"/>
+                 <ref bean="dailyReportScheduleTigger"/>
+                 <ref bean="updateCustomerAppInfoStatusTigger"/>
+                 <ref bean="reimbursementStatusTigger"/>
+                 <ref bean="attentiveBalanceTigger"/>
             </list>
         </property>
     </bean>

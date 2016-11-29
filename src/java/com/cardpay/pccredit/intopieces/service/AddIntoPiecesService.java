@@ -122,7 +122,7 @@ public class AddIntoPiecesService {
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
 		//本地测试
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
@@ -141,7 +141,7 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-//		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		//String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
 		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -180,7 +180,7 @@ public class AddIntoPiecesService {
 		localExcel.setSheetddtjy(sheet[10]);
 		localExcel.setSheetddtxf(sheet[11]);
 		
-		if(sheet[10].contains("元")){
+		if(sheet[12].contains("元")){
 			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
 		    localExcel.setApproveValue(sheet[12]);
@@ -196,7 +196,7 @@ public class AddIntoPiecesService {
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		//本地
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
@@ -220,7 +220,7 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-//		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		//String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
 		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -238,11 +238,13 @@ public class AddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[7]);
 		localExcel.setSheetYsyf(sheet[8]);
 		localExcel.setJyb(sheet[9]);
+		localExcel.setSheetddtjy(sheet[10]);
+		localExcel.setSheetddtxf(sheet[11]);
 		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		if(sheet[12].contains("元")){
+			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		    localExcel.setApproveValue(sheet[12]);
 		}
 		
 		//修改申请金额
@@ -286,7 +288,7 @@ public class AddIntoPiecesService {
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
 		//本地测试
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");

@@ -82,16 +82,28 @@ public class CustomerFirsthendController extends BaseController{
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		//filter.setUserId(user.getId());
 		//查询客户经理
+		QueryResult<CustomerInfor> result =null;
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customerfirsthend_browse", request);
 		List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId(user);
-		if(forms.size()>0){
-			filter.setCustomerManagerIds(forms);
+		
+		if(!StringUtils.isEmpty(filter.getCustomerManagerId())){
+			result = customerInforService.findCustomerInforByFilter(filter);
+		}else{
+			if(forms.size()>0){
+				filter.setCustomerManagerIds(forms);
+				result = customerInforService.findCustomerInforByFilter(filter);
+			}else{
+				//直接返回页面
+				return mv;
+			}
 		}
-		QueryResult<CustomerInfor> result = customerInforService.findCustomerInforByFilter(filter);
+		//QueryResult<CustomerInfor> result = customerInforService.findCustomerInforByFilter(filter);
 		
 		JRadPagedQueryResult<CustomerInfor> pagedResult = new JRadPagedQueryResult<CustomerInfor>(filter, result);
-		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customerfirsthend_browse", request);
+		
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("customerName", user.getDisplayName());
+		mv.addObject("forms", forms);
 		return mv;
 	}
 	 
