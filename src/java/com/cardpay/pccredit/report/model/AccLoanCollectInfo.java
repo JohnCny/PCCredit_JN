@@ -34,13 +34,43 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String contBalace;//累计用信余额
 	private String alloverdue;//累计逾期客户数
 	
-	private String  xy;//信用產品貸款餘額
-	private String  bz;//保證產品貸款餘額
-	private String  dy;//擔保產品貸款餘額
-	private BigDecimal  pslsd;//post流水產品貸款餘額
+	private String  xy;//信用产品贷款余额
+	private String  bz;//保证产品贷款余额
+	private String  dy;//担保产品贷款余额
+	private BigDecimal  pslsd;//post流水产品贷款余额
 	private String pos;
 
+	private BigDecimal monthaverageamt;//当月日均贷款余额
+	private String  ma;
+	private BigDecimal totalmonthaverageamt;//累计至今的日均贷款余额
+	private String  ta;
 	
+	
+	
+	public BigDecimal getMonthaverageamt() {
+		return monthaverageamt;
+	}
+	public void setMonthaverageamt(BigDecimal monthaverageamt) {
+		this.monthaverageamt = monthaverageamt;
+	}
+	public String getMa() {
+		return ma;
+	}
+	public void setMa(String ma) {
+		this.ma = ma;
+	}
+	public BigDecimal getTotalmonthaverageamt() {
+		return totalmonthaverageamt;
+	}
+	public void setTotalmonthaverageamt(BigDecimal totalmonthaverageamt) {
+		this.totalmonthaverageamt = totalmonthaverageamt;
+	}
+	public String getTa() {
+		return ta;
+	}
+	public void setTa(String ta) {
+		this.ta = ta;
+	}
 	public String getPos() {
 		return pos;
 	}

@@ -65,8 +65,8 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-//	private static String host = "192.168.1.113";//生产
-	private static String host = "61.98.0.32";//测试
+	private static String host = "61.34.0.32";//生产
+//	private static String host = "61.98.0.32";//测试
     private static String username="root";  
     private static String password="JNnsyh0825";  
     private static int port = 22;  
@@ -85,8 +85,8 @@ public class SFTPUtil {
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
             System.out.println("Session created.");
-//            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-//            password = dailyReportScheduleService.findServer2();
+            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+            password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  
@@ -681,9 +681,23 @@ public class SFTPUtil {
 				else if(wb.getSheetAt(i).getSheetName().indexOf("抵贷通经营表")>=0){
 					if (wb instanceof XSSFWorkbook) {
 						XSSFWorkbook xWb = (XSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(10);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
 						map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddtscjy,ImportParameter.editAble_ddtscjy,false);
 					}else if(wb instanceof HSSFWorkbook){
 						HSSFWorkbook hWb = (HSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(10);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
 						map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddtscjy,ImportParameter.editAble_ddtscjy,false);
 					}
 					String content_base64 = getBASE64(map.get("computerData").toString());
@@ -692,9 +706,23 @@ public class SFTPUtil {
 				else if(wb.getSheetAt(i).getSheetName().indexOf("抵贷通消费表")>=0){
 					if (wb instanceof XSSFWorkbook) {
 						XSSFWorkbook xWb = (XSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(11);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
 						map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_ddtgrxf,ImportParameter.editAble_ddtgrxf,false);
 					}else if(wb instanceof HSSFWorkbook){
 						HSSFWorkbook hWb = (HSSFWorkbook) wb;
+						 //取申请金额（第三行第四列）
+                        Sheet st = wb.getSheetAt(11);
+                        Row row = st.getRow(4);
+                        Cell cell = row.getCell(1);
+                        if(getCellValue(cell)!=null&&getCellValue(cell)!=""){
+                        	approveValue = getCellValue(cell);
+                        }
 						map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_ddtgrxf,ImportParameter.editAble_ddtgrxf,false);
 					}
 					String content_base64 = getBASE64(map.get("computerData").toString());

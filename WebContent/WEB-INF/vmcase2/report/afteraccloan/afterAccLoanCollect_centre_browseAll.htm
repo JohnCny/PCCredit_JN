@@ -120,15 +120,15 @@
             <tr>
             	<td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
-            	
+            	#if($!urlType!=1)
             	<!--  批处理每日更新一次 -->
             	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ma)</font></td> 
             	
             	<!--  批处理每日更新一次 -->
             	<td nowrap="nowrap" style="background:#99CCFF">截止到今天的日均用信余额</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
-            	
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ta)</font></td>
+            	 #end
             </tr>
             
              <tr>
@@ -153,7 +153,19 @@
         </div>  
         
       </div>		
-        <div class="clear"></div>
+       <!--  <div class="pagebar">
+	      	<div class="controlbtn">
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('05')" title="5月">5月</a>
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('06')" title="6月">6月</a>
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('07')" title="7月">7月</a>
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('08')" title="8月">8月</a>
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('09')" title="9月">9月</a>
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('10')" title="10月">10月</a>
+	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('11')" title="11月">11月</a>
+	        </div>
+	        <div class="clear"></div>
+        </div> -->
+       
       </div>
     </div>
 </body>
@@ -170,5 +182,35 @@
 		prepareOperations(opsObj);
 		Dialog.closeLoad();
 	});
+	
+	
+	function handle(id){
+		var url = "${modulePath}/handle.json";
+		if(submitFlag == 1){
+			alert("请勿重复提交!")
+			return;
+		}
+		submitFlag = 1;
+		Dialog.load();
+		Dialog.confirm("确定要处理吗？", "提示",
+     		function() {
+     			$.ajax({
+      				url : url,
+      				type : "get",
+      				data : "id=" + id,
+      				success : function(data) {
+      					if (data.success) {
+      						topWin.Dialog.message("处理成功！");
+      						window.location.reload(true);
+      						Dialog.closeLoad();
+      					}
+      					else{
+      						topWin.Dialog.message(data.message);
+      				    }
+      					submitFlag = 0;
+      				}
+      			});
+	 	});
+   }
 </script>
 #parse ("common/iframe_page_footer.htm")
