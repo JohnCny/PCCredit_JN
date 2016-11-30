@@ -94,7 +94,7 @@ public class CustomerFirsthendController extends BaseController{
 				result = customerInforService.findCustomerInforByFilter(filter);
 			}else{
 				//直接返回页面
-				return mv;
+				result = customerInforService.findCustomerInforByFilter(filter);
 			}
 		}
 		//QueryResult<CustomerInfor> result = customerInforService.findCustomerInforByFilter(filter);

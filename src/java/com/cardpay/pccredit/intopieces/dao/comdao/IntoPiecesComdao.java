@@ -114,7 +114,8 @@ public class IntoPiecesComdao {
 			}
 		}
 		
-		sql.append(" order by id asc");
+		//sql.append(" order by id asc");
+		sql.append(" order by created_time desc");
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(), filter.getLimit());
 	}
@@ -725,7 +726,8 @@ public class IntoPiecesComdao {
 			}
 		}
 
-		sql.append(" order by id asc");
+		//sql.append(" order by id asc");
+		sql.append(" order by created_time desc");
 		return commonDao.queryBySql(IntoPieces.class, sql.toString(), params)
 				.size();
 	}
