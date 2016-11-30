@@ -278,15 +278,19 @@ public class MaintenanceService {
 					belongChildIds.append(")");
 					return managerBelongMapDao.findAccountManagerParameterByChildIds(belongChildIds.toString());
 			}
+		}else{
+			forms =  managerBelongMapDao.findDeptManagerById(user.getId());
 		}
-		//如果是部门主管2
+		
+		/*//如果是部门主管2
 		if(CommonConstant.USER_TYPE.USER_TYPE_2 == user.getUserType()){
 			forms =  managerBelongMapDao.findDeptManagerById(user.getId());
 		}
 		//如果是机构主管3
 		if(CommonConstant.USER_TYPE.USER_TYPE_3 == user.getUserType()){
 			forms =  managerBelongMapDao.findOrgManagerById(user.getId());
-		}
+		}*/
+		
 		return forms;
 	}
 	

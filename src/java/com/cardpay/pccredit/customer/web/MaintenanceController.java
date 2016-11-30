@@ -94,7 +94,7 @@ public class MaintenanceController extends BaseController{
 				result = maintenanceService.findMaintenancePlansList(filter);
 			}else{
 				//直接返回页面
-				return mv;
+				result = maintenanceService.findMaintenancePlansList(filter);
 			}
 		}
 		JRadPagedQueryResult<MaintenanceForm> pagedResult = new JRadPagedQueryResult<MaintenanceForm>(filter, result);
