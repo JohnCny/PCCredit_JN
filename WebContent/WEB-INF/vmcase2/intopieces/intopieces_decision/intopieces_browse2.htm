@@ -17,6 +17,9 @@
               <li>
                 <span>身份证号码：<input type="text" name="cardId"  maxlength="30" /></span>
               </li>
+              <li>
+                <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              </li>
               <li class="search_button">
                 <input type="button" value="筛选" class="search_button_inquiry" title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
               </li>
@@ -29,6 +32,7 @@
              <col width="5%" />
               <col width="9%" />
               <col width="9%" />
+              <col width="8%" />
               <col width="9%" />
               <col width="9%"/>
               <col width="15%"/>
@@ -40,6 +44,7 @@
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">产品名称</th>
+              <th nowrap="nowrap">客户经理</th>
               <th nowrap="nowrap">申请金额(元)</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
@@ -55,6 +60,7 @@
               <col width="5%" />
               <col width="9%" />
               <col width="9%" />
+              <col width="8%" />
               <col width="9%" />
               <col width="9%"/>
               <col width="15%"/>
@@ -67,6 +73,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
+              <td nowrap="nowrap">$!wait.displayName</td>
               <td nowrap="nowrap">$format.formatNumber($!wait.applyQuota,2,1)</td>
               <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!wait.cardType)</td>
               <td nowrap="nowrap">$!wait.cardId</td>

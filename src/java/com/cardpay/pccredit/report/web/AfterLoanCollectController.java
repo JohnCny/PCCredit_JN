@@ -45,6 +45,7 @@ import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -73,6 +74,9 @@ public class AfterLoanCollectController extends BaseController{
 	
 	@Autowired
 	private StatisticsAttentiveBalanceSynchScheduleService  attentiveBalanceSynchScheduleService;
+	
+	@Autowired
+	private CommonDao commonDao;
 	
 	private static final Logger logger = Logger.getLogger(AfterLoanCollectController.class);
 	/**
@@ -143,6 +147,14 @@ public class AfterLoanCollectController extends BaseController{
 		mv.addObject("list", accloanList);
 		mv.addObject("filter", filter);
 		mv.addObject("urlType", user.getUserType());
+		
+		boolean lock = false;
+		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		if("1".equals(PARAM)){
+			lock = true;
+		}
+		mv.addObject("lock", lock);
 		return mv;
 		
 	}

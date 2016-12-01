@@ -192,6 +192,8 @@
 		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
 		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
 		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+		 
+		 <result column="DISPLAY_NAME"        property="displayName"    jdbcType="VARCHAR" /> 
  	 </resultMap>
  	 
 
@@ -1050,9 +1052,12 @@
         '长清支行'
        else
         ''
-       end) as deptcode
-   from t_mibusidata T 
+       end) as deptcode,
+       su.DISPLAY_NAME
+   from t_mibusidata T,
+   sys_user su 
  	where t.operdatetime <![CDATA[ =  ]]> #{endDate}
-    order by t.operdatetime asc
+ 	      and t.busimanager = su.external_id
+    order by t.deptcode asc 
 	</select>
 </mapper>

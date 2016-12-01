@@ -64,12 +64,12 @@ public class IntoPiecesComdao {
 		
 		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
 			params.put("startAmt", filter.getStartAmt());
-			sql.append("and APPLY_QUOTA >= #{startAmt}");
+			sql.append("and APPLY_QUOTA * 100/100 >= #{startAmt}");
 		}
 		
 		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
 			params.put("endAmt", filter.getEndAmt());
-			sql.append("and APPLY_QUOTA <= #{endAmt}");
+			sql.append("and APPLY_QUOTA * 100/100  <= #{endAmt}");
 		}
 		
 		String custManagerIds = filter.getCustManagerIds();
@@ -680,12 +680,12 @@ public class IntoPiecesComdao {
 		
 		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
 			params.put("startAmt", filter.getStartAmt());
-			sql.append("and APPLY_QUOTA >= #{startAmt}");
+			sql.append("and APPLY_QUOTA * 100/100 >= #{startAmt}");
 		}
 		
 		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
 			params.put("endAmt", filter.getEndAmt());
-			sql.append("and APPLY_QUOTA <= #{endAmt}");
+			sql.append("and APPLY_QUOTA * 100/100 <= #{endAmt}");
 		}
 		
 		String custManagerIds = filter.getCustManagerIds();

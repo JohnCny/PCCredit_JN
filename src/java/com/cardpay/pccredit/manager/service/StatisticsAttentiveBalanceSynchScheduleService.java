@@ -54,6 +54,12 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 		    String month = dateString.substring(5, 7);
 		    String day   = dateString.substring(8, 10);
 		    
+		    // 1.1取昨天的日期
+		    String lastDate = getLastDay(year,month,day);
+		    year  = lastDate.substring(0, 4);
+		    month = lastDate.substring(5, 7);
+		    day   = lastDate.substring(8, 10);
+		    
 			// 2.删除当月的历史数据
 			String sql = "delete from t_statistics_attentive_balance where year ='"+year+"' and month ='"+month+"'";
 			commonDao.queryBySql(sql, null);
@@ -70,6 +76,26 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 			logger.info(dateString+"**********统计当月截止到今天的用信余额end**********");
 			
     }
+	 
+	 
+	 public String getLastDay(String year,String month,String day){
+		    String lastMonth = "";
+			Calendar calendar = Calendar.getInstance();
+			calendar.set(Integer.parseInt(year),Integer.parseInt(month)-1,Integer.parseInt(day));
+			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			
+			String lastYear = calendar.get(Calendar.YEAR)+"";
+			lastMonth = calendar.get(Calendar.MONTH)+1+"";
+			String lastDate = calendar.get(Calendar.DAY_OF_MONTH)+"";
+			if(Integer.parseInt(lastDate)<10){
+				lastDate = "0"+lastDate;
+			}
+			System.out.println(lastYear+"-"+lastMonth+"-"+lastDate);
+			logger.info(lastYear+"-"+lastMonth+"-"+lastDate);
+			
+			String lastDateTime = lastYear+"-"+lastMonth+"-"+lastDate;
+			return lastDateTime;
+	 }
 	 
 	 /**
 	  * 手工跑批
@@ -180,12 +206,19 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 	 */
 	public BigDecimal doCalAmt(List<TMibusidata> mibusidataList,String year,String month,String day){
 		// 获取当月实际天数
-		int days =0;
+		String days ="";
 		if(StringUtils.isEmpty(day)){
-			days = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month));
+			days = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month))+"";
 		}else{
-			days = Integer.parseInt(day);
+			days = Integer.parseInt(day)+"";
 		}
+		
+		if(Integer.parseInt(days)<10){
+			days = "0"+days;
+		}
+		
+		System.out.println("**********************天数"+days);
+		logger.info("**********************天数"+days);
 		// 贷款余额
 		String balamt = "";
 		

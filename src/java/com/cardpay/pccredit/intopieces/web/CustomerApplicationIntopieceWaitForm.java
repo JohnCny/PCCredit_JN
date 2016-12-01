@@ -67,6 +67,19 @@ public class CustomerApplicationIntopieceWaitForm extends BaseForm {
 	private String userId;
 	private String productName;
 	
+	private String displayName;
+	
+	
+	
+	
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
 	public Date getCreatedTime() {
 		return createdTime;
 	}
