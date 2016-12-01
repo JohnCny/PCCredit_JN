@@ -22,6 +22,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -265,7 +266,7 @@ public class CustomerTransferFlowService {
 	 */
 	public BigDecimal  findToalMonthAverageAmt(){
 		
-	    String sql = "select sum(t.month_day_average_cust_loanamt) as totalmonthaverageamt from t_statistics_attentive_balance t  ";
+	    String sql = "select nvl(sum(t.month_day_average_cust_loanamt),0) as totalmonthaverageamt from t_statistics_attentive_balance t  ";
 	   
 		List<AccLoanCollectInfo> list = commonDao.queryBySql(AccLoanCollectInfo.class, sql, null);
 		
@@ -278,10 +279,12 @@ public class CustomerTransferFlowService {
 	
 	
 	public void getExportWageData(PostLoanFilter filter,HttpServletResponse response) throws Exception{
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = format.format(new Date());
 		
 		String title ="";
 		String startDate ="2016-05-01";
-	    title ="济南农商行小微信贷中心统计表("+startDate+"至"+filter.getEndDate()+")";
+	    title ="济南农商行小微信贷中心利息统计表("+startDate+"至"+filter.getEndDate()+")";
 		
 		
 		// 查询台帐表
@@ -322,7 +325,7 @@ public class CustomerTransferFlowService {
 		styleFirst.setFont(font1);
 		
 		// 合并单元格
-		CellRangeAddress region = new CellRangeAddress(0, 0, 0,10);
+		CellRangeAddress region = new CellRangeAddress(0, 0, 0,11);
 		sheet.addMergedRegion(region);
 		cellTmp.setCellStyle(styleCenter);
 		
@@ -337,9 +340,9 @@ public class CustomerTransferFlowService {
         
         // 设置第二行 制表日期
         row = sheet.createRow((int) 1);
-        HSSFCell tmp = row.createCell((short) 6);
-        tmp.setCellValue("制表日期：");
-        CellRangeAddress reg = new CellRangeAddress(1, 1, 6,10);
+        HSSFCell tmp = row.createCell((short) 7);
+        tmp.setCellValue("制表日期："+dateString);
+        CellRangeAddress reg = new CellRangeAddress(1, 1,7,11);
         sheet.addMergedRegion(reg);
         tmp.setCellStyle(styleFirst);
         
@@ -353,66 +356,75 @@ public class CustomerTransferFlowService {
         	        
         cell = row.createCell((short) 1);  
         cell.setCellValue("业务编号");  
-        cell.setCellStyle(style);  
+        cell.setCellStyle(style);
+        sheet.setColumnWidth(1, 10*256);
         
         cell = row.createCell((short) 2);  
-        cell.setCellValue("客户名称");  
+        cell.setCellValue("客户经理");  
         cell.setCellStyle(style);
+        sheet.setColumnWidth(2, 10*256);
         
         cell = row.createCell((short) 3);  
-        cell.setCellValue("机构");  
+        cell.setCellValue("客户名称");  
         cell.setCellStyle(style);
+        sheet.setColumnWidth(3, 10*256);
         
         cell = row.createCell((short) 4);  
-        cell.setCellValue("贷款余额");  
+        cell.setCellValue("机构");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(4, 10*256);
         
         cell = row.createCell((short) 5);  
-        cell.setCellValue("已收利息");  
+        cell.setCellValue("贷款余额");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(5, 10*256);
         
         cell = row.createCell((short) 6);  
-        cell.setCellValue("合同金额");  
+        cell.setCellValue("已收利息");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(6, 10*256);
         
         cell = row.createCell((short) 7);  
-        cell.setCellValue("授信金额");  
+        cell.setCellValue("合同金额");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(7, 10*256);
         
         cell = row.createCell((short) 8);  
-        cell.setCellValue("发放日期");  
+        cell.setCellValue("授信金额");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(8, 10*256);
         
         cell = row.createCell((short) 9);  
-        cell.setCellValue("发放金额");  
+        cell.setCellValue("发放日期");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(9, 10*256);
         
         cell = row.createCell((short) 10);  
-        cell.setCellValue("操作时间");  
+        cell.setCellValue("发放金额");  
         cell.setCellStyle(style);
         sheet.setColumnWidth(10, 10*256);
+        
+        cell = row.createCell((short) 11);  
+        cell.setCellValue("操作时间");  
+        cell.setCellStyle(style);
+        sheet.setColumnWidth(11, 10*256);
         
         for(int i=0;i<list.size();i++){
         	row = sheet.createRow((int) i + 3);
         	MibusidataForm form = list.get(i);
         	row.createCell((short) 0).setCellValue(i+1);  
-        	row.createCell((short) 1).setCellValue(form.getBusicode());            
-        	row.createCell((short) 2).setCellValue(form.getCname());                       
-        	row.createCell((short) 3).setCellValue(form.getDeptcode());     						          
-        	row.createCell((short) 4).setCellValue(form.getBalamt()+"");             
-        	row.createCell((short) 5).setCellValue(form.getPaydebt()+"");      
-        	row.createCell((short) 6).setCellValue(form.getContractmoney());        
-        	row.createCell((short) 7).setCellValue(form.getReqlmt()+"");
-        	row.createCell((short) 8).setCellValue(form.getLoandate());         
-        	row.createCell((short) 9).setCellValue(form.getMoney()+"");
-        	row.createCell((short) 10).setCellValue(form.getOperdatetime());   
-        	
+        	row.createCell((short) 1).setCellValue(form.getBusicode());  
+        	row.createCell((short) 2).setCellValue(form.getDisplayName());  
+        	row.createCell((short) 3).setCellValue(form.getCname());                       
+        	row.createCell((short) 4).setCellValue(form.getDeptcode());     						          
+        	row.createCell((short) 5).setCellValue(Double.parseDouble(form.getBalamt()+""));
+        	//row.createCell((short) 6).setCellValue(form.getPaydebt()+"");
+        	row.createCell((short) 6).setCellValue(Double.parseDouble(form.getPaydebt()+""));
+        	row.createCell((short) 7).setCellValue(Double.parseDouble(form.getContractmoney()));        
+        	row.createCell((short) 8).setCellValue(Double.parseDouble(form.getReqlmt()+""));
+        	row.createCell((short) 9).setCellValue(form.getLoandate());         
+        	row.createCell((short) 10).setCellValue(Double.parseDouble(form.getMoney()+""));
+        	row.createCell((short) 11).setCellValue(form.getOperdatetime());   
         }
         title = title+".xls";
         response.setHeader("Connection", "close");

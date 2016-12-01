@@ -118,7 +118,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 10 18 ? * *</value><!--下午3点 -->
+            <value>0 10 18 ? * *</value>
         </property>
     </bean>
 	<!-- 每日下载和解压数据 end-->
@@ -210,7 +210,7 @@
             <ref bean="reimbursementStatusJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 00 02 ? * *</value>
+            <value>0 0 0 1 * ? *</value>
         </property>
     </bean>
     
@@ -232,7 +232,7 @@
             <ref bean="attentiveBalanceJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 54 18 ? * *</value>
+            <value>0 30 19 ? * *</value>
         </property>
     </bean>
     
@@ -248,7 +248,7 @@
                  <ref bean="dailyReportScheduleTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/>
                  <ref bean="reimbursementStatusTigger"/>
-                 <ref bean="attentiveBalanceTigger"/>
+                 <ref bean="attentiveBalanceTigger"/> 
             </list>
         </property>
     </bean>

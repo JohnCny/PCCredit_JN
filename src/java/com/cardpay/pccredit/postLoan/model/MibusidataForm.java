@@ -153,6 +153,17 @@ public class MibusidataForm extends BusinessModel {
 	private String clreqlmt;
 	private String busiflag;
 	private String create_time;
+	
+	private String displayName;
+	
+	
+	
+	public String getDisplayName() {
+		return displayName;
+	}
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
 	public String getBusicode() {
 		return busicode;
 	}
