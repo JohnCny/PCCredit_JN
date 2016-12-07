@@ -242,13 +242,13 @@
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-            	 <ref bean="taskTigger"/>
+            	 <!-- <ref bean="taskTigger"/>
                  <ref bean="downAndtargzScheduleTigger"/>
                  <ref bean="readWholeAndIncrementScheduleTigger"/>
                  <ref bean="dailyReportScheduleTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/>
                  <ref bean="reimbursementStatusTigger"/>
-                 <ref bean="attentiveBalanceTigger"/> 
+                 <ref bean="attentiveBalanceTigger"/>  -->
             </list>
         </property>
     </bean>
