@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -122,7 +123,7 @@ public class AddIntoPiecesService {
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
 		//本地测试
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
@@ -141,7 +142,7 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-//		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		//String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
 		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -180,11 +181,17 @@ public class AddIntoPiecesService {
 		localExcel.setSheetddtjy(sheet[10]);
 		localExcel.setSheetddtxf(sheet[11]);
 		
-		if(sheet[10].contains("元")){
+		if(sheet[12].contains("元")){
 			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
 		    localExcel.setApproveValue(sheet[12]);
 		}
+		
+		//判断申请金额格式是否正确
+		if(!IsNum(localExcel.getApproveValue())){
+			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
+		}
+		
 		//删除旧模板
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
@@ -192,11 +199,21 @@ public class AddIntoPiecesService {
 		commonDao.insertObject(localExcel);
 	}
 	
+	//判断申请金额是否为整数
+    public Boolean IsNum(String value){
+    	java.util.regex.Pattern pattern = Pattern.compile("[0-9]*");
+    	java.util.regex.Matcher isNum = pattern.matcher(value.trim());
+    	if(!isNum.matches()){
+    		return false;
+    	}
+    	return true;
+    }
+	
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		//本地
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
@@ -220,7 +237,7 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-//		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		//String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
 		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
@@ -238,11 +255,19 @@ public class AddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[7]);
 		localExcel.setSheetYsyf(sheet[8]);
 		localExcel.setJyb(sheet[9]);
+		localExcel.setSheetddtjy(sheet[10]);
+		localExcel.setSheetddtxf(sheet[11]);
 		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		if(sheet[12].contains("元")){
+			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		    localExcel.setApproveValue(sheet[12]);
+		}
+		
+		
+		//判断申请金额格式是否正确
+		if(!IsNum(localExcel.getApproveValue())){
+			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
 		}
 		
 		//修改申请金额
@@ -286,7 +311,7 @@ public class AddIntoPiecesService {
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
 		//本地测试
-//		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
 		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");

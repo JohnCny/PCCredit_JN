@@ -1313,7 +1313,7 @@ public class ManagerSalaryService {
 	
 		
 		for(int i = 0;i<list.size();i++){
-			System.out.println(list.size());
+			//System.out.println(list.size());
 			// 第0个List 的Amt 以及操作时间
 			str0 = list.get(0).split("@");
 			amt0 =  new BigDecimal(str0[0]);
@@ -1332,7 +1332,7 @@ public class ManagerSalaryService {
 			
 			// 计算完毕移除第0条数据 List的Size随之减小
 			list.remove(0);
-			System.out.println(list.size());
+			//System.out.println(list.size());
 			i =0;
 		}
 		return amt;

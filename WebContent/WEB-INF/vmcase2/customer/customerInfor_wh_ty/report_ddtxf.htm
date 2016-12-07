@@ -94,6 +94,15 @@
 			var b = new Base64(); 
 			var applyQuota=$("td[name='B5']").text();
 			applyQuota=money(applyQuota);
+			
+			//正则表达式判断是否是整数
+			var number = /^[0-9]*$/;
+			if(!number.test(applyQuota)){
+				alert("申请金额格式有误！");
+				return;
+			}
+
+			
 			var content = {'content':b.encode($("#formsId").html())};
 			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_ddtxf.json?appId=${appId}&applyQuota="+applyQuota;
 			$.ajax({

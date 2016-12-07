@@ -159,6 +159,43 @@
 	    <result property="dy" column="dy" />
 	 </resultMap>
   
+   
+   
+     <resultMap id="BaseResultMap3" type="com.cardpay.pccredit.postLoan.model.MibusidataForm" >
+   		 <result column="BUSICODE"        property="busicode"    jdbcType="VARCHAR" />         
+		 <result column="CUSTID"        property="custid"    jdbcType="VARCHAR" />         
+		 <result column="CNAME"        property="cname"    jdbcType="VARCHAR" />         
+		 <result column="DEPTCODE"        property="deptcode"    jdbcType="VARCHAR" />         
+		 <result column="MAINASSURE"        property="mainassure"    jdbcType="VARCHAR" />         
+		 <result column="REQLMT"        property="reqlmt"    jdbcType="VARCHAR" />         
+		 <result column="LOANDATE"        property="loandate"    jdbcType="VARCHAR" />         
+		 <result column="STARTDATE"        property="startdate"    jdbcType="VARCHAR" />         
+		 <result column="ORIENDDATE"        property="orienddate"    jdbcType="VARCHAR" />         
+		 <result column="ENDDATE"        property="enddate"    jdbcType="VARCHAR" />         
+		 <result column="MONEY"        property="money"    jdbcType="VARCHAR" />         
+		 <result column="BALAMT"        property="balamt"    jdbcType="VARCHAR" />         
+		 <result column="STATE"        property="accountstate"    jdbcType="VARCHAR" />         
+		 <result column="CLOSEDATE"        property="closedate"    jdbcType="VARCHAR" />         
+		 <result column="FIVECLASS"        property="fiveclass"    jdbcType="VARCHAR" />         
+		 <result column="DELAYAMTDAYS"        property="delayamtdays"    jdbcType="VARCHAR" />         
+		 <result column="DELAYINTERESTDAYS"        property="delayinterestdays"    jdbcType="VARCHAR" />         
+		 <result column="FIRSTINTERESTDATE"        property="firstinterestdate"    jdbcType="VARCHAR" />         
+		 <result column="DEBTINTEREST"        property="debtinterest"    jdbcType="VARCHAR" />         
+		 <result column="DEBTINTERESTTIMES"        property="debtinteresttimes"    jdbcType="VARCHAR" />         
+		 <result column="DLAYAMT"        property="dlayamt"    jdbcType="VARCHAR" />         
+		 <result column="DLAYDT"        property="dlaydt"    jdbcType="VARCHAR" />         
+		 <result column="PAYDEBT"        property="paydebt"    jdbcType="VARCHAR" />         
+		 <result column="INDEBTAMT"        property="indebtamt"    jdbcType="VARCHAR" />         
+		 <result column="OUTDEBTAMT"        property="outdebtamt"    jdbcType="VARCHAR" />         
+		 <result column="BALAMT"        property="balamt"    jdbcType="VARCHAR" />         
+		 <result column="CREATE_TIME"        property="create_time"    jdbcType="VARCHAR" />    
+		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
+		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
+		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+		 
+		 <result column="DISPLAY_NAME"        property="displayName"    jdbcType="VARCHAR" /> 
+ 	 </resultMap>
+ 	 
 
   
 
@@ -985,4 +1022,42 @@
  
 	</select>
 	
+	
+	
+	
+	<select id="findTzJnListByFilter" resultMap="BaseResultMap3" parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+		select t.BUSICODE,
+       t.CNAME,  
+       nvl(t.REQLMT,0) as REQLMT,
+       t.LOANDATE,
+       nvl(t.MONEY,0) as MONEY,
+       nvl(t.BALAMT,0) as BALAMT,
+       nvl(t.PAYDEBT,0) as PAYDEBT,
+       t.operdatetime,
+       nvl(t.contractmoney,0) as contractmoney,
+       (case 
+       when t.deptcode ='200734' then
+        '高新支行'
+       when t.deptcode ='200735' then
+        '槐荫支行'
+       when t.deptcode ='200730' then
+        '历城支行'
+       when t.deptcode ='200732' then
+        '历下支行'
+       when t.deptcode ='200731' then
+        '润丰支行'
+       when t.deptcode ='200733' then
+        '天桥支行'
+       when t.deptcode ='200729' then
+        '长清支行'
+       else
+        ''
+       end) as deptcode,
+       su.DISPLAY_NAME
+   from t_mibusidata T,
+   sys_user su 
+ 	where t.operdatetime <![CDATA[ =  ]]> #{endDate}
+ 	      and t.busimanager = su.external_id
+    order by t.deptcode asc 
+	</select>
 </mapper>

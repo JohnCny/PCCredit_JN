@@ -93,6 +93,14 @@
 		$("#id_save_button").click(function() {
 			var applyQuota=$("td[name='E3']").text();
 			applyQuota=money(applyQuota);
+			
+			//正则表达式判断是否是整数
+			var number = /^[0-9]*$/;
+			if(!number.test(applyQuota)){
+				alert("申请金额格式有误！");
+				return;
+			}
+			
 			var b = new Base64(); 
 			var content = {'content':b.encode($("#formsId").html())};
 			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_jy.json?appId=${appId}&applyQuota="+applyQuota;

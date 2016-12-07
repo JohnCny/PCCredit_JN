@@ -64,12 +64,12 @@ public class IntoPiecesComdao {
 		
 		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
 			params.put("startAmt", filter.getStartAmt());
-			sql.append("and APPLY_QUOTA >= #{startAmt}");
+			sql.append("and APPLY_QUOTA * 100/100 >= #{startAmt}");
 		}
 		
 		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
 			params.put("endAmt", filter.getEndAmt());
-			sql.append("and APPLY_QUOTA <= #{endAmt}");
+			sql.append("and APPLY_QUOTA * 100/100  <= #{endAmt}");
 		}
 		
 		String custManagerIds = filter.getCustManagerIds();
@@ -114,7 +114,8 @@ public class IntoPiecesComdao {
 			}
 		}
 		
-		sql.append(" order by id asc");
+		//sql.append(" order by id asc");
+		sql.append(" order by created_time desc");
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(), filter.getLimit());
 	}
@@ -679,12 +680,12 @@ public class IntoPiecesComdao {
 		
 		if(StringUtils.trimToNull(filter.getStartAmt())!=null){
 			params.put("startAmt", filter.getStartAmt());
-			sql.append("and APPLY_QUOTA >= #{startAmt}");
+			sql.append("and APPLY_QUOTA * 100/100 >= #{startAmt}");
 		}
 		
 		if(StringUtils.trimToNull(filter.getEndAmt())!=null){
 			params.put("endAmt", filter.getEndAmt());
-			sql.append("and APPLY_QUOTA <= #{endAmt}");
+			sql.append("and APPLY_QUOTA * 100/100 <= #{endAmt}");
 		}
 		
 		String custManagerIds = filter.getCustManagerIds();
@@ -725,7 +726,8 @@ public class IntoPiecesComdao {
 			}
 		}
 
-		sql.append(" order by id asc");
+		//sql.append(" order by id asc");
+		sql.append(" order by created_time desc");
 		return commonDao.queryBySql(IntoPieces.class, sql.toString(), params)
 				.size();
 	}

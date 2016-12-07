@@ -103,7 +103,7 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerInfor_wh_ty/intopieces_browse", request);
 		mv.addObject(PAGED_RESULT, pagedResult);
-
+		mv.addObject("forms", forms);
 		return mv;
 	}
 	
@@ -908,7 +908,11 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String urlType = RequestHelper.getStringValue(request, "urlType");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
-			String tableContent = getFromBASE64(localExcel.getSheetddtjy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			//String tableContent = getFromBASE64(localExcel.getSheetddtjy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContent ="";
+			if(localExcel.getSheetddtjy()!=null){
+				 tableContent = getFromBASE64(localExcel.getSheetddtjy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);
@@ -955,7 +959,11 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		String urlType = RequestHelper.getStringValue(request, "urlType");
 		if (StringUtils.isNotEmpty(appId)) {
 			LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
-			String tableContent = getFromBASE64(localExcel.getSheetddtxf()).replaceAll("\n", "<br>").replace("><br><", "><");
+			//String tableContent = getFromBASE64(localExcel.getSheetddtxf()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContent ="";
+			if(localExcel.getSheetddtxf()!=null){
+				 tableContent = getFromBASE64(localExcel.getSheetddtxf()).replaceAll("\n", "<br>").replace("><br><", "><");
+			}
 			mv.addObject("tableContent", tableContent);
 			mv.addObject("appId", appId);
 			mv.addObject("urlType", urlType);

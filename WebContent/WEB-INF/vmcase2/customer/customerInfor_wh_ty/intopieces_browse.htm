@@ -14,6 +14,13 @@
           <form id="queryForm" action="${contextPath}/customer/customerInfor_wh_ty/browse.page">
           <ul>
               <li>
+                <span>客户经理：<select id="custManagerId" name="custManagerId">
+                <option value="">请选择...</option>
+                #web($forms,$!result.filter.customerManagerId)
+                  </select>
+                </span>
+              </li>
+              <li>
                 <span>客户名称：<input type="text" id="chineseName" name="chineseName" value="$!result.filter.chineseName" /></span>
               </li>
                <li>
