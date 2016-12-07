@@ -130,7 +130,7 @@ public class AfterLoanCollectController extends BaseController{
 		//查询当月日均用信
 		BigDecimal monthAverageAmt = customerTransferFlowService.findMonthAverageAmt();
 		for(AccLoanCollectInfo acc :accloanList){
-			acc.setMa(monthAverageAmt.divide(new BigDecimal(count),2,BigDecimal.ROUND_HALF_UP).toString());
+			acc.setMa(monthAverageAmt.divide(new BigDecimal(count),4,BigDecimal.ROUND_HALF_UP).multiply(calMonthGrade()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
 		//查询业务开展以来截止到如今的日均用信
@@ -148,6 +148,7 @@ public class AfterLoanCollectController extends BaseController{
 		mv.addObject("filter", filter);
 		mv.addObject("urlType", user.getUserType());
 		
+		// 控制参数 按钮显示
 		boolean lock = false;
 		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
@@ -158,6 +159,43 @@ public class AfterLoanCollectController extends BaseController{
 		return mv;
 		
 	}
+	
+	/**
+	 * 1/31
+	 * @return
+	 */
+	public BigDecimal calMonthGrade(){
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = format.format(new Date());
+		
+		
+		String year  = dateString.substring(0, 4);
+	    String month = dateString.substring(5, 7);
+	    String day   = dateString.substring(8, 10);
+	    
+	    //当月实际天数
+		int days = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month));
+		
+		BigDecimal dayGrade = new BigDecimal(Integer.parseInt(day)-1).divide(new BigDecimal(days),4,BigDecimal.ROUND_HALF_UP);
+		return dayGrade;
+	}
+	
+	/**
+	 * 获得当月实际使用天数
+	 * @param year
+	 * @param month
+	 * @return
+	 */
+	 public static int getMonthLastDay(int year, int month)  
+	  {  
+	      Calendar a = Calendar.getInstance();  
+	      a.set(Calendar.YEAR, year);  
+	      a.set(Calendar.MONTH, month - 1);  
+	      a.set(Calendar.DATE, 1);//把日期设置为当月第一天  
+	      a.roll(Calendar.DATE, -1);//日期回滚一天，也就是最后一天  
+	      int maxDate = a.get(Calendar.DATE);  
+	      return maxDate;  
+	  }  
 	
 	
 	@ResponseBody

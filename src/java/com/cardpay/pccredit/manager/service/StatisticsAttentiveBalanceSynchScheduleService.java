@@ -210,7 +210,12 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 		if(StringUtils.isEmpty(day)){
 			days = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month))+"";
 		}else{
-			days = Integer.parseInt(day)+"";
+			int currentMonthDay = getMonthLastDay(Integer.parseInt(year),Integer.parseInt(month));
+			if(Integer.parseInt(day)>=currentMonthDay){
+				days = currentMonthDay +"";
+			}else{
+				days = Integer.parseInt(day) +1 +"";
+			}
 		}
 		
 		if(Integer.parseInt(days)<10){

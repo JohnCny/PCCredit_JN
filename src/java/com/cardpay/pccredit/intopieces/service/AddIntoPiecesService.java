@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -185,12 +186,28 @@ public class AddIntoPiecesService {
 		}else{
 		    localExcel.setApproveValue(sheet[12]);
 		}
+		
+		//判断申请金额格式是否正确
+		if(!IsNum(localExcel.getApproveValue())){
+			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
+		}
+		
 		//删除旧模板
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
 		//添加模板
 		commonDao.insertObject(localExcel);
 	}
+	
+	//判断申请金额是否为整数
+    public Boolean IsNum(String value){
+    	java.util.regex.Pattern pattern = Pattern.compile("[0-9]*");
+    	java.util.regex.Matcher isNum = pattern.matcher(value.trim());
+    	if(!isNum.matches()){
+    		return false;
+    	}
+    	return true;
+    }
 	
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
@@ -245,6 +262,12 @@ public class AddIntoPiecesService {
 			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
 		    localExcel.setApproveValue(sheet[12]);
+		}
+		
+		
+		//判断申请金额格式是否正确
+		if(!IsNum(localExcel.getApproveValue())){
+			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
 		}
 		
 		//修改申请金额
