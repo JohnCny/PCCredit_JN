@@ -114,9 +114,32 @@
 			    });
   				
   				if(isInRisk){
-  				   window.top.Dialog.message("亲,该客户为风险客户,请重新选择!");
+  				   window.top.Dialog.message("该客户为风险客户,请重新选择!");
   				   return;
   				}
+  				
+  				
+  				//客户距离上次贷款结清时间小于等于6个月内 无法新增贷款
+  				var isTimeArrive = false;
+   				$.ajax({
+ 						url : "${contextPath}/intopieces/addIntopieces/isTimeArrive.json?id="+rowid[0],
+ 						type : "get",
+ 						async: false,
+ 						success : function(data) {
+ 							if (data.success) {
+ 								if(data.isTimeArrive){
+ 									isTimeArrive = true;
+ 								}
+ 							}else{
+ 								window.top.Dialog.message("系统出现异常,请联系管理员");
+ 					    	}
+ 						}
+ 			    });
+   				
+   				if(isTimeArrive){
+   				   window.top.Dialog.message("该客户为贷款结清时间小于6个月内,无法新增进件!");
+   				   return;
+   				}
                 
                 var url = "${contextPath}/intopieces/addIntopieces/reportImport.page?customerId="+rowid[0]+"&productId="+productId;
                 window.location.href = url;

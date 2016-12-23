@@ -16,6 +16,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPYFORM;
+import com.cardpay.pccredit.customer.model.CIPERSONFAMILY;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCc;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendFamilyCy;
@@ -197,9 +198,7 @@ public class CustomerFirsthendController extends BaseController{
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_4", request);
 		String customerNm = request.getParameter("id");
 		if (StringUtils.isNotEmpty(customerNm)) {
-			//家庭类型
-			String type="1";
-			List<CustomerFirsthendFamilyCy> base = customerInforService.findFamilyByNm(customerNm, type);
+			List<CIPERSONFAMILY> base = customerInforService.findFamilyByCustId(customerNm);
 			mv.addObject("result", base);
 			mv.addObject("customerNm", customerNm);
 		}

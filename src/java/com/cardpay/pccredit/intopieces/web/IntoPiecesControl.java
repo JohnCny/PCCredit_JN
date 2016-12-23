@@ -67,6 +67,7 @@ import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.constant.ManagerLevelAdjustmentConstant;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.AppendixDict;
 import com.cardpay.pccredit.product.model.ProductAttribute;
@@ -1211,6 +1212,26 @@ public class IntoPiecesControl extends BaseController {
 			mv.addObject("historyForms", historyForms);
 		}
 		mv.addObject("ifHideUser", ifHideUser);
+		return mv;
+	}
+	
+	
+	/**
+	 * 查看用信信息
+	 * 2016-12-19
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findYxMsg.page", method = { RequestMethod.GET })
+	public AbstractModelAndView findYxMsg(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/approve_yx_browse", request);
+		//客户id
+		String id = request.getParameter("id");
+		if(StringUtils.isNotEmpty(id)){
+			List<MibusidataForm> forms = intoPiecesService.findMibusidataForm(id);
+			mv.addObject("forms", forms);
+		}
 		return mv;
 	}
 	

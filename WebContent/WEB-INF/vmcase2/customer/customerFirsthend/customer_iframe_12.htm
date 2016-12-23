@@ -70,6 +70,7 @@
       <div class="submit">
      		<input type="button" onclick="updateClick();" value="修改" />
  			<input type="button" onclick="returnClick();" value="返回" />
+ 			
       </div>
     </div>
   </div>
@@ -88,8 +89,9 @@
 	
 	//返回
 	function returnClick(){
-		window.location.href= contextPath + "/customer/customerInfor_wh_ty/browse.page";
+		//window.location.href= contextPath + "/customer/customerInfor_wh_ty/browse.page";
 		// window.location.href= contextPath + "/customer/firsthend/browse.page" ;
+		window.location.href ="javascript:history.back()";
 	}
 	
 	//修改

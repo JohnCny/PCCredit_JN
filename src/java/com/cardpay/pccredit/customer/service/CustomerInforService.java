@@ -44,6 +44,7 @@ import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
+import com.cardpay.pccredit.customer.model.CIPERSONFAMILY;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBaseLocal;
@@ -1493,6 +1494,12 @@ public class CustomerInforService {
 		String sql = "select * from ty_customer_family_cy where khnm='"+nmId+"' and gxfl='"+type+"'";
 
 		List<CustomerFirsthendFamilyCy> info = commonDao.queryBySql(CustomerFirsthendFamilyCy.class,sql , null);
+		return info;
+	}
+	
+	public List<CIPERSONFAMILY> findFamilyByCustId(String nmId){
+		String sql = "select * from t_cipersonfamily where custid='"+nmId+"'";
+		List<CIPERSONFAMILY> info = commonDao.queryBySql(CIPERSONFAMILY.class,sql , null);
 		return info;
 	}
 	/**

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,9 +18,13 @@ import com.cardpay.pccredit.common.PccOrganizationService;
 import com.cardpay.pccredit.customer.web.AmountAdjustmentForm;
 import com.cardpay.pccredit.datapri.web.FlatTreeNode;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
+import com.cardpay.pccredit.system.filter.DictFilter;
+import com.cardpay.pccredit.system.filter.SysLoginLogFilter;
 import com.cardpay.pccredit.system.filter.SystemChargeFilter;
 import com.cardpay.pccredit.system.filter.SystemUserFilter;
 import com.cardpay.pccredit.system.model.Choujiang;
+import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.cardpay.pccredit.system.service.SystemChargeService;
 import com.cardpay.pccredit.system.service.SystemUserService;
@@ -31,6 +37,7 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.log.model.LoginLog;
 import com.wicresoft.jrad.modules.privilege.business.DepartmentManager;
 import com.wicresoft.jrad.modules.privilege.constant.PrivilegeConstants;
 import com.wicresoft.jrad.modules.privilege.filter.DepartmentFilter;
@@ -185,5 +192,76 @@ public class SystemChargeController extends BaseController{
 		mv.addObject("users", result);
 		mv.addObject("listYes", listYes);
 		return mv;
+	}
+	
+	
+	
+	//=======================================登录日志==================================================//
+	
+	/**
+	 * 登录日志浏览
+	 */
+	@ResponseBody
+	@RequestMapping(value = "loginLogBrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView browse(@ModelAttribute SysLoginLogFilter filter, HttpServletRequest request) {
+        filter.setRequest(request);
+        String startDate =null;
+        String endDate =null;
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	startDate = filter.getActionTime()+ " 00:00:00";
+        }
+        
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	endDate = filter.getActionTime()+ " 23:59:59";
+        }
+        filter.setEndDate(endDate);
+        filter.setStartDate(startDate);
+		QueryResult<LoginLog> result = systemChargeService.findLoginLogByFilter(filter);
+		JRadPagedQueryResult<LoginLog> pagedResult = new JRadPagedQueryResult<LoginLog>(filter, result);
+		JRadModelAndView mv = new JRadModelAndView("/system/loginlog/loginlog_browse",request);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 登录日志导出
+	 */
+	@ResponseBody
+	@RequestMapping(value = "exportData.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap exportData(@ModelAttribute SysLoginLogFilter filter, HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		filter.setRequest(request);
+		
+		String login = request.getParameter("login");
+		String action = request.getParameter("action");
+		String actionTime = request.getParameter("actionTime");
+		filter.setAction(action);
+		filter.setActionTime(actionTime);
+		filter.setLogin(login);
+		
+	    String startDate =null;
+        String endDate =null;
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	startDate = filter.getActionTime()+ " 00:00:00";
+        }
+        
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	endDate = filter.getActionTime()+ " 23:59:59";
+        }
+        filter.setEndDate(endDate);
+        filter.setStartDate(startDate);
+		
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+				systemChargeService.getExportWageData(filter,response);
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
 	}
 }
