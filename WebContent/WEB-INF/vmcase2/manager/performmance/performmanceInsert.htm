@@ -26,12 +26,12 @@
 							name="visitcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
 						<td class="titlefc3"><label for="applycount">申请数:</label></td>
 						<td><input class="rinpsty" type="text" id="applycount"
-							name="applycount" value="$!ssss.applyNum" readonly="readonly"/></td>
+							name="applycount" value="$!ssss.applyNum" /></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="applyrefuse">申请拒绝数:</label></td>
 						<td><input class="rinpsty" type="text" id="applyrefuse"
-							name="applyrefuse" value="$!ssss.refuseNum" readonly="readonly"/></td>
+							name="applyrefuse" value="$!ssss.refuseNum" /></td>
 						<td class="titlefc3"><label for="creditcount">征信数:</label></td>
 						<td><input class="rinpsty" type="text" id="creditcount"
 							name="creditcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
@@ -50,15 +50,15 @@
 							name="reportcount" value="0" onfocus="if(value=='0'){value=''}"  onblur="if(value==''||!/^\d+$/.test(this.value)){value='0'}"/></td>
 						<td class="titlefc3"><label for="internalcount">内审数:</label></td>
 						<td><input class="rinpsty" type="text" id="internalcount"
-							name="internalcount" value="$!ssss.auditNum" readonly="readonly"/></td>
+							name="internalcount" value="$!ssss.auditNum" /></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="meetingcout">上会数:</label></td>
 						<td><input class="rinpsty" type="text" id="meetingcout"
-							name="meetingcout" value="$!ssss.willNum" readonly="readonly"/></td>
+							name="meetingcout" value="$!ssss.willNum" /></td>
 						<td class="titlefc3"><label for="passcount">通过数:</label></td>
 						<td><input class="rinpsty" type="text" id="passcount"
-							name="passcount" value="$!ssss.passNum" readonly="readonly"/></td>
+							name="passcount" value="$!ssss.passNum" /></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="signcount">签约数:</label></td>
@@ -82,22 +82,25 @@
 	 #set ($formName = "'#id_module_form'");
 	 $("#id_save_button").click(function (){
 		 
-		 var formjson = $($formName).serialize();
-   	     var url = $($formName).attr("action");
-		 $.ajax({
-				url : url,
-				type : "get",
-				data : formjson,
-				success : function(data) {
-					if (data.success) {
-						topWin.Dialog.message(data.mess);
-	   	            	window.location.reload() ;
-					}else{
-						topWin.Dialog.message(data.mess);
-				    }
-				}
-			});
-	});
+	  var formjson = $($formName).serialize();
+   	  var url = $($formName).attr("action");
+   	  Dialog.confirm("确定要处理吗？", "提示",
+	     		function() {
+					 $.ajax({
+							url : url,
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message(data.mess);
+				   	            	window.location.reload() ;
+								}else{
+									topWin.Dialog.message(data.mess);
+							    }
+							}
+						});
+   			    });
+	  });
 	
  })
  

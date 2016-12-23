@@ -116,9 +116,9 @@
                   title="查看详情" style="height: 26px; line-height: 24px;" /> 
            <input id="id_export_button" type="button" value="导出EXCEL" class="search_button_inquiry"
                   title="导出工资单" style="height: 26px; line-height: 24px;" />
-           <!-- <input id="id_go_button" type="button" value="四维授信" class="search_button_inquiry"
+      <!-- <input id="id_go_button" type="button" value="四维授信" class="search_button_inquiry"
                   title="四维授信" style="height: 26px; line-height: 24px;" /> -->
-           <!--  <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
+      <!-- <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
                   title="打印" style="height: 26px; line-height: 24px;" /> -->
         </div>
         #parse ("common/pagination.htm")
@@ -163,7 +163,6 @@
 					success:function(data){
 						Dialog.closeLoad();
 						if(data.success == true){
-							//Dialog.message("成功");
 							window.location.href="${modulePath}/jnJxbrowse.page";
 						}else{
 							Dialog.message(data.errors.errors[0].message);
@@ -197,14 +196,6 @@
 		
 	 	//导出
 		$("#id_export_button").click(function() {
-			/* if($('#date').val() == "" || $('#date').val() == null){
-	    		Dialog.message("请输入日期");
-	    	}else{
-	    		var url = opsObj.exportUrl;
-            	document.getElementById("submitForm").action = url;
-            	document.getElementById("submitForm").submit();
-	    	} */
-	    	
 			if($('#date').val() == "" || $('#date').val() == null){
 	    		Dialog.message("请输入日期");
 	    		return;
@@ -231,7 +222,21 @@
 	 	
 	 	//打印
 		$("#id_print_button").click(function() {
-			var url = "${contextPath}/manager/leveladjustment/print.page";
+			if($('#date').val() == "" || $('#date').val() == null){
+	    		Dialog.message("请输入日期");
+	    		return;
+	    	}
+			
+			if($('#managerType').val() == "" || $('#managerType').val() == null){
+	    		Dialog.message("请选择客户经理类型");
+	    		return;
+	    	}
+			
+			var url = "${contextPath}/manager/leveladjustment/print.page?managerName="+$('#managerName').val()+
+					"&organName="+$('#organName').val()+
+					"&managerType="+$('#managerType').val()+
+					"&date="+$('#date').val();
+
 			window.open(url,"newwindow");
 	    }); 
 	 	

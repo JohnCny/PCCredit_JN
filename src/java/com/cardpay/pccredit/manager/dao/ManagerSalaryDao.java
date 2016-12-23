@@ -93,6 +93,9 @@ public interface ManagerSalaryDao {
 	
 	//济南绩效
 	public List<ManagerSalaryForm> findManagerSalarysByFilterJn(ManagerSalaryFilter filter);
+	
+	public List<ManagerSalaryForm> findManagerSalarysList(ManagerSalaryFilter filter);
+	
 	public int findManagerSalarysCountByFilterJn(ManagerSalaryFilter filter);
 	public String getOrganName(@Param("managerId") String managerId);
 	public int findManagerSalaryCount(@Param("year") String  year, @Param("month") String month);

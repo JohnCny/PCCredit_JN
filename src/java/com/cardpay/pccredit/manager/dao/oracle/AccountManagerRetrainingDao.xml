@@ -74,9 +74,9 @@
 		   from (select * 
 				   from sys_organization 
 				   where 1=1 
-				   <if test="orgId != null and orgId != '' ">
+				 <!--   <if test="orgId != null and orgId != '' ">
 				   		and id=#{orgId}
-				   </if>
+				   </if> -->
 				   ) org
 		  inner join sys_department dep 
 			 on org.id = dep.org_id 
@@ -84,7 +84,7 @@
 			 on dep.id = dep_user.dept_id 
 		  inner join sys_user usr 
 			 on usr.id = dep_user.user_id 
-			<!-- and usr.user_type = 1  -->
+			and usr.user_type = 1  
 			and usr.is_deleted = 0 
 			and org.id !='000000'
 	</select>

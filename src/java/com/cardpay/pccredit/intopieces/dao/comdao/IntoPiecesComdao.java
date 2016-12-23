@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.intopieces.dao.comdao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.product.model.ManagerProductsConfiguration;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -441,6 +443,25 @@ public class IntoPiecesComdao {
 		return commonDao.queryBySql(ApproveHistoryForm.class, sql, params);
 	}
 	
+	
+	public List<MibusidataForm> findMibusidataForm(String id){
+	    String sql ="select mibu.INTEREST,									  "+
+		    		"       mibu.LOANDATE,                                    "+
+		    		"       mibu.ENDDATE,                                     "+
+		    		"       mibu.LIMIT,                                       "+
+		    		"       mibu.MONEY,                                       "+
+		    		"       mibu.BALAMT,                                      "+
+		    		"       mibu.PAYDEBT,                                     "+
+		    		"       mibu.DLAYAMT                                      "+
+		    		" from t_mibusidata_view mibu,                            "+
+		    		"       basic_customer_information basi                   "+
+		    		"       where basi.ty_customer_id = mibu.CUSTID           "+
+		    		"       and basi.id =#{id}   							  ";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		return commonDao.queryBySql(MibusidataForm.class, sql, params);
+	}
+	
 	/*public List<AppManagerAuditLogForm> findAuditConfigureById(String id){
 		String sql = "select l.examine_amount as examineAmount ,                     "+
 				"       l.examine_lv as examineLv,l.AUDIT_TYPE as auditType,         "+
@@ -587,6 +608,8 @@ public class IntoPiecesComdao {
 					"   and c.state = '1'                   " + 
 					"   and c.appcode = m.appcode           " + 
 					"   and m.squarestate ='1'              "; */
+		
+		//生效状态	KEYEFFECTEDSTATE 0-初始值 1-生效 2-正常到期  3强制到期 4-发生终止 5-注销/生效后删除
 		String sql = "select a.id,                                                "+ 
 					 "                        sum(c.money)                        "+ 
 					 "                   from customer_application_info  a,       "+ 
@@ -597,7 +620,8 @@ public class IntoPiecesComdao {
 					 "                  and trim(c.KEYCODE) = d.KEYCODE           "+ 
 					 "                  and b.ty_customer_id = d.CUSTID           "+ 
 					 "                  and a.status = 'end'                      "+ 
-					 "                  and c.SQUARESTATE ='1'                    "+ 
+				   //"                  and c.SQUARESTATE ='1'                    "+
+				     "                  and c.KEYEFFECTEDSTATE in('2','3','4')    "+ 
 					 "                  group by a.id                             ";
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
 		return list;
@@ -644,6 +668,20 @@ public class IntoPiecesComdao {
 		List<RiskCustomer> list = commonDao.queryBySql(RiskCustomer.class,sql,null);
 		if(list!=null&&!list.isEmpty()){
 			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	
+	public List<IntoPieces> findAppInfoByCustomerId(String customerId){
+		String sql = 	  "	select t.id,nvl((trunc(sysdate) - trunc(t.created_time)),0) as  amt "+
+						  "         from customer_application_info t                       "+
+						  "        where t.CUSTOMER_ID =   '"+customerId+"'                "+
+						  "          and t.repay_status ='1'                			   ";
+		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
+		if(list!=null&&!list.isEmpty()){
+			return list;
 		}else{
 			return null;
 		}

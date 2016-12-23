@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.intopieces.service;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -48,6 +49,7 @@ import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
+import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
@@ -897,6 +899,10 @@ public class IntoPiecesService {
 		return intoPiecesComdao.findApproveHistoryByDataId(id, dataType);
 	}
 	
+	public List<MibusidataForm> findMibusidataForm(String id) {
+		return intoPiecesComdao.findMibusidataForm(id);
+	}
+	
 	/*public List<AppManagerAuditLogForm> findAuditConfigureById(String id) {
 		//return intoPiecesComdao.findAuditConfigureById(id);
 	}*/
@@ -946,6 +952,10 @@ public class IntoPiecesService {
 	
 	public RiskCustomer findRiskListByCustomerId(String customerId){
 		return intoPiecesComdao.findRiskListByCustomerId(customerId);
+	}
+	
+	public List<IntoPieces> findAppInfoByCustomerId(String customerId){
+		return intoPiecesComdao.findAppInfoByCustomerId(customerId);
 	}
 	
 	public void updateLocalExcel(String applyQuota,String id){

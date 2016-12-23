@@ -72,10 +72,12 @@ public class WeeklyAccountManagerFuzerenController extends BaseController {
 		Organization org =  organizationService.findOrgByUserId(loginId);
 		String orgId =  org.getId();
 		List<User> users = accountManagerRetrainingService.findUserListByOrgId(orgId);
-		QueryResult<WeeklyAccountManagerForm> result = weeklyAccountService.findOrgSubWeeklyAccountManagersByFilter(filter);
-		JRadPagedQueryResult<WeeklyAccountManagerForm> pagedResult = new JRadPagedQueryResult<WeeklyAccountManagerForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/manager/weekreport/week_browse_fuzeren", request);
-		mv.addObject(PAGED_RESULT, pagedResult);
+		if(user.getUserType() ==2){
+			QueryResult<WeeklyAccountManagerForm> result = weeklyAccountService.findOrgSubWeeklyAccountManagersByFilter(filter);
+			JRadPagedQueryResult<WeeklyAccountManagerForm> pagedResult = new JRadPagedQueryResult<WeeklyAccountManagerForm>(filter, result);
+			mv.addObject(PAGED_RESULT, pagedResult);
+		}
 		mv.addObject("users", users);
 		return mv;
 	}
