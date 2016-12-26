@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.service.MaintenanceService;
+import com.cardpay.pccredit.customer.web.MaintenanceForm;
 import com.cardpay.pccredit.manager.filter.WeeklyAccountManagerFilter;
 import com.cardpay.pccredit.manager.model.WeeklyAccountManager;
 import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
@@ -51,6 +53,10 @@ public class WeeklyAccountManagerZuzhangController extends BaseController {
 	
 	@Autowired
 	private ManagerBelongMapService managerBelongMapService;
+	
+	
+	@Autowired
+	private MaintenanceService maintenanceService;
 
 	/**
 	 * 浏览页面
@@ -68,7 +74,7 @@ public class WeeklyAccountManagerZuzhangController extends BaseController {
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
 		List<AccountManagerParameterForm> apf = managerBelongMapService.findSubListManagerByManagerId(loginId);
-		JRadPagedQueryResult<WeeklyAccountManagerForm> pagedResult = null;
+		/*JRadPagedQueryResult<WeeklyAccountManagerForm> pagedResult = null;
 		if(apf.size() > 0){
 			List<String> subManagerIds = new ArrayList<String>();
 			for(AccountManagerParameterForm managerParameterForm : apf){
@@ -81,10 +87,27 @@ public class WeeklyAccountManagerZuzhangController extends BaseController {
 			QueryResult<WeeklyAccountManagerForm> result = weeklyAccountService.findSubWeeklyAccountManagersByFilter(filter);
 			pagedResult = new JRadPagedQueryResult<WeeklyAccountManagerForm>(filter, result);
 				
+		}*/
+		
+		//查询客户经理
+		List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId(user);
+		String customerManagerId = filter.getCustomerManagerId();
+		QueryResult<WeeklyAccountManagerForm> result = null;
+		if(customerManagerId!=null && !customerManagerId.equals("")){
+			result = weeklyAccountService.findSubWeeklyAccountManagersByFilter(filter);
+		}else{
+			if(forms.size()>0){
+				filter.setCustomerManagerIds(forms);
+				result = weeklyAccountService.findSubWeeklyAccountManagersByFilter(filter);
+			}else{
+				//直接返回页面
+				result = weeklyAccountService.findSubWeeklyAccountManagersByFilter(filter);
+			}
 		}
 		
-		
 		JRadModelAndView mv = new JRadModelAndView("/manager/weekreport/week_browse_zuzhang", request);
+		
+		JRadPagedQueryResult<WeeklyAccountManagerForm> pagedResult = new JRadPagedQueryResult<WeeklyAccountManagerForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("apf", apf);
 		return mv;

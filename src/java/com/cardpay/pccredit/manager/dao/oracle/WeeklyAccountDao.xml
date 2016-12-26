@@ -96,12 +96,22 @@
 		</if>
 		
 		AND w.CUSTOMER_MANAGER_ID = s.ID
-		<if test="subManagerIds != null and subManagerIds.size() > 0 ">
+		<!-- <if test="subManagerIds != null and subManagerIds.size() > 0 ">
 			and w.CUSTOMER_MANAGER_ID in
 			<foreach item="item" index="index" collection="subManagerIds" open="("  
 				     separator="," close=")">  
 				     #{item}
 		    </foreach>
+		</if> -->
+		
+		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+		  	AND s.id in  
+			<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+			#{item.userId} 
+			</foreach>
+		</if>
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			 AND s.id = #{customerManagerId}
 		</if>
 <!-- 		AND ( -->
 <!-- 		 w.CUSTOMER_MANAGER_ID IN ( -->
@@ -130,7 +140,38 @@
 		COUNT (*)
 		FROM
 		(
+		
 		SELECT
+		w.*, s.DISPLAY_NAME AS displayName
+		FROM
+		WEEKLY_ACCOUNT_MANAGER w,
+		SYS_USER s
+		WHERE
+		1 = 1
+		
+	    <if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME=#{displayName}
+		</if>
+		
+		AND w.CUSTOMER_MANAGER_ID = s.ID
+		<!-- <if test="subManagerIds != null and subManagerIds.size() > 0 ">
+			and w.CUSTOMER_MANAGER_ID in
+			<foreach item="item" index="index" collection="subManagerIds" open="("  
+				     separator="," close=")">  
+				     #{item}
+		    </foreach>
+		</if> -->
+		
+		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+		  	AND s.id in  
+			<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+			#{item.userId} 
+			</foreach>
+		</if>
+		<if test="customerManagerId != null and customerManagerId != '' ">
+			 AND s.id = #{customerManagerId}
+		</if>
+		<!-- SELECT
 		w.*, s.DISPLAY_NAME AS displayName
 		FROM
 		WEEKLY_ACCOUNT_MANAGER w,
@@ -153,7 +194,7 @@
 	)
 )
 ORDER BY
-	w.CREATED_TIME DESC
+	w.CREATED_TIME DESC -->
 		)
 	</select>
 <!-- 点击客户经理周报 (团队负责人)-->
@@ -173,7 +214,7 @@ ORDER BY
 			AND s.DISPLAY_NAME=#{displayName}
 		</if>
 AND w.CUSTOMER_MANAGER_ID = s. ID
-		AND (
+		<!-- AND (
 		 w.CUSTOMER_MANAGER_ID IN (
 	select usr.id as id
 		   from (select * 
@@ -194,7 +235,7 @@ AND w.CUSTOMER_MANAGER_ID = s. ID
 					  from sys_dept_user tt where tt.user_id =#{loginId})) ) aa
 ON   org.id= aa.orgId
 		)
-		)
+		) -->
 		ORDER BY
 		w.CREATED_TIME DESC
 		 <![CDATA[		
@@ -222,7 +263,7 @@ ON   org.id= aa.orgId
 			AND s.DISPLAY_NAME=#{displayName}
 		</if>
 AND w.CUSTOMER_MANAGER_ID = s. ID
-		AND (
+		<!-- AND (
 		 w.CUSTOMER_MANAGER_ID IN (
 	select usr.id as id
 		   from (select * 
@@ -243,7 +284,7 @@ AND w.CUSTOMER_MANAGER_ID = s. ID
 					  from sys_dept_user tt where tt.user_id =#{loginId})) ) aa
 ON   org.id= aa.orgId
 		)
-		)
+		) -->
 		ORDER BY
 		w.CREATED_TIME DESC
 		)

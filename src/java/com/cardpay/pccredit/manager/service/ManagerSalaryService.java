@@ -535,6 +535,13 @@ public class ManagerSalaryService {
 		return qs;
 	}
 	
+	
+	public List<ManagerSalaryForm> findManagerSalaryList(ManagerSalaryFilter filter) {
+		List<ManagerSalaryForm> list = managerSalaryDao.findManagerSalarysList(filter);
+		return list;
+	}
+	
+	
 	public ManagerSalary findManagerSalaryById(String id) {
 		ManagerSalary salary = commonDao.findObjectById(ManagerSalary.class, id);
 		SystemUser user = commonDao.findObjectById(SystemUser.class,salary.getCustomerId());
@@ -714,14 +721,16 @@ public class ManagerSalaryService {
 						"select * from account_manager_parameter where manager_type in ('3')",
 						null);
 
-		// 生成 T_JX_PARAMETERS表数据
-		for (AccountManagerParameter accountManagerParameter : list) {
-			generateJxParameters(accountManagerParameter.getUserId(), year,month);
-		}
+		
 
 		// 生成 T_JX_SPECIFIC_PARAMETERS表数据
 		for (AccountManagerParameter accountManagerParameter : list) {
 			generateJxSpecificParameters(accountManagerParameter.getUserId(),year, month);
+		}
+		
+		// 生成 T_JX_PARAMETERS表数据
+		for (AccountManagerParameter accountManagerParameter : list) {
+			generateJxParameters(accountManagerParameter.getUserId(), year,month);
 		}
 
 		// 具体计算行编以及外聘客户经理的当月工资

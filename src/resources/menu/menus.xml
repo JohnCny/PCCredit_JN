@@ -35,11 +35,17 @@
  			<menu id="070007" name="performmancebrowse" title="业绩进度查询" url="/manager/performmance/browse.page" img="" operations="checked|display|browse"/>
  			<menu id="070008" name="trainmessage" title="管辖客户管理" url="/manager/khgl/browse.page" img="" operations="checked|display|browse"/>
  			<menu id="070009" name="model" title="四维授信评估模型" url="/manager/khgl/dimensionsCreditModel.page" img="" operations="checked|display|browse"/>
- 			<!-- <menu id="070010" name="model1" title="授信政策操作指引" url="/manager/khgl/scoreBrowse.page" img="" operations="checked|display|browse"/> -->	    
+ 	   <!-- <menu id="070010" name="model1" title="授信政策操作指引" url="/manager/khgl/scoreBrowse.page" img="" operations="checked|display|browse"/> -->	
+ 	   		<menu id="070010" name="weeklyaccount" title="客户经理周报" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/> 
+ 	   		<menu id="070011" name="weeklyaccountzuzhang" title="所属客户经理周报列表" url="/manager/weeklyaccountzuzhang/browse.page" img="" operations="change|display|browse"/>
+			<menu id="070012" name="weeklyaccountfuzeren" title="客户经理周报(团队负责人)" url="/manager/weeklyaccountfuzeren/browse.page" img="" operations="change|display|browse"/>
+ 	        <menu id="070013" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>  
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" title="客户催收计划列表" url="/riskcontrol/riskcustomercollection/browse.page" img="" operations="create|change|display|browse"/>
+			<menu id="081003" name="riskconsiderations" title="风险事项管理(客户经理上报)" url="/riskcontrol/riskconsiderations/browse.page" img="" operations="create|change|delete|display|browse|reported"/>
+			<menu id="081004" name="riskreviewprocesssupervisor" title="风险事项审核流程(微贷中心主管)" url="/riskcontrol/riskreviewprocesssupervisor/supervisorbrowse.page" img="" operations="confirm|refuse|browse"/>
 		</menu>
 		
 		
@@ -91,7 +97,9 @@
 			<menu id="103050" name="role" title="角色管理" url="/system/role/browse.page" img="" operations="create|change|delete|display|browse|maintenance" />
 			<menu id="103060" name="user" title="用户管理" url="/system/user/browse.page" operations="create|change|delete|display|browse" />
 			<menu id="103070" name="operlog" title="操作日志" url="/system/operlog/browse.page" img="" operations="display|browse|export" />
-			<menu id="103080" name="login" title="登录日志" url="/system/loginlog/browse.page" img="" operations="display|browse|export" />
+	   <!-- IE 无法导出excel -->
+	   <!-- <menu id="103080" name="login" title="登录日志" url="/system/loginlog/browse.page" img="" operations="display|browse|export" /> -->
+			<menu id="103080" name="login" title="登录日志" url="/system/charge/loginLogBrowse.page" img="" operations="display|browse|export" />
 			<menu id="103090" name="dict" title="数据字典" url="/system/dict/browse.page" img="" operations="create|delete|browse|change" />
 			<menu id="103100" name="parameter" title="系统参数配置" url="/system/parameter/browse.page" img="" operations="change|browse" />
 			<menu id="103110" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" />

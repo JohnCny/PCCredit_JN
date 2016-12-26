@@ -69,4 +69,91 @@
 				AND dept_id=#{deptId}
 			</if>
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="findLoginLogByFilter" resultType="com.wicresoft.jrad.modules.log.model.LoginLog">
+	    SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+			SELECT t.id,
+			       t.login,
+			       t.type,
+			       t.action,
+			       t.action_time as actionTime,
+			       t.result,
+			       t.ip_address  as ipAddress 
+			       FROM SYS_LOGIN_LOG t where 1=1 
+		        <if test="login != null and login != '' ">
+					AND login=#{login}
+			    </if>
+				<if test="action != null and action != '' ">
+					AND action=#{action}
+				</if>
+				
+				<if test="startDate != null and startDate != '' ">
+					AND action_time &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+				</if>
+				
+			    <if test="endDate != null and endDate != '' ">
+					AND action_time &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+				</if>   
+		 <![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	<select id="findLoginLogCountByFilter" resultType="int" parameterType="com.wicresoft.jrad.modules.log.model.LoginLog">
+		select count(*) from SYS_LOGIN_LOG where 1=1
+		<if test="login != null and login != '' ">
+			AND login=#{login}
+	    </if>
+		<if test="action != null and action != '' ">
+			AND action=#{action}
+		</if>
+		
+		<if test="startDate != null and startDate != '' ">
+			AND action_time &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+		
+	    <if test="endDate != null and endDate != '' ">
+			AND action_time &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
+	</select>
+	
+	
+	<select id="findLoginLogList" resultType="com.wicresoft.jrad.modules.log.model.LoginLog">
+			SELECT t.id,
+			       t.login,
+			       t.type,
+			       t.action,
+			       t.action_time as actionTime,
+			       t.result,
+			       t.ip_address  as ipAddress 
+			       FROM SYS_LOGIN_LOG t where 1=1 
+		        <if test="login != null and login != '' ">
+					AND login=#{login}
+			    </if>
+				<if test="action != null and action != '' ">
+					AND action=#{action}
+				</if>
+				
+				<if test="startDate != null and startDate != '' ">
+					AND action_time &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+				</if>
+				
+			    <if test="endDate != null and endDate != '' ">
+					AND action_time &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+				</if>   
+	</select>
 </mapper>

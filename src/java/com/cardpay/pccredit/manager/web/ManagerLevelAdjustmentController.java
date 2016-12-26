@@ -343,7 +343,7 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	@RequestMapping(value = "print.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView print(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request) {
-		filter.setRequest(request);
+		/*filter.setRequest(request);
 		int limit = 20;
 		filter.setLimit(limit);
 		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_salary_print", request);
@@ -372,6 +372,23 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm> pagedResult = 
 				new JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;*/
+		
+		filter.setRequest(request);
+		String managerName = request.getParameter("managerName");
+		String organName = request.getParameter("organName");
+		String managerType = request.getParameter("managerType");
+		String date = request.getParameter("date");
+		
+		filter.setYear(date.substring(0, 4));
+		filter.setMonth(date.substring(5, 7));
+		filter.setManagerName(managerName);
+		filter.setOrganName(organName);
+		filter.setManagerType(managerType);
+		
+		JRadModelAndView mv = new JRadModelAndView("/jxxc/manager_salary_print", request);
+		List<com.cardpay.pccredit.manager.model.ManagerSalaryForm> result = managerSalaryService.findManagerSalaryList(filter);
+		mv.addObject(PAGED_RESULT, result);
 		return mv;
 	}
 	

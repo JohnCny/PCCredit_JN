@@ -123,9 +123,9 @@ public class AddIntoPiecesService {
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
 		//本地测试
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -142,9 +142,9 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		//String sheet[] = readExcel.readExcelToHtml1(url, true);
+		String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
-		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -213,9 +213,9 @@ public class AddIntoPiecesService {
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		//本地
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -237,9 +237,9 @@ public class AddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		//本地测试
-		//String sheet[] = readExcel.readExcelToHtml1(url, true);
+		String sheet[] = readExcel.readExcelToHtml1(url, true);
 		//服务器
-		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -311,9 +311,9 @@ public class AddIntoPiecesService {
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
 		//本地测试
-		//Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		//指定服务器上传
-		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
@@ -1075,6 +1075,25 @@ public class AddIntoPiecesService {
 		commonDao.queryBySql(sql, null);
 		
 		request.getSession().setAttribute(batchId, null);
+	}
+	
+	
+	//调查模板下载
+	public void downLoadDcmb(HttpServletResponse response,String custId,String prodId) throws Exception{
+		String sql = "select URI,ATTACHMENT from local_excel where CUSTOMER_ID = '"+custId+"'" +" and PRODUCT_ID= '"+prodId+"'";
+		LocalExcel v = commonDao.queryBySql(LocalExcel.class, sql, null).get(0);
+		if(v!=null){
+			//本地测试
+			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+			String url = v.getUri();
+			if(url.contains("pccreditFile")){
+				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+			}else{
+				SFTPUtil.download(response, v.getUri(), v.getAttachment());
+			}
+			//服务器
+			//SFTPUtil.download(response, v.getUri(), v.getAttachment());
+		}
 	}
 	
 	

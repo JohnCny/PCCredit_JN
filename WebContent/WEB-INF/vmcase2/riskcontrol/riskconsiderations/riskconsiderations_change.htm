@@ -80,7 +80,6 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#validator($formName)
 	$(document).ready(function() {	
 		#parse("common/part_change.js")
 	});

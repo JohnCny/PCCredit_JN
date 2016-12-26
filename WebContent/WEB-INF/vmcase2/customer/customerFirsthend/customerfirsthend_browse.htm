@@ -67,7 +67,7 @@
             </colgroup>
             #foreach ($!{customer} in $result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" id="checkbox" value="$!customer.tyCustomerId@$!customer.chineseName@$!customer.cardId@$!customer.id"/></td>
               <td nowrap="nowrap">$!customer.chineseName</td>
               <!-- <td nowrap="nowrap">#customerInfor($request.getAttribute("cardTypeList"),$!customer.cardType)</td> -->
               <td nowrap="nowrap">#dictVal("CARDTYPEJN", $!customer.cardType)</td>
@@ -82,6 +82,7 @@
         <div class="controlbtn">
           <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="查看原始信息">查看原始信息</a>
           <!-- <a id="id_reject_button" class="btn_g" href="javascript:void(0);" title="拒绝">拒绝</a> -->
+          <a id="id_update_button" class="btn_g" href="javascript:void(0);" title="基本信息">客户基本信息修改</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -160,6 +161,18 @@
 				window.location.href = url;
 			}else{
 				Dialog.message("请选择记录!");
+			}
+	    });
+		
+		//客户基本信息修改
+		$("#id_update_button").click(function() {
+			if ($(".checkbox :checked").length == 1) {
+				var rowid = $("input[name='checkbox']:checked").val();
+				var url ="${contextPath}/customer/firsthend/showCustomerInfoJn.page?id=" + rowid.split("@")[3];
+				window.location.href = url;
+			}
+			else{
+				Dialog.message("请选择一行!");
 			}
 	    });
 	/* 	$("#id_reject_button").click(function() {

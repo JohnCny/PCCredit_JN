@@ -1183,6 +1183,23 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 	}
 	
 	
+	//下载调查模板
+	@ResponseBody
+	@RequestMapping(value = "downLoadDcmb.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadDcmb(HttpServletRequest request,HttpServletResponse response){
+		try {
+			String prodId = request.getParameter("prodId");//产品id
+			String custId = request.getParameter("custId");//客户id
+			//下载调查模板
+			addIntoPiecesService.downLoadDcmb(response,custId,prodId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	//下载影像资料
 	@ResponseBody
 	@RequestMapping(value = "downLoadYxzlJn.json",method = { RequestMethod.GET })

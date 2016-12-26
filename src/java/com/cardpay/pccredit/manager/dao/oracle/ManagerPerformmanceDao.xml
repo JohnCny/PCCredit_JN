@@ -305,7 +305,7 @@
 	<select id="queryRefuse" resultType="int">
 	select count(status) from CUSTOMER_APPLICATION_INFO a,
 	basic_customer_information b
-  	where status='end'
+  	where status='refuse'
   	and a.CUSTOMER_ID = b.id
     and ((select trunc (sysdate) from dual)=trunc (a.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (a.MODIFIED_TIME))
     and b.USER_ID=#{userId}

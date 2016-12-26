@@ -122,7 +122,7 @@ public class RiskReviewProcessService {
 			if (StringUtils.isEmpty(riskReviewProcess.getId())
 					&& StringUtils.isNotEmpty(riskReviewProcess.getReportedManagerId())
 					&& StringUtils.isNotEmpty(riskReviewProcess.getRiskIssuesId())) {
-				// 设置阶段为客户经理上报
+				/*// 设置阶段为客户经理上报
 				riskReviewProcess.setPhase(RiskControlRole.manager.toString());
 				riskReviewProcess.setCreatedBy(riskReviewProcess.getReportedManagerId());
 				riskReviewProcess.setModifiedBy(riskReviewProcess.getCreatedBy());
@@ -130,7 +130,7 @@ public class RiskReviewProcessService {
 				riskReviewProcess.setModifiedTime(riskReviewProcess.getCreatedTime());
 				riskReviewProcess.setResultsOfAudit(RiskReviewProcessAuditResults.PASS.toString());
 				// 插入风险事项审核流程（客户经理）
-				insertRiskReviewProcess(riskReviewProcess);
+				insertRiskReviewProcess(riskReviewProcess);*/
 				
 				// 主管风险事项审核流程
 				RiskReviewProcess supervisorProcess = new RiskReviewProcess();
@@ -148,7 +148,7 @@ public class RiskReviewProcessService {
 				// 插入风险事项审核流程(主管)
 				insertRiskReviewProcess(supervisorProcess);
 				
-				// 卡中心风险事项审核流程
+				/*// 卡中心风险事项审核流程
 				RiskReviewProcess cardcenterProcess = new RiskReviewProcess();
 				cardcenterProcess.setRiskIssuesId(riskReviewProcess.getRiskIssuesId());
 				cardcenterProcess.setReportedManagerId(riskReviewProcess.getReportedManagerId());
@@ -162,7 +162,7 @@ public class RiskReviewProcessService {
 				cardcenterProcess.setCreatedBy(null);
 				cardcenterProcess.setModifiedBy(cardcenterProcess.getCreatedBy());
 				// 插入风险事项审核流程(卡中心)
-				insertRiskReviewProcess(cardcenterProcess);
+				insertRiskReviewProcess(cardcenterProcess);*/
 			}else{
 				RiskReviewProcessFilter filter = new RiskReviewProcessFilter();
 				filter.setPhase(RiskControlRole.cardcenter.toString());

@@ -19,32 +19,32 @@
             </colgroup>
             <tr>
               <td><label>本周实际授信额度:</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.actualCredit" name="actualCredit" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualCredit" name="actualCredit" /></td>
               
               <td><label>本周实际进件数:</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.actualNumber" name="actualNumber" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualNumber" name="actualNumber" /></td>
             </tr>
             <tr>
               <td><label>实际拜访次数:</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.actualNumberVisit" name="actualNumberVisit" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualNumberVisit" name="actualNumberVisit" /></td>
               
               <td><label>实际拜访客户数:</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.actualNumberCustomers" name="actualNumberCustomers" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.actualNumberCustomers" name="actualNumberCustomers" /></td>
             </tr>
             
             <tr>
               <td><label>月度进件指标完成比例</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.monthlyNumber" name="monthlyNumber" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.monthlyNumber" name="monthlyNumber" /></td>
               
               <td><label>月度实际授信额度完成比例</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.monthlyCredit" name="monthlyCredit" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.monthlyCredit" name="monthlyCredit" /></td>
             </tr>            
             <tr>
               <td><label>组进件数</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.groupNumber" name="groupNumber" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.groupNumber" name="groupNumber" /></td>
               
               <td><label>组授信额度</label></td>
-              <td><input type="text" value="$!weeklyAccountManager.groupCredit" name="groupCredit" readonly="readonly"/></td>
+              <td><input type="text" value="$!weeklyAccountManager.groupCredit" name="groupCredit" /></td>
             </tr>
               <tr>
               <td><label>阻力及困难汇总</label></td>
@@ -94,7 +94,6 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#validator($formName)
 	$(document).ready(function() {		
 		$("#id_save_button").click(function() {
 			if(submitFlag == 1){

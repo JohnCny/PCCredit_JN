@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.intopieces.web;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -2585,29 +2586,67 @@ public class AddIntoPiecesControl extends BaseController {
 	 * 当客户处于风险名单中时，无法进行新增进件操作
 	 * @return
 	 */
-	 @ResponseBody
-		@RequestMapping(value = "isInRiskList.json")
-		public JRadReturnMap isInRiskList(HttpServletRequest request) {
-			String customerId = request.getParameter(ID);
-			JRadReturnMap returnMap = new JRadReturnMap();
-			if (returnMap.isSuccess()) {
-				try {
-					RiskCustomer riskCustomer = intoPiecesService.findRiskListByCustomerId(customerId);
-					if(riskCustomer != null){
-						returnMap.put("isInList", true);
-					}
-					
-				}catch (Exception e) {
-					returnMap.put(JRadConstants.MESSAGE,"系统异常");
-					returnMap.put(JRadConstants.SUCCESS, false);
-					return WebRequestHelper.processException(e);
+	@ResponseBody
+	@RequestMapping(value = "isInRiskList.json")
+	public JRadReturnMap isInRiskList(HttpServletRequest request) {
+		String customerId = request.getParameter(ID);
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				RiskCustomer riskCustomer = intoPiecesService.findRiskListByCustomerId(customerId);
+				if(riskCustomer != null){
+					returnMap.put("isInList", true);
 				}
-			}else{
-				returnMap.setSuccess(false);
-				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+				
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
 			}
-			return returnMap;
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
+		return returnMap;
+	}
+	
+	
+	
+	/**
+	 * 校验 
+	 * 当客户距上次贷款结清时间小于6个月内无法新增进件操作
+	 * REPAY_STATUS = 1标识 贷款已结清
+	 */
+	@ResponseBody
+	@RequestMapping(value = "isTimeArrive.json")
+	public JRadReturnMap isTimeArrive(HttpServletRequest request) {
+		String customerId = request.getParameter(ID);
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				/*String  times = intoPiecesService.findAppInfoByCustomerId(customerId);
+				if(!StringUtils.isEmpty(times) && Integer.parseInt(times) <= 180){
+					returnMap.put("isTimeArrive", true);
+				}*/
+			    List<IntoPieces> list = intoPiecesService.findAppInfoByCustomerId(customerId);
+			    for(IntoPieces into :list){
+					if(!StringUtils.isEmpty(into.getAmt().toString()) && Integer.parseInt(into.getAmt().toString()) <= 180){
+						returnMap.put("isTimeArrive", true);
+					}
+			    }
+				
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
 	
 	
 	

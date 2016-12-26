@@ -458,6 +458,34 @@
 		 </if>
 	</select>
 	
+	
+	<select id="findManagerSalarysList" resultMap="ResultMapJn" 
+			parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+					SELECT salary.*, 
+						   usr.display_name as managerName
+					  FROM manager_salary salary
+					 INNER join sys_user usr ON usr.id = salary.customer_id
+					 INNER join account_manager_parameter acc ON acc.user_id = usr.id
+					 WHERE 1=1
+					 <if test="managerName != null and managerName != '' ">
+						AND usr.display_name like '%${managerName}%'
+					 </if>
+					 <if test="month != null and month != '' ">
+						AND salary.month=#{month}
+					 </if>
+					 <if test="year != null and year != '' ">
+						AND salary.year=#{year}
+					 </if>
+					 <if test="organName != null and organName != '' ">
+						AND salary.INST_CODE=#{organName}
+					 </if>
+					 <if test="managerType != null and managerType != '' ">
+						AND acc.MANAGER_TYPE=#{managerType}
+					 </if>
+					 order by salary.year desc,salary.month desc,salary.inst_code desc
+	</select>
+	
+	
 	<select id="getOrganName" resultType="String">
 		   select org.name
      from sys_organization org
