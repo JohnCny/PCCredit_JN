@@ -67,5 +67,6 @@ public interface LocalImageDao {
 	
 	public List<DhApplnAttachmentDetail> findDhApplnDetailPage(@Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
 	public int findDhApplnDetailPageCount(@Param("appId") String appId);
-	
+	public List<QzApplnAttachmentDetail> findQzApplnDetailPage(@Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
+	public int findQzApplnDetailPageCount(@Param("appId") String appId);
 }

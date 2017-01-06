@@ -2,7 +2,9 @@ package com.cardpay.pccredit.report.service;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 
@@ -32,6 +34,7 @@ public class StatisticalCommonService {
 	public List<NameValueRecord> statisticalApplicationStatus(){
 		return statisticalCommonDao.statisticalApplicationStatus();
 	}
+	
 	
 	/**
      * 统计当前进件状况json
@@ -117,6 +120,13 @@ public class StatisticalCommonService {
 	}
 	
 	public List<PieJsonData> getPieJsonData(List<NameValueRecord> list){
+		//获取各种状况的金额
+		List<NameValueRecord> alist = statisticalCommonDao.statisticalApplicationStatusAmt();
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(NameValueRecord nameValueRecord : alist){
+			map.put(nameValueRecord.getName(), nameValueRecord.getValue());
+		}
+		
 		List<PieJsonData> pList= new ArrayList<PieJsonData>();
 		for(NameValueRecord nameValueRecord : list){
 			PieJsonData pieJsonData = new PieJsonData();
@@ -127,6 +137,10 @@ public class StatisticalCommonService {
 			}else{
 				pieJsonData.setY(0);
 			}
+			
+			//q-金额
+			pieJsonData.setQ(Double.valueOf(map.get(nameValueRecord.getId())+""));
+			
 			pieJsonData.setSliced(false);
 			pieJsonData.setSelected(false);
 			pList.add(pieJsonData);

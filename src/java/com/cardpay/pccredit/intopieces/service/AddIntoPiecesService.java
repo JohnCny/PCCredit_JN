@@ -61,8 +61,10 @@ import com.cardpay.pccredit.intopieces.web.LocalImageForm;
 import com.cardpay.pccredit.manager.model.BatchTask;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
+import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.NodeAudit;
 import com.cardpay.pccredit.system.model.NodeControl;
+import com.cardpay.pccredit.system.service.DictService;
 import com.cardpay.pccredit.system.service.NodeAuditService;
 import com.cardpay.pccredit.tools.DataFileConf;
 import com.cardpay.pccredit.tools.ImportBankDataFileTools;
@@ -103,6 +105,9 @@ public class AddIntoPiecesService {
 	
 	@Autowired
 	private ProcessService processService;
+	
+	@Autowired
+	private DictService dictService;
 	
 	/* 查询调查报告信息 */
 	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer(AddIntoPiecesFilter filter) {
@@ -442,35 +447,35 @@ public class AddIntoPiecesService {
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
 			//本地测试
-//			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
-//			String url = v.getUri();
-//			if(url.contains("pccreditFile")){
-//				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
-//			}else{
-//				SFTPUtil.download(response, v.getUri(), v.getAttachment());
-//			}
+			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+			String url = v.getUri();
+			if(url.contains("pccreditFile")){
+				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+			}else{
+				SFTPUtil.download(response, v.getUri(), v.getAttachment());
+			}
 			//服务器
-			SFTPUtil.download(response, v.getUri(), v.getAttachment());
+			//SFTPUtil.download(response, v.getUri(), v.getAttachment());
 		}
 	}
-	
+	//进件查询下载影像资料
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-//			this.downLoadFile(response,v);
+			this.downLoadFile(response,v);
 			//服务器
-			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
-	
+	//贷后查看影像资料
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地
-//			this.downLoadFileDh(response,v);
+			this.downLoadFileDh(response,v);
 			//服务器
-			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -558,24 +563,24 @@ public class AddIntoPiecesService {
 		}
 		output.close();
 	}
-	
+	//进件查询查看影像资料
 	public void downLoadYxzlJns(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地测试
-//			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			//服务器
-			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			//SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
-	
+	//贷后监控查看影像资料
 	public void downLoadYxzlDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
 			//本地测试
-//			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			//服务器
-			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			//SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 		}
 	}
 	
@@ -835,22 +840,27 @@ public class AddIntoPiecesService {
 	public List<DhApplnAttachmentBatch> findDhAttachmentBatchByAppId(String applicationId) {
 		return localImageDao.findDhAttachmentBatchByAppId(applicationId);
 	}
-	
+	//used
 	public void addBatchInfo(String appId,String custId){
 		QzApplnAttachmentList att = this.findAttachmentListByAppId(appId);
+		List<Dict> dictlist = dictService.findDictByDictType("YX_TYPE");
 		if(att != null){
-			for(int i=0 ; i<=30 ; i++){
+			//for(int i=0 ; i<=5 ; i++){
+			for(Dict dict : dictlist){
 				//if(att.getBussType().equals("1")){
 					if(att.getChkValue() != null && !att.getChkValue().equals("")){
-						if((Integer.parseInt(att.getChkValue()) & (int)Math.pow(2, i)) == (int)Math.pow(2, i)){
+						//if((Integer.parseInt(att.getChkValue()) & (int)Math.pow(2, i)) == (int)Math.pow(2, i)){
 							QzApplnAttachmentBatch batch = new QzApplnAttachmentBatch();
 							batch.setAttId(att.getId());
-							batch.setName(Constant.ATT_BATCH_1.get((int)Math.pow(2, i)));
-							batch.setType((int)Math.pow(2, i)+"");
+							/*batch.setName(Constant.ATT_BATCH_1.get((int)Math.pow(2, i)));
+							batch.setType((int)Math.pow(2, i)+"");*/
+							batch.setName(dict.getTypeName());
+							batch.setType(dict.getTypeCode());
 							commonDao.insertObject(batch);
-						}
+						//}
 					}
 			   //}
+			//}
 			}
 		}
 	}
@@ -858,16 +868,16 @@ public class AddIntoPiecesService {
 	public void addDhBatchInfo(String appId,String custId){
 		DhApplnAttachmentList att = this.findDhAttachmentListByAppId(appId);
 		if(att != null){
-			for(int i=0 ; i<=30 ; i++){
+			for(int i=0 ; i<=2 ; i++){
 				//if(att.getBussType().equals("1")){
 					if(att.getChkValue() != null && !att.getChkValue().equals("")){
-						if((Integer.parseInt(att.getChkValue()) & (int)Math.pow(2, i)) == (int)Math.pow(2, i)){
+						//if((Integer.parseInt(att.getChkValue()) & (int)Math.pow(2, i)) == (int)Math.pow(2, i)){
 							DhApplnAttachmentBatch batch = new DhApplnAttachmentBatch();
 							batch.setAttId(att.getId());
-							batch.setName(Constant.ATT_BATCH_1.get((int)Math.pow(2, i)));
+							batch.setName(Constant.ATT_BATCH_2.get((int)Math.pow(2, i)));
 							batch.setType((int)Math.pow(2, i)+"");
 							commonDao.insertObject(batch);
-						}
+						//}
 					}
 			   //}
 			}
@@ -891,12 +901,12 @@ public class AddIntoPiecesService {
 		String sql = "select * from basic_customer_information where id ='"+custId+"'";
 		return  commonDao.queryBySql(CustomerInfor.class, sql, null).get(0);
 	}
-	//浏览文件并缓存到服务器目录
+	//浏览文件并缓存到服务器目录--进件查询影像资料上传
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
 		//本地
-//		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
 		//服务器
-		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
@@ -912,9 +922,9 @@ public class AddIntoPiecesService {
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
 		//本地
-//		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
 		//服务器
-		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		DhApplnAttachmentDetail detail = new DhApplnAttachmentDetail();
@@ -987,6 +997,19 @@ public class AddIntoPiecesService {
 	public int findDhApplnDetailPageCount(String appId){
 		return localImageDao.findDhApplnDetailPageCount(appId);
 	}
+	
+	public List<QzApplnAttachmentDetail> findQzApplnDetailPage(int currentPage,int pageSize,String appId){
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return localImageDao.findQzApplnDetailPage(currentPage,pageSize,appId);
+	}
+	
+	
+	public int findQzApplnDetailPageCount(String appId){
+		return localImageDao.findQzApplnDetailPageCount(appId);
+	}
+	
 
 	public QueryResult<PicPojo> display_server(IntoPiecesFilter filter,HttpServletRequest request)  {
 		// TODO Auto-generated mfilter.getBatchId()ethod stub
