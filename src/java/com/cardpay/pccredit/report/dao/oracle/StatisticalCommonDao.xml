@@ -7,6 +7,20 @@
 		<result property="value" column="value" />
 	</resultMap>
 	
+	<select id="statisticalApplicationStatusAmt" resultMap="ResultMap" >
+	  select t.STATUS as name ,sum(nvl(t.APPLY_QUOTA,0)) as value from customer_application_info t where t.status ='audit' group by t.STATUS
+      union all
+      select t.STATUS as name,sum(nvl(t.APPLY_QUOTA,0))  as value from customer_application_info t where t.status ='refuse'group by t.STATUS
+      union all
+      select t.STATUS as name,sum(nvl(t.ACTUAL_QUOTE,0)) as value from customer_application_info t where t.status ='end' group by t.STATUS
+      union all
+      select t.STATUS as name,sum(nvl(t.APPLY_QUOTA,0))  as value from customer_application_info t where t.status ='returnedToFirst' group by t.STATUS
+      union all
+      select t.STATUS as name,sum(nvl(t.FINAL_APPROVAL,0)) as value from customer_application_info t where t.status ='approved' group by t.STATUS
+	    
+	</select>
+	
+	
 	<select id="statisticalApplicationStatus" resultMap="ResultMap" >
 		select t.name,
 	       t.id,
@@ -92,9 +106,11 @@
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='高新支行') ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -102,9 +118,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='天桥支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -112,9 +130,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='长清支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -122,9 +142,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
-		  and a.customer_id = b.id 
+		  and a.customer_id = b.id
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='历城支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -132,9 +154,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
-		  and a.customer_id = b.id 
+		  and a.customer_id = b.id
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='历下支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -142,9 +166,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -152,9 +178,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='audit' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='槐荫支行')ttt
 	</select>
 	
@@ -167,9 +195,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='高新支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -177,9 +207,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='天桥支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -187,9 +219,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
-		  and a.customer_id = b.id 
+		  and a.customer_id = b.id
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='长清支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -197,9 +231,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
-		  and a.customer_id = b.id 
+		  and a.customer_id = b.id
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='历城支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -207,9 +243,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
-		  and a.customer_id = b.id 
+		  and a.customer_id = b.id
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='历下支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -217,9 +255,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
 		  and a.customer_id = b.id 
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
 union all
  		select nvl(sum(ttt.value),0) as value from (select tt.value,
@@ -227,9 +267,11 @@ union all
 		from (select count(*) as value, 
 		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
 		from customer_application_info a,
-		     basic_customer_information b
+		     basic_customer_information b,
+		     sys_user u
 		where status ='approved' 
-		  and a.customer_id = b.id 
+		  and a.customer_id = b.id
+		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='槐荫支行') ttt
 	</select>
 	

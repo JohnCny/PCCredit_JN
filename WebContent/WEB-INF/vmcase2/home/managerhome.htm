@@ -25,7 +25,7 @@
 	                    enabled: true,
 	                    color: '#000000',
 	                    connectorColor: '#000000',
-	                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+	                    format: '<b>{point.name}</b>: {point.percentage:.1f} % <b>金额(元)</b>:{point.q}'
 	                }
 	            }
 	        },
@@ -142,7 +142,7 @@ $(document).ready(function() {
    
    var series= [
         {
-        	name: '放款总额度/逾期总额度/不良总额度',
+        	name: '额度',
             data: $!organApplicationjineJson//[49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6]
         }];     
       
