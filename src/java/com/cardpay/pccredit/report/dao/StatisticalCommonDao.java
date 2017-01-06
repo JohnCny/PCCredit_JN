@@ -20,6 +20,13 @@ public interface StatisticalCommonDao {
 	public List<NameValueRecord> statisticalApplicationStatus();
 	
 	/**
+     * 统计当前进件状况
+     * 各种状态的额度
+     * @return
+     */
+	public List<NameValueRecord> statisticalApplicationStatusAmt();
+	
+	/**
      * 统计当前贷款状况
      * @return
      */

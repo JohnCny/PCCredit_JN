@@ -96,6 +96,24 @@
 					]]>
     </select>
     
+    
+    <select id="findQzApplnDetailPage" resultMap="QzApplnDetailMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from qz_appln_attachment_detail
+		where BATCH_ID in ( select BATCH_ID  
+		 from qz_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from qz_appln_attachment_list where APPLICATION_ID=#{appId}))
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    
     <select id="findDhApplnDetailPageCount" resultType="int">
 			select count(*) from dh_appln_attachment_detail 
 			where BATCH_ID in ( select BATCH_ID  
@@ -103,6 +121,15 @@
 		 where att_id in (
 		 select id 
 		 from dh_appln_attachment_list where APPLICATION_ID=#{appId}))
+	</select>
+	
+    <select id="findQzApplnDetailPageCount" resultType="int">
+			select count(*) from qz_appln_attachment_detail 
+			where BATCH_ID in ( select BATCH_ID  
+		 from qz_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from qz_appln_attachment_list where APPLICATION_ID=#{appId}))
 	</select>
     
   <select id="findByProductAndCustomer" resultMap="BaseResultMap">

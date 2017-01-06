@@ -10,6 +10,15 @@ public class PieJsonData {
 	private double y;
 	private boolean sliced;
 	private boolean selected;
+	
+	private double q;
+	
+	public double getQ() {
+		return q;
+	}
+	public void setQ(double q) {
+		this.q = q;
+	}
 	public String getName() {
 		return name;
 	}

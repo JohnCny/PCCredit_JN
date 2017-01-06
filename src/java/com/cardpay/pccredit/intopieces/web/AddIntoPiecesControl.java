@@ -2629,12 +2629,13 @@ public class AddIntoPiecesControl extends BaseController {
 					returnMap.put("isTimeArrive", true);
 				}*/
 			    List<IntoPieces> list = intoPiecesService.findAppInfoByCustomerId(customerId);
-			    for(IntoPieces into :list){
-					if(!StringUtils.isEmpty(into.getAmt().toString()) && Integer.parseInt(into.getAmt().toString()) <= 180){
-						returnMap.put("isTimeArrive", true);
-					}
+			    if(list!=null && list.size()>0){
+				    for(IntoPieces into :list){
+						if(!StringUtils.isEmpty(into.getAmt().toString()) && Integer.parseInt(into.getAmt().toString()) <= 180){
+							returnMap.put("isTimeArrive", true);
+						}
+				    }
 			    }
-				
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE,"系统异常");
 				returnMap.put(JRadConstants.SUCCESS, false);

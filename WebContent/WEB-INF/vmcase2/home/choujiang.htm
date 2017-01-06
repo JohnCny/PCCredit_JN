@@ -42,8 +42,8 @@
               <col width="30%" />
             </colgroup>
             <tr class="title">
-              <th nowrap="nowrap">客户姓名</th>
-              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">客户经理姓名</th>
+              <th nowrap="nowrap">客户经理工号</th>
               <th nowrap="nowrap">结果</th>
             </tr>
           </table>
@@ -59,7 +59,7 @@
             <tr>
               <td nowrap="nowrap">$!customer.name</td>
               <td nowrap="nowrap">$!customer.exentId</td>
-              <!-- #if($!customer.result=='4')
+               #if($!customer.result=='4')
               <td nowrap="nowrap">幸运奖</td>
               #elseif($!customer.result=='3')
               <td nowrap="nowrap">三等奖</td>
@@ -67,8 +67,8 @@
               <td nowrap="nowrap">二等奖</td>
               #elseif($!customer.result=='1')
               <td nowrap="nowrap">一等奖</td>
-              #end -->
-               <td nowrap="nowrap">抽中</td>
+              #end 
+               <!-- <td nowrap="nowrap">抽中</td> -->
             </tr>
             #end
           </table>
