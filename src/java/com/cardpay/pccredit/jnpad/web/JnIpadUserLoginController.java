@@ -28,9 +28,7 @@ import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.system.model.SystemUser;
-import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.web.security.LoginManager;
-import com.wicresoft.jrad.modules.log.business.LoginLogManager;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.web.RequestHelper;
@@ -53,8 +51,6 @@ public class JnIpadUserLoginController {
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
 	
-	@Autowired
-	private LoginLogManager loginLogManager;
 	/**
 	 * 用户登录
 	 * @param request
@@ -65,8 +61,6 @@ public class JnIpadUserLoginController {
 	public String login(HttpServletRequest request) {
 		String login = RequestHelper.getStringValue(request, "login");
 		String passwd = RequestHelper.getStringValue(request, "password");
-		String ipAddress = request.getRemoteAddr();
-		String signInMsg;
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		Result result = null;
 		JnUserLoginResult loginResult = null;
@@ -78,36 +72,21 @@ public class JnIpadUserLoginController {
 		}else{
 			loginResult = new JnUserLoginResult();
 			JnUserLoginIpad user = userService.login(login, passwd);
-			String LocationType=userService.findServer5();
-			map.put("LocationType", LocationType);
 			if(user!=null){
 				loginResult.setUser(user);
 				loginResult.setStatus(IpadConstant.SUCCESS);
 				loginResult.setReason(IpadConstant.LOGINSUCCESS);
-				signInMsg="PAD端成功";
 			}else{
 				loginResult.setStatus(IpadConstant.FAIL);
 				loginResult.setReason(IpadConstant.LOGINFAIL);
-				signInMsg="PAD端密码错误";
 			}
 			map.put("result",loginResult);
-			map.put("login",login);
-			loginLogManager.addSignInLog(login, LoginManager.LOCAL, ipAddress, signInMsg);
 		}
 		JSONObject json = JSONObject.fromObject(map);
 		return String.valueOf(json);
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = { "/ipad/user/logout.json" })
-	public String logout(HttpServletRequest request) {
-		String login = RequestHelper.getStringValue(request, "login");
-		String ipAddress = request.getRemoteAddr();
-		loginLogManager.addSignOutLog(login, LoginManager.LOCAL, ipAddress, "PAD端成功");
-
-		return null;
-
-	}
+	
 	/**
 	 * 产品查询
 	 * @param request
@@ -177,6 +156,7 @@ public class JnIpadUserLoginController {
 		customerManagerVo.setFkze("");//放款总额
 		//查询上次登录时间
 		String LastLogin =userService.findLastLogin(loginId);
+		
 		//response
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		result.put("result", customerManagerVo);

@@ -112,7 +112,7 @@ public class LoginController implements JRadConstants {
 				signInMsg = i18nHelper.getMessage("system.auth.success");
 			}
 
-			loginLogManager.addSignInLog(username, LoginManager.LOCAL, ipAddress, "管理端"+signInMsg);
+			loginLogManager.addSignInLog(username, LoginManager.LOCAL, ipAddress, signInMsg);
 		}
 		catch (Exception ex) {
 			return WebRequestHelper.processException(ex);
@@ -131,7 +131,7 @@ public class LoginController implements JRadConstants {
 		String signOutMsg = i18nHelper.getMessage("system.auth.success");
 
 		loginManager.logout(request);
-		loginLogManager.addSignOutLog(login, type, ipAddress, "管理端"+signOutMsg);
+		loginLogManager.addSignOutLog(login, type, ipAddress, signOutMsg);
 
 		return "redirect:login.html";
 
