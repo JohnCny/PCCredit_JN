@@ -56,6 +56,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecomVo;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
+import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
@@ -1599,12 +1600,15 @@ public class IntoPiecesControl extends BaseController {
 			String custId = RequestHelper.getStringValue(request, "custId");
 			mv.addObject("appId", appId);
 			
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			mv.addObject("type", user.getUserType());
+			
 			QzApplnAttachmentList att = addIntoPiecesService.findAttachmentListByAppId(appId);
 			if(att==null){
 				QzApplnAttachmentList attlist = new QzApplnAttachmentList();
 				attlist.setApplicationId(appId);
 				attlist.setCustomerId(custId);
-				attlist.setChkValue("59");
+				attlist.setChkValue("19");
 				commonDao.insertObject(attlist);
 			}
 			//查找sunds_ocx信息
@@ -1707,6 +1711,7 @@ public class IntoPiecesControl extends BaseController {
 	
 			mv.addObject("Id",detaillist.get(0).getId());
 			mv.addObject("rowNum", page);
+			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);
 			mv.addObject("batchId", batchId);
 			return mv;
@@ -1733,4 +1738,63 @@ public class IntoPiecesControl extends BaseController {
 			return returnMap;
 			
 		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "isInUpload.json")
+		public JRadReturnMap isInUpload(HttpServletRequest request) {
+			String appId = request.getParameter(ID);
+			int page = 0;//rowNum
+			int limit = 1;//每页显示图片数
+			JRadReturnMap returnMap = new JRadReturnMap();
+			if (returnMap.isSuccess()) {
+				try {
+					List<QzApplnAttachmentDetail> detaillist = addIntoPiecesService.findQzApplnDetailPage(page,limit,appId);
+					if(detaillist.size()==0){
+						returnMap.put("isInUpload", true);
+					}
+				}catch (Exception e) {
+					returnMap.put(JRadConstants.MESSAGE,"系统异常");
+					returnMap.put(JRadConstants.SUCCESS, false);
+					return WebRequestHelper.processException(e);
+				}
+			}else{
+				returnMap.setSuccess(false);
+				returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+			}
+			return returnMap;
+		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "display_server_page.page")
+		public AbstractModelAndView display_server_page(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			filter.setIsUpload("1");
+			String appId = request.getParameter("appId");
+			String currentPage=request.getParameter("currentPage");
+			String pageSize=request.getParameter("pageSize");
+			int page = 0;//rowNum
+			int limit = 1;//每页显示图片数
+			if(StringUtils.isNotEmpty(currentPage)){
+				page = Integer.parseInt(currentPage);
+			}
+			if(StringUtils.isNotEmpty(pageSize)){
+				limit = Integer.parseInt(pageSize);
+			}
+			List<QzApplnAttachmentDetail> detaillist = addIntoPiecesService.findQzApplnDetailPage(page,limit,appId);
+			
+			int totalCount = addIntoPiecesService.findQzApplnDetailPageCount(appId);
+			
+			JRadModelAndView mv = null;
+			mv = new JRadModelAndView("/intopieces/sunds_display_server_page", request);
+	
+			mv.addObject("Id",detaillist.get(0).getId());
+			mv.addObject("rowNum", page);
+			mv.addObject("rowNum1", page+1);
+			mv.addObject("totalCount",totalCount);
+			mv.addObject("batchId", detaillist.get(0).getBatchId());
+			return mv;
+		}
+		
 }

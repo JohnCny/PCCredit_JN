@@ -106,6 +106,7 @@
 			    <if test="endDate != null and endDate != '' ">
 					AND action_time &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
 				</if>   
+				order by t.action_time desc
 		 <![CDATA[		
 				) ROW_
 			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -155,5 +156,6 @@
 			    <if test="endDate != null and endDate != '' ">
 					AND action_time &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
 				</if>   
+				order by t.action_time desc
 	</select>
 </mapper>

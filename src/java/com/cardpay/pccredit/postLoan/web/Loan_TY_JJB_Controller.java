@@ -196,6 +196,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			filter.setUserId(userId);
 			mv.addObject("type", "1");//客户经理
 		}
+		
 		filter.setStatus("end");
 		result = intoPiecesService.findintoPiecesByFilter(filter);
 		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
@@ -211,6 +212,9 @@ public class Loan_TY_JJB_Controller extends BaseController {
 		String appId = RequestHelper.getStringValue(request, "appId");
 		String custId = RequestHelper.getStringValue(request, "custId");
 		mv.addObject("appId", appId);
+		
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		mv.addObject("type", user.getUserType());
 		
 		DhApplnAttachmentList att = addIntoPiecesService.findDhAttachmentListByAppId(appId);
 		if(att==null){
@@ -383,6 +387,7 @@ public class Loan_TY_JJB_Controller extends BaseController {
 	
 			mv.addObject("Id",detaillist.get(0).getId());
 			mv.addObject("rowNum", page);
+			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);
 			mv.addObject("batchId", detaillist.get(0).getBatchId());
 			return mv;

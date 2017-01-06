@@ -219,28 +219,30 @@ public class MainController {
 		
 		//if(level =="MANA005" || level =="MANA003" ){
 		if(user.getUserType()!=1){
-			/* 
-			// 当前进件状况
-			mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
-			// 当前贷款状况
-			mv.addObject("creditStatusJson",statisticalCommonService.getCreditStatusJson());
-			// 当前卡片状况
-			mv.addObject("cardStatusCategoriesJson",statisticalCommonService.getCardStatusCategoriesJson(cardList));
-		    mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));
+			/*  // 当前进件状况
+				mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
+				// 当前贷款状况
+				mv.addObject("creditStatusJson",statisticalCommonService.getCreditStatusJson());
+				// 当前卡片状况
+				mv.addObject("cardStatusCategoriesJson",statisticalCommonService.getCardStatusCategoriesJson(cardList));
+			    mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));
 			*/
 			long start = System.currentTimeMillis();
-			// 当前进件状况 济南 sj 20160804
+			// 1.当前进件状况 济南 sj 20160804
 		    mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
-		    // 统计各行已申请和通过进件数量  济南 sj 20160809
+		    
+		    // 2.统计各行已申请和通过进件数量  济南 sj 20160809
 		    mv.addObject("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson());
 		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
 		    
-		    //放款总金额 逾期总金额 不良总金额  sj 20160810
+		    // 3.放款总金额 逾期总金额 不良总金额  sj 20160810
 		    mv.addObject("organApplicationjineJson",statisticalCommonService.statisticaljine());
-		    //放款总金额 逾期总金额 不良总金额 按支行汇总 sj 20160810
+		    
+		    // 4.放款总金额 逾期总金额 不良总金额 按支行汇总 sj 20160810
 		    mv.addObject("organApplicationsxJson",statisticalCommonService.statisticalsxorgan());
 		    mv.addObject("organApplicationyqJson",statisticalCommonService.statisticalyqorgan());
 		    mv.addObject("organApplicationblJson",statisticalCommonService.statisticalblorgan());
+		    
 		    long end = System.currentTimeMillis();
 			System.out.println("#########################查询时间花费：" + (end - start) + "毫秒");
 			logger.info("#########################查询时间花费：" + (end - start) + "毫秒");

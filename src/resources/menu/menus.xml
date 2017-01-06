@@ -38,7 +38,7 @@
  	   <!-- <menu id="070010" name="model1" title="授信政策操作指引" url="/manager/khgl/scoreBrowse.page" img="" operations="checked|display|browse"/> -->	
  	   		<menu id="070010" name="weeklyaccount" title="客户经理周报" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/> 
  	   		<menu id="070011" name="weeklyaccountzuzhang" title="所属客户经理周报列表" url="/manager/weeklyaccountzuzhang/browse.page" img="" operations="change|display|browse"/>
-			<menu id="070012" name="weeklyaccountfuzeren" title="客户经理周报(团队负责人)" url="/manager/weeklyaccountfuzeren/browse.page" img="" operations="change|display|browse"/>
+			<menu id="070012" name="weeklyaccountfuzeren" title="客户经理周报(微贷中心主管)" url="/manager/weeklyaccountfuzeren/browse.page" img="" operations="change|display|browse"/>
  	        <menu id="070013" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>  
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
@@ -104,6 +104,7 @@
 			<menu id="103100" name="parameter" title="系统参数配置" url="/system/parameter/browse.page" img="" operations="change|browse" />
 			<menu id="103110" name="group" title="用户组管理" url="/system/group/browse.page" img="" operations="display|browse|export" />
 			<menu id="103120" name="charge" title="负责人管理" url="/system/charge/browse.page" img="" operations="create|change|delete|display|browse" />
+			<menu id="103130" name="chouqian1" title="抽签" url="/system/charge/choujiang.page" img="" operations="browse" />
 		</menu>
 	</menu>
 </menus>
