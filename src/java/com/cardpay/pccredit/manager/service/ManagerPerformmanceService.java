@@ -143,8 +143,11 @@ public class ManagerPerformmanceService {
         // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
         HSSFRow row = sheet.createRow((int) 0);  
         HSSFCell cellTmp = row.createCell((short) 0);
-		cellTmp.setCellValue("济南农村商业银行"+satrtDate+"日至"+endDate+"日客户经理业绩进度");  //设置表格标题
-		
+        String titles="济南农村商业银行客户经理业绩进度";
+        if(satrtDate!=""&&endDate!=""){
+        	titles="济南农村商业银行"+satrtDate+"日至"+endDate+"日客户经理业绩进度";
+        }
+        cellTmp.setCellValue(titles);  //设置表格标题
 		// 设置标题字体
 		HSSFFont font16 = wb.createFont();
 		font16.setFontHeightInPoints((short) 20);

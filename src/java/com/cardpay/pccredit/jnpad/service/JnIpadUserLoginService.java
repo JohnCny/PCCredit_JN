@@ -114,7 +114,7 @@ public class JnIpadUserLoginService {
 
 	public String findLastLogin(String loginId) {
 		
-		String sql ="SELECT action_time FROM SYS_LOGIN_LOG WHERE action_time =( SELECT max(action_time) FROM SYS_LOGIN_LOG s  INNER JOIN SYS_USER u ON s.login = u.LOGIN WHERE u.ID = '"+loginId+"')";
+		String sql ="SELECT action_time FROM ( SELECT rownum rm,action_time FROM ( SELECT s.* FROM SYS_LOGIN_LOG s  INNER JOIN SYS_USER u ON s.login = u.LOGIN WHERE u.ID = '"+loginId+"' and s.action='SignIn' ORDER BY s.action_time DESC) )WHERE rm=2";
 		Map<String, Object> params = new LinkedHashMap<String, Object>();
 		String time="";
 		List<HashMap<String, Object>> LastLogin = commonDao.queryBySql(sql, null);
@@ -126,4 +126,9 @@ public class JnIpadUserLoginService {
 		}
 		return time;
 	}
+	public String findServer5(){
+				String sql = "select * from dict where dict_type = 'LocationType' ";
+				String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+				return PARAM;
+			}
 }
