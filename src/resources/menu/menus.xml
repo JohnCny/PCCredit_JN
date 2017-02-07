@@ -81,6 +81,8 @@
 			<menu id="100080" name="creditFlow"   title="信贷流程统计报表 "      url="/credit/flow/queryCreditFlow.page" img="" operations="browse"/>
 			<menu id="100090" name="afterLoancollectAll" title="贷款汇总查询统计报表"  url="/report/afterLoancollect/browseAll.page" img="" operations="browse"/>
 			<menu id="100100" name="lxtj" title="贷款利息查询统计报表" url="/report/afterLoancollect/tzbrowse.page" img="" operations="create|change|display|browse"/>
+			<menu id="100110" name="badloan"      title="不良贷款统计报表"       url="/report/badloans/browse.page" img="" operations="browse"/>
+			<menu id="100120" name="classes"      title="贷款类型分类统计报表"       url="/report/classified/browse.page" img="" operations="browse"/>
 		</menu>
 		
 		<menu id="102000" name="batchrunManagement" title="批处理管理" url="" img="images/icon_sys.gif" operations="">

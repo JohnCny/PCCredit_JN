@@ -55,6 +55,18 @@ public class JnpadLocationInfoController {
 		locationInfoForm.setLongitude(request.getParameter("lon"));
 		String managerId = request.getParameter("userId");
 		locationInfoForm .setUserId(managerId);
+		//判断是否在早八点至晚八点之间
+						String startTime="08:00:00";
+						String endTime="20:00:00";
+							boolean isRightTime = isInDate(startTime,endTime);
+							if(!isRightTime){
+								map.put("message","晚八点之后，早八点以前不能提交位置信息");
+								JsonConfig jsonConfig = new JsonConfig();
+								jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+								JSONObject json = JSONObject.fromObject(map, jsonConfig);
+								return json.toString();
+							}
+						
 		//查询表中是否有该客户经理的信息
 		try {
 			int num = jnpadLocationInfoService.managerCount(managerId);
@@ -76,7 +88,7 @@ public class JnpadLocationInfoController {
 					return json.toString();
 				}
 				}
-			if(num!=5){
+			if(num<=10){
 				//如果位置信息表中没客户经理信息  插入
 
 				ManagerInfoForm managerInfoForm = jnpadLocationInfoService.selectManagerInforById(managerId);
@@ -125,5 +137,68 @@ public class JnpadLocationInfoController {
 		return json.toString();
 	}
 
-
+	 /** 
+	     * 判断时间是否在时间段内 
+	     *  
+	     * @param date 
+	     *            当前时间 yyyy-MM-dd HH:mm:ss 
+	     * @param strDateBegin 
+	     *            开始时间 00:00:00 
+	     * @param strDateEnd 
+	     *            结束时间 00:05:00 
+	     * @return 
+	     */  
+	    public  boolean isInDate(String strDateBegin,  
+	            String strDateEnd) {  
+	    	 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+	//    	 String strDate = "2016-12-22 20:01:59" ; 
+	         String strDate = sdf.format(new Date());  
+	         // 截取当前时间时分秒  
+	         int strDateH = Integer.parseInt(strDate.substring(11, 13));  
+	         int strDateM = Integer.parseInt(strDate.substring(14, 16));  
+	         int strDateS = Integer.parseInt(strDate.substring(17, 19));  
+	         // 截取开始时间时分秒  
+	         int strDateBeginH = Integer.parseInt(strDateBegin.substring(0, 2));  
+	         int strDateBeginM = Integer.parseInt(strDateBegin.substring(3, 5));  
+	         int strDateBeginS = Integer.parseInt(strDateBegin.substring(6, 8));  
+	         // 截取结束时间时分秒  
+	         int strDateEndH = Integer.parseInt(strDateEnd.substring(0, 2));  
+	         int strDateEndM = Integer.parseInt(strDateEnd.substring(3, 5));  
+	         int strDateEndS = Integer.parseInt(strDateEnd.substring(6, 8));  
+	         
+	   
+	         if ((strDateH >= strDateBeginH && strDateH <= strDateEndH)) {  
+	             // 当前时间小时数在开始时间和结束时间小时数之间  
+	             if (strDateH > strDateBeginH && strDateH < strDateEndH) {  
+	                 return true;  
+	                 // 当前时间小时数等于开始时间小时数等于结束小时数，分钟数在开始和结束之间  
+	             } else if (strDateH == strDateBeginH &&strDateH==strDateEndH&& strDateM >= strDateBeginM  
+	                     && strDateM <= strDateEndM) {  
+	                 return true;  
+	                 // 当前时间小时数等于开始时间小时数，分钟数等于开始时间分钟数，秒数在开始和结束之间  
+	             } else if (strDateH == strDateBeginH && strDateM == strDateBeginM  
+	                     && strDateS >= strDateBeginS && strDateS <= strDateEndS) {  
+	                 return true;  
+	             }  
+	             // 当前时间小时数大等于开始时间小时数，等于结束时间小时数，分钟数小等于结束时间分钟数  
+	             else if (strDateH >= strDateBeginH && strDateH == strDateEndH  
+	                     && strDateM <= strDateEndM) {  
+	                 return true;  
+	                 // 当前时间小时数大等于开始时间小时数，等于结束时间小时数，分钟数等于结束时间分钟数，秒数小等于结束时间秒数  
+	             } else if (strDateH >= strDateBeginH && strDateH == strDateEndH  
+	                     && strDateM == strDateEndM && strDateS <= strDateEndS) {  
+	                 return true;  
+	              // 当前时间小时数等于开始时间小时数，分钟数大于开始
+	             }else if(strDateH == strDateBeginH && strDateM >= strDateBeginM){
+	             	return true;
+	             }else {  
+	             
+	             	System.out.println("1");
+	                 return false;  
+	             }  
+	         } else {  
+	         	System.out.println("2");
+	            return false;  
+	         }    
+	    }  
 }
