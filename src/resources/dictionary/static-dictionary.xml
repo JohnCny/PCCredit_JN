@@ -637,5 +637,13 @@
 	   <item name="othMar"  	title="其他"/>
 	   <item name="parent"  	title="父母"/>
 	</dictionary>  
-	
+	<dictionary name="BADLOANSUBJECT" title="不良记录主题">
+	   <item name="01"  	title="借款人被起诉"/>
+	   <item name="02"  	title="企业逃废债务"/>
+	   <item name="03"  	title="借款人提供虚假资料"/>
+	   <item name="04"  	title="贷款逾期欠息"/>
+	   <item name="05"  	title="不良对外担保记录"/>
+	   <item name="06"  	title="用途违约"/>
+	   <item name="07"  	title="其他情况"/>
+	</dictionary>  
 </dictionaries>
