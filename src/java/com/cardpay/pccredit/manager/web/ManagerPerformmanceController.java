@@ -37,6 +37,7 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
@@ -376,4 +377,82 @@ public class ManagerPerformmanceController extends BaseController {
 		}
 
 
+		//查看转化率统计图
+		@ResponseBody
+		@RequestMapping(value = "performMakeRates.page")
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView performakeRates(HttpServletRequest request) {
+			String satrtDate = request.getParameter("startdate");
+			String endDate = request.getParameter("enddate");
+			String orgId=request.getParameter("orgId");
+			ManagerPerformmanceForm managerPerformmanceForm;
+			if(orgId!=null&&orgId!=""){
+				if(orgId.equals("000000")){
+					managerPerformmanceForm= managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
+				}else{
+				managerPerformmanceForm = managerPerformmanceService.findDeptSumPerformmanceById(orgId,satrtDate,endDate);	
+				}
+				}else{
+				managerPerformmanceForm= managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
+			}
+			JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmancemakeRates", request);
+			mv.addObject("classifiedJsonData",getClassifiedJson(managerPerformmanceForm));
+			mv.addObject("satrtDates", satrtDate);
+			mv.addObject("endDates", endDate);
+			mv.addObject("orgId", orgId);
+			return mv;
+		}
+		public String getClassifiedJson(ManagerPerformmanceForm managerPerformmanceForm){
+			ArrayList<Object> datajson= new ArrayList<Object>();
+			if(managerPerformmanceForm!=null){
+			//拜访到申请转化率
+			double shenqing=0;
+			if(managerPerformmanceForm.getVisitcount_s()>0){
+				shenqing=((double)managerPerformmanceForm.getApplycount_s()/(double)managerPerformmanceForm.getVisitcount_s())*100;
+			}
+			datajson.add(shenqing);
+			//申请到内审转化率
+			double neishen=0;
+			if(managerPerformmanceForm.getApplycount_s()>0){
+			neishen=((double)managerPerformmanceForm.getInternalcount_s()/(double)managerPerformmanceForm.getApplycount_s())*100;
+			}
+			datajson.add(neishen);
+			//内审到上会转化率
+			double shanghui=0;
+			if(managerPerformmanceForm.getInternalcount_s()>0){
+				 shanghui =((double)managerPerformmanceForm.getMeetingcout_s()/(double)managerPerformmanceForm.getInternalcount_s())*100;
+			}
+			datajson.add(shanghui);
+			//过会比率
+			double guohui=0;
+			if(managerPerformmanceForm.getMeetingcout_s()>0){
+				guohui =((double)managerPerformmanceForm.getPasscount_s()/(double)managerPerformmanceForm.getMeetingcout_s())*100;
+			}
+			datajson.add(guohui);
+			//放款比率
+			double fangkuan=0;
+			if(managerPerformmanceForm.getPasscount_s()>0){
+			fangkuan =((double)managerPerformmanceForm.getGivemoneycount_s()/(double)managerPerformmanceForm.getPasscount_s())*100;
+			}
+			datajson.add(fangkuan);
+			}else{
+				datajson.add(0);
+				datajson.add(0);
+				datajson.add(0);
+				datajson.add(0);
+				datajson.add(0);
+			}
+			return JSONArray.fromObject(datajson).toString();
+		}
+		
+		//业绩进度排名
+		@ResponseBody
+		@RequestMapping
+		public AbstractModelAndView performmancepaiming(HttpServletRequest request){
+			
+			
+			
+			return null;
+			
+		}
 }
