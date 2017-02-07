@@ -45,8 +45,54 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private BigDecimal totalmonthaverageamt;//累计至今的日均贷款余额
 	private String  ta;
 	
+	//占比
+	private String  c101numproportion;
+	private String  c102numproportion;
+	private String  c100numproportion;
+	
+	private String  c101amtproportion;
+	private String  c102amtproportion;
+	private String  c100amtproportion;
 	
 	
+	
+	
+	public String getC101numproportion() {
+		return c101numproportion;
+	}
+	public void setC101numproportion(String c101numproportion) {
+		this.c101numproportion = c101numproportion;
+	}
+	public String getC102numproportion() {
+		return c102numproportion;
+	}
+	public void setC102numproportion(String c102numproportion) {
+		this.c102numproportion = c102numproportion;
+	}
+	public String getC100numproportion() {
+		return c100numproportion;
+	}
+	public void setC100numproportion(String c100numproportion) {
+		this.c100numproportion = c100numproportion;
+	}
+	public String getC101amtproportion() {
+		return c101amtproportion;
+	}
+	public void setC101amtproportion(String c101amtproportion) {
+		this.c101amtproportion = c101amtproportion;
+	}
+	public String getC102amtproportion() {
+		return c102amtproportion;
+	}
+	public void setC102amtproportion(String c102amtproportion) {
+		this.c102amtproportion = c102amtproportion;
+	}
+	public String getC100amtproportion() {
+		return c100amtproportion;
+	}
+	public void setC100amtproportion(String c100amtproportion) {
+		this.c100amtproportion = c100amtproportion;
+	}
 	public BigDecimal getMonthaverageamt() {
 		return monthaverageamt;
 	}

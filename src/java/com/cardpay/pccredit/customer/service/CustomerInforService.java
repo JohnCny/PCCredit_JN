@@ -2,6 +2,7 @@ package com.cardpay.pccredit.customer.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -19,9 +20,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -73,6 +78,9 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
+import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
+import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
+import com.cardpay.pccredit.manager.model.TPerformanceParameters;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
@@ -4331,4 +4339,124 @@ public class CustomerInforService {
 	               }
 	        });
 	}
+	
+	
+	
+	
+	
+	
+	//=========================================================导出客户信息======================================================//
+	/**
+	   * 客户原始信息
+	   * @param filter
+	   * @param response
+	   * @throws Exception
+	   */
+	public void exportCustomerData(CustomerInforFilter filter,HttpServletResponse response) throws Exception{
+		    // 设置title
+			String title ="客户原始信息";;
+			
+			List<CustomerInfor> list = customerInforDao.findCustomerOriginaAllList(filter);
+			
+			// 第一步，创建一个webbook，对应一个Excel文件  
+	        HSSFWorkbook wb = new HSSFWorkbook();
+	        
+	        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
+	        HSSFSheet sheet = wb.createSheet("sheet1"); 
+	        
+	        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
+	        HSSFRow row = sheet.createRow((int) 0);  
+	        HSSFCell cellTmp = row.createCell((short) 0);
+			cellTmp.setCellValue(title);  //设置表格标题 
+			
+			// 设置标题字体
+			HSSFFont font16 = wb.createFont();
+			font16.setFontHeightInPoints((short) 20);
+			font16.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font16.setFontName("华文楷体");
+			
+			// 设置标题字体
+			HSSFFont font1 = wb.createFont();
+			font1.setFontHeightInPoints((short) 12);
+			font1.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font1.setFontName("宋体");
+			
+			// 设置单元格居中
+			HSSFCellStyle styleCenter = wb.createCellStyle();
+			styleCenter.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleCenter.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			styleCenter.setFont(font16);
+			
+			// 设置居右
+			HSSFCellStyle styleFirst = wb.createCellStyle();
+			styleFirst.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleFirst.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+			styleFirst.setFont(font1);
+			
+			// 合并单元格
+			CellRangeAddress region = new CellRangeAddress(0, 0, 0,4);
+			sheet.addMergedRegion(region);
+			cellTmp.setCellStyle(styleCenter);
+			
+	        // 第四步，创建单元格，并设置值表头 设置表头居中  
+	        HSSFCellStyle style = wb.createCellStyle();  
+	        // 创建一个居中格式
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style.setWrapText(true);
+	        style.setFillForegroundColor(HSSFColor.LIGHT_ORANGE.index);
+	        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+	      
+	        // 设置第二行 制表日期
+	        row = sheet.createRow((int) 1);
+	        HSSFCell tmp = row.createCell((short) 3);
+	        tmp.setCellValue("制表日期：");
+	        CellRangeAddress reg = new CellRangeAddress(1, 1, 3,4);
+	        sheet.addMergedRegion(reg);
+	        tmp.setCellStyle(styleFirst);
+	      
+	        // excel 正文内容
+	        row = sheet.createRow((int) 2);
+	        // row
+	        HSSFCell cell = row.createCell((short) 0);  
+	        cell.setCellValue("序号");  
+	        cell.setCellStyle(style);
+	      	        
+	        cell = row.createCell((short) 1);  
+	        cell.setCellValue("中文姓名");  
+	        cell.setCellStyle(style);  
+	      
+	        cell = row.createCell((short) 2);  
+	        cell.setCellValue("证件类型");  
+	        cell.setCellStyle(style);
+	      
+	        cell = row.createCell((short) 3);  
+	        cell.setCellValue("证件号码");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(3, 20*256);
+	        
+	        cell = row.createCell((short) 4);  
+	        cell.setCellValue("客户经理名称");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(4, 20*256);
+	      
+	      
+	      for(int i=0;i<list.size();i++){
+	      	row = sheet.createRow((int) i + 3);
+	      	CustomerInfor infor = list.get(i);
+	      	row.createCell((short) 0).setCellValue(i+1);  
+	      	row.createCell((short) 1).setCellValue((String) infor.getChineseName());                       
+	      	row.createCell((short) 2).setCellValue("身份证"); //身份证唯一准入-济南                                  
+	      	row.createCell((short) 3).setCellValue((String) infor.getCardId());    
+	      	row.createCell((short) 4).setCellValue((String) infor.getUserId());             
+	      }
+	      title = title+".xls";
+	      response.setHeader("Connection", "close");
+	      response.setHeader("Content-Type", "application/vnd.ms-excel;charset=gbk");
+	      response.setHeader("Content-Disposition", "attachment;filename="
+	      + new String(title.getBytes("gbk"), "iso-8859-1"));
+	      OutputStream out = response.getOutputStream();  
+	      wb.write(out);
+	      out.close();
+		}
 }

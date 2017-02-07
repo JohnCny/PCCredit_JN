@@ -46,13 +46,13 @@ public class TMibusidata extends BusinessModel{
 	private String custscale;
 	private String controlmode;
 	private String contractno;
-	private String contractmoney;
+	private BigDecimal contractmoney;
 	private String delaytype;
 	private String loantype;
 	private String mainassure;
 	private String assuremanname;
 	private String creditlevel;
-	private String reqlmt;
+	private BigDecimal reqlmt;
 	private String isexp;
 	private String purposeremark;
 	private String busimanager;
@@ -65,14 +65,14 @@ public class TMibusidata extends BusinessModel{
 	private String startdate;
 	private String orienddate;
 	private String enddate;
-	private String limit;
+	private BigDecimal limit;
 	private String limittype;
 	private String ratetype;
 	private String floattype;
 	private String baserate;
 	private String baseratetype;
 	private String crtrate;
-	private String interest;
+	private BigDecimal interest;
 	private String floatrate;
 	private BigDecimal money;
 	private String currency;
@@ -101,7 +101,7 @@ public class TMibusidata extends BusinessModel{
 	private String tovdlyaccno;
 	private String tovdlyamt;
 	private String tovdlydt;
-	private String paydebt;
+	private BigDecimal paydebt;
 	private String indebtamt;
 	private String outdebtamt;
 	private String debtinterestflag;
@@ -153,7 +153,7 @@ public class TMibusidata extends BusinessModel{
 	private String lmtcode;
 	private String usemode;
 	private String contractusemode;
-	private String clreqlmt;
+	private BigDecimal clreqlmt;
 	private String busiflag;
 	private String create_time;
 	public String getBusicode() {
@@ -360,10 +360,10 @@ public class TMibusidata extends BusinessModel{
 	public void setContractno(String contractno) {
 		this.contractno = contractno;
 	}
-	public String getContractmoney() {
+	public BigDecimal getContractmoney() {
 		return contractmoney;
 	}
-	public void setContractmoney(String contractmoney) {
+	public void setContractmoney(BigDecimal contractmoney) {
 		this.contractmoney = contractmoney;
 	}
 	public String getDelaytype() {
@@ -396,10 +396,10 @@ public class TMibusidata extends BusinessModel{
 	public void setCreditlevel(String creditlevel) {
 		this.creditlevel = creditlevel;
 	}
-	public String getReqlmt() {
+	public BigDecimal getReqlmt() {
 		return reqlmt;
 	}
-	public void setReqlmt(String reqlmt) {
+	public void setReqlmt(BigDecimal reqlmt) {
 		this.reqlmt = reqlmt;
 	}
 	public String getIsexp() {
@@ -474,10 +474,10 @@ public class TMibusidata extends BusinessModel{
 	public void setEnddate(String enddate) {
 		this.enddate = enddate;
 	}
-	public String getLimit() {
+	public BigDecimal getLimit() {
 		return limit;
 	}
-	public void setLimit(String limit) {
+	public void setLimit(BigDecimal limit) {
 		this.limit = limit;
 	}
 	public String getLimittype() {
@@ -516,10 +516,10 @@ public class TMibusidata extends BusinessModel{
 	public void setCrtrate(String crtrate) {
 		this.crtrate = crtrate;
 	}
-	public String getInterest() {
+	public BigDecimal getInterest() {
 		return interest;
 	}
-	public void setInterest(String interest) {
+	public void setInterest(BigDecimal interest) {
 		this.interest = interest;
 	}
 	public String getFloatrate() {
@@ -690,10 +690,10 @@ public class TMibusidata extends BusinessModel{
 	public void setTovdlydt(String tovdlydt) {
 		this.tovdlydt = tovdlydt;
 	}
-	public String getPaydebt() {
+	public BigDecimal getPaydebt() {
 		return paydebt;
 	}
-	public void setPaydebt(String paydebt) {
+	public void setPaydebt(BigDecimal paydebt) {
 		this.paydebt = paydebt;
 	}
 	public String getIndebtamt() {
@@ -1002,10 +1002,10 @@ public class TMibusidata extends BusinessModel{
 	public void setContractusemode(String contractusemode) {
 		this.contractusemode = contractusemode;
 	}
-	public String getClreqlmt() {
+	public BigDecimal getClreqlmt() {
 		return clreqlmt;
 	}
-	public void setClreqlmt(String clreqlmt) {
+	public void setClreqlmt(BigDecimal clreqlmt) {
 		this.clreqlmt = clreqlmt;
 	}
 	public String getBusiflag() {
