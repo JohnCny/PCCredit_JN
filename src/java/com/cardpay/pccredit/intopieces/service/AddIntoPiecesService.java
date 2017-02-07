@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.omg.CORBA.COMM_FAILURE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +29,7 @@ import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.constant.ServerSideConstant;
 import com.cardpay.pccredit.intopieces.dao.LocalExcelDao;
 import com.cardpay.pccredit.intopieces.dao.LocalImageDao;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
@@ -47,7 +47,6 @@ import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.Dzjbzk;
 import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
-import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.Pic;
@@ -127,10 +126,14 @@ public class AddIntoPiecesService {
 	//导入调查报告
 	public void importExcel(MultipartFile file,String productId, String customerId) {
 		// TODO Auto-generated method stub
-		//本地测试
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地测试
+			 map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			 map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -146,10 +149,14 @@ public class AddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
-		//服务器
-		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		String sheet[] = null;
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地测试
+			  sheet = readExcel.readExcelToHtml1(url, true);
+		}else{
+			//服务器
+			  sheet = SFTPUtil.readExcelToHtml(url, true);
+		}
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -217,10 +224,14 @@ public class AddIntoPiecesService {
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
-		//本地
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地
+			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -241,10 +252,14 @@ public class AddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
-		//服务器
-		//String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		String sheet[] = null;
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地测试
+			 sheet = readExcel.readExcelToHtml1(url, true);
+		}else{
+			//服务器
+			 sheet = SFTPUtil.readExcelToHtml(url, true);
+		}
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -315,10 +330,14 @@ public class AddIntoPiecesService {
 	
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId) {
-		//本地测试
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-		//Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地测试
+			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
@@ -446,36 +465,45 @@ public class AddIntoPiecesService {
 	public void downLoadYxzlById(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
-			String url = v.getUri();
-			if(url.contains("pccreditFile")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
 				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				String url = v.getUri();
+				if(url.contains("pccreditFile")){
+					UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				}else{
+					SFTPUtil.download(response, v.getUri(), v.getAttachment());
+				}
 			}else{
+				//服务器
 				SFTPUtil.download(response, v.getUri(), v.getAttachment());
 			}
-			//服务器
-			//SFTPUtil.download(response, v.getUri(), v.getAttachment());
 		}
 	}
 	//进件查询下载影像资料
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFile(response,v);
-			//服务器
-			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地
+				this.downLoadFile(response,v);
+			}else{
+				//服务器
+				SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	//贷后查看影像资料
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFileDh(response,v);
-			//服务器
-			//SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地
+				this.downLoadFileDh(response,v);
+			}else{
+				//服务器
+				SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	
@@ -567,20 +595,26 @@ public class AddIntoPiecesService {
 	public void downLoadYxzlJns(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-			//服务器
-			//SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
+				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}else{
+				//服务器
+				SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	//贷后监控查看影像资料
 	public void downLoadYxzlDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-			//服务器
-			//SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
+				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}else{
+				//服务器
+				SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	
@@ -903,10 +937,14 @@ public class AddIntoPiecesService {
 	}
 	//浏览文件并缓存到服务器目录--进件查询影像资料上传
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
-		//本地
-		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-		//服务器
-		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地
+			 map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		}else{
+			//服务器
+			 map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		}
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
@@ -921,10 +959,14 @@ public class AddIntoPiecesService {
 	
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
-		//本地
-		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-		//服务器
-		//Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地
+			map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		}else{
+			//服务器
+			map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		}
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		DhApplnAttachmentDetail detail = new DhApplnAttachmentDetail();
@@ -1106,16 +1148,19 @@ public class AddIntoPiecesService {
 		String sql = "select URI,ATTACHMENT from local_excel where CUSTOMER_ID = '"+custId+"'" +" and PRODUCT_ID= '"+prodId+"'";
 		LocalExcel v = commonDao.queryBySql(LocalExcel.class, sql, null).get(0);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
-			String url = v.getUri();
-			if(url.contains("pccreditFile")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
 				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				String url = v.getUri();
+				if(url.contains("pccreditFile")){
+					UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				}else{
+					SFTPUtil.download(response, v.getUri(), v.getAttachment());
+				}
 			}else{
+				//服务器
 				SFTPUtil.download(response, v.getUri(), v.getAttachment());
 			}
-			//服务器
-			//SFTPUtil.download(response, v.getUri(), v.getAttachment());
 		}
 	}
 	

@@ -196,7 +196,14 @@
 		 <result column="DISPLAY_NAME"        property="displayName"    jdbcType="VARCHAR" /> 
  	 </resultMap>
  	 
-
+     <resultMap id="BaseResultMap4" type="com.cardpay.pccredit.postLoan.model.ContractForm" >
+  		 <result column="KEYCODE"        	  property="keycode"    jdbcType="VARCHAR" />
+  		 <result column="CHINESE_NAME"        property="chineseName"    jdbcType="VARCHAR" /> 
+  		 <result column="MONEY"               property="money"    jdbcType="VARCHAR" /> 
+  		 <result column="DEPTCODE"            property="deptCode"    jdbcType="VARCHAR" /> 
+  		 <result column="DISPLAY_NAME"        property="displayName"    jdbcType="VARCHAR" />  
+		 <result column="STARTDATE"           property="startDate"    jdbcType="VARCHAR" /> 
+ 	 </resultMap>
   
 
 	<select id="findCustomerTransferList" resultMap="ResultMap" 
@@ -771,13 +778,13 @@
          </if> ) as loanCustomerSum,
          
        (select count(distinct(b.CUSTID))
-          from t_gccontractmain           a,
-               t_gccontractmulticlient    b,
+          from t_gccontractmain_view           a,
+               t_gccontractmulticlient_view    b,
                basic_customer_information c
          where trim(a.KEYCODE) = b.KEYCODE
            and c.ty_customer_id = b.CUSTID
-           and a.keyeffectedstate ='1'
-           and b.keyeffectedstate ='1'
+           and a.keyeffectedstate in('1','2')
+           and b.keyeffectedstate in('1','2')
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
@@ -785,13 +792,13 @@
            </if> ) as increaseCusSum,
            
        (select count(distinct(b.CUSTID))
-          from t_gccontractmain           a,
-               t_gccontractmulticlient    b,
+          from t_gccontractmain_view           a,
+               t_gccontractmulticlient_view    b,
                basic_customer_information c
          where trim(a.KEYCODE) = b.KEYCODE
            and c.ty_customer_id = b.CUSTID
-           and a.keyeffectedstate ='1'
-           and b.keyeffectedstate ='1'
+           and a.keyeffectedstate in('1','2')
+           and b.keyeffectedstate in('1','2')
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
              and c.USER_ID =#{userId}
@@ -848,13 +855,13 @@
            </if> ) as contBalace,
            
        (select sum(a.MONEY)
-          from t_gccontractmain           a,
-               basic_customer_information b,
-               t_gccontractmulticlient    c
+          from t_gccontractmain_view           a,
+               basic_customer_information      b,
+               t_gccontractmulticlient_view    c
          where trim(a.KEYCODE) = c.KEYCODE
            and c.custid = b.ty_customer_id
-           and a.keyeffectedstate ='1'
-           and c.keyeffectedstate ='1'
+           and a.keyeffectedstate in('1','2')
+           and c.keyeffectedstate in('1','2')
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
@@ -862,13 +869,13 @@
            </if> ) as increaseLoanCredit,
            
        (select sum(a.MONEY)
-          from t_gccontractmain           a,
-               basic_customer_information b,
-               t_gccontractmulticlient    c
+          from t_gccontractmain_view           a,
+               basic_customer_information 	   b,
+               t_gccontractmulticlient_view    c
          where trim(a.KEYCODE) = c.KEYCODE
            and c.custid = b.ty_customer_id
-           and a.keyeffectedstate ='1'
-           and c.keyeffectedstate ='1'
+           and a.keyeffectedstate in('1','2')
+           and c.keyeffectedstate in('1','2')
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
              and b.USER_ID =#{userId}
@@ -1060,4 +1067,84 @@
  	      and t.busimanager = su.external_id
     order by t.deptcode asc 
 	</select>
+	
+	
+	
+	<select id="findLxSubsectJnListByFilter" resultMap="BaseResultMap3" 
+	    parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+	select t.BUSICODE,
+	       t.CNAME,  
+	       t.LOANDATE, 
+	       nvl(t.PAYDEBT,0) as PAYDEBT,
+	       t.operdatetime,
+	       (case 
+	       when t.deptcode ='200734' then
+	        '高新支行'
+	       when t.deptcode ='200735' then
+	        '槐荫支行'
+	       when t.deptcode ='200730' then
+	        '历城支行'
+	       when t.deptcode ='200732' then
+	        '历下支行'
+	       when t.deptcode ='200731' then
+	        '润丰支行'
+	       when t.deptcode ='200733' then
+	        '天桥支行'
+	       when t.deptcode ='200729' then
+	        '长清支行'
+	       else
+	        ''
+	       end) as deptcode,
+	       su.DISPLAY_NAME
+	   from t_income_statement_day T,
+	   sys_user su 
+	 	where  t.busimanager = su.external_id
+	   	   and t.operdatetime <![CDATA[ <=  ]]> #{endDate}
+	       and t.operdatetime <![CDATA[ >=  ]]> #{startDate}
+	    order by t.deptcode asc 
+	</select>
+	
+	
+	
+	<select id="findContractJnListByFilter" resultMap="BaseResultMap4" 
+	    parameterType="com.cardpay.pccredit.postLoan.filter.PostLoanFilter">
+		     select  a.keycode,
+             b.chinese_name,
+             a.money,
+              (case 
+         when a.deptcode ='200734' then
+          '高新支行'
+         when a.deptcode ='200735' then
+          '槐荫支行'
+         when a.deptcode ='200730' then
+          '历城支行'
+         when a.deptcode ='200732' then
+          '历下支行'
+         when a.deptcode ='200731' then
+          '润丰支行'
+         when a.deptcode ='200733' then
+          '天桥支行'
+         when a.deptcode ='200729' then
+	        '长清支行'
+	       else
+	        ''
+	       end) as deptcode,
+         d.DISPLAY_NAME,
+         a.STARTDATE
+          from t_gccontractmain_view     a,
+               basic_customer_information b,
+               t_gccontractmulticlient_view c,
+               sys_user d
+         where trim(a.KEYCODE) = c.KEYCODE
+           and c.custid = b.ty_customer_id
+           and d.id = b.user_id
+           and a.keyeffectedstate in('1','2')
+           and c.keyeffectedstate in('1','2')
+           and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
+	       and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
+	       order by a.deptcode asc 
+	</select>
+	
+	
+	
 </mapper>

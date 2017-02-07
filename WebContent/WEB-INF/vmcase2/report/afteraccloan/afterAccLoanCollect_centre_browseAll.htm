@@ -118,8 +118,8 @@
             	
             </tr>
             <tr>
-            	<td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td>
+            	<!-- <td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td> -->
             	#if($!urlType!=1)
             	<!--  批处理每日更新一次 -->
             	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
@@ -147,6 +147,27 @@
             	<td nowrap="nowrap" style="background:#99CCFF">pos流水贷产品贷款余额</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.pos)</font></td>
             	
+            	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款笔数占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c100numproportion)%</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">抵押类贷款笔数占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c102numproportion)%</font></td>
+            </tr>
+            
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款笔数占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101numproportion)%</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款金额占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c100amtproportion)%</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">抵押类贷款金额占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c102amtproportion)%</font></td>
+            </tr>
+            
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款金额占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101amtproportion)%</font></td>
             </tr>
              #end
           </table>
@@ -156,14 +177,7 @@
        #if(!$!lock)		
         <div class="pagebar">
 	      	<div class="controlbtn">
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('05')" title="5月">5月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('06')" title="6月">6月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('07')" title="7月">7月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('08')" title="8月">8月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('09')" title="9月">9月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('10')" title="10月">10月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('11')" title="11月">11月</a>
-	          <a id="id_import_button" class="btn_gr" href="javascript:void(0);" onclick="handle('12')" title="12月">12月</a>
+	          <a id="id_handle_button"  class="btn_gr" href="javascript:void(0);" title="计算每月用信余额">计算每月用信余额</a>
 	        </div>
 	        <div class="clear"></div>
         </div> 
@@ -171,6 +185,28 @@
        
       </div>
     </div>
+    
+    
+    <!-- 弹出框 -->
+    <div id="inputApplyInpDialog" title="请输入日期" style="display: none; resize: none; z-index: 2000">
+    <div class="inquiry_list">
+      <form name="inputApplyForm" id="inputApplyForm">
+        <table id="inputApplyForm" style="border: 1px solid #dcdcdc;margin-bottom: 10px;width:400px;">
+           <colgroup>
+            <col width="10%">
+            <col width="30%">
+          </colgroup>
+         
+          <tr style="height:100px;width:200px;">
+            <td>&nbsp;</td>
+            <td>日期:</td>
+            <td><input type="text" id="dateString" name="dateString"  /></td>
+            <td>&nbsp;</td>
+          </tr>
+        </table>
+    </form>
+    </div>
+  </div>
 </body>
 <script language="javascript" type="text/javascript">
 	var layout = new TableLayout(2);
@@ -215,5 +251,21 @@
       			});
 	 	});
    }
+	
+	
+	
+	$("#id_handle_button").click(function() {
+    		  	Dialog.form("#inputApplyForm", "输入日期", function(){
+    		  		//日期
+    				var dateString = window.top.$("#dateString").val();
+	      			if(dateString == '' || dateString == null){
+	      				Dialog.message("日期必输!");
+	      				return;
+	      			}
+	      			//处理
+	      			handle(dateString);
+	      			window.top.$("#form_diaog").dialog("close");
+    		    }, null, 500, 150);
+    });
 </script>
 #parse ("common/iframe_page_footer.htm")

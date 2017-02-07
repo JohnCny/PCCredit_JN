@@ -3,6 +3,7 @@ package com.cardpay.pccredit.customer.web;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.wicresoft.jrad.base.auth.IUser;
@@ -411,5 +413,25 @@ public class CustomerFirsthendController extends BaseController{
 			mv.addObject("customerNm", cust.getId());
 		}
 		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "exportCustomerData.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap exportCustomerData(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		filter.setRequest(request);
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+				customerInforService.exportCustomerData(filter,response);
+				
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
 	}
 }

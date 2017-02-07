@@ -23,12 +23,14 @@ import com.cardpay.pccredit.manager.model.ManagerSalary;
 import com.cardpay.pccredit.manager.model.TJxParameters;
 import com.cardpay.pccredit.manager.model.TJxSpecificParameters;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
+import com.cardpay.pccredit.manager.service.LxSynchScheduleService;
 import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.service.ManagerLevelAdjustmentService;
 import com.cardpay.pccredit.manager.service.ManagerSalaryService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
@@ -63,6 +65,11 @@ public class ManagerLevelAdjustmentController extends BaseController{
 	@Autowired
 	private ManagerBelongMapService managerBelongMapService;
 
+	@Autowired
+	private LxSynchScheduleService LxSynchScheduleService;
+	
+	@Autowired
+	private CommonDao commonDao;
 	/**
 	 * 查看客户经理下属的客户评估信息
 	 * @param request
@@ -289,6 +296,15 @@ public class ManagerLevelAdjustmentController extends BaseController{
 				new JRadPagedQueryResult<com.cardpay.pccredit.manager.model.ManagerSalaryForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);
+		
+		// 控制参数 按钮显示
+		boolean lock = false;
+		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		if("1".equals(PARAM)){
+			lock = true;
+		}
+		mv.addObject("lock", lock);
 		return mv;
 	}
 	
@@ -477,6 +493,31 @@ public class ManagerLevelAdjustmentController extends BaseController{
 			catch (Exception e) {
 				return WebRequestHelper.processException(e);
 			}
+		}
+		return returnMap;
+	}
+	
+	
+	/**
+	 * 利息分段计算统计报表生成数据
+	 * @param form
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "doCalLx.json")
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap doCalLx(@ModelAttribute ManagerSalaryForm form, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			LxSynchScheduleService.dosynchyxyeMethod();
+			//LxSynchScheduleService.doyxyeMethod();
+			returnMap.setSuccess(true);
+		}
+		catch (Exception e) {
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(e.getMessage());
+			return returnMap;
 		}
 		return returnMap;
 	}

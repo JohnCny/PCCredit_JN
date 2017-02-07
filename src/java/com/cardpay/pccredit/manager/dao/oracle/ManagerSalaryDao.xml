@@ -416,6 +416,7 @@
 						   usr.display_name as managerName
 					  FROM manager_salary salary
 					 INNER join sys_user usr ON usr.id = salary.customer_id
+					 inner join account_manager_parameter amp on amp.user_id = usr.id
 					 WHERE 1=1
 					 <if test="managerName != null and managerName != '' ">
 						AND usr.display_name like '%${managerName}%'
@@ -429,6 +430,10 @@
 					 <if test="organName != null and organName != '' ">
 						AND salary.INST_CODE=#{organName}
 					 </if>
+					 <if test="managerType != null and managerType != '' ">
+						AND amp.MANAGER_TYPE=#{managerType}
+					 </if>
+					 
 					 order by salary.year desc,salary.month desc,salary.inst_code desc
 		 		<![CDATA[		
 							) ROW_
@@ -443,6 +448,7 @@
 		   FROM manager_salary salary
 		 INNER join sys_user usr
  			ON usr.id = salary.customer_id
+ 		 inner join account_manager_parameter amp on amp.user_id = usr.id
 		  WHERE 1=1
 		 <if test="managerName != null and managerName != '' ">
 			AND usr.display_name like '%${managerName}%'
@@ -455,6 +461,9 @@
 		 </if>
 		 <if test="organName != null and organName != '' ">
 			AND salary.INST_CODE=#{organName}
+		 </if>
+		 <if test="managerType != null and managerType != '' ">
+			AND amp.MANAGER_TYPE=#{managerType}
 		 </if>
 	</select>
 	
@@ -581,4 +590,9 @@
 	</select>
 	
 	<!-- =====================================济南绩效相关end============================= -->
+	
+	<select id="findIsCountExist" resultType="int" parameterType="map">
+			select count(*) from t_income_statement_history where trim(BUSICODE) = #{busicode} 
+	</select>
+	
 </mapper>

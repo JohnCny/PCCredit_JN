@@ -587,8 +587,8 @@ public class IntoPiecesComdao {
 					 "        where a.customer_id = b.id             "+
 					 "        and trim(c.KEYCODE) = d.KEYCODE        "+
 					 "        and b.ty_customer_id = d.CUSTID        "+
-					 "        and c.keyeffectedstate ='1'            "+
-					 "        and d.keyeffectedstate ='1'            "+
+					 "        and c.keyeffectedstate in('1','2')     "+
+					 "        and d.keyeffectedstate in('1','2')     "+
 					 "        and a.status = 'approved'              "+
 					 "        group by a.id                          ";
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);

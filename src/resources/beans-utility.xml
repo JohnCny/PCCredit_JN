@@ -237,18 +237,59 @@
     </bean>
     
     
+     <!--8.每日利息计算 -->
+    <bean id="lxCalDayBalanceJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="lxSynchScheduleService"/>
+        </property>
+        <property name="targetMethod">
+            <value>doyxyeMethod</value>
+        </property>
+    </bean>
+    <bean id="lxCalDayBalanceTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="lxCalDayBalanceJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 30 21 ? * *</value>
+        </property>
+    </bean>
+    
+    
+     <!--9.每月的5号跑批自动生成上个月的绩效工资信息-->
+    <bean id="runBatchGeneratePerformancePayJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="managerSalaryService"/>
+        </property>
+        <property name="targetMethod">
+            <value>doRunBatchGeneratePerformancePay</value>
+        </property>
+    </bean>
+    <bean id="runBatchGeneratePerformancePayTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="runBatchGeneratePerformancePayJob"/>
+        </property>
+        <property name="cronExpression">
+            <value>0 0 3 5 * ? *</value><!-- 每月5号生成数据 凌晨三点-->
+        </property>
+    </bean>
+    
+    
+    
     
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-            	 <!-- <ref bean="taskTigger"/>
+                 <ref bean="taskTigger"/>
                  <ref bean="downAndtargzScheduleTigger"/>
                  <ref bean="readWholeAndIncrementScheduleTigger"/>
                  <ref bean="dailyReportScheduleTigger"/>
                  <ref bean="updateCustomerAppInfoStatusTigger"/>
                  <ref bean="reimbursementStatusTigger"/>
-                 <ref bean="attentiveBalanceTigger"/>  -->
+                 <ref bean="attentiveBalanceTigger"/>
+                 <ref bean="lxCalDayBalanceTigger"/>
+                 <ref bean="runBatchGeneratePerformancePayTigger"/>
             </list>
         </property>
     </bean>

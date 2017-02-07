@@ -244,8 +244,8 @@ public class MainController {
 		    mv.addObject("organApplicationblJson",statisticalCommonService.statisticalblorgan());
 		    
 		    long end = System.currentTimeMillis();
-			System.out.println("#########################查询时间花费：" + (end - start) + "毫秒");
-			logger.info("#########################查询时间花费：" + (end - start) + "毫秒");
+			//System.out.println("查询时间花费：" + (end - start) + "毫秒");
+			logger.info("查询时间花费：" + (end - start) + "毫秒");
 		}
 		
 		return mv;
