@@ -702,6 +702,41 @@
 		</if>
 	</select>
 	
+	
+	<select id="findCustomerOriginaAllList" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+			select 
+			T1.id,
+			T1.chinese_name as chineseName,
+			T1.card_type as cardType,
+			T1.card_id as cardId,
+			T1.ty_customer_id as tyCustomerId,
+			<!-- T1.user_id as userId,-->
+ 			u.display_name as userId
+			from BASIC_CUSTOMER_INFORMATION T1,
+			sys_user u
+		  where 1=1
+		   			and  u.id = t1.user_id
+				<if test="chineseName != null and chineseName != '' ">
+					AND T1.chinese_name=#{chineseName}
+				</if>
+				<if test="cardType != null and cardType != '' ">
+					AND T1.card_type=#{cardType}
+				</if>
+				<if test="cardId != null and cardId != '' ">
+					AND T1.card_id=#{cardId}
+				</if>
+				<if test="customerManagerId != null and customerManagerId != '' ">
+						AND t1.user_id = #{customerManagerId}
+				</if>
+				<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 		    		and T1.user_id in  
+	 	    		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+			   		#{item.userId} 
+					</foreach>
+				</if>
+		
+	</select>
+	
 		<insert id="insertRepayLSZ" parameterType="map">
 		INSERT INTO ty_repay_lsz (CREATE_TIME,YWBH,KMH,KHJL,JJH,YWJG,YWJGH,
 		DKZH,FZH,LSH,YWDM,JZRQ,YWRQ,ZY,PZH,JF,

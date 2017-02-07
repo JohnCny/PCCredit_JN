@@ -83,6 +83,7 @@
           <a id="id_create_button" class="btn_g" href="javascript:void(0);" title="查看原始信息">查看原始信息</a>
           <!-- <a id="id_reject_button" class="btn_g" href="javascript:void(0);" title="拒绝">拒绝</a> -->
           <a id="id_update_button" class="btn_g" href="javascript:void(0);" title="基本信息">客户基本信息修改</a>
+          <a id="id_download_button" class="btn_g" href="javascript:void(0);" title="客户信息下载">客户信息下载</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -195,6 +196,15 @@
 				Dialog.message("请选择记录!");
 			}
 	    }); */
+	    
+	    
+		//导出客户信息
+		$("#id_download_button").click(function() {
+				var url = "${modulePath}/exportCustomerData.json";
+          		document.getElementById("submitForm").action = url;
+          		document.getElementById("submitForm").submit();
+	    	
+	    }); 
 
 	});
 	

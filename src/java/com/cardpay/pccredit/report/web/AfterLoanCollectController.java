@@ -8,7 +8,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -124,25 +126,35 @@ public class AfterLoanCollectController extends BaseController{
 			acc.setPos(pslsd.toString());
 		}
 		
-		//查询客户经理count
-		int count = customerTransferFlowService.findManagerListCount();
+		//查询客户经理count 去掉平均到客户经理的条件
+		//int count = customerTransferFlowService.findManagerListCount();
 		
 		//查询当月日均用信
 		BigDecimal monthAverageAmt = customerTransferFlowService.findMonthAverageAmt();
 		for(AccLoanCollectInfo acc :accloanList){
-			acc.setMa(monthAverageAmt.divide(new BigDecimal(count),4,BigDecimal.ROUND_HALF_UP).multiply(calMonthGrade()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			acc.setMa(monthAverageAmt.multiply(calMonthGrade()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
 		//查询业务开展以来截止到如今的日均用信
 		BigDecimal totalMonthAverageAmt = customerTransferFlowService.findToalMonthAverageAmt();
 		int monthCount = returnMonthCount();
-		BigDecimal monthManagerCount = new BigDecimal(monthCount).multiply(new BigDecimal(count));
+		BigDecimal monthManagerCount = new BigDecimal(monthCount);
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setTa(totalMonthAverageAmt.divide(monthManagerCount,2,BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
+		//信用、抵押 ,保证类贷款笔数占比   信用、抵押 ,保证类贷款金额占比  C101-保证    C102-抵押   C100-信用 
+		Map<String, String> map =  calProportion(user);
+		for(AccLoanCollectInfo acc :accloanList){
+			acc.setC101numproportion(map.get("C101NumProportion"));
+			acc.setC102numproportion(map.get("C102NumProportion"));
+			acc.setC100numproportion(map.get("C100NumProportion"));
+			acc.setC101amtproportion(map.get("C101AmtProportion"));
+			acc.setC102amtproportion(map.get("C102AmtProportion"));
+			acc.setC100amtproportion(map.get("C100AmtProportion"));
+		}
 		long end = System.currentTimeMillis();
-		logger.info("#########################贷款汇总查询时间花费：" + (end - start) + "毫秒");
+		logger.info("贷款汇总查询时间花费：" + (end - start) + "毫秒");
 		JRadModelAndView mv = new JRadModelAndView("/report/afteraccloan/afterAccLoanCollect_centre_browseAll", request);
 		mv.addObject("list", accloanList);
 		mv.addObject("filter", filter);
@@ -158,6 +170,36 @@ public class AfterLoanCollectController extends BaseController{
 		mv.addObject("lock", lock);
 		return mv;
 		
+	}
+	
+	/**
+	 * 各类贷款产品笔数和金额占比
+	 * C101-保证    C102-抵押   C100-信用 
+	 * @return
+	 */
+	public Map<String, String> calProportion(IUser user){
+		Map<String, String> map  = new HashMap<String, String>();
+		
+		//笔数
+		BigDecimal totalNum = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"");//总笔数
+		BigDecimal C101Num  = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"C101");
+		BigDecimal C102Num  = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"C102");
+		BigDecimal C100Num  = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"C100");
+		
+		map.put("C101NumProportion",C101Num.divide(totalNum,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C102NumProportion",C102Num.divide(totalNum,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C100NumProportion",C100Num.divide(totalNum,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		
+		//金额
+		BigDecimal totalAmt = customerTransferFlowService.findAmtByUserIdAndProdType(user,"");//总金额
+		BigDecimal C101Amt = customerTransferFlowService.findAmtByUserIdAndProdType(user,"C101");//保证
+		BigDecimal C102Amt = customerTransferFlowService.findAmtByUserIdAndProdType(user,"C102");//抵押
+		BigDecimal C100Amt = customerTransferFlowService.findAmtByUserIdAndProdType(user,"C100");//信用
+		
+		map.put("C101AmtProportion",C101Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C102AmtProportion",C102Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C100AmtProportion",C100Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		return map;
 	}
 	
 	/**
@@ -219,7 +261,7 @@ public class AfterLoanCollectController extends BaseController{
 	 * 2016-07-01
 	 * @throws ParseException 
 	 */
-	public int returnMonthCount() throws ParseException{
+	/*public int returnMonthCount() throws ParseException{
 	
 	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	   String str1 = "2016-07-01";//start 
@@ -237,15 +279,87 @@ public class AfterLoanCollectController extends BaseController{
 	   }
 	   return result;
 	}
+	*/
+	
+	/**
+	 * 计算两个月中间相差多少月
+	 * 台帐数据日期从2016-07-01开始
+	 */
+	public int returnMonthCount() throws ParseException{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String str2 = sdf.format(new Date());//end
+		
+		Map<Integer, Integer> map = getMonthAndDaysBetweenDate("2016-07-01", str2);
+		int months = map.get(1).intValue();//月数
+		//int days = map.get(2).intValue();//天数
+		return months;
+	}
+	
+	
+	public Map<Integer, Integer> getMonthAndDaysBetweenDate(String date1,String date2) {
+		Map<Integer, Integer> map = new HashMap();
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+		Date d1 = null;
+		try {
+			d1 = sd.parse(date1);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		Date d2 = null;
+		try {
+			d2 = sd.parse(date2);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		int months = 0;// 相差月份
+		int days = 0;
+		int y1 = d1.getYear();
+		int y2 = d2.getYear();
+		int dm1 = d2.getMonth();// 起始日期月份
+		int dm2 = d2.getMonth();// 结束日期月份
+		int dd1 = d1.getDate(); // 起始日期天
+		int dd2 = d2.getDate(); // 结束日期天
+		if (d1.getTime() < d2.getTime()) {
+			months = d2.getMonth() - d1.getMonth() + (y2 - y1) * 12;
+			if (dd2 < dd1) {
+				months = months - 1;
+			}
+			/*
+			 * System.out.println(getFormatDateTime(addMonthsToDate(DateUtil.
+			 * parseDate(date1, "yyyy-MM-dd"),months),"yyyy-MM-dd"));
+			 * days=getDaysBetweenDate
+			 * (getFormatDateTime(addMonthsToDate(DateUtil.parseDate(date1,
+			 * "yyyy-MM-dd"),months),"yyyy-MM-dd"),date2);
+			 */
+			map.put(1, months);
+			map.put(2, days);
+		}
+		return map;
+	}
+	
+	public Date parseDate(String dateString, String dateFormate) {
+		SimpleDateFormat sd = new SimpleDateFormat(dateFormate);
+		Date date = null;
+		try {
+			date = sd.parse(dateString);
+		} catch (Exception ex) {
+			logger.error("Pase the Date(" + dateString
+					+ ") occur errors:" + ex.getMessage());
+		}
+		return date;
+	}
 	
 	
 	
 	
 	
 	
-	
-	
-	
+	/**
+	 * 贷款利息查询统计报表
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "tzbrowse.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
@@ -256,7 +370,12 @@ public class AfterLoanCollectController extends BaseController{
 		return mv;
 	}
 	
-	
+	/**
+	 * 贷款利息查询统计报表导出
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "exportData.json",method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.CHANGE)
@@ -278,8 +397,89 @@ public class AfterLoanCollectController extends BaseController{
 	
 	
 	
+	/**
+	 * 贷款利息分段查询统计报表
+	 */
+	@ResponseBody
+	@RequestMapping(value = "LxSubsectBrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView LxSubsectBrowse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/report/lx/lx_subsect_browse", request);
+		mv.addObject(PAGED_RESULT, "");
+		
+		// 控制参数 按钮显示
+		boolean lock = false;
+		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		if("1".equals(PARAM)){
+			lock = true;
+		}
+		mv.addObject("lock", lock);
+		return mv;
+	}
+	
+	/**
+	 * 贷款利息分段查询统计报表导出
+	 * @param filter
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "exportLxSubsectData.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap exportLxSubsectData(PostLoanFilter filter,HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+				customerTransferFlowService.getExportLxSubsectData(filter,response);
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
 	
 	
+	/**
+	 * 授信(合同)分段查询统计报表
+	 */
+	@ResponseBody
+	@RequestMapping(value = "ContractSubsectBrowse.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView ContracSubsectBrowse(@ModelAttribute PostLoanFilter filter,HttpServletRequest request) {
+		filter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/report/lx/contract_subsect_browse", request);
+		mv.addObject(PAGED_RESULT, "");
+		return mv;
+	}
 	
+	
+	/**
+	 * 授信(合同)分段查询统计报表导出
+	 * @param filter
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "exportContractSubsectData.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.CHANGE)
+	public JRadReturnMap exportContractSubsectData(PostLoanFilter filter,HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+				customerTransferFlowService.exportContractSubsectData(filter,response);
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
 	
 }

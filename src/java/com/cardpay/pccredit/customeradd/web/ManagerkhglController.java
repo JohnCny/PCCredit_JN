@@ -24,6 +24,7 @@ import com.cardpay.pccredit.customeradd.model.MaintenanceForm;
 import com.cardpay.pccredit.customeradd.service.KuglService;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.manager.model.FourMonthModel;
+import com.cardpay.pccredit.manager.service.LxSynchScheduleService;
 import com.cardpay.pccredit.manager.service.ManagerSalaryService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerSalaryForm;
@@ -65,6 +66,8 @@ public class ManagerkhglController extends BaseController{
 	
 	@Autowired
 	private ManagerSalaryService managerSalaryService;
+	
+	
 	/**
 	 * 通过客户经理查询
 	 * @param request
@@ -230,4 +233,6 @@ public class ManagerkhglController extends BaseController{
 		}
 		return returnMap;
 	}
+	
+	
 }

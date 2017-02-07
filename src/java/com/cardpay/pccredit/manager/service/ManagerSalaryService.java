@@ -4,6 +4,8 @@ import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -692,6 +694,38 @@ public class ManagerSalaryService {
             }
         });
     }
+    
+    
+    /**
+     * 每月的5号跑批自动生成上个月的绩效工资信息
+     * @Time 2017年2月4日 10:10:24
+     */
+    public void doRunBatchGeneratePerformancePay(){
+    	//获取今日日期
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = format.format(new Date());
+		String year  = dateString.substring(0, 4);
+	    String month = dateString.substring(5, 7);
+	    year  = "2016";
+	    month = "11";
+		
+		// 计算当月的上一个月
+		String lastMonth = "";
+		String lastYear = "";
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Integer.parseInt(year),Integer.parseInt(month)-1,1);
+		calendar.add(Calendar.MONTH, -1);
+		lastYear = calendar.get(Calendar.YEAR)+"";
+		lastMonth = calendar.get(Calendar.MONTH)+1+"";
+		
+		if(Integer.parseInt(lastMonth)<10){
+			lastMonth = "0"+lastMonth;
+		}
+		
+		//System.out.println(lastYear+"----"+lastMonth);
+		docalculateMonthlySalaryTy(lastYear,lastMonth);
+    }
+
 	
 	/**
 	 * 计算当月绩效

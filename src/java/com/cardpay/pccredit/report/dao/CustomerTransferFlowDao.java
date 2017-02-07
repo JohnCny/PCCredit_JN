@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.ContractForm;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
@@ -63,4 +64,15 @@ public interface CustomerTransferFlowDao {
 	List<AccountManagerParameterForm> findAccountManagerParameterByUserId(@Param("userId") String userId);
 	
 	List<MibusidataForm> findTzJnListByFilter(PostLoanFilter filter);
+	
+	/**
+	 * 利息分段统计查询
+	 */
+	List<MibusidataForm> findLxSubsectJnListByFilter(PostLoanFilter filter);
+	
+	
+	/**
+	 * 授信分段统计查询
+	 */
+	List<ContractForm> findContractJnListByFilter(PostLoanFilter filter);
 }

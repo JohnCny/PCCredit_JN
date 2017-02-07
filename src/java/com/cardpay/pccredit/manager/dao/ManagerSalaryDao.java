@@ -123,4 +123,9 @@ public interface ManagerSalaryDao {
 	public int findSdAprovedCountByManagerId(@Param("managerId") String  managerId,
 									  		 @Param("year")String year,
 									  		 @Param("month")String month);
+	
+	/**
+	 * 查询收息历史表是否存在记录
+	 */
+	public int findIsCountExist(@Param("busicode") String  busicode);
 }

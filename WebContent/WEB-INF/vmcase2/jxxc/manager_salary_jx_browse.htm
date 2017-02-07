@@ -110,16 +110,18 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
+        #if(!$!lock)
            <input id="id_genertae_button" type="button" value="生成数据" class="search_button_inquiry"
                   title="生成数据" style="height: 26px; line-height: 24px;" />
+        #end
            <input id="id_update_button" type="button" value="查看详情" class="search_button_inquiry"
                   title="查看详情" style="height: 26px; line-height: 24px;" /> 
            <input id="id_export_button" type="button" value="导出EXCEL" class="search_button_inquiry"
                   title="导出工资单" style="height: 26px; line-height: 24px;" />
-      <!-- <input id="id_go_button" type="button" value="四维授信" class="search_button_inquiry"
-                  title="四维授信" style="height: 26px; line-height: 24px;" /> -->
       <!-- <input id="id_print_button" type="button" value="打印" class="search_button_inquiry"
                   title="打印" style="height: 26px; line-height: 24px;" /> -->
+      <!-- <input id="id_go_button" type="button" value="四维授信" class="search_button_inquiry"
+                  title="四维授信" style="height: 26px; line-height: 24px;" /> -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -192,7 +194,6 @@
 				}
 			});
 	    });
-		
 		
 	 	//导出
 		$("#id_export_button").click(function() {
