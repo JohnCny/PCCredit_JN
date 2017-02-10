@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.filter.FkRankingFilter;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerFirsthendBase;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -300,6 +301,12 @@ public interface CustomerInforDao {
 	public int insertFCRESULTHIS(Map<String, Object> map);
 	public int insertMIBUSIDATA(Map<String, Object> map);
 	public int insertCipersonBasinfo(Map<String, Object> map);
+	//放款排名
+	public List<FkRankingFilter> fkRanking();
+	//删除放款排名表中所有的数据
+	public void deleteFk();
+	//在放款排名表中添加最新的数据
+	public void insertFk(FkRankingFilter filter);
 
 	
 }

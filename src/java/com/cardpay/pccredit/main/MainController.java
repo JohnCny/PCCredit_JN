@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cardpay.pccredit.customer.filter.FkRankingFilter;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerMarketingService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
@@ -242,7 +243,9 @@ public class MainController {
 		    mv.addObject("organApplicationsxJson",statisticalCommonService.statisticalsxorgan());
 		    mv.addObject("organApplicationyqJson",statisticalCommonService.statisticalyqorgan());
 		    mv.addObject("organApplicationblJson",statisticalCommonService.statisticalblorgan());
-		    
+		    //放款排名
+		    List<FkRankingFilter> fk=statisticalCommonService.queryFkRanking();
+		    mv.addObject("fk",fk);
 		    long end = System.currentTimeMillis();
 			//System.out.println("查询时间花费：" + (end - start) + "毫秒");
 			logger.info("查询时间花费：" + (end - start) + "毫秒");

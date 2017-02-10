@@ -7,6 +7,14 @@
 		<result property="value" column="value" />
 	</resultMap>
 	
+	
+	<resultMap id="fkRankingMap" type="com.cardpay.pccredit.customer.filter.FkRankingFilter">
+		<result property="customermanager" column="name" />
+		<result property="fkmoney" column="money" />
+		<result property="organization" column="deptcode" />
+		<result property="rankingnum" column="rownum" />
+	</resultMap>
+	
 	<select id="statisticalApplicationStatusAmt" resultMap="ResultMap" >
 	  select t.STATUS as name ,sum(nvl(t.APPLY_QUOTA,0)) as value from customer_application_info t where t.status ='audit' group by t.STATUS
       union all
@@ -361,5 +369,9 @@ union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200731' and FIVECLASS in ('1','2','3')
     union all
     select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  where DEPTCODE ='200735' and FIVECLASS in ('1','2','3')
+	</select>
+	
+	<select id="queryFkRanking" resultMap="fkRankingMap">
+	select rownum,name,money,deptcode from FkRanking order by money desc
 	</select>
 </mapper>

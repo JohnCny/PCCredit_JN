@@ -228,13 +228,37 @@ $(document).ready(function() {
 </head>
 <body>
 	<div style="display:block; width:1200px; height:400px; margin:0px auto; padding:20px;">
-   		<div id="container" style="min-width:500px;height:300px;float:left; margin-right:20px;"></div>
-   		<div id="container_1" style="min-width:500px;height:300px;float:left;"></div>
+	<!--放款排名  -->
+	<div id="fkranking" style="width:500px;height:300px;float:left; margin-right:20px;">
+	 <table bordercolor=#ffaa00 border-style="dashed" border="1" style="width:400px;height:300px; background-color:yellow">
+	 		<tr>
+	 		<td colspan="4" style="text-align:center; ">
+	 		<font face="楷体" size="4px" color="red" >放款排名</font></td></tr>
+            <tr class="title">
+              <th nowrap="nowrap">排名</th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">放款总金额(元)</th>
+              <th nowrap="nowrap">所属部门</th>
+            </tr>
+             #foreach ($fks in $fk)
+            <tr class="title" style="text-align:center;">
+              <td nowrap="nowrap">$!fks.rankingnum</td>
+              <td nowrap="nowrap">$!fks.customermanager</td>
+              <td nowrap="nowrap">$!fks.fkmoney</td>
+              <td nowrap="nowrap">$!fks.organization</td>
+            </tr>
+            #end
+          </table>
+        </div>
+	
+   		<div id="container" style="min-width:500px;height:;float:left; margin-right:20px;"></div>
+   		
 	</div>
 	
 	<div style="display:block; width:1200px; height:400px; margin:0px auto; padding:20px;">
+	<div id="container_1" style="min-width:500px;height:300px;float:left;"></div>
    		<div id="container_2" style="min-width:500px;height:300px;float:left; margin-right:20px;"></div>
-   		<div id="container_3" style="min-width:500px;height:300px;float:left;"></div>
 	</div>
+	<div id="container_3" style="min-width:500px;height:300px;float:left;"></div>
 </body>
 </html>
