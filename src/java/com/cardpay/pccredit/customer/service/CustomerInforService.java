@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.Dictionary;
@@ -46,6 +48,7 @@ import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.dao.comdao.CustomerInforCommDao;
 import com.cardpay.pccredit.customer.filter.CustomerInfoLszFilter;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
+import com.cardpay.pccredit.customer.filter.FkRankingFilter;
 import com.cardpay.pccredit.customer.filter.VideoAccessoriesFilter;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
@@ -81,6 +84,8 @@ import com.cardpay.pccredit.ipad.model.ProductAttribute;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.cardpay.pccredit.manager.model.TPerformanceParameters;
+import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.constants.NodeAuditTypeEnum;
 import com.cardpay.pccredit.system.constants.YesNoEnum;
@@ -98,10 +103,16 @@ import com.cardpay.workflow.models.WfProcessInfo;
 import com.cardpay.workflow.models.WfStatusInfo;
 import com.cardpay.workflow.models.WfStatusResult;
 import com.cardpay.workflow.service.ProcessService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.JRadModelAndView;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.spring.Beans;
+import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 /**
  * 
@@ -4459,4 +4470,23 @@ public class CustomerInforService {
 	      wb.write(out);
 	      out.close();
 		}
+	
+	//放款排名，显示前十放款的客户经理
+	public void fkRanking() throws IOException{
+		//获取今日日期
+	      //yyyyMMdd格式
+		FkRankingFilter filter=new FkRankingFilter();
+		log.info("******************开始查询放款排名前十的信息********************");  
+		List<FkRankingFilter> fk=customerInforDao.fkRanking();
+		log.info("******************开始删除放款排名表中的数据********************");  
+		customerInforDao.deleteFk();
+		log.info("******************开始添加最新放款排名数据********************");  
+		for(FkRankingFilter fkRanking:fk){
+			filter.setCustomermanager(fkRanking.getCustomermanager());
+			filter.setFkmoney(fkRanking.getFkmoney());
+			filter.setOrganization(fkRanking.getOrganization());
+			customerInforDao.insertFk(filter);
+		}
+	    log.info("******************完成更新放款排名信息********************");
+	}	
 }
