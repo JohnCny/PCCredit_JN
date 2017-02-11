@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cardpay.pccredit.customer.dao.CustomerInforDao">
+
+	<resultMap id="fkRankingMap" type="com.cardpay.pccredit.customer.filter.FkRankingFilter">
+		<result property="customermanager" column="name" />
+		<result property="fkmoney" column="money" />
+		<result property="organization" column="deptcode" />
+		<result property="rankingnum" column="rownum" />
+	</resultMap>
+	
 	<resultMap id="ResultMap"
 		type="com.cardpay.pccredit.customer.model.CustomerInfor">
 		<result property="chineseName" column="chinese_name" />
@@ -1911,5 +1919,43 @@
                                             		    #{backoperator},                              
                                             		    #{busiflag},
                                             		    #{create_time})
+	</insert>
+	<!--放款排名查询  -->
+	<select id="fkRanking" resultMap="fkRankingMap" >
+	select name,money,deptcode,rownum from(
+	(select u.display_name as name, 
+	(case 
+	         when t.deptcode ='200734' then
+	          '高新支行'
+	         when t.deptcode ='200735' then
+	          '槐荫支行'
+	         when t.deptcode ='200730' then
+	          '历城支行'
+	         when t.deptcode ='200732' then
+	          '历下支行'
+	         when t.deptcode ='200731' then
+	          '润丰支行'
+	         when t.deptcode ='200733' then
+	          '天桥支行'
+	         when t.deptcode ='200729' then
+	          '长清支行'
+	         else
+		        ''
+		       end) as deptcode,    
+	sum(t.MONEY) as money from t_mibusidata_view t,sys_user u
+	where u.external_id=t.BUSIMANAGER GROUP BY u.display_name ,deptcode) order by money desc)
+	<![CDATA[
+	where rownum<=10 
+	]]>
+	</select>
+	<!--删除放款排名的数据-->
+	<delete id="deleteFk" parameterType="int">
+	   delete from FKRANKING
+	</delete>
+	<!--在放款排名表中添加最新的数据 -->
+	<insert id="insertFk" parameterType="com.cardpay.pccredit.customer.filter.FkRankingFilter">
+	  insert into fkranking(name,money,deptcode) 
+	  values
+	  (#{customermanager},#{fkmoney},#{organization})
 	</insert>
 </mapper>
