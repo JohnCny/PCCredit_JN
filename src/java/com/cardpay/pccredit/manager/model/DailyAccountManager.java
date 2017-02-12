@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.manager.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.id.IDType;
 import com.wicresoft.jrad.base.database.model.BaseModel;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
@@ -22,7 +24,23 @@ public class DailyAccountManager extends BusinessModel{
 	private String daySummary;
 	private String todayplan;
 	private String tomorrowplan;
+	private String managerId;
+	private Date reportDate;
 	
+	
+
+	public String getManagerId() {
+		return managerId;
+	}
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
+	}
+	public Date getReportDate() {
+		return reportDate;
+	}
+	public void setReportDate(Date reportDate) {
+		this.reportDate = reportDate;
+	}
 	public String getTodayplan() {
 		return todayplan;
 	}

@@ -301,6 +301,11 @@ public class ManagerPerformmanceService {
 		// TODO Auto-generated method stub
 		return managerPerformmanceDao.findDeptTodaySumPerformmanceById();
 	}
+	//根据客户经理id和日期查询进度
+	public ManagerPerformmance finManagerPerformmanceByIdAndDate(String managerId, Date reportDate) {
+		// TODO Auto-generated method stub
+		return managerPerformmanceDao.finManagerPerformmanceByIdAndDate(managerId,reportDate);
+	}
 		
 	}
 

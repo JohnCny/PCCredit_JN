@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.manager.filter.DailyAccountManagerFilter;
 import com.cardpay.pccredit.manager.model.DailyAccountManager;
+import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.service.DailyAccountService;
+import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -43,6 +45,8 @@ public class DailyAccountManagerController extends BaseController {
 	@Autowired
 	private DailyAccountService dailyAccountService;
 
+	@Autowired
+	private ManagerPerformmanceService managerPerformmanceService;
 	/**
 	 * 浏览页面
 	 * 
@@ -86,6 +90,8 @@ public class DailyAccountManagerController extends BaseController {
 		String dailyId = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(dailyId)) {
 			DailyAccountManager dailyAccountManager = dailyAccountService.findDailyAccountManagerById(dailyId);
+			ManagerPerformmance managerPerformmanceold = managerPerformmanceService.finManagerPerformmanceByIdAndDate(dailyAccountManager.getManagerId(),dailyAccountManager.getReportDate());
+			mv.addObject("gxperformList", managerPerformmanceold);
 			mv.addObject("dailyAccountManager", dailyAccountManager);
 		}
 		mv.addObject("dailyId",dailyId);
@@ -137,6 +143,8 @@ public class DailyAccountManagerController extends BaseController {
 		String dailyId = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(dailyId)) {
 			DailyAccountManager dailyAccountManager = dailyAccountService.findDailyAccountManagerById(dailyId);
+			ManagerPerformmance managerPerformmanceold = managerPerformmanceService.finManagerPerformmanceByIdAndDate(dailyAccountManager.getManagerId(),dailyAccountManager.getReportDate());
+			mv.addObject("gxperformList", managerPerformmanceold);
 			mv.addObject("dailyAccountManager", dailyAccountManager);
 		}
 		return mv;

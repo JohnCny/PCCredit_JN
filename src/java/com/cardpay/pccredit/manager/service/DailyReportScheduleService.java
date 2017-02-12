@@ -86,6 +86,10 @@ public class DailyReportScheduleService {
 					dailyAccountManager.setWhatDay(i);
 					dailyAccountManager.setCreatedTime(new Date());
 					dailyAccountManager.setModifiedTime(new Date());
+					dailyAccountManager.setModifiedTime(new Date());
+					dailyAccountManager.setManagerId(accountManagerParameterForm.getUserId());
+					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd"); 
+					dailyAccountManager.setReportDate(new Date(df.parse(startDate).getTime() + (i-1)* 24 * 60 * 60 * 1000));
 					dailyAccountService.insertDailyAccount(dailyAccountManager);
 				}
 			}
@@ -137,6 +141,9 @@ public class DailyReportScheduleService {
 					dailyAccountManager.setWhatDay(i);
 					dailyAccountManager.setCreatedTime(new Date());
 					dailyAccountManager.setModifiedTime(new Date());
+					dailyAccountManager.setManagerId(accountManagerParameterForm.getUserId());
+					SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd"); 
+					dailyAccountManager.setReportDate(new Date(df.parse(startDate).getTime() + (i-1)* 24 * 60 * 60 * 1000));
 					dailyAccountService.insertDailyAccount(dailyAccountManager);
 				}
 			}

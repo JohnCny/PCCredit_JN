@@ -366,5 +366,9 @@
 	and ((select trunc (sysdate) from dual)=trunc (cai.CREATED_TIME) or (select trunc (sysdate) from dual)=trunc (cai.MODIFIED_TIME))
 	and b.USER_ID=#{userId}
 	</select>
-
+<select id="finManagerPerformmanceByIdAndDate" resultMap="managerperform">
+    SELECT *  FROM manager_performmance 
+		WHERE manager_id=#{managerId}
+		and trunc(#{reportDate})=trunc(crateday)  
+</select>
 </mapper>
