@@ -1,10 +1,13 @@
 package com.cardpay.pccredit.intopieces.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,4 +113,20 @@ public class CustomerApplicationInfoService {
 	public int findCustomerApplicationInfoCount(String userId,String status1,String status2){
 		return customerApplicationInfoDao.findCustomerApplicationInfoCount(userId,status1,status2);
 	}
+	
+	/**
+	 * 统计通知信息的条数
+	 */
+	public int findNoticeMessageCount(String userId,String status1){
+		return customerApplicationInfoDao.findNoticeMessageCount(userId,status1);
+	}
+	
+	/**
+	 * 统计每日任务的条数
+	 */
+	 public int findDailyTaskCount(String userId){
+		 DateFormat format = new SimpleDateFormat("yyyyMMdd");
+		 String dateString = format.format(new Date());
+		 return customerApplicationInfoDao.findDailyTaskCount(userId,dateString);
+	 }
 }

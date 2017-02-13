@@ -29,7 +29,7 @@
 				  </div>
 				  <div class="bd">
 				     <ul class="list">
-					    <li>
+					    <!-- <li>
 						   <a href="#">
 						      <span>营销客户计划</span>
 							  <em>$!marketing</em>
@@ -87,6 +87,48 @@
 						   <a href="#">
 						      <span>产品发布</span>
 							  <em>$!productNumber</em>
+						   </a>
+						</li> -->
+						
+						<li>
+						   <a href="${contextPath}/intopieces/intopiecesquery/browse.page?status=audit">
+						      <span style="color:red">待审核进件</span>
+							  <em>$!wait</em>
+						   </a>
+						</li>
+						
+						<li>
+						   <a href="${contextPath}/intopieces/intopiecesquery/browse.page?status=returnedToFirst">
+						      <span style="color:red">已退回进件</span>
+							  <em>$!UserApplicationReturn</em>
+						   </a>
+						</li>
+						
+						<li>
+						   <a href="${contextPath}/intopieces/intopiecesquery/browse.page?status=refuse">
+						      <span style="color:red">已拒绝进件</span>
+							  <em>$!UserApplicationRefuse</em>
+						   </a>
+						</li>
+						
+						<li>
+						   <a href="${contextPath}/notificationmessage/trainmessage/browse.page">
+						      <span style="color:red">培训通知</span>
+							  <em>$!TrainingNoticeMessage</em>
+						   </a>
+						</li>
+						
+						<li>
+						   <a href="${contextPath}/notificationmessage/inspectscoremessage/browse.page">
+						      <span style="color:red">风险事项通知</span>
+							  <em>$!FengxianNoticeMessage</em>
+						   </a>
+						</li>
+						
+						<li>
+						   <a href="${contextPath}/sys/user/selectplan.page">
+						      <span style="color:red">每日任务通知</span>
+							  <em>$!daily_task_message</em>
 						   </a>
 						</li>
 					 </ul>

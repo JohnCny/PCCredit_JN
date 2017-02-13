@@ -26,8 +26,15 @@ public interface CustomerApplicationInfoDao {
     public int findCountByFilter(CustomerApplicationInfoFilter filter);
     /**
      * 统计进件条数
-     * @param status
-     * @return
      */
     public int findCustomerApplicationInfoCount(@Param("userId") String userId,@Param("status1") String status,@Param("status2") String status2);
+    /**
+     * 统计通知信息的记录条数
+     */
+    public int findNoticeMessageCount(@Param("userId") String userId,@Param("status1") String status);
+    
+    /**
+     * 统计每日任务的条数
+     */
+    public int findDailyTaskCount(@Param("userId") String userId,@Param("dateString") String dateString);
 }
