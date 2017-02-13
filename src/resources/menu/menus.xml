@@ -39,7 +39,9 @@
  	   		<menu id="070010" name="weeklyaccount" title="客户经理周报" url="/manager/weeklyaccount/browse.page" img="" operations="change|display|browse"/> 
  	   		<menu id="070011" name="weeklyaccountzuzhang" title="所属客户经理周报列表" url="/manager/weeklyaccountzuzhang/browse.page" img="" operations="change|display|browse"/>
 			<menu id="070012" name="weeklyaccountfuzeren" title="客户经理周报(微贷中心主管)" url="/manager/weeklyaccountfuzeren/browse.page" img="" operations="change|display|browse"/>
- 	        <menu id="070013" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>  
+ 	        <menu id="070013" name="managerPromotionRule" title="客户经理层级信息维护" url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>
+ 	        <menu id="070014" name="managerdaily" title="客户经理当日任务管理" url="/sys/user/browse.page" img=""  operations="change|display|browse"/>
+ 	        <menu id="070015" name="khjljyxx" title="团队业绩查询" url="/manager/tdyjcx/tdyjcx.page" img="" operations="checked|display|browse"/>	
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" title="风险客户管理" url="/riskcontrol/riskcustomermanager/managerbrowse.page" img="" operations="reported|browse"/>
@@ -49,10 +51,11 @@
 		</menu>
 		
 		<menu id="090000" name="notificationmessage" title="通知信息" url="" img="images/icon_sys.gif" operations="">
-			<menu id="090001" name="shendaihuimessage"   title="审贷会通知" url="/notificationmessage/shendaihuimessage/browse.page" img="" operations="checked|display|browse"/> -->
+<!-- 		<menu id="090001" name="shendaihuimessage"   title="审贷会通知" url="/notificationmessage/shendaihuimessage/browse.page" img="" operations="checked|display|browse"/> --> 
 			<menu id="090002" name="trainmessage"        title="培训通知" url="/notificationmessage/trainmessage/browse.page" img="" operations="checked|display|browse"/>
-			<menu id="090003" name="inspectscoremessage" title="考察成绩通知" url="/notificationmessage/inspectscoremessage/browse.page" img="" operations="checked|display|browse"/>
-			<menu id="090004" name="notificationmessage" title="其它通知" url="/notificationmessage/notificationmessage/browse.page" img="" operations="checked|display|browse"/> -->
+			<menu id="090003" name="inspectscoremessage" title="风险事项通知" url="/notificationmessage/inspectscoremessage/browse.page" img="" operations="checked|display|browse"/>
+<!-- 	    <menu id="090004" name="notificationmessage" title="其它通知" url="/notificationmessage/notificationmessage/browse.page" img="" operations="checked|display|browse"/> --> 
+		    <menu id="090005" name="taskmessage" title="每日任务通知" url="/sys/user/selectplan.page" img=""  operations="browse|change|create"/>
 		</menu>
 		
 		<menu id="091000" name="postLoan" title="贷后管理" url="" img="images/icon_sys.gif" operations="">
