@@ -34,6 +34,7 @@ import com.cardpay.pccredit.manager.service.ManagerAssessmentScoreService;
 import com.cardpay.pccredit.manager.service.ManagerSalaryService;
 import com.cardpay.pccredit.manager.service.StatisticsScheduleService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.notification.constant.NotificationEnum;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
 import com.cardpay.pccredit.report.model.NameValueRecord;
 import com.cardpay.pccredit.report.service.StatisticalCommonService;
@@ -208,6 +209,11 @@ public class MainController {
 		mv.addObject("UserApplicationSuccess",rightHomeData.get("UserApplicationSuccess"));
 		mv.addObject("UserApplicationNopass",rightHomeData.get("UserApplicationNopass"));
 		mv.addObject("UserApplicationRefuse",rightHomeData.get("UserApplicationRefuse"));
+		mv.addObject("UserApplicationReturn",rightHomeData.get("UserApplicationReturn"));
+		
+		mv.addObject("TrainingNoticeMessage",rightHomeData.get("TrainingNoticeMessage"));
+		mv.addObject("FengxianNoticeMessage",rightHomeData.get("FengxianNoticeMessage"));
+		mv.addObject("daily_task_message",rightHomeData.get("daily_task_message"));
 		/*奖励激励状况*/
 		mv.addObject("reward",rightHomeData.get("reward"));
 		mv.addObject("riskGuarantee",rightHomeData.get("riskGuarantee"));
@@ -276,10 +282,24 @@ public class MainController {
 		int application_nopass_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, Constant.NOPASS_REPLENISH_INTOPICES, null);
 		/*拒绝*/
 		int application_refuse_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, Constant.REFUSE_INTOPICES, null);
+		/*退回*/
+		int application_return_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, "returnedToFirst", null);
+		/*风险事项通知*/
+		int fengxian_notice_message = customerApplicationInfoService.findNoticeMessageCount(userId, "fengxian");
+		/*培训通知*/
+		int training_notice_message = customerApplicationInfoService.findNoticeMessageCount(userId, "peixun");
+		/*每日任务通知*/
+		int daily_task_message = customerApplicationInfoService.findDailyTaskCount(userId);
+		
 		rightHomeData.put("UserApplicationInfo", application_info_size);
 		rightHomeData.put("UserApplicationSuccess", application_success_size);
 		rightHomeData.put("UserApplicationNopass", application_nopass_size);
 		rightHomeData.put("UserApplicationRefuse", application_refuse_size);
+		rightHomeData.put("UserApplicationReturn", application_return_size);
+		rightHomeData.put("TrainingNoticeMessage", training_notice_message);
+		rightHomeData.put("FengxianNoticeMessage", fengxian_notice_message);
+		rightHomeData.put("daily_task_message", daily_task_message);
+		
 		/*奖励激励状况*/
 		Calendar c = Calendar.getInstance();
 		int year = c.get(Calendar.YEAR);

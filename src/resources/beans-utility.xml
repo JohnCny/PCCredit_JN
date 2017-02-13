@@ -294,7 +294,7 @@
         </property>
         <!-- cron表达式 -->
         <property name="cronExpression">
-            <value>0 13 16 * * ?</value><!--时间定在周六  -->
+            <value>0 00 19 ? * *</value>
         </property>
     </bean>
     <!-- 放款排名信息更新  end -->
