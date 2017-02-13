@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.PieJsonData;
+import com.cardpay.pccredit.customer.filter.FkRankingFilter;
 import com.cardpay.pccredit.report.dao.StatisticalCommonDao;
 import com.cardpay.pccredit.report.model.NameValueRecord;
 
@@ -229,5 +230,11 @@ public class StatisticalCommonService {
 			}
 		}
 		return JSONArray.fromObject(list).toString();
+	}
+
+//放款排名
+	public List<FkRankingFilter> queryFkRanking() {
+		// TODO Auto-generated method stub
+		return statisticalCommonDao.queryFkRanking();
 	}
 }

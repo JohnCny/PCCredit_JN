@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,6 @@ public interface ManagerPerformmanceDao {
 	int queryWill(@Param(value="userId") String userId);
 	//统计当天的通过数
 	int queryPass(@Param(value="userId") String userId);
+	//根据客户经理id和日期查询进度
+	ManagerPerformmance finManagerPerformmanceByIdAndDate(@Param(value="managerId")String managerId, @Param(value="reportDate")Date reportDate);
 }

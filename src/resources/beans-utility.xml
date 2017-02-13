@@ -171,6 +171,8 @@
     <!-- 客户经理日报  end -->
     
     
+    
+    
     <!--5.同步系统中的进件的status-->
     <bean id="updateCustomerAppInfoStatusJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 调用的类 -->
@@ -274,8 +276,28 @@
         </property>
     </bean>
     
-    
-    
+       <!-- 10.放款排名信息更新-->
+    <bean id="readFkRankingJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="customerInforService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>fkRanking</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="fkRankingTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="readFkRankingJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 00 19 ? * *</value>
+        </property>
+    </bean>
+    <!-- 放款排名信息更新  end -->
     
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -290,6 +312,7 @@
                  <ref bean="attentiveBalanceTigger"/>
                  <ref bean="lxCalDayBalanceTigger"/>
                  <ref bean="runBatchGeneratePerformancePayTigger"/>
+                 <ref bean="fkRankingTigger"/>
             </list>
         </property>
     </bean>

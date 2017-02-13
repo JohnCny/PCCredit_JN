@@ -2,6 +2,7 @@ package com.cardpay.pccredit.report.dao;
 
 import java.util.List;
 
+import com.cardpay.pccredit.customer.filter.FkRankingFilter;
 import com.cardpay.pccredit.report.model.NameValueRecord;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -52,5 +53,7 @@ public interface StatisticalCommonDao {
 	public List<NameValueRecord> statisticalyqorgan();
 	//统计 各支行不良总金额
 	public List<NameValueRecord> statisticalblorgan();
+	//放款排名
+	public List<FkRankingFilter> queryFkRanking();
 	
 }
