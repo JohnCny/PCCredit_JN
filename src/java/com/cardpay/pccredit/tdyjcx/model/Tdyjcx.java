@@ -58,14 +58,14 @@ public class Tdyjcx {
 	private String reqlmtsum;//贷款总额
 	private String balamtsum;//贷款余额总额
 	private String dlayamtsum;//逾期金额总额
-	private int badAmountsum;//不良金额
+	private String badAmountsum;//不良金额
 	private String zhlv;
 	
 	
-	public int getBadAmountsum() {
+	public String getBadAmountsum() {
 		return badAmountsum;
 	}
-	public void setBadAmountsum(int badAmountsum) {
+	public void setBadAmountsum(String badAmountsum) {
 		this.badAmountsum = badAmountsum;
 	}
 	public int getCustomercount() {
