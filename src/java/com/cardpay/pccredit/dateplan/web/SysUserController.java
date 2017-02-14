@@ -24,6 +24,7 @@ import com.cardpay.pccredit.dateplan.dao.SysUserDao;
 import com.cardpay.pccredit.dateplan.model.DisplayUser;
 import com.cardpay.pccredit.dateplan.model.JBUser;
 import com.cardpay.pccredit.dateplan.model.datePlanModel;
+import com.cardpay.pccredit.dateplan.model.dateTimeModel;
 import com.cardpay.pccredit.dateplan.service.SysUserService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
@@ -33,6 +34,7 @@ import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
@@ -67,7 +69,6 @@ public class SysUserController {
 		List<ManagerBelongMapForm> result=UserService.selectAllGxUser();
 		List list=new ArrayList<JBUser>();
 		if(user.getUserType()!=1){
-			System.out.println("1");
 			for(int a=0;a<result.size();a++){
 				JBUser name=UserService.selectzgUser(result.get(a).getParentId());
 				list.add(a, name);
@@ -127,11 +128,7 @@ public class SysUserController {
 	@JRadOperation(JRadOperation.BROWSE)
 	public JRadReturnMap view2(@ModelAttribute datePlanModel filter, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
-		String id=null;
-		if(null==id){
-			id=UUID.randomUUID().toString();
-		}
-		filter.setId(id);
+		filter.setId(IDGenerator.generateID());
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String customerManagerId = user.getId();
 		filter.setGxuserid(customerManagerId);
@@ -326,6 +323,8 @@ public class SysUserController {
 	@RequestMapping(value = "rwxq1.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView view5(@ModelAttribute datePlanModel filter, HttpServletRequest request) {
+	/*	dateTimeModel dtm1=new dateTimeModel();
+		ArrayList <dateTimeModel>dtlist=new ArrayList<dateTimeModel>();*/
 		Integer dqsll=0;
 		Integer mbsll=0;
 		Integer whsll=0;
@@ -336,6 +335,11 @@ public class SysUserController {
 		String newDate1 = sdf.format(date).substring(0, 10).trim();
 		String id=request.getParameter("id");
 		String temp[]=id.split("@");
+	/*	List<dateTimeModel> time=UserService.selectByTime(id);
+		for(int dt=0;dt<time.size();dt++){
+			dtm1.setTime(sdf.format(time.get(dt).getTime()).substring(0, 10).trim().toString());
+			dtlist.set(dt, dtm1);
+		}*/
 		List<datePlanModel> resul=UserService.selectByUser(temp[0]);
 		for(int a=0;a<resul.size();a++){
 			String newDate = sdf.format(resul.get(a).getZdtime());
@@ -345,6 +349,7 @@ public class SysUserController {
 				datePlanModel.setWhsl(resul.get(a).getWhsl());
 				datePlanModel.setMbsl(resul.get(a).getMbsl());
 				datePlanModel.setName(temp[1]);
+				datePlanModel.setZt(resul.get(a).getZt());
 			}
 		}
 		if(datePlanModel.getDcsl()==null){
@@ -404,6 +409,7 @@ public class SysUserController {
 		JRadModelAndView mv = new JRadModelAndView(
 				"/dateplan/userxqplan2", request);
 		mv.addObject("result", datePlanModel);
+		//mv.addObject("result1", dtlist);
 		return mv;
 	}
 }
