@@ -5,6 +5,23 @@
       <div class="place">
         <div class="title">每日任务>任务完成情况>$!result.name</div>
       </div>
+     <!--    <div class="search">
+            <ul>
+            
+              <li>
+               <select id='ri'>
+                #foreach ($time1 in $result1.items) 
+					<option value = '1'>$!time1.time</option>"
+				   #end 
+					</select>
+              </li>
+              
+              <li class="search_button">
+                <input id="select1" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                   style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+        </div> -->
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
@@ -17,6 +34,7 @@
               <th nowrap="nowrap">工作任务内容</th>
               <th nowrap="nowrap">计划完成数量</th>
                <th nowrap="nowrap">实际完成数量</th>
+               <th nowrap="nowrap">通知状态</th>
                 <th nowrap="nowrap">完成状态</th>
             </tr>
           </table>
@@ -34,10 +52,16 @@
                 #if($!result.mbsl==0)
                     <td nowrap="nowrap">$!result.mbsl</td>
             <td nowrap="nowrap">$!result.mbsll</td>
+            <td nowrap="nowrap">未通知</td>
               <td nowrap="nowrap">待定</td>
                #else
               <td nowrap="nowrap">$!result.mbsl</td>
             <td nowrap="nowrap">$!result.mbsll</td>
+              #if($!result.zt==0)
+              <td nowrap="nowrap">未收到通知</td>
+                #else($!result.zt==1)
+                  <td nowrap="nowrap">收到通知</td>
+                   #end 
                #if($!result.mbsl>$!result.mbsll)
               <td nowrap="nowrap">未完成</td>
                 #else($!result.mbsl<$!result.mbsll)
@@ -50,10 +74,16 @@
                   #if($!result.whsl==0)
                     <td nowrap="nowrap">$!result.whsl</td>
             <td nowrap="nowrap">$!result.whsll</td>
+             <td nowrap="nowrap">未通知</td>
               <td nowrap="nowrap">待定</td>
                 #else
               <td nowrap="nowrap">$!result.whsl</td>
               <td nowrap="nowrap">$!result.whsll</td>
+                 #if($!result.zt==0)
+              <td nowrap="nowrap">未收到通知</td>
+                #else($!result.zt==1)
+                  <td nowrap="nowrap">收到通知</td>
+                   #end 
                 #if($!result.whsl>$!result.whsll)
               <td nowrap="nowrap">未完成</td>
                 #else($!result.whsl<$!result.whsll)
@@ -66,10 +96,16 @@
                #if($!result.dcsl==0)
                     <td nowrap="nowrap">$!result.dcsl</td>
             <td nowrap="nowrap">$!result.dqsll</td>
+             <td nowrap="nowrap">未通知</td>
               <td nowrap="nowrap">待定</td>
                  #else
               <td nowrap="nowrap">$!result.dcsl</td>
               <td nowrap="nowrap">$!result.dqsll</td>
+                 #if($!result.zt==0)
+              <td nowrap="nowrap">未收到通知</td>
+                #else($!result.zt==1)
+                  <td nowrap="nowrap">收到通知</td>
+                   #end 
                #if($!result.dcsl>$!result.dqsll)
               <td nowrap="nowrap">未完成</td>
                 #else($!result.dcsl<$!result.dqsll)
@@ -82,10 +118,16 @@
                  #if($!result.dhsl==0)
                     <td nowrap="nowrap">$!result.dhsl</td>
             <td nowrap="nowrap">$!result.dhsll</td>
+             <td nowrap="nowrap">未通知</td>
               <td nowrap="nowrap">待定</td>
                 #else
               <td nowrap="nowrap">$!result.dhsl</td>
                <td nowrap="nowrap">$!result.dhsll</td>
+                  #if($!result.zt==0)
+              <td nowrap="nowrap">未收到通知</td>
+                #else($!result.zt==1)
+                  <td nowrap="nowrap">收到通知</td>
+                   #end 
                #if($!result.dhsl>$!result.dhsll)
               <td nowrap="nowrap">未完成</td>
                 #else($!result.dhsl<$!result.dhsll)
