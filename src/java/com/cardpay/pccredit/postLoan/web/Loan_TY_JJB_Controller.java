@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.postLoan.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,8 +32,12 @@ import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
+import com.cardpay.pccredit.postLoan.filter.BloansManagerFilter;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.BadLoansResultForm;
+import com.cardpay.pccredit.postLoan.model.BadloansDealResult;
+import com.cardpay.pccredit.postLoan.model.BadloansManagerForm;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
@@ -515,7 +521,93 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			return returnMap ;                                           
 		}                                                              
 		
+		/**
+		 * 
+		 * 不良资产管理
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "blzcBrowse.page")
+		public AbstractModelAndView blzcBrowse(@ModelAttribute BloansManagerFilter filter ,HttpServletRequest request) {
+			filter.setRequest(request);
+			QueryResult<BadloansManagerForm> result = postLoanService.findBadloansManagerInfo(filter);
+			JRadPagedQueryResult<BadloansManagerForm> pagedResult = new JRadPagedQueryResult<BadloansManagerForm>(filter, result);
+
+			JRadModelAndView mv = new JRadModelAndView("/postLoan/badloans_manager", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
 		
+		}
+		/**
+		 * 
+		 * 不良资产处理结果查询
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "findresultById.page")
+		public AbstractModelAndView blzcresult(@ModelAttribute BloansManagerFilter filter ,HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/postLoan/badloansresult", request);
+			String id=request.getParameter("id");
+			BadLoansResultForm badloansresultform =postLoanService.findresultById(id);
+			mv.addObject(PAGED_RESULT,badloansresultform );
+			return mv;
+			
+		}
+		/**
+		 * 
+		 * 登记不良资产处理结果
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "insertresultById.page")
+		public AbstractModelAndView writeblzcresult(@ModelAttribute BloansManagerFilter filter ,HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/postLoan/badloansresult_insert", request);
+			mv.addObject("customerId", request.getParameter("id"));
+			return mv;
+			
+		}
+		/**
+		 * 
+		 * 执行录入
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "update.json")
+		public JRadReturnMap update(@ModelAttribute BadloansDealResult badloansdealresult ,HttpServletRequest request) {
+			JRadReturnMap returnMap =  new JRadReturnMap();
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			try{
+			String loginId = user.getId();
+			badloansdealresult.setCreateBy(loginId);
+			badloansdealresult.setUpdateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			BadLoansResultForm badloansresultform =postLoanService.findresultById(badloansdealresult.getCustomerId());
+		
+			if(badloansresultform==null){
+				badloansdealresult.setDealDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));;
+				postLoanService.insertDealResult(badloansdealresult);
+				returnMap.setSuccess(true);
+				returnMap.put(JRadConstants.SUCCESS, true);  
+			}else{
+				badloansdealresult.setId(badloansresultform.getId());
+				postLoanService.updateDealResult(badloansdealresult);
+				returnMap.setSuccess(true);
+				returnMap.put(JRadConstants.SUCCESS, true);     
+			}
+		} catch (Exception e) {                                      
+			returnMap.setSuccess(false);
+			returnMap.put(JRadConstants.SUCCESS, false);               
+			}    
+			return returnMap;
+			
+		}
 		
 		
 }
