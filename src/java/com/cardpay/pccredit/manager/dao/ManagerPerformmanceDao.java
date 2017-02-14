@@ -56,4 +56,11 @@ public interface ManagerPerformmanceDao {
 	int queryPass(@Param(value="userId") String userId);
 	//根据客户经理id和日期查询进度
 	ManagerPerformmance finManagerPerformmanceByIdAndDate(@Param(value="managerId")String managerId, @Param(value="reportDate")Date reportDate);
+	//查询业绩进度排名
+	List<ManagerPerformmance> findSumPerformmanceRanking(@Param(value="orgId")String orgId,
+															 @Param(value="startDate")String satrtDate,
+															 @Param(value="endDate") String endDate,
+															 @Param(value="classes")String classes);
+	//根据Id获取客户经理姓名
+	String findmanagerName(@Param(value="managerId")String managerId);
 }

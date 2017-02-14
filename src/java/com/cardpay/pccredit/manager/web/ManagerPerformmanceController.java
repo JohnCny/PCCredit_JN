@@ -447,12 +447,48 @@ public class ManagerPerformmanceController extends BaseController {
 		
 		//业绩进度排名
 		@ResponseBody
-		@RequestMapping
+		@RequestMapping(value = "performRanking.page")
+		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView performmancepaiming(HttpServletRequest request){
+			String satrtDate = request.getParameter("startdate");
+			String endDate = request.getParameter("enddate");
+			String orgId = request.getParameter("orgId");
+			String classes = request.getParameter("classes");
+			if(classes==null||classes==""){
+				classes="money";
+			}
+			List<ManagerPerformmance> gxperformList = managerPerformmanceService.findSumPerformmanceRanking(orgId,satrtDate,endDate,classes);
+			JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmanceRankings", request);
+			mv.addObject("gxperformList", gxperformList);
+			mv.addObject("satrtDate", satrtDate);
+			mv.addObject("endDate", endDate);
+			mv.addObject("orgId", orgId);
+			mv.addObject("classes", classes);
+			return mv;
 			
+		}
+		
+		//导出排名
+		@ResponseBody
+		@RequestMapping(value = "performmanceRanking.json", method = { RequestMethod.GET })
+		public JRadReturnMap performmanceRanking(HttpServletRequest request,HttpServletResponse response) { 
+			JRadReturnMap returnMap = new JRadReturnMap();
+			String satrtDate = request.getParameter("startdate");
+			String endDate = request.getParameter("enddate");
+			String orgId = request.getParameter("orgId");
+			String classes = request.getParameter("classes");
+			if(classes==null||classes==""){
+				classes="money";
+			}
+			List<ManagerPerformmance> gxperformList = managerPerformmanceService.findSumPerformmanceRanking(orgId,satrtDate,endDate,classes);
+			try {
+				
+				managerPerformmanceService.getRankingExport(gxperformList, response, satrtDate, endDate);
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
 			
-			
-			return null;
+			return returnMap;
 			
 		}
 }

@@ -12,6 +12,8 @@ public class ManagerPerformmance extends BusinessModel{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	  private String managername;
 	  private String manager_id;
 	  private int visitcount;
 	  private int applycount;
@@ -26,10 +28,23 @@ public class ManagerPerformmance extends BusinessModel{
 	  private int signcount;
 	  private int givemoneycount;
 	  private Date crateday;
+	  private long money;
 	  
 
 	  
 	
+	public String getManagername() {
+		return managername;
+	}
+	public void setManagername(String managername) {
+		this.managername = managername;
+	}
+	public long getMoney() {
+		return money;
+	}
+	public void setMoney(long money) {
+		this.money = money;
+	}
 	public Date getCrateday() {
 		return crateday;
 	}

@@ -646,4 +646,19 @@
 	   <item name="06"  	title="用途违约"/>
 	   <item name="07"  	title="其他情况"/>
 	</dictionary>  
+	<dictionary name="PERFORMANCERANKING" title="排名方式">
+	   <item name="money"  	title="放款金额"/>
+	   <item name="visitcount"  	title="拜访数"/>
+	   <item name="applycount"  	title="申请数"/>
+	   <item name="applyrefuse"  	title="申请拒绝数"/>
+	   <item name="creditcount"  	title="征信数"/>
+	   <item name="creditrefuse"  	title="征信拒绝数"/>
+	   <item name="realycount"  	title="实调数"/>
+	   <item name="reportcount"  	title="报告数"/>
+	   <item name="internalcount"  	title="内审数"/>
+	   <item name="meetingcout"  	title="上会数"/>
+	   <item name="passcount"  	title="通过数"/>
+	   <item name="signcount"  	title="签约数"/>
+	   <item name="givemoneycount"  	title="放款数"/>
+	</dictionary>  
 </dictionaries>
