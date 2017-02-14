@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.dateplan.dao.SysUserDao;
 import com.cardpay.pccredit.dateplan.model.JBUser;
 import com.cardpay.pccredit.dateplan.model.datePlanModel;
+import com.cardpay.pccredit.dateplan.model.dateTimeModel;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
@@ -52,6 +53,9 @@ public class SysUserService {
 	}
 	public List<datePlanModel>selectdhsl(@Param(value = "id")String id){
 		return UserDao.selectdhsl(id);
+	}
+	public List<dateTimeModel>selectByTime(@Param(value = "id")String id){
+		return UserDao.selectByTime(id);
 	}
 
 }

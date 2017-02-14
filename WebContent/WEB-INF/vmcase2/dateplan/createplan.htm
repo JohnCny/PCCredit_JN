@@ -42,6 +42,7 @@
         </div>
       <div class="submit" style="text-align:left;">
         <input id="save" type="button" value="保存" class="current" />
+          <input id="back" type="button" value="返回" class="current" />
       </div>
     </div>
   </div>
@@ -49,6 +50,9 @@
   <script type="text/javascript">
   var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
+	 $("#back").click(function() {
+			window.location.href="${contextPath}//sys/user/browse.page";
+	 });
 	 $("#save").click(function() {
 		 var id=$("#id").val();
 		 var mbsl=$("#mbcount").val();

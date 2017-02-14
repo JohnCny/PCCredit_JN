@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.tdyjcx;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,56 +81,65 @@ public class TdyjcxController extends BaseController{
 			forms = maintenanceService.findSubListManagerByManagerId(user);
 		}
 		String customerManagerId = filter.getCustomerManagerId();
+		
 		//result收集下发数据的信息，managerPerformmanceold收集进件的信息
 		QueryResult<MaintenanceForm> result = null;
 		List<Tdyjcx> appcount=new ArrayList<Tdyjcx>(); 
-		Tdyjcx tx=new Tdyjcx();
+		Tdyjcx tx;
 		//如果页面 传过来有信息怎显示客户经理手下信息
 		List<Tdyjcx>lists=new ArrayList<Tdyjcx>();
 		if(customerManagerId!=null && !customerManagerId.equals("")){
-			//appcount=service.finappcount(filter);
 			appcount=service.findappcount(filter);
 			result = service.findTdyjcxList(filter);
 			if(!result.getItems().isEmpty() ){
-			tx.setUserId(result.getItems().get(0).getUserId());
-			tx.setUserName(result.getItems().get(0).getUserName());
-			tx.setUser_type(result.getItems().get(0).getUser_type());
-			tx.setApplycount(appcount.get(0).getApplycount()); //进件总数
-			tx.setCustomercount(service.fiindcustomercount(filter));  //客户数
-			tx.setGivemoneycount(result.getItems().get(0).getCustidcount()); //成功放款客户数
-			tx.setReqlmtsum(result.getItems().get(0).getReqlmtsum());
-			tx.setBalamtsum(result.getItems().get(0).getBalamtsum());
-			tx.setDlayamtsum(result.getItems().get(0).getDlayamtsum());
-			tx.setBadAmountsum(service.findbadAmountsum(filter));
-			DecimalFormat df =new DecimalFormat("######0.00");
-			tx.setZhlv(df.format(Double.parseDouble(result.getItems().get(0).getZhlv())));
-			lists.add(tx);}
+			    tx=new Tdyjcx();
+				tx.setUserId(result.getItems().get(0).getUserId());
+				tx.setUserName(result.getItems().get(0).getUserName());
+				tx.setUser_type(result.getItems().get(0).getUser_type());
+				tx.setApplycount(appcount.get(0).getApplycount()); //进件总数
+				tx.setCustomercount(service.fiindcustomercount(filter));  //客户数
+				tx.setGivemoneycount(result.getItems().get(0).getCustidcount()); //成功放款客户数
+				tx.setReqlmtsum(result.getItems().get(0).getReqlmtsum());
+				tx.setBalamtsum(result.getItems().get(0).getBalamtsum());
+				tx.setDlayamtsum(result.getItems().get(0).getDlayamtsum());
+				tx.setBadAmountsum(service.findbadAmountsum(filter));
+				tx.setZhlv(new BigDecimal(tx.getGivemoneycount())
+						   .divide(new BigDecimal(tx.getCustomercount()),
+						   4, BigDecimal.ROUND_HALF_UP)
+				           .multiply(new BigDecimal("100")).toString());
+				lists.add(tx);
+			}
 		}else{
 			//如果页面穿过来没有信息则显示所有客户经理手下信息
 			if(forms.size()>0){
-				//filter.setCustomerManagerIds(forms);
-				//用TotalCount纪录条数
-				int TotalCount =0;
+				    //用TotalCount纪录条数
 			    	filter.setCustomerManagerIds(forms);
 			    	appcount=service.findappcount(filter);
 			    	result = service.findTdyjcxList(filter);
 			    	List<MaintenanceForm> plans=result.getItems();
 			    	if(!plans.isEmpty()){
-					//因为要显示到叶面的有两个类的内容所以用一个容器类Tdyjcx填装
+					    //因为要显示到叶面的有两个类的内容所以用一个容器类Tdyjcx填装
 			    		for(int i=0;i<result.getItems().size();i++){
-				tx.setUserId(result.getItems().get(i).getUserId());
-				tx.setUserName(result.getItems().get(i).getUserName());
-				tx.setUser_type(result.getItems().get(i).getUser_type());
-				tx.setApplycount(appcount.get(i).getApplycount()); //进件总数
-				tx.setCustomercount(service.fiindcustomercount(filter));  //客户数
-				tx.setGivemoneycount(result.getItems().get(i).getCustidcount());
-				tx.setReqlmtsum(result.getItems().get(i).getReqlmtsum());
-				tx.setBalamtsum(result.getItems().get(i).getBalamtsum());
-				tx.setDlayamtsum(result.getItems().get(i).getDlayamtsum());
-				tx.setBadAmountsum(service.findbadAmountsum(filter));
-				DecimalFormat df =new DecimalFormat("######0.00");
-				tx.setZhlv(df.format(Double.parseDouble(result.getItems().get(i).getZhlv())));
-				lists.add(tx);}}
+						    tx=new Tdyjcx();
+							tx.setUserId(result.getItems().get(i).getUserId());
+							tx.setUserName(result.getItems().get(i).getUserName());
+							tx.setUser_type(result.getItems().get(i).getUser_type());
+							tx.setApplycount(appcount.get(i).getApplycount()); //进件总数
+							filter.setCustomerManagerId(result.getItems().get(i).getUserId());//添加    查询指定客户经理名下的客户条件
+							tx.setCustomercount(service.fiindcustomercount(filter));  //客户数
+							tx.setGivemoneycount(result.getItems().get(i).getCustidcount());//成功放款客户数
+							tx.setReqlmtsum(result.getItems().get(i).getReqlmtsum());
+							tx.setBalamtsum(result.getItems().get(i).getBalamtsum());
+							tx.setDlayamtsum(result.getItems().get(i).getDlayamtsum());
+							tx.setBadAmountsum(service.findbadAmountsum(filter));
+							//计算转化率 (成功放款客户数/客户数)
+							tx.setZhlv(new BigDecimal(tx.getGivemoneycount())
+									.divide(new BigDecimal(tx.getCustomercount()),
+											4, BigDecimal.ROUND_HALF_UP)
+									.multiply(new BigDecimal("100")).toString());
+							lists.add(tx);
+			    		}
+			    	}
 			}else{
 				//直接返回页面
 				return mv;
@@ -138,7 +148,6 @@ public class TdyjcxController extends BaseController{
 		JRadPagedQueryResult<MaintenanceForm> pagedResult = new JRadPagedQueryResult<MaintenanceForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);
-		//mv.addObject("managerPerformmanceold", managerPerformmanceold);
 		mv.addObject("lists", lists);
 		return mv;
 	}

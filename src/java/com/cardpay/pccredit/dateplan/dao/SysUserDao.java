@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.dateplan.model.JBUser;
 import com.cardpay.pccredit.dateplan.model.datePlanModel;
+import com.cardpay.pccredit.dateplan.model.dateTimeModel;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -29,4 +30,5 @@ public interface SysUserDao {
 	List<datePlanModel>selectwhsl(@Param(value = "id")String id);
 	List<datePlanModel>selectdhsl(@Param(value = "id")String id);
 	JBUser selectzgUser(@Param(value = "id")String id);
+	List<dateTimeModel>selectByTime(@Param(value = "id")String id);
 }

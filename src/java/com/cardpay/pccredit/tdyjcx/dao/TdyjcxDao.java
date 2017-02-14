@@ -18,7 +18,7 @@ public interface TdyjcxDao {
 
 	int fiindcustomercount(MaintenanceFilter filter);
 
-	int findbadAmountsum(MaintenanceFilter filter);
+	String findbadAmountsum(MaintenanceFilter filter);
 
 	int finappcount(MaintenanceFilter filter);
 
