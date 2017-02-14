@@ -143,6 +143,27 @@
 		 <result column="REPAY_MZEE"          property="repayMzee"    jdbcType="VARCHAR" />  
 		 <result column="BUSI_CODE"          property="busiCode"    jdbcType="VARCHAR" />  
  	 </resultMap>
+	<resultMap type="com.cardpay.pccredit.postLoan.model.BadloansManagerForm"
+		id="BadloansManager">
+		<result property="id" column="ID" />
+		<result property="chinese_name" column="chinese_name" />
+		<result property="custidno" column="custidno" />
+		<result property="accountstatus" column="accountstatus" />
+		<result property="contractmoney" column="contractmoney" />
+		<result property="grantamount" column="grantamount" />
+		<result property="duedate" column="duedate" />
+		<result property="debtinterest" column="debtinterest" />
+		<result property="restoredamount" column="restoredamount" />
+		<result property="description" column="description" />
+		<result property="display_name" column="display_name" />
+	</resultMap>
+	<resultMap type="com.cardpay.pccredit.postLoan.model.BadLoansResultForm"
+		id="BadloansResult">
+		<result property="id" column="ID" />
+		<result property="deal_result" column="deal_result" />
+		<result property="deal_date" column="deal_date" />
+		<result property="dealby" column="accountstatus" />
+	</resultMap>
 
 	  <!-- <resultMap id="BaseResultMap" type="com.cardpay.pccredit.customer.model.TyRepayTkmxForm" >
    		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
@@ -353,5 +374,50 @@
 		 <if test="userId != null and userId != '' ">
 			AND CUSTOMER_MANAGER_ID =#{userId}
 		 </if>
+	</select>
+	<select id="findBadloansManagerInfo" resultMap="BadloansManager"
+		parameterType="com.cardpay.pccredit.postLoan.filter.BloansManagerFilter">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		SELECT
+		b.id,b.CHINESE_NAME,sas.CUSTIDNO,sas.ACCOUNTSTATUS,sas.CONTRACTMONEY,sas.GRANTAMOUNT,sas.DUEDATE,
+		sas.DEBTINTEREST,sas.RESTOREDAMOUNT,sas.DESCRIPTION,su.DISPLAY_NAME
+		FROM T_SARM_SPECIALASSET sas
+		left JOIN
+		BASIC_CUSTOMER_INFORMATION b ON sas.OWNERCODE= b.TY_CUSTOMER_ID
+		left JOIN
+		SYS_USER su ON su.ID = b.USER_ID
+		where 1=1
+		<if test="id != null and id != '' ">
+			AND su.id =#{id}
+		</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	<select id="findBadloansManagerInfoSize" resultType="int"
+		parameterType="com.cardpay.pccredit.postLoan.filter.BloansManagerFilter">
+
+		SELECT
+		count(*)
+		FROM T_SARM_SPECIALASSET sas
+		left JOIN
+		BASIC_CUSTOMER_INFORMATION b ON
+		sas.OWNERCODE= b.TY_CUSTOMER_ID
+		left JOIN
+		SYS_USER su ON su.ID =
+		b.USER_ID
+		where 1=1
+		<if test="id != null and id != '' ">
+			AND su.id =#{id}
+		</if>
+	</select>
+	<select id="findresultById" resultMap="BadloansResult">
+	    SELECT b.id,b.deal_result,b.deal_date,s.DISPLAY_NAME as dealby FROM Badloans_dealresult b
+		INNER JOIN SYS_USER s ON s.ID= b.create_by
+		WHERE b.customer_id =#{id}
 	</select>
 </mapper>

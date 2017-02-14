@@ -15,8 +15,11 @@ import com.cardpay.pccredit.customer.web.MaintenanceForm;
 import com.cardpay.pccredit.customer.web.MaintenanceWeb;
 import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
+import com.cardpay.pccredit.postLoan.filter.BloansManagerFilter;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.BadLoansResultForm;
+import com.cardpay.pccredit.postLoan.model.BadloansManagerForm;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
@@ -88,5 +91,10 @@ public interface PostLoanDao {
 	
 	List<REIMBURSEMENT> findReimbListByFilter(PostLoanFilter filter);
 	int findReimbCountListByFilter(PostLoanFilter filter);
+	//不良资产信息
+	List<BadloansManagerForm> findBadloansManagerInfo(BloansManagerFilter filter);
+	//不良资产信息数量
+	int findBadloansManagerInfoSize(BloansManagerFilter filter);
 	
+	BadLoansResultForm findresultById(@Param("id")String id);
 }
