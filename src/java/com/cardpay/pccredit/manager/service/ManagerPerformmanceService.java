@@ -269,7 +269,7 @@ public class ManagerPerformmanceService {
         	row.createCell((short) 5).setCellValue(gxperform.getCreditcount_s()+"("+gxperform.getCreditcount()+")");    //征信数       
         	row.createCell((short) 6).setCellValue(gxperform.getCreditrefuse_s()+"("+gxperform.getCreditrefuse()+")");  //征信拒绝数     			 
         	row.createCell((short) 7).setCellValue(gxperform.getRealycount_s()+"("+gxperform.getRealycount()+")");      //实调数   
-        	row.createCell((short) 8).setCellValue(gxperform.getReportcount_s()+"("+gxperform.getReportcount_s()+")");  //报告数    							     ）  
+        	row.createCell((short) 8).setCellValue(gxperform.getReportcount_s()+"("+gxperform.getReportcount()+")");  //报告数    							     ）  
         	row.createCell((short) 9).setCellValue(gxperform.getInternalcount_s()+"("+gxperform.getInternalcount()+")");  //内审数
         	row.createCell((short) 10).setCellValue(gxperform.getMeetingcout_s()+"("+gxperform.getMeetingcout()+")");  	//上会数						  
         	row.createCell((short) 11).setCellValue(gxperform.getPasscount_s()+"("+gxperform.getPasscount()+")");       //通过数          
@@ -306,8 +306,181 @@ public class ManagerPerformmanceService {
 		// TODO Auto-generated method stub
 		return managerPerformmanceDao.finManagerPerformmanceByIdAndDate(managerId,reportDate);
 	}
+
+	public List<ManagerPerformmance> findSumPerformmanceRanking(String orgId, String satrtDate, String endDate,
+			String classes) {
 		
+		List<ManagerPerformmance> ls= managerPerformmanceDao.findSumPerformmanceRanking(orgId,satrtDate,endDate,classes);
+		for (int i = 0; i < ls.size(); i++) {
+		ls.get(i).setManagername(managerPerformmanceDao.findmanagerName(ls.get(i).getManager_id()));
+		}
+		return ls;
 	}
+	
+	//导出排名excel
+		public void getRankingExport(List<ManagerPerformmance> gxperformList, HttpServletResponse response,String satrtDate,String endDate) {
+			
+			
+			// 第一步，创建一个webbook，对应一个Excel文件  
+	        HSSFWorkbook wb = new HSSFWorkbook();  
+	        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
+	        HSSFSheet sheet = wb.createSheet("sheet1");  
+	        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
+	        HSSFRow row = sheet.createRow((int) 0);  
+	        HSSFCell cellTmp = row.createCell((short) 0);
+	        String titles="济南农村商业银行客户经理业绩进度排名";
+	        if(satrtDate!=""&&endDate!=""){
+	        	titles="济南农村商业银行"+satrtDate+"日至"+endDate+"日客户经理业绩进度排名";
+	        }
+	        cellTmp.setCellValue(titles);  //设置表格标题
+			// 设置标题字体
+			HSSFFont font16 = wb.createFont();
+			font16.setFontHeightInPoints((short) 20);
+			font16.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font16.setFontName("华文楷体");
+			
+			// 设置标题字体
+			HSSFFont font1 = wb.createFont();
+			font1.setFontHeightInPoints((short) 12);
+			font1.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			font1.setFontName("宋体");
+			
+			// 设置单元格居中
+			HSSFCellStyle styleCenter = wb.createCellStyle();
+			styleCenter.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleCenter.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+			styleCenter.setFont(font16);
+			
+			// 设置居右
+			HSSFCellStyle styleFirst = wb.createCellStyle();
+			styleFirst.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleFirst.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+			styleFirst.setFont(font1);
+			// 设置居右
+			HSSFCellStyle styleSecond = wb.createCellStyle();
+			styleFirst.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+			styleFirst.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+			styleFirst.setFont(font1);
+			
+			// 合并单元格
+			CellRangeAddress region = new CellRangeAddress(0, 0, 0,14);
+			sheet.addMergedRegion(region);
+			cellTmp.setCellStyle(styleCenter);
+			
+	        // 第四步，创建单元格，并设置值表头 设置表头居中  
+	        HSSFCellStyle style = wb.createCellStyle();  
+	        // 创建一个居中格式
+	        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+	        style.setWrapText(true);
+	        
+	        // 设置第二行 制表日期
+	        row = sheet.createRow((int) 1);
+	        HSSFCell tmp = row.createCell((short) 12);
+	        tmp.setCellValue("制表日期："+new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+	        CellRangeAddress reg = new CellRangeAddress(1, 1, 12,14);
+	        sheet.addMergedRegion(reg);
+	        tmp.setCellStyle(styleSecond);
+	        
+	        // excel 正文内容
+	        row = sheet.createRow((int) 2);
+	        HSSFCell cell = row.createCell((short) 0);  
+	        cell.setCellValue("排名");  
+	        cell.setCellStyle(style);
+	        	        
+	        cell = row.createCell((short) 1);  
+	        cell.setCellValue("客户经理");  
+	        cell.setCellStyle(style);  
+	        
+	        cell = row.createCell((short) 2);  
+	        cell.setCellValue("拜访数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 3);  
+	        cell.setCellValue("申请数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 4);  
+	        cell.setCellValue("申请拒绝数");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(4, 10*256);
+	        
+	        cell = row.createCell((short) 5);  
+	        cell.setCellValue("征信数");  
+	        cell.setCellStyle(style);
+//	        sheet.setColumnWidth(5, 25*256);
+	        
+	        cell = row.createCell((short) 6);  
+	        cell.setCellValue("征信拒绝数");  
+	        cell.setCellStyle(style);
+	        sheet.setColumnWidth(6, 10*256);
+	        
+	        cell = row.createCell((short) 7);  
+	        cell.setCellValue("实调数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 8);  
+	        cell.setCellValue("报告数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 9);  
+	        cell.setCellValue("内审数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 10);  
+	        cell.setCellValue("上会数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 11);  
+	        cell.setCellValue("通过数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 12);  
+	        cell.setCellValue("签约数");  
+	        cell.setCellStyle(style);
+	        
+	        cell = row.createCell((short) 13);  
+	        cell.setCellValue("放款数");  
+	        cell.setCellStyle(style);
+
+	        cell = row.createCell((short) 14);  
+	        cell.setCellValue("放款金额");  
+	        cell.setCellStyle(style);
+
+	        for(int i=0;i<gxperformList.size();i++){
+	        	row = sheet.createRow((int) i + 3);
+	        	ManagerPerformmance gxperform = gxperformList.get(i);
+	        	row.createCell((short) 0).setCellValue(i+1);         //姓名                       
+	        	row.createCell((short) 1).setCellValue(gxperform.getManagername());            //管辖行
+	        	row.createCell((short) 2).setCellValue(gxperform.getVisitcount());     	//拜访数       
+	        	row.createCell((short) 3).setCellValue(gxperform.getApplycount());      //申请数
+	        	row.createCell((short) 4).setCellValue(gxperform.getApplyrefuse());    //申请拒绝数 
+	        	row.createCell((short) 5).setCellValue(gxperform.getCreditcount());    //征信数       
+	        	row.createCell((short) 6).setCellValue(gxperform.getCreditrefuse());  //征信拒绝数     			 
+	        	row.createCell((short) 7).setCellValue(gxperform.getRealycount());      //实调数   
+	        	row.createCell((short) 8).setCellValue(gxperform.getReportcount());  //报告数    							     ）  
+	        	row.createCell((short) 9).setCellValue(gxperform.getInternalcount());  //内审数
+	        	row.createCell((short) 10).setCellValue(gxperform.getMeetingcout());  	//上会数						  
+	        	row.createCell((short) 11).setCellValue(gxperform.getPasscount());       //通过数          
+	        	row.createCell((short) 12).setCellValue(gxperform.getSigncount());       //签约数
+	        	row.createCell((short) 13).setCellValue(gxperform.getGivemoneycount());  //放款数									          
+	        	row.createCell((short) 14).setCellValue(gxperform.getMoney());  //放款金额								          
+	        }
+	        try {
+	        response.setHeader("Connection", "close");
+	        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=GBK");
+	        response.setHeader("Content-Disposition", "attachment;filename="
+	        + new String("济南农村商业银行客户经理业务进度排名表.xls".getBytes(), "iso-8859-1"));
+	        OutputStream out = response.getOutputStream();  
+	        wb.write(out);
+	     
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+}
 
 
 
