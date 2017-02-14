@@ -46,7 +46,7 @@ public class TdyjcxService {
 		// TODO Auto-generated method stub
 		return tdyjcxdao.fiindcustomercount(filter);
 	}
-	public int findbadAmountsum(MaintenanceFilter filter) {
+	public String findbadAmountsum(MaintenanceFilter filter) {
 		// TODO Auto-generated method stub
 		return tdyjcxdao.findbadAmountsum(filter);
 	}
