@@ -51,18 +51,19 @@ public class MaintenanceForm extends BaseForm{
 	private String dkye;
 	
 	private String user_type;
-	private int ywbhcount; //进件总数
+	private int custidcount; //放款成功数
 	 private String reqlmtsum;//贷款总额
 	private String balamtsum;//贷款余额总额
 	private String dlayamtsum;//逾期金额总额
 	private String zhlv;
 	
 	
-	public int getYwbhcount() {
-		return ywbhcount;
+	
+	public int getCustidcount() {
+		return custidcount;
 	}
-	public void setYwbhcount(int ywbhcount) {
-		this.ywbhcount = ywbhcount;
+	public void setCustidcount(int custidcount) {
+		this.custidcount = custidcount;
 	}
 	public String getReqlmtsum() {
 		return reqlmtsum;

@@ -10,8 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.manager.model.REIMBURSEMENT;
 import com.cardpay.pccredit.postLoan.dao.PostLoanDao;
+import com.cardpay.pccredit.postLoan.filter.BloansManagerFilter;
 import com.cardpay.pccredit.postLoan.filter.FcloaninfoFilter;
 import com.cardpay.pccredit.postLoan.filter.PostLoanFilter;
+import com.cardpay.pccredit.postLoan.model.BadLoansResultForm;
+import com.cardpay.pccredit.postLoan.model.BadloansDealResult;
+import com.cardpay.pccredit.postLoan.model.BadloansManagerForm;
 import com.cardpay.pccredit.postLoan.model.Fcloaninfo;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.model.Rarepaylist;
@@ -137,4 +141,27 @@ public class PostLoanService {
 		String sql  = "update t_reimbursement set HAS_TELL ='1' where id = '"+id+"'";
 		commonDao.queryBySql(sql, null);
 	}
-}
+/**
+	 * 不良资产信息
+	 * @param filter
+	 * @return
+	 */
+	public QueryResult<BadloansManagerForm> findBadloansManagerInfo(BloansManagerFilter filter) {
+		List<BadloansManagerForm> lists = postLoanDao.findBadloansManagerInfo(filter);
+		int size = postLoanDao.findBadloansManagerInfoSize(filter);
+		QueryResult<BadloansManagerForm> qr = new QueryResult<BadloansManagerForm>(size,lists);
+		return qr;
+	}
+	public BadLoansResultForm findresultById(String id) {
+	// TODO Auto-generated method stub
+	return postLoanDao.findresultById(id);
+	}
+	public void updateDealResult(BadloansDealResult badloansdealresult) {
+		commonDao.updateObject(badloansdealresult);
+		
+	}
+	public void insertDealResult(BadloansDealResult badloansdealresult) {
+		commonDao.insertObject(badloansdealresult);
+		
+	}
+	}

@@ -35,8 +35,16 @@ public class ManagerPerformmanceForm {
 	private int givemoneycount_s;
 	private Date crateday;
 	private Date crateday_s;
+	private long money;
 	
 	
+	
+	public long getMoney() {
+		return money;
+	}
+	public void setMoney(long money) {
+		this.money = money;
+	}
 	public String getName() {
 		return name;
 	}

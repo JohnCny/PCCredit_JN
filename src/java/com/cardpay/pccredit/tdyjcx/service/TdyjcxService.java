@@ -12,6 +12,7 @@ import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.tdyjcx.dao.TdyjcxDao;
 import com.cardpay.pccredit.tdyjcx.model.MaintenanceForm;
 import com.cardpay.pccredit.tdyjcx.model.ManagerPerformmance;
+import com.cardpay.pccredit.tdyjcx.model.Tdyjcx;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
 @Service
@@ -45,12 +46,16 @@ public class TdyjcxService {
 		// TODO Auto-generated method stub
 		return tdyjcxdao.fiindcustomercount(filter);
 	}
-	public String findbadAmountsum(MaintenanceFilter filter) {
+	public int findbadAmountsum(MaintenanceFilter filter) {
 		// TODO Auto-generated method stub
 		return tdyjcxdao.findbadAmountsum(filter);
 	}
 	public int finappcount(MaintenanceFilter filter) {
 		// TODO Auto-generated method stub
 		return tdyjcxdao.finappcount(filter);
+	}
+	public List<Tdyjcx> findappcount(MaintenanceFilter filter) {
+		// TODO Auto-generated method stub
+		return tdyjcxdao.findappcount(filter);
 	}
 }
