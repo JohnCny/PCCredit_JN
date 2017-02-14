@@ -323,8 +323,8 @@ public class SysUserController {
 	@RequestMapping(value = "rwxq1.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView view5(@ModelAttribute datePlanModel filter, HttpServletRequest request) {
-	/*	dateTimeModel dtm1=new dateTimeModel();
-		ArrayList <dateTimeModel>dtlist=new ArrayList<dateTimeModel>();*/
+		dateTimeModel dtmfil=new dateTimeModel();
+		List dtlist=new ArrayList<dateTimeModel>();
 		Integer dqsll=0;
 		Integer mbsll=0;
 		Integer whsll=0;
@@ -333,13 +333,22 @@ public class SysUserController {
 		Date date=new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		String newDate1 = sdf.format(date).substring(0, 10).trim();
+		dtmfil.setTime(newDate1);
 		String id=request.getParameter("id");
 		String temp[]=id.split("@");
-	/*	List<dateTimeModel> time=UserService.selectByTime(id);
-		for(int dt=0;dt<time.size();dt++){
-			dtm1.setTime(sdf.format(time.get(dt).getTime()).substring(0, 10).trim().toString());
-			dtlist.set(dt, dtm1);
-		}*/
+		try {
+			List<dateTimeModel> time=UserService.selectByTime(temp[0]);
+			if(time!=null){
+			for(int dt=0;dt<time.size();dt++){
+				dateTimeModel dtm1=new dateTimeModel();
+				dtm1.setTime(time.get(dt).getTime().substring(0, 10).trim());
+				dtlist.add(dt, dtm1);
+				
+			}}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		List<datePlanModel> resul=UserService.selectByUser(temp[0]);
 		for(int a=0;a<resul.size();a++){
 			String newDate = sdf.format(resul.get(a).getZdtime());
@@ -350,6 +359,7 @@ public class SysUserController {
 				datePlanModel.setMbsl(resul.get(a).getMbsl());
 				datePlanModel.setName(temp[1]);
 				datePlanModel.setZt(resul.get(a).getZt());
+				datePlanModel.setUserid(temp[0]);
 			}
 		}
 		if(datePlanModel.getDcsl()==null){
@@ -409,7 +419,120 @@ public class SysUserController {
 		JRadModelAndView mv = new JRadModelAndView(
 				"/dateplan/userxqplan2", request);
 		mv.addObject("result", datePlanModel);
-		//mv.addObject("result1", dtlist);
+		mv.addObject("result1", dtlist);
+		mv.addObject("result2", dtmfil);
+		return mv;
+	}
+	
+	/**
+	 * 根据时间查找任务完成情况
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "rwxq2.page", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public AbstractModelAndView view6(@ModelAttribute datePlanModel filter, HttpServletRequest request) {
+		System.out.println(request.getParameter("id"));
+		System.out.println(request.getParameter("time"));
+		dateTimeModel dtmfil=new dateTimeModel();
+		List dtlist=new ArrayList<dateTimeModel>();
+		Integer dqsll=0;
+		Integer mbsll=0;
+		Integer whsll=0;
+		Integer dhsll=0;
+		datePlanModel datePlanModel=new datePlanModel();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		String newDate1 = request.getParameter("time");
+		dtmfil.setTime(newDate1);
+		String id=request.getParameter("id");
+		String temp[]=id.split("@");
+		try {
+			List<dateTimeModel> time=UserService.selectByTime(temp[0]);
+			if(time!=null){
+			for(int dt=0;dt<time.size();dt++){
+				dateTimeModel dtm1=new dateTimeModel();
+				dtm1.setTime(time.get(dt).getTime().substring(0, 10).trim());
+				dtlist.add(dt, dtm1);
+				
+			}}
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		List<datePlanModel> resul=UserService.selectByUser(temp[0]);
+		for(int a=0;a<resul.size();a++){
+			String newDate = sdf.format(resul.get(a).getZdtime());
+			if(newDate.substring(0,10).trim().equals(newDate1)){
+				datePlanModel.setDcsl(resul.get(a).getDcsl());
+				datePlanModel.setDhsl(resul.get(a).getDhsl());
+				datePlanModel.setWhsl(resul.get(a).getWhsl());
+				datePlanModel.setMbsl(resul.get(a).getMbsl());
+				datePlanModel.setName(temp[1]);
+				datePlanModel.setZt(resul.get(a).getZt());
+				datePlanModel.setUserid(temp[0]);
+			}
+		}
+		if(datePlanModel.getDcsl()==null){
+			datePlanModel.setDcsl(0);
+		}
+		if(datePlanModel.getDhsl()==null){
+			datePlanModel.setDhsl(0);
+		}
+		if(datePlanModel.getWhsl()==null){
+			datePlanModel.setWhsl(0);
+		}
+		if(datePlanModel.getMbsl()==null){
+			datePlanModel.setMbsl(0);
+		}
+		try {
+			List<datePlanModel> result=UserService.selectdqsl(temp[0]);
+			if(result!=null){
+			for(int a=0;a<result.size();a++){
+				String newDate = sdf.format(result.get(a).getZdtime());
+				if(newDate.substring(0, 10).trim().equals(newDate1)){
+					dqsll+=1;
+				}
+			}}
+			List<datePlanModel> result1=UserService.selectmbsl(temp[0]);
+			if(result1!=null){
+			for(int a=0;a<result1.size();a++){
+				String newDate = sdf.format(result1.get(a).getZdtime());
+				if(newDate.substring(0, 10).trim().equals(newDate1)){
+					mbsll+=1;
+				}
+			}}
+			List<datePlanModel> result2=UserService.selectwhsl(temp[0]);
+			if(result2!=null){
+			for(int a=0;a<result2.size();a++){
+				String newDate = sdf.format(result2.get(a).getZdtime());
+				if(newDate.substring(0, 10).trim().equals(newDate1)){
+					whsll+=1;
+				}
+			}}
+			List<datePlanModel> result3=UserService.selectdhsl(temp[0]);
+			if(result3!=null){
+				for(int a=0;a<result3.size();a++){
+					String newDate = sdf.format(result3.get(a).getZdtime());
+					if(newDate.substring(0, 10).trim().equals(newDate1)){
+						dhsll+=1;
+					}
+				}
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		datePlanModel.setMbsll(mbsll);
+		datePlanModel.setDhsll(dhsll);
+		datePlanModel.setDqsll(dqsll);
+		datePlanModel.setWhsll(whsll);
+		JRadModelAndView mv = new JRadModelAndView(
+				"/dateplan/userxqplan3", request);
+		mv.addObject("result", datePlanModel);
+		mv.addObject("result1", dtlist);
+		mv.addObject("result2", dtmfil);
 		return mv;
 	}
 }
