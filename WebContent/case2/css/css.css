@@ -34,6 +34,8 @@ div { display: block; font-weight: normal;}
 .f_l{ float:left;}
 .hide{ display:none;}
 
+.mytable table th{color:#fff;text-align:center;background:#1b68a9 url(../images/1.jpg) repeat-x;padding:10px 0;}
+
 /********************head*************************/
 .head{ height: 75px; width:100%; background: #1b68a9 url(../images/head_bg.png) no-repeat 0 0;}
 .logo{ font-size:24px; font-family:"微软雅黑"; color:#FFF; font-weight:bolder; height:75px; line-height:75px; width:220px; float:left; text-align:center;}
