@@ -49,7 +49,7 @@
 		<result property="customerManagerId" column="user_id" />
 		
 		<result property="dkye" column="dkye" />
-		<result property="ywbhcount" column="ywbhcount" />
+		<result property="custidcount" column="custidcount" />
 	</resultMap>
 	
 	<resultMap type="com.cardpay.pccredit.tdyjcx.model.ManagerPerformmance"
@@ -70,6 +70,12 @@
 		<result property="givemoneycount" column="givemoneycount" />
 		<result property="crateday" column="crateday" />
 	</resultMap>
+	
+	<resultMap type="com.cardpay.pccredit.tdyjcx.model.Tdyjcx"
+		id="Tdyjcxform">
+		<result property="applycount" column="applycount" />
+		<result property="manager_id" column="manager_id" />
+	</resultMap>
 
 
 
@@ -89,14 +95,24 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-					select  sysuser.id as userId,sysuser.display_name,sysuser.user_type,sum(t.REQLMT) as reqlmtsum,sum(t.BALAMT) as balamtsum,sum(t.DLAYAMT) as dlayamtsum,
-				count(t.BUSICODE) as ywbhcount,count(t.CUSTID)/( select count(distinct basic.id)  from basic_customer_information basic ,customer_application_info app where basic.id=app.customer_id) as zhlv
-				 from 
-				T_MIBUSIDATA_view t,
-				basic_customer_information basic,
-				sys_user sysuser
-				where basic.ty_customer_id=t.custid and
-				basic.user_id=sysuser.id
+					select  
+					sysuser.id as userId,
+					sysuser.display_name,
+					amp.level_information as user_type,
+					sum(t.money) as reqlmtsum,
+					sum(t.BALAMT) as balamtsum,
+					sum(t.DLAYAMT+t.INDEBTAMT+t.OUTDEBTAMT) as dlayamtsum,
+		            count(distinct(t.CUSTID)) as custidcount
+		           <!--  count(t.CUSTID)/( select count(distinct basic.id)from basic_customer_information basic ,
+		            customer_application_info app where basic.id=app.customer_id) as zhlv -->
+		         from 
+		        T_MIBUSIDATA_VIEW t,
+		        basic_customer_information basic,
+		        sys_user sysuser,
+		        ACCOUNT_MANAGER_PARAMETER amp
+		        where basic.ty_customer_id=t.custid and
+		        basic.user_id=sysuser.id and
+		        sysuser.id=amp.user_id
 				<if test="customerManagerId != null and customerManagerId != '' ">
 				  and basic.user_id=#{customerManagerId}
 				</if>
@@ -106,7 +122,7 @@
 							#{item.userId} 
 						</foreach>
 					</if>
-				group by sysuser.id , sysuser.display_name,sysuser.user_type
+				  group by sysuser.id , sysuser.display_name,amp.level_information
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -117,14 +133,24 @@
 <select id="findMaintenancePlansCountList" resultType="int"
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
 		  select  	   count(*)
-				       from(select  sysuser.id as userId,sysuser.display_name,sysuser.user_type,sum(t.REQLMT) as reqlmtcount,sum(t.BALAMT) as balamtcount,sum(t.DLAYAMT) as dlayamtcount,
-				count(t.CUSTID)/( select count(distinct basic.id)  from basic_customer_information basic ,customer_application_info app where basic.id=app.customer_id)
-				 from 
-				T_MIBUSIDATA_view t,
-				basic_customer_information basic,
-				sys_user sysuser
-				where basic.ty_customer_id=t.custid and
-				basic.user_id=sysuser.id
+				       from(select  
+				       sysuser.id as userId,
+				       sysuser.display_name,
+				       amp.level_information as user_type,
+				       sum(t.money) as reqlmtsum,
+				       sum(t.BALAMT) as balamtsum,
+				       sum(t.DLAYAMT+t.INDEBTAMT+t.OUTDEBTAMT) as dlayamtsum,
+		        	   count(distinct t.CUSTID) as custidcount
+		              <!--  count(t.CUSTID)/( select count(distinct basic.id)  from basic_customer_information basic ,
+		               customer_application_info app where basic.id=app.customer_id) as zhlv -->
+		         from 
+		        T_MIBUSIDATA_VIEW t,
+		        basic_customer_information basic,
+		        sys_user sysuser,
+		        ACCOUNT_MANAGER_PARAMETER amp
+		        where basic.ty_customer_id=t.custid and
+		        basic.user_id=sysuser.id and
+		        sysuser.id=amp.user_id
 				<if test="customerManagerId != null and customerManagerId != '' ">
 				  and basic.user_id=#{customerManagerId}
 				</if>
@@ -134,7 +160,7 @@
 							#{item.userId} 
 						</foreach>
 					</if>
-				group by sysuser.id , sysuser.display_name,sysuser.user_type)
+				  group by sysuser.id , sysuser.display_name,amp.level_information)
 	</select>
 	
 	<!-- 客户数 -->
@@ -145,16 +171,16 @@
       <if test="customerManagerId != null and customerManagerId != '' ">
 				  and basic.user_id=#{customerManagerId}
 				</if>
-				<if test="customerManagerIds != null and customerManagerIds != '' ">  
+				<!-- <if test="customerManagerIds != null and customerManagerIds != '' ">  
  					  	AND basic.user_id in  
 	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
 							#{item.userId} 
 						</foreach>
-					</if>
+					</if> -->
 	</select>
 	
 	<!-- 不良金额 -->
-	<select id="findbadAmountsum" resultType="int"
+	<select id="findbadAmountsum" resultType="String"
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
 		   select sum(nvl(tc.REFERAOMUNT,0)) from t_cipersonbadrecord tc,basic_customer_information basic
         where 1=1 and basic.ty_customer_id=tc.custid
@@ -187,8 +213,8 @@
 
 	</select>
 	
-		<select id="finappcount" resultType="int">
-		select count(app.id) from basic_customer_information basic,
+		<select id="findappcount" resultMap="Tdyjcxform">
+		select count(app.id) as applycount ,sysuser.id as manager_id from basic_customer_information basic,
 		customer_application_info app,
 		sys_user sysuser
 		where 1=1 and
@@ -203,5 +229,6 @@
 		<if test="customerManagerId != null and customerManagerId != '' ">
 		  and basic.user_id=#{customerManagerId}
 		</if>
+		 group by sysuser.id
 		</select>
 </mapper>

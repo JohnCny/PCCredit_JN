@@ -70,7 +70,7 @@
             #foreach ($lists in $!lists)
               <td class="checkbox"><input type="radio" name="checkbox" value="$!lists.userId"/>
               <td nowrap="nowrap">$!lists.userName</td>
-              <td nowrap="nowrap">$!lists.user_type</td>
+              <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL","$!lists.user_type")</td>
               <td nowrap="nowrap">$!lists.applycount</td>
               <td nowrap="nowrap">$!lists.customercount</td>
               <td nowrap="nowrap">$!lists.givemoneycount</td>
@@ -78,7 +78,7 @@
               <td nowrap="nowrap">$!lists.balamtsum</td>
               <td nowrap="nowrap">$!lists.dlayamtsum</td>
               <td nowrap="nowrap">$!lists.badAmountsum</td>
-               <td nowrap="nowrap">$!lists.zhlv</td>
+               <td nowrap="nowrap">$format.formatNumber(2,$!lists.zhlv)%</td>
             </tr>
             #end
           </table>

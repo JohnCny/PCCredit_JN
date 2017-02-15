@@ -33,6 +33,9 @@
 		<result property="dcsl" column="dcsl" />
 		<result property="dhsl" column="dhsl" />
 	</resultMap>
+	<resultMap id="ResultMap3" type="com.cardpay.pccredit.dateplan.model.dateTimeModel">
+		<result property="time" column="time" />
+	</resultMap>
 <!-- 查询小组长ID -->
 		<select id="selectAllGxUser" resultMap="ResultMap">
 		   select amp.user_id as parentId
@@ -102,4 +105,8 @@ insert into SYS_DATEPLAN (ID,USERID,GXUSERID,ZDTIME,MBSL,ZT,WCQK,WHSL,DCSL,DHSL)
 		and u.id=d.user_id and
 		u.id=#{id}
       </select>
+      <select id="selectByTime" resultMap="ResultMap3" parameterType="com.cardpay.pccredit.dateplan.model.dateTimeModel">	
+	 	select ZDTIME as time from SYS_DATEPLAN where userid=#{id}
+  		order by ZDTIME
+		</select>
 </mapper>
