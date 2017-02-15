@@ -178,7 +178,7 @@ public class ManagerPerformmanceService {
 		styleFirst.setFont(font1);
 		
 		// 合并单元格
-		CellRangeAddress region = new CellRangeAddress(0, 0, 0,13);
+		CellRangeAddress region = new CellRangeAddress(0, 0, 0,14);
 		sheet.addMergedRegion(region);
 		cellTmp.setCellStyle(styleCenter);
 		
@@ -193,7 +193,7 @@ public class ManagerPerformmanceService {
         row = sheet.createRow((int) 1);
         HSSFCell tmp = row.createCell((short) 11);
         tmp.setCellValue("制表日期："+new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-        CellRangeAddress reg = new CellRangeAddress(1, 1, 11,13);
+        CellRangeAddress reg = new CellRangeAddress(1, 1, 12,14);
         sheet.addMergedRegion(reg);
         tmp.setCellStyle(styleSecond);
         
@@ -257,6 +257,9 @@ public class ManagerPerformmanceService {
         cell = row.createCell((short) 13);  
         cell.setCellValue("放款数");  
         cell.setCellStyle(style);
+        cell = row.createCell((short) 14);  
+        cell.setCellValue("放款金额");  
+        cell.setCellStyle(style);
 
         for(int i=0;i<gxperformList.size();i++){
         	row = sheet.createRow((int) i + 3);
@@ -275,6 +278,7 @@ public class ManagerPerformmanceService {
         	row.createCell((short) 11).setCellValue(gxperform.getPasscount_s()+"("+gxperform.getPasscount()+")");       //通过数          
         	row.createCell((short) 12).setCellValue(gxperform.getSigncount_s()+"("+gxperform.getSigncount()+")");       //签约数
         	row.createCell((short) 13).setCellValue(gxperform.getGivemoneycount_s()+"("+gxperform.getGivemoneycount()+")");  //放款数									          
+        	row.createCell((short) 14).setCellValue(gxperform.getMoney());  //放款金额								          
         }
         try {
         response.setHeader("Connection", "close");

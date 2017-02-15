@@ -41,13 +41,15 @@
               <col width="15%" />
               <col width="15%" />
               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">客户名称</th>
               <th nowrap="nowrap">证件类型</th>
               <th nowrap="nowrap">证件号码</th>
-              <th nowrap="nowrap">状态</th>
+              <!-- <th nowrap="nowrap">状态</th> -->
               <th nowrap="nowrap">风险类型</th>
               <th nowrap="nowrap">拒绝原因</th>
               <th nowrap="nowrap">上报人</th>
@@ -64,6 +66,8 @@
               <col width="15%" />
               <col width="15%" />
               <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
             </colgroup>
             #foreach ($riskCustomer in $result.items)
             <tr status="$!riskCustomer.status">
@@ -72,7 +76,7 @@
               <td nowrap="nowrap">$!riskCustomer.customerName</td>
               <td nowrap="nowrap">#dictVal("CARDTYPE", $!riskCustomer.cardType)</td>
               <td nowrap="nowrap">$!riskCustomer.cardId</td>
-              <td nowrap="nowrap">#dictVal("RiskCustomerStatus", $!riskCustomer.status)</td>
+              <!-- <td nowrap="nowrap">#dictVal("RiskCustomerStatus", $!riskCustomer.status)</td> -->
               <td nowrap="nowrap">#dictVal("RiskCreateType", $!riskCustomer.riskCreateType)</td>
               <td nowrap="nowrap">$!riskCustomer.refuseReason</td>
               <td nowrap="nowrap">$!riskCustomer.reportedManager</td>

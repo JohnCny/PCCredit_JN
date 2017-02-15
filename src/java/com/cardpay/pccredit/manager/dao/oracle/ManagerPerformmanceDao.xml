@@ -83,6 +83,7 @@
 		<result property="signcount" column="signcount" />
 		<result property="givemoneycount" column="givemoneycount" />
 		<result property="crateday" column="crateday" />
+		<result property="money" column="money" />
 	</resultMap>
 	<select id="findMumberByDeptId" resultMap="ResultMap">
 		select o.name as oname ,d.name,t.* from sys_user t
@@ -128,26 +129,17 @@
 
 
 	<select id="findSumPerformmanceById" resultMap="managerperformsum">
-
-		<!-- SELECT p.VISITCOUNT, p.APPLYCOUNT, p.APPLYREFUSE,p.CREDITCOUNT,
-		p.CREDITREFUSE,p.REALYCOUNT,
-		p.REPORTCOUNT, p.INTERNALCOUNT,p.MEETINGCOUT, p.PASSCOUNT, p.SIGNCOUNT,
-		p.GIVEMONEYCOUNT, p.CRATEDAY,
-		s.VISITCOUNT_S, s.APPLYCOUNT_S, s.APPLYREFUSE_S, s.CREDITCOUNT_S, s.CREDITREFUSE_S,
-		s.REALYCOUNT_S, s.REPORTCOUNT_S,
-		s.INTERNALCOUNT_S, s.MEETINGCOUT_S, s.PASSCOUNT_S, s.SIGNCOUNT_S, s.GIVEMONEYCOUNT_S,
-		s.CRATEDAY_S
-		FROM MANAGER_PERFORMMANCE p INNER JOIN MANAGER_PERFORMMANCE_sum s ON
-		p.manager_id=s.manager_id_s
-		where p.manager_id =#{managerId} -->
 		SELECT 		
-		sum (p.VISITCOUNT) AS VISITCOUNT_S,sum (p.APPLYCOUNT) AS APPLYCOUNT_S, sum (p.APPLYREFUSE) AS APPLYREFUSE_S,
+		nvl(sum(ma.MONEY), 0)AS money,sum (p.VISITCOUNT) AS VISITCOUNT_S,sum (p.APPLYCOUNT) AS APPLYCOUNT_S, sum (p.APPLYREFUSE) AS APPLYREFUSE_S,
 		sum (p.CREDITCOUNT) AS CREDITCOUNT_S, sum (p.CREDITREFUSE) AS CREDITREFUSE_S,
 		sum (p.REALYCOUNT) AS REALYCOUNT_S, sum (p.REPORTCOUNT) AS REPORTCOUNT_S,
 		sum (p.INTERNALCOUNT) AS INTERNALCOUNT_S, sum (p.MEETINGCOUT) AS MEETINGCOUT_S,sum (p.PASSCOUNT) AS PASSCOUNT_S, 
 		sum (p.SIGNCOUNT) AS SIGNCOUNT_S, 
 		sum (p.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT_S
 		FROM MANAGER_PERFORMMANCE p 
+		left JOIN BASIC_CUSTOMER_INFORMATION bci ON p.MANAGER_ID = bci.USER_ID
+		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where p.manager_id = #{managerId}
 		<if test="startDate != null and startDate != ''">
 		and p.crateday >= to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss')  
@@ -160,7 +152,7 @@
 
 	<select id="findDeptSumPerformmanceById" resultMap="managerperformsum">
 		SELECT 
-		sum(s.VISITCOUNT) AS VISITCOUNT_S, sum(s.APPLYCOUNT) AS APPLYCOUNT_S,
+		nvl(sum(ma.MONEY), 0)AS money,sum(s.VISITCOUNT) AS VISITCOUNT_S, sum(s.APPLYCOUNT) AS APPLYCOUNT_S,
 		sum(s.APPLYREFUSE) AS APPLYREFUSE_S,
 		sum(s.CREDITCOUNT) AS CREDITCOUNT_S, sum(s.CREDITREFUSE) AS CREDITREFUSE_S,
 		sum(s.REALYCOUNT) AS REALYCOUNT_S,sum(s.REPORTCOUNT) AS
@@ -169,6 +161,9 @@
 		sum(s.PASSCOUNT) AS PASSCOUNT_S,
 		sum(s.SIGNCOUNT) AS SIGNCOUNT_S, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT_S
 		FROM MANAGER_PERFORMMANCE s
+		left JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
+		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where s.manager_id IN (select t.ID from sys_user t
 		left join sys_dept_user sd on t.id = sd.user_id
 		left join sys_department d on sd.dept_id = d.id
@@ -233,7 +228,7 @@
 	<select id="findALLDeptSumPerformmanceById" resultMap="managerperformsum">
 
 		SELECT 
-		sum(s.VISITCOUNT) AS VISITCOUNT_S, sum(s.APPLYCOUNT) AS APPLYCOUNT_S,
+		nvl(sum(ma.MONEY), 0)AS money,sum(s.VISITCOUNT) AS VISITCOUNT_S, sum(s.APPLYCOUNT) AS APPLYCOUNT_S,
 		sum(s.APPLYREFUSE) AS APPLYREFUSE_S,
 		sum(s.CREDITCOUNT) AS CREDITCOUNT_S, sum(s.CREDITREFUSE) AS CREDITREFUSE_S,
 		sum(s.REALYCOUNT) AS REALYCOUNT_S,sum(s.REPORTCOUNT) AS REPORTCOUNT_S,
@@ -241,6 +236,9 @@
 		sum(s.PASSCOUNT) AS PASSCOUNT_S,
 		sum(s.SIGNCOUNT) AS SIGNCOUNT_S, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT_S
 		FROM MANAGER_PERFORMMANCE s 
+		left JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
+		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where 1=1
 		<if test="startDate != null and startDate != ''">
 		and s.crateday >= to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss')  
@@ -278,7 +276,10 @@
 		sum(s.INTERNALCOUNT) AS INTERNALCOUNT, sum(s.MEETINGCOUT) AS MEETINGCOUT,
 		sum(s.PASSCOUNT) AS PASSCOUNT,
 		sum(s.SIGNCOUNT) AS SIGNCOUNT, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT
-		FROM MANAGER_PERFORMMANCE s where trunc(s.CRATEDAY)=trunc(sysdate)
+		FROM MANAGER_PERFORMMANCE s 
+		INNER JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
+		INNER JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		where trunc(s.CRATEDAY)=trunc(sysdate)
 
 	</select>
 	<update id="updateManagerPerformmanceSumInfor">
