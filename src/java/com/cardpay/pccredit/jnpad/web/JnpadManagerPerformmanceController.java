@@ -21,6 +21,7 @@ import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
+import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -78,7 +79,7 @@ public class JnpadManagerPerformmanceController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/ipad/performmance/update.json")
-	public String update(@ModelAttribute ManagerPerformmance managerPerformmance,HttpServletRequest request) {        
+	public String update(@ModelAttribute ManagerPerformmanceModel managerPerformmance,HttpServletRequest request) {        
 		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		String userId = request.getParameter("userId");
 		try {
@@ -221,7 +222,7 @@ public class JnpadManagerPerformmanceController {
 	//执行修改进度
 	@ResponseBody
 	@RequestMapping(value = "/ipad/performmance/performUpdate.json")
-	public String updateinfo(@ModelAttribute ManagerPerformmance ManagerPerformmance,HttpServletRequest request) {        
+	public String updateinfo(@ModelAttribute ManagerPerformmanceModel ManagerPerformmance,HttpServletRequest request) {        
 		JRadReturnMap returnMap = new JRadReturnMap();
 		
 		if(ManagerPerformmance.getManager_id().equals("0")){
