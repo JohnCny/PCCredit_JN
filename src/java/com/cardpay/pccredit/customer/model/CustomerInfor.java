@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.customer.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.id.IDType;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
@@ -41,7 +43,13 @@ public class CustomerInfor extends BusinessModel{
 	
 	private String tyUserId;
 	private String islook;
-	
+	private Date MODIFIED_TIME;
+	public Date getMODIFIED_TIME() {
+		return MODIFIED_TIME;
+	}
+	public void setMODIFIED_TIME(Date mODIFIED_TIME) {
+		MODIFIED_TIME = mODIFIED_TIME;
+	}
 	public String getIslook() {
 		return islook;
 	}
