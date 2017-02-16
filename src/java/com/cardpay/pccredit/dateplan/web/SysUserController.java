@@ -354,6 +354,7 @@ public class SysUserController extends BaseController{
 		String newDate1 = sdf.format(date).substring(0, 10).trim();
 		dtmfil.setTime(newDate1);
 		String id=request.getParameter("id");
+		System.out.println(id);
 		String temp[]=id.split("@");
 		try {
 			List<dateTimeModel> time=UserService.selectByTime(temp[0]);
@@ -379,6 +380,7 @@ public class SysUserController extends BaseController{
 				datePlanModel.setName(temp[1]);
 				datePlanModel.setZt(resul.get(a).getZt());
 				datePlanModel.setUserid(temp[0]);
+				datePlanModel.setName(temp[1]);
 			}
 		}
 		if(datePlanModel.getDcsl()==null){
@@ -392,6 +394,12 @@ public class SysUserController extends BaseController{
 		}
 		if(datePlanModel.getMbsl()==null){
 			datePlanModel.setMbsl(0);
+		}
+		if(datePlanModel.getUserid()==null){
+			datePlanModel.setUserid(temp[0]);
+		}
+		if(datePlanModel.getName()==null){
+			datePlanModel.setName(temp[1]);
 		}
 		try {
 			List<datePlanModel> result=UserService.selectdqsl(temp[0]);
@@ -453,8 +461,6 @@ public class SysUserController extends BaseController{
 	@RequestMapping(value = "rwxq2.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView view6(@ModelAttribute datePlanModel filter, HttpServletRequest request) {
-		System.out.println(request.getParameter("id"));
-		System.out.println(request.getParameter("time"));
 		dateTimeModel dtmfil=new dateTimeModel();
 		List dtlist=new ArrayList<dateTimeModel>();
 		Integer dqsll=0;
@@ -488,7 +494,9 @@ public class SysUserController extends BaseController{
 				datePlanModel.setDhsl(resul.get(a).getDhsl());
 				datePlanModel.setWhsl(resul.get(a).getWhsl());
 				datePlanModel.setMbsl(resul.get(a).getMbsl());
-				datePlanModel.setName(temp[1]);
+				if(temp[1]!=null){
+					datePlanModel.setName(temp[1]);
+				}
 				datePlanModel.setZt(resul.get(a).getZt());
 				datePlanModel.setUserid(temp[0]);
 			}
