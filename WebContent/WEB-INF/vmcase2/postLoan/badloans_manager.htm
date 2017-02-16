@@ -29,14 +29,14 @@
             <colgroup>
               <col width="5%" />
               <col width="6%" />
+              <col width="10.5%" />
               <col width="8.5%" />
               <col width="8.5%" />
               <col width="8.5%" />
+              <col width="9.5%" />
               <col width="8.5%" />
               <col width="8.5%" />
-              <col width="8.5%" />
-              <col width="8.5%" />
-              <col width="12.5%" />
+              <col width="18%" />
               <col width="8.5%" />
             </colgroup>
             <tr class="title">
@@ -59,14 +59,14 @@
            <colgroup>
               <col width="5%" />
               <col width="6%" />
+              <col width="10.5%" />
               <col width="8.5%" />
               <col width="8.5%" />
               <col width="8.5%" />
+              <col width="9.5%" />
               <col width="8.5%" />
               <col width="8.5%" />
-              <col width="8.5%" />
-              <col width="8.5%" />
-              <col width="12.5%" />
+              <col width="18%" />
               <col width="8.5%" />
             </colgroup>
             #foreach ($obj in $result.items)
@@ -74,7 +74,7 @@
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!obj.chinese_name</td>
               <td nowrap="nowrap">$!obj.custidno</td>
-              <td nowrap="nowrap">$!obj.accountstatus</td>
+              <td nowrap="nowrap">#dictVal("ACCOUNTSTATE",$!obj.accountstatus)</td>
               <td nowrap="nowrap">$!obj.contractmoney</td>
               <td nowrap="nowrap">$!obj.grantamount</td>
               <td nowrap="nowrap">$!obj.duedate</td>
@@ -132,23 +132,5 @@
 			}
 	    });
 	});
-	
-	function save(receiveId){
-		Dialog.confirm("确定已经通知了吗?", "提示",
-	     		function() {
-				$.ajax({
-					url : "${modulePath}/confirmNotice.json?id="+receiveId,
-					type : "get",
-					success : function(data) {
-						if (data.success) {
-							topWin.Dialog.message("成功!");
-							window.location.reload() ;
-						}else{
-							topWin.Dialog.message("系统出现异常,请联系管理员");
-				    	}
-					}
-				}); 
-		 	});
-	}
 </script>
 #parse ("common/iframe_page_footer.htm")
