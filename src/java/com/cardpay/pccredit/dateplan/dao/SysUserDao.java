@@ -31,5 +31,6 @@ public interface SysUserDao {
 	List<datePlanModel>selectdhsl(@Param(value = "id")String id);
 	JBUser selectzgUser(@Param(value = "id")String id);
 	List<dateTimeModel>selectByTime(@Param(value = "id")String id);
-	List<JBUser>selectAlluser();
+	List<JBUser>selectAlluser(JBUser filter);
+	int selectzgUserCount();
 }

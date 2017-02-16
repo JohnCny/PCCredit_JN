@@ -117,6 +117,17 @@ insert into SYS_DATEPLAN (ID,USERID,GXUSERID,ZDTIME,MBSL,ZT,WCQK,WHSL,DCSL,DHSL)
   		order by ZDTIME
 		</select>
 		<select id="selectAlluser" resultMap="ResultMap1" parameterType="com.cardpay.pccredit.dateplan.model.JBUser">	
-		  select id as id ,display_name as name from sys_user where user_type='1'
+		  SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		  select id as id ,display_name as name from sys_user where 1=1 and user_type='1'
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
       </select>		
+      	<select id="selectzgUserCount"  resultType="int">	
+		select count(*) from sys_user where 1=1 and user_type='1'
+      </select>
 </mapper>
