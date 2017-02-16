@@ -65,7 +65,7 @@
                    #end 
                #if($!result.mbsl>$!result.mbsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.mbsl<$!result.mbsll)
+                #else($!result.mbsl=<$!result.mbsll)
                   <td nowrap="nowrap">完成</td>
                    #end 
                     #end 
@@ -87,7 +87,7 @@
                    #end 
                 #if($!result.whsl>$!result.whsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.whsl<$!result.whsll)
+                #else($!result.whsl=<$!result.whsll)
                   <td nowrap="nowrap">完成</td>
                    #end
                      #end
@@ -109,7 +109,7 @@
                    #end 
                #if($!result.dcsl>$!result.dqsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.dcsl<$!result.dqsll)
+                #else($!result.dcsl=<$!result.dqsll)
                   <td nowrap="nowrap">完成</td>
                    #end
                      #end
@@ -131,7 +131,7 @@
                    #end 
                #if($!result.dhsl>$!result.dhsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.dhsl<$!result.dhsll)
+                #else($!result.dhsl=<$!result.dhsll)
                   <td nowrap="nowrap">完成</td>
                    #end
                     #end
