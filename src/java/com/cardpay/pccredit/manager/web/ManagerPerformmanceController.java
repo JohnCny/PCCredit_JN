@@ -27,6 +27,7 @@ import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
+import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -186,7 +187,7 @@ public class ManagerPerformmanceController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "update.json")
-	public JRadReturnMap update(@ModelAttribute ManagerPerformmance managerPerformmance,HttpServletRequest request) {        
+	public JRadReturnMap update(@ModelAttribute ManagerPerformmanceModel managerPerformmance,HttpServletRequest request) {        
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 
@@ -344,7 +345,7 @@ public class ManagerPerformmanceController extends BaseController {
 	//	//执行修改进度
 		@ResponseBody
 		@RequestMapping(value = "performUpdate.json")
-		public JRadReturnMap updateinfo(@ModelAttribute ManagerPerformmance ManagerPerformmance,HttpServletRequest request) {        
+		public JRadReturnMap updateinfo(@ModelAttribute ManagerPerformmanceModel ManagerPerformmance,HttpServletRequest request) {        
 			JRadReturnMap returnMap = new JRadReturnMap();
 	
 			if(ManagerPerformmance.getManager_id().equals("0")){
