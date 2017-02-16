@@ -3,11 +3,7 @@ package com.cardpay.pccredit.dateplan.web;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,39 +14,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cardpay.pccredit.customer.filter.CustomerMarketingFilter;
-import com.cardpay.pccredit.customer.model.MarketingPlanWeb;
-import com.cardpay.pccredit.dateplan.dao.SysUserDao;
 import com.cardpay.pccredit.dateplan.model.DisplayUser;
 import com.cardpay.pccredit.dateplan.model.JBUser;
 import com.cardpay.pccredit.dateplan.model.datePlanModel;
 import com.cardpay.pccredit.dateplan.model.dateTimeModel;
 import com.cardpay.pccredit.dateplan.service.SysUserService;
-import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
-import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
-import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.manager.web.ManagerBelongMapForm;
-import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
+import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
-import com.wicresoft.util.web.RequestHelper;
-
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 
 @Controller
 @RequestMapping("/sys/user/*")
 @JRadModule("sys.user")
-public class SysUserController {
+public class SysUserController extends BaseController{
 	@Autowired
 	private SysUserService UserService;
 	/**
@@ -576,8 +562,8 @@ public class SysUserController {
 	@ResponseBody
 	@RequestMapping(value = "alluser.page", method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.BROWSE)
-	public AbstractModelAndView alluser( HttpServletRequest request) {
-		Integer rwzs=0;
+	public AbstractModelAndView alluser(@ModelAttribute JBUser filter, HttpServletRequest request) {
+	/*	Integer rwzs=0;
 		Integer wcrwzs=0;
 		Integer dqsll=0;
 		Integer mbsll=0;
@@ -653,8 +639,6 @@ public class SysUserController {
 					wcrwzs=dhsll+whsll+mbsll+dqsll;
 					user.setWcrezl(wcrwzs);
 					user.setRezl(rwzs);
-					System.out.println(dhsll+"wwww"+whsll+"www"+mbsll+"wwww"+dqsll);
-					System.out.println(wcrwzs);
 					if(user.getRezl()>user.getWcrezl()){
 						user.setRebfl(user.getWcrezl()+"/"+user.getRezl());
 					}else{
@@ -705,8 +689,6 @@ public class SysUserController {
 						}
 					}
 					wcrwzs=dhsll+whsll+mbsll+dqsll;
-					System.out.println(dhsll+""+whsll+""+mbsll+""+dqsll);
-					System.out.println(wcrwzs);
 					user.setWcrezl(wcrwzs);
 					user.setRezl(rwzs);
 					user.setRebfl("待定");
@@ -720,11 +702,20 @@ public class SysUserController {
 			 mbsll=0;
 			 whsll=0;
 			 dhsll=0;
-		}
-			JRadModelAndView mv = new JRadModelAndView(
-					"/dateplan/sys_user_bb", request);
-			mv.addObject("user", list);
-			
+		}*/
+		filter.setRequest(request);
+		QueryResult<JBUser> result = UserService.selectAlluser(filter);
+		JRadPagedQueryResult<JBUser> pagedResult = new JRadPagedQueryResult<JBUser>(
+				filter, result);
+			JRadModelAndView mv = new JRadModelAndView("/dateplan/sys_user_bb", request);
+			mv.addObject(PAGED_RESULT, pagedResult);
 			return mv;
 	}
+	
+	
+	
+	
+	
+	
+	
 }

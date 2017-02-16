@@ -1,5 +1,5 @@
 #parse ("common/iframe_page_header.htm")
-<body>
+<body >
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
@@ -29,7 +29,7 @@
               <col width="10%" />
               <col width="10%" />
             </colgroup>
-            #foreach ($result in $user)
+            #foreach ($result in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!result.id@$!result.displayName"/></td>
               <td nowrap="nowrap">$!result.name</td>

@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.dateplan.model;
 
-public class JBUser {
+import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
+
+public class JBUser extends BusinessFilter{
 	private String id;
 	private String name;
 	private String qname;
