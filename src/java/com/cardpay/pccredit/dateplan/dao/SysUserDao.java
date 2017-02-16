@@ -21,7 +21,7 @@ public interface SysUserDao {
 	List<JBUser>selectDepart(@Param(value = "id")String id);
 	int insertRw(datePlanModel planmodel);
 	List<datePlanModel>selectAllTime(@Param(value = "id")String id);
-	
+	datePlanModel selectAllTime1(@Param(value = "id")String id);
 	List<datePlanModel>selectByUser(@Param(value = "id")String id);
 	datePlanModel selectByUser1(@Param(value = "id")String id);
 	int updateRw(@Param(value = "id")String id);
@@ -31,4 +31,6 @@ public interface SysUserDao {
 	List<datePlanModel>selectdhsl(@Param(value = "id")String id);
 	JBUser selectzgUser(@Param(value = "id")String id);
 	List<dateTimeModel>selectByTime(@Param(value = "id")String id);
+	List<JBUser>selectAlluser(JBUser filter);
+	int selectzgUserCount();
 }

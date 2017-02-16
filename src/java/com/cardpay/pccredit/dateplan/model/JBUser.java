@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.dateplan.model;
 
-public class JBUser {
+import com.wicresoft.jrad.base.database.dao.business.BusinessFilter;
+
+public class JBUser extends BusinessFilter{
 	private String id;
 	private String name;
 	private String qname;
@@ -9,7 +11,35 @@ public class JBUser {
 	private String userId;
 	private String orgId;
 	private String displayName;
+	private String zt;
+	private Integer rezl;
+	private Integer wcrezl;
+	private String rebfl;
 	
+	public String getRebfl() {
+		return rebfl;
+	}
+	public void setRebfl(String rebfl) {
+		this.rebfl = rebfl;
+	}
+	public Integer getRezl() {
+		return rezl;
+	}
+	public void setRezl(Integer rezl) {
+		this.rezl = rezl;
+	}
+	public Integer getWcrezl() {
+		return wcrezl;
+	}
+	public void setWcrezl(Integer wcrezl) {
+		this.wcrezl = wcrezl;
+	}
+	public String getZt() {
+		return zt;
+	}
+	public void setZt(String zt) {
+		this.zt = zt;
+	}
 	public String getQname() {
 		return qname;
 	}

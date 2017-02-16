@@ -138,7 +138,7 @@
 		sum (p.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT_S
 		FROM MANAGER_PERFORMMANCE p 
 		left JOIN BASIC_CUSTOMER_INFORMATION bci ON p.MANAGER_ID = bci.USER_ID
-		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN t_MIBUSIDATA_VIEW ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
 		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where p.manager_id = #{managerId}
 		<if test="startDate != null and startDate != ''">
@@ -162,7 +162,7 @@
 		sum(s.SIGNCOUNT) AS SIGNCOUNT_S, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT_S
 		FROM MANAGER_PERFORMMANCE s
 		left JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
-		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN t_MIBUSIDATA_VIEW ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
 		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where s.manager_id IN (select t.ID from sys_user t
 		left join sys_dept_user sd on t.id = sd.user_id
@@ -237,7 +237,7 @@
 		sum(s.SIGNCOUNT) AS SIGNCOUNT_S, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT_S
 		FROM MANAGER_PERFORMMANCE s 
 		left JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
-		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN t_MIBUSIDATA_VIEW ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
 		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where 1=1
 		<if test="startDate != null and startDate != ''">
@@ -278,7 +278,7 @@
 		sum(s.SIGNCOUNT) AS SIGNCOUNT, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT
 		FROM MANAGER_PERFORMMANCE s 
 		INNER JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
-		INNER JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		INNER JOIN t_MIBUSIDATA_VIEW ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
 		where trunc(s.CRATEDAY)=trunc(sysdate)
 
 	</select>
@@ -386,7 +386,7 @@
 		sum(s.SIGNCOUNT) AS SIGNCOUNT, sum(s.GIVEMONEYCOUNT) AS GIVEMONEYCOUNT
 		FROM MANAGER_PERFORMMANCE s 
 		left JOIN BASIC_CUSTOMER_INFORMATION bci ON s.MANAGER_ID = bci.USER_ID
-		left JOIN t_MIBUSIDATA ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
+		left JOIN t_MIBUSIDATA_VIEW ma ON ma.CUSTID=bci.TY_CUSTOMER_ID
 		left JOIN SYS_USER su ON su.ID=bci.USER_ID
 		where s.manager_id IN (select t.ID from sys_user t
 		left join sys_dept_user sd on t.id = sd.user_id
