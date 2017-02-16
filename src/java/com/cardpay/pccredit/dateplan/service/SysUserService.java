@@ -57,5 +57,11 @@ public class SysUserService {
 	public List<dateTimeModel>selectByTime(@Param(value = "id")String id){
 		return UserDao.selectByTime(id);
 	}
+	public datePlanModel selectAllTime1(@Param(value = "id")String id){
+		return UserDao.selectAllTime1(id);
+	}
+	public List<JBUser>selectAlluser(){
+		return UserDao.selectAlluser();
+	}
 
 }

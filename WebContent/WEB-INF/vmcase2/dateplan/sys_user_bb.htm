@@ -3,7 +3,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">每日任务>选择管辖客户经理</div>
+        <div class="title">任务报表</div>
       </div>
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
@@ -14,9 +14,11 @@
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">客户经理名称</th>
-              <th nowrap="nowrap">所属支行</th>
-               <th nowrap="nowrap">状态</th>
+              <th nowrap="nowrap">客户经理姓名</th>
+              <th nowrap="nowrap">计划完成任务数量</th>
+               <th nowrap="nowrap">实际完成任务数量</th>
+                <th nowrap="nowrap">当日任务状态</th>
+                 <th nowrap="nowrap">完成率</th>
             </tr>
           </table>
         </div>
@@ -27,22 +29,20 @@
               <col width="10%" />
               <col width="10%" />
             </colgroup>
-            #foreach ($result in $result)
+            #foreach ($result in $user)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!result.id@$!result.displayName"/></td>
-              <td nowrap="nowrap">$!result.displayName</td>
               <td nowrap="nowrap">$!result.name</td>
+              <td nowrap="nowrap">$!result.rezl</td>
+                  <td nowrap="nowrap">$!result.wcrezl</td>
                   <td nowrap="nowrap">$!result.zt</td>
+                  <td nowrap="nowrap">$!result.rebfl</td>
             </tr>
             #end
           </table>
         </div>
       </div>
       <div class="pagebar">
-        <div class="controlbtn">
-          <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
-           <a id="ck" class="btn_g" href="javascript:void(0);" title="任务详情">任务详情</a>
-        </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
       </div>
