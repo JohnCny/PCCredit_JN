@@ -23,6 +23,7 @@ import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
+import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -37,7 +38,7 @@ public class ManagerPerformmanceService {
 	@Autowired
 	ManagerPerformmanceDao managerPerformmanceDao;
 	
-	public void insertmanagerPerformmance(ManagerPerformmance managerPerformmance) {
+	public void insertmanagerPerformmance(ManagerPerformmanceModel managerPerformmance) {
 		
 		
 		commonDao.insertObject(managerPerformmance);
@@ -99,7 +100,7 @@ public class ManagerPerformmanceService {
 		return managerPerformmanceDao.findALLDeptSumPerformmanceById(satrtDate,endDate);
 	}
 
-	public void updateManagerPerformmanceSumInfor(ManagerPerformmance managerPerformmanceSum) {
+	public void updateManagerPerformmanceSumInfor(ManagerPerformmanceModel managerPerformmanceSum) {
 		
 		managerPerformmanceDao.updateManagerPerformmanceSumInfor(managerPerformmanceSum);
 	}

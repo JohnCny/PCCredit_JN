@@ -81,7 +81,7 @@
                    #end 
                #if($!result.mbsl>$!result.mbsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.mbsl<$!result.mbsll)
+                #else($!result.mbsl=<$!result.mbsll)
                   <td nowrap="nowrap">完成</td>
                    #end 
                     #end 
@@ -103,7 +103,7 @@
                    #end 
                 #if($!result.whsl>$!result.whsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.whsl<$!result.whsll)
+                #else($!result.whsl=<$!result.whsll)
                   <td nowrap="nowrap">完成</td>
                    #end
                      #end
@@ -125,7 +125,7 @@
                    #end 
                #if($!result.dcsl>$!result.dqsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.dcsl<$!result.dqsll)
+                #else($!result.dcsl=<$!result.dqsll)
                   <td nowrap="nowrap">完成</td>
                    #end
                      #end
@@ -147,7 +147,7 @@
                    #end 
                #if($!result.dhsl>$!result.dhsll)
               <td nowrap="nowrap">未完成</td>
-                #else($!result.dhsl<$!result.dhsll)
+                #else($!result.dhsl=<$!result.dhsll)
                   <td nowrap="nowrap">完成</td>
                    #end
                     #end
@@ -179,11 +179,10 @@
         
 		prepareOperations(opsObj);
 $("#select1").click(function() {
-			
 			var time=$("#ri").val();
 			var id=$("#userid").val();
 			var url = "${contextPath}//sys/user/rwxq2.page?id="+id+"&time="+time;
-			if(time==null){
+			if(time==null || time=="选择日期"){
 				 Dialog.message("请选择时间!!");
 			}else{
 				window.location.href=url;

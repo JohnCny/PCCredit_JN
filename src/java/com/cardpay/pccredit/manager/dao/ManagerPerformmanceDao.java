@@ -9,6 +9,7 @@ import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
+import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
 import com.wicresoft.util.annotation.Mapper;
 
@@ -36,7 +37,7 @@ public interface ManagerPerformmanceDao {
 	//查询指定所有支行总进度
 	ManagerPerformmanceForm findALLDeptSumPerformmanceById(@Param(value="startDate") String startDate,@Param(value="endDate") String endDate);
 	//更新指定日期进度
-	void updateManagerPerformmanceSumInfor(ManagerPerformmance managerPerformmance);
+	void updateManagerPerformmanceSumInfor(ManagerPerformmanceModel managerPerformmance);
 	
 	//指定支行当天进度
 	ManagerPerformmance findDeptTodayPerformmanceById(@Param(value="orgId") String id);
