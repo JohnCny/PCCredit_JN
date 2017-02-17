@@ -11,47 +11,46 @@
         <div class="forms" id="formsId">
           <table class="rule">
             <colgroup>
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
             </colgroup>
+			<caption>催收实施计划</caption>
             <tr>
-              <td>实施催收方式:</td>
+              <td class="titlefc3">实施催收方式:</td>
               <td><select id="collection" name="collection">
               #customerInfo($request.getAttribute("collectionMethodList"),"")
               </select>
               </td>
-              <td>&nbsp;</td>
-              <td>实施催收结果描述:</td>
+              <td class="titlefc3">实施催收结果描述:</td>
               <td><textarea id="collectionResult" name="collectionResult"></textarea>
               </td>
             </tr>
             <tr>
-              <td>实施催收开始时间:</td>
+              <td class="titlefc3">实施催收开始时间:</td>
               <td><input type="text" id="collectionStartTime" name="collectionStartTime" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
-              <td>&nbsp;</td>
-              <td>实施催收结束时间:</td>
+              
+              <td class="titlefc3">实施催收结束时间:</td>
               <td><input type="text" id="collectionEndTime" name="collectionEndTime" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
             </tr>
             <tr>
-              <td>催收结果:</td>
+              <td class="titlefc3">催收结果:</td>
               <td><select id="endResult" name="endResult" onchange="OpenPromiseDate();">
               #dict("CollectionPlanEndResult","")
               </select>
               </td>
-              <td>&nbsp;</td>
-              <td hidden="hidden">是否实施:</td>
+            
+              <td hidden="hidden" class="titlefc3">是否实施:</td>
               <td hidden="hidden"><select name="whetherImplement" id="whetherImplement" disabled="disabled">
               #dict("SystemRole","")
               </select></td>
             </tr>
             <tr hidden="hidden">
-              <td>承诺还款时间:</td>
+              <td class="titlefc3">承诺还款时间:</td>
               <td><input type="text" id="collectionPromiseDate" name="collectionPromiseDate" disabled="disabled" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
-              <td>&nbsp;</td>
-              <td>承诺还款金额:</td>
+            
+              <td class="titlefc3">承诺还款金额:</td>
               <td><input type="text" id="collectionAmount" name="collectionAmount" disabled="disabled" />
               </td>
             </tr>

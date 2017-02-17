@@ -108,7 +108,7 @@ div { display: block; font-weight: normal;}
 /*琛ㄥ崟鏌ヨ椤甸潰*/
 .inquiry{ padding:15px; padding-bottom:5px;}
 
-.search{ border:1px solid #f0f0f0; padding:15px; overflow:auto;}
+.search{ border:1px solid #bad3e0; padding:15px; overflow:auto;background:#d9edf7;}
 .search label{ line-height: 35px;font-weight: normal;}
 .search_tag{ width:60px; height:20px;background-color:#FFFFFF;position:absolute; margin:-8px 0 0 15px; text-align:center; display:none;}
 .search span{height:35px; line-height:35px; margin-left:2%;} 
@@ -286,8 +286,9 @@ a.btn_gtr{ padding:0px 16px; height:24px;line-height:24px;margin:5px 10px 5px 0;
 
 /*琛ㄥ崟褰曞叆椤甸潰*/
 .forms{ padding:15px;}
-.forms table{ width:100%;}
-.forms table tr td{ height:36px; text-align:left; margin-left: 5px;margin-right: 5px;}
+.forms .titlefc3{background:#d9edf7;}
+.forms table{ width:100%;border-collapse:collapse;}
+.forms table tr td{ height:36px; text-align:left; margin-left: 5px;margin-right: 5px;border:1px solid #9dbbda}
 .forms table tr td label{ float:left; padding-left:10px;}
 .forms table tr td input[type=text]{ width:90%; height:24px; line-height:24px; margin-left:3px;}
 .forms table tr td input[type=password]{ width:90%; height:22px; line-height:22px; margin-left:3px;}
@@ -297,7 +298,7 @@ a.btn_gtr{ padding:0px 16px; height:24px;line-height:24px;margin:5px 10px 5px 0;
 .forms table tr td.ck span{ margin:0;color:#000;}
 .forms table tr td select{ width:90%; height:22px;margin-left:3px;}
 .forms table tr td select[disabled=true]{ background-color:#fff;border:1px solid #eeeeee;color:#999;margin-left:3px;}
-.forms table.rule{margin:10px 0;color:#000;}
+.forms table.rule{margin:10px 0;color:#000;border-collapse:collapse;}
 .forms table.rule span{ color:#999;}
 .forms table.rule tr td textarea{ width:90%;margin:auto 3px;}
 .forms table.rule tr td textarea[disabled=true]{ background-color:#fff;border:1px solid #eeeeee;color:#999; }

@@ -8,12 +8,12 @@
 			<form id="id_module_form" action="${contextPath}/system/role/insert.json">
 				<div class="forms" id="formsId">
 					<table class="rule">
+						<caption>角色信息</caption>
 						<colgroup>
 							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 							<col width="10%" />
-							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 						</colgroup>
 						<!-- 
 							<tr>
@@ -34,17 +34,17 @@
 							</select>
 						</tr> -->
 						<tr>
-							<td><label for="name">#mi18n("name"):</label></td>
+							<td class="titlefc3"><label for="name">#mi18n("name"):</label></td>
 							<td><input type="text" id="name" name="name"
 								value="$!role.name" /></td>
-							<td>&nbsp;</td>
-							<td><label for="shortName">#mi18n("shortName"):</label></td>
+							
+							<td class="titlefc3"><label for="shortName">#mi18n("shortName"):</label></td>
 							<td><input type="text" id="shortName" name="shortName"
 								value="$!role.shortName" /></td>
 						</tr>
 						<tr>
-							<td>#mi18n("description"):</td>
-							<td colspan="4"><textarea id="description"
+							<td class="titlefc3"><label for="description">#mi18n("description"):</label></td>
+							<td colspan="3"><textarea id="description"
 									name="description" rows="5" value="$!role.description"></textarea></td>
 						</tr>
 					</table>

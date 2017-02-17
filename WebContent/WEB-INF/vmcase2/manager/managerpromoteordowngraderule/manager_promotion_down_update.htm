@@ -1,4 +1,8 @@
 #parse ("common/iframe_page_header.htm")
+<style>
+table tr td{text-align:center;}
+.table-bd td.titlefc3{text-align:center;font-weight:bold;}
+</style>
 <body class="whitebg">
   <div class="content_main">
     <div class="contentinner">
@@ -11,11 +15,11 @@
         
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
             <colgroup>
-              <col width="15%" />
-              <col width="15%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
             <tr>
 	            <td class="titlec" >经理级别</td>
@@ -28,11 +32,11 @@
             #if($managerPromotionRulelist.size()!=0)
              <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
             <colgroup>
-              <col width="15%" />
-              <col width="15%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
              #foreach($managerPromotionRule in $!managerPromotionRulelist)
             <tr>
@@ -59,11 +63,11 @@
           
             <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
             <colgroup>
-              <col width="15%" />
-              <col width="15%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
              #foreach($managerPromotionRulelval in $!managerPromotionRulel)
             <tr>

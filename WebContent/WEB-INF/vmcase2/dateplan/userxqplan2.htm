@@ -4,16 +4,18 @@
     <div class="contentinner">
       <div class="place">
        <div class="title">每日任务>任务完成情况($!result2.time)>$!result.name</div>
-      </div>  <div class="search">
+      </div>  
+      <div class="inquiry">
+      <div class="search">
             <ul>
             
               <li>
-               <select id='ri'>
+               <span>日期：<select id='ri'>
                <option >选择日期</option>"
                 #foreach ($time1 in $result1) 
 					<option >$!time1.time</option>"
 				   #end 
-					</select>
+					</select></span>
               </li>
               
               <li class="search_button">
@@ -22,23 +24,7 @@
               </li>
             </ul>
         </div>
-     <!--    <div class="search">
-            <ul>
-            
-              <li>
-               <select id='ri'>
-                #foreach ($time1 in $result1.items) 
-					<option value = '1'>$!time1.time</option>"
-				   #end 
-					</select>
-              </li>
-              
-              <li class="search_button">
-                <input id="select1" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                   style="height: 26px; line-height: 24px;" />
-              </li>
-            </ul>
-        </div> -->
+    
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>

@@ -21,9 +21,9 @@
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
             </colgroup>
               <tr>
               	<td class="titlec" colspan="4" style="text-align: center;">进件申请信息</td>
@@ -32,6 +32,7 @@
               <td class="titlefc3"><label for="applyQuota">申请额度(元):</label></td>
 	          <td><input  type="text" class="rinpsty" name="applyQuota" id="applyQuota" 
 	              value="$!customerApplicationInfo.applyQuota" disabled="disabled"/></td>
+	              <td  class="titlefc3"></td><td ></td>
               </tr>
               <tr>
               <td class="titlefc3"><span style="color:red">*</span><label style="color:red" for="prodName">产品名称:</label></td>
@@ -67,6 +68,7 @@
             <tr>
 			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
               <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!appManagerAuditLog1.userId_3" disabled="disabled"/></td>
+           	<td  class="titlefc3"></td><td ></td>
             </tr>
           </table>
          </div>
@@ -113,6 +115,7 @@
             <tr>
             	<td  class="titlefc3"><label id ="sd_beiZhu" for="sd_beiZhu">备注:</label></td>
 				<td><textarea disabled="disabled" style="width: 300px; height:50px" name="sd_beiZhu" id="sd_beiZhu">$!appManagerAuditLog2.beiZhu</textarea></td>
+            	<td  class="titlefc3"></td><td ></td>
             </tr>
           </table>
          </div>

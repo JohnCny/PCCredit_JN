@@ -11,27 +11,28 @@
         <input type="hidden" name="nodeType" value="$!nodeType">
         <div class="forms" id="formsId">
           <table id="id_group_conditions" class="rule">
+           	<caption>审批流程节点</caption>
             #foreach ($nodeControl in $nodeControls)
             <tr id="$nodeControl.id">
-              <td width="10%"><label for="currentNode">当前节点:</label></td>
+              <td width="10%" class="titlefc3"><label for="currentNode">当前节点:</label></td>
               <td width="10%">
               	<select name="currentNode">
               		#dict("NODECONFIGLIST", "$nodeControl.currentNode", false, $productId, $nodeType)
               	</select>
               </td>
-              <td width="10%"><label for="currentStatus">状态:</label></td>
+              <td width="10%" class="titlefc3"><label for="currentStatus">状态:</label></td>
               <td width="10%">
               	<select name="currentStatus">
               		#dict("NODEOPSTATUS", $nodeControl.currentStatus);
               	</select>
               </td>
-              <td width="10%"><label for="nextNode">下个节点:</label></td>
+              <td width="10%" class="titlefc3"><label for="nextNode">下个节点:</label></td>
               <td width="10%">
               	<select name="nextNode">
               		#dict("NODECONFIGLIST", "$nodeControl.nextNode", false, $!productId, $!nodeType)
               	</select>
               </td>
-              <td width="10%"><input type="button" onclick="deleteCondition('$nodeControl.id')" class="current" value="删除"/></td>
+              <td width="10%">&nbsp;&nbsp;&nbsp;<input type="button" onclick="deleteCondition('$nodeControl.id')" class="current" value="删除"/></td>
             </tr>
             #end
           </table>
@@ -55,7 +56,7 @@
 		var uuid = Math.uuid();
 		
 		var addDivHtml = "<tr id=" + uuid + ">"
-			+ "<td width='10%'><label for='currentNode'>当前节点:</label></td>"
+			+ "<td width='10%' class='titlefc3'><label for='currentNode'>当前节点:</label></td>"
 			+ "<td width='10%'>"
 			+ "<select name='currentNode'>";
 		#foreach ($node in $nodeAudits)
@@ -63,14 +64,14 @@
 		#end
 		addDivHtml += "</select>"
         	+ "</td>"
-        	+ "<td width='10%'><label for='currentStatus'>状态:</label></td> "
+        	+ "<td width='10%' class='titlefc3'><label for='currentStatus'>状态:</label></td> "
         	+ "<td width='10%'> "
         	+ "<select name='currentStatus'> "
         	+ "	<option value='APPROVE'>通过</option>"
         	+ " <option value='OBJECTION'>异议</option>"
         	+ "</select> "
         	+ "</td> "
-        	+ "<td width='10%'><label for='nextNode'>下个节点:</label></td> "
+        	+ "<td width='10%' class='titlefc3'><label for='nextNode'>下个节点:</label></td> "
         	+ "<td width='10%'> "
         	+ "<select name='nextNode'>"
         #foreach ($node in $nodeAudits)
@@ -78,7 +79,7 @@
 		#end
 		addDivHtml += "</select>"
 			+ "</td>"
-			+ "<td width='10%'><input type='button' onclick='deleteCondition(\""+　uuid +"\")' class='current' value='删除'/></td>"
+			+ "<td width='10%'>&nbsp;&nbsp;&nbsp;<input type='button' onclick='deleteCondition(\""+　uuid +"\")' class='current' value='删除'/></td>"
 			+ "</tr>";
 		
 		$("#" + conDivId).append(addDivHtml);
