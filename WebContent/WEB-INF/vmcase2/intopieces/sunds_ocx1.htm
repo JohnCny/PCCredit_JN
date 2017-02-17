@@ -3,6 +3,9 @@
 <body>
 <div class="content_main">
    <div class="contentinner">
+   <div class="place">
+        <div class="title">影像资料</div>
+    </div>
  	<div class="inquiry">
  		<div id="topDiv" class="inquiry_list inquiry_top">
           <table>
@@ -24,7 +27,7 @@
             </tr>
           </table>
         </div>
-        <div id="downDiv" class="inquiry_list inquiry_down">
+        <div id="downDiv" class="inquiry_list inquiry_down" >
           <table>
             <colgroup>
               <col width="5%" />
@@ -78,7 +81,7 @@
           </table>
         </div>
       </div>
-      <div class="submit">
+      <div class="submit" style="margin-top:-70px;">
         <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.back")" />
       </div>
     </div>
@@ -89,6 +92,7 @@
 	window.top.currentWindow.setLayout(layout);
 
 	$(document).ready(function() {
+		$("#downDiv").height(320)
 	});
 	
 	function browseFolder(id,is_upload,custId){

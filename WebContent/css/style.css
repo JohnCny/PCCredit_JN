@@ -17,6 +17,7 @@ fieldset, img, input[type=text], select, textarea {border: none;}
 input[type=text], select, textarea {border: 1px solid #dcdcdc;}
 input[type=text]:hover,select:hover,textarea:hover{border: 1px solid #ffc600;}
 table {border-collapse: collapse;border-spacing: 0;}
+
 a{blr:expression(this.onFocus=this.blur()) } 
 a:focus { -moz-outline-style: none; } 
 a:focus { outline: none; }

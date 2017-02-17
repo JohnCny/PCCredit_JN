@@ -1,24 +1,30 @@
 #parse ("common/iframe_page_header.htm")
 <script src="${contextPath}/common/js/common/jquery.form.js"></script>
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+<style type="text/css">
+.titlefc3{background:#d9edf7;}
+table{border-collapse:collapse;}
+table caption{border-top:1px solid #9dbbda;}
+table tr td{border:1px solid #9dbbda;}
+</style>
 <body>
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				  <div class="dvTab">
-            <ul class="com-tab">
-	            <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/create.page">产品属性</a></li>
-	            <li class="tab">附件清单</li>
-	            <li class="tab">产品规则</li>
-	            <li class="tab">催收规则</li> 
-          <!--  <li class="tab">筛选规则</li> -->
-         </ul>
-        </div>
-			</div>
+        		<div class="title">创建产品</div>
+      		</div>
+      		<div class="tabplace">
+	            <ul class="com-tab">
+		           <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/create.page">产品属性</a></li>
+		            <li class="tab">附件清单</li>
+		            <li class="tab">产品规则</li>
+		            <li class="tab">催收规则</li> 
+		         </ul>
+	         </div>
 			<form id="id_module_form"
 				action="${contextPath}/product/productinformation/insert.json"  method="post">
-				<div class="forms" id="formsId">
-					<table class="rule" border="1" bordercolor="#CCCCCC">
+				<div class="forms" id="formsId" style="padding-top:0;margin-left:-2px;">
+					<table class="rule" style="margin-top:0;">
 					<caption>产品属性</caption>
 						<colgroup>
              			<col width="10%" />
@@ -27,37 +33,37 @@
               			<col width="40%" />
 						</colgroup>
 						<tr>
-							<td><label for="name">产品名称:</label></td>
+							<td class="titlefc3"><label for="name">产品名称:</label></td>
 							<td><input type="text" id="productName" name="productName"
 								value="$!product.productName" /></td>
 							
-							<td><label for="name">贷款用途:</label></td>
+							<td class="titlefc3"><label for="name">贷款用途:</label></td>
 							<td><input type="text" id="purposeLoan" name="purposeLoan"
 								value="$!product.purposeLoan" /></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">产品授信区间:</label></td>
+							<td class="titlefc3"><label for="name">产品授信区间:</label></td>
 							<td><input type="text" id="prodCreditRange" name="prodCreditRange"
 								value="$!product.prodCreditRange" /></td>
 							
-							<td><label for="name">产品期限:</label></td>
+							<td class="titlefc3"><label for="name">产品期限:</label></td>
 						    <td><input type="text" id="prodLimitTime" name="prodLimitTime" 
 						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" 
 						    		   readonly="readonly"/>
 						</tr>
 
 						<tr>
-							<td><label for="name">信用额度:</label></td>
+							<td class="titlefc3"><label for="name">信用额度:</label></td>
 							<td><input type="text" id="creditLine" name="creditLine"
 								value="$!product.creditLine" /></td>
 							
-							<td><label for="name">利率区间(%):</label></td>
+							<td class="titlefc3"><label for="name">利率区间(%):</label></td>
 							<td><input type="text" id="rateRange" name="rateRange"
 								value="$!product.rateRange" /></td>
 						</tr>
 						<tr>
-							<td><label for="name">贷款期限:</label></td>
+							<td class="titlefc3"><label for="name">贷款期限:</label></td>
 							<td>
 							 <select id="type" name="loanTimeLimit">
 							  <option value=""></option>
@@ -100,7 +106,7 @@
                 			  </select>
 							</td>
 							
-							<td><label for="name">产品种类:</label></td>
+							<td class="titlefc3"><label for="name">产品种类:</label></td>
 							<td>
 							   <select id="productTypeCode" name="productTypeCode">
                  			   <option value=""></option>
@@ -112,11 +118,11 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">贷款主体:</label></td>
+							<td class="titlefc3"><label for="name">贷款主体:</label></td>
 							<td><input type="text" id="loanPrincipal" name="loanPrincipal"
 								value="$!product.loanPrincipal" /></td>
 							
-							<td><label for="name">信用(还款）方式:</label></td>
+							<td class="titlefc3"><label for="name">信用(还款）方式:</label></td>
 							<td>
 								<select id="letterPaymentWay" name="letterPaymentWay">
                  			   <option value=""></option>
@@ -127,7 +133,7 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">结息方式:</label></td>
+							<td class="titlefc3"><label for="name">结息方式:</label></td>
 							<td>
 								<select id="numbererestSettlementWay" name="numbererestSettlementWay">
                  			   <option value=""></option>
@@ -135,7 +141,7 @@
                 			  </select>
 								</td>
 							
-							<td><label for="name">担保方式:</label></td>
+							<td class="titlefc3"><label for="name">担保方式:</label></td>
 							<td>
 							 <select id="assureMeans" name="assureMeans">
                  			   <option value=""></option>
@@ -146,11 +152,11 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">罚息:</label></td>
+							<td class="titlefc3"><label for="name">罚息:</label></td>
 							<td><input type="text" id="penaltyNumbererest" name="penaltyNumbererest"
 								value="$!product.penaltyNumbererest" /></td>
 							
-							<td><label for="name">该产品风险容忍度:</label></td>
+							<td class="titlefc3"><label for="name">该产品风险容忍度:</label></td>
 							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
 								value="$!product.productRiskTolerance" /></td>
 					<!-- 	</tr>
@@ -172,7 +178,6 @@
 					value="#i18n('button.cancel')" />
 			</div>
 		</div>
-	</div>
 	<script type="text/javascript">
 	
 	function mySave() {

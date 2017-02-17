@@ -12,53 +12,54 @@
           <table class="rule">
             <colgroup>
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
               <col width="10%" />
-              <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
             </colgroup>
+            <caption>维护计划</caption>
             <tr>
-              <td>客户名称:</td>
+              <td class="titlefc3">客户名称:</td>
               <td><input type="text" value="$!maintenance.chineseName" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>证件号码:</td>
+            
+              <td class="titlefc3">证件号码:</td>
               <td><input type="text" value="$!maintenance.cardId" disabled="disabled" /></td>
             </tr>
             <tr>
-              <td>产品名称:</td>
+              <td class="titlefc3">产品名称:</td>
               <td><input type="text" value="$!maintenance.productName" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>授信金额:</td>
+              
+              <td class="titlefc3">授信金额:</td>
               <td><input type="text" value="$!maintenance.actualQuote" disabled="disabled" /></td>
             </tr>
             <tr>
-              <td>还款方式:</td>
+              <td class="titlefc3">还款方式:</td>
               <td><select id="repayWay" name="repayWay" disabled="disabled">
                     #dict("repayWay",$!maintenance.repayWay)
                   </select></td>
-              <td>&nbsp;</td>
-              <td>还款状态:</td>
+              
+              <td class="titlefc3">还款状态:</td>
               <td><select id="repaStatus" name="repaStatus" disabled="disabled">
                     #dict("repayStatus",$!maintenance.repayStatus)
                   </select></td>
             </tr>
             <tr>
-              <td>维护时间:</td>
+              <td class="titlefc3">维护时间:</td>
               <td><input type="text" value="$!maintenance.maintenanceDay" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>维护方式:</td>
+              
+              <td class="titlefc3">维护方式:</td>
               <td><select disabled="disabled">
               #customerInfo($request.getAttribute('collectionMethodList'),$!maintenance.maintenanceWay)
               </select> </td>
             </tr>
             <tr>
-              <td>维护目标:</td>
+              <td class="titlefc3">维护目标:</td>
               <td><textarea  disabled="disabled" >$!maintenance.maintenanceGoal</textarea></td>
+              <td class="titlefc3"></td><td></td>
             </tr>
           </table>
         </div>
       </form>
-      <div class="inquiry">
+      <div class="inquiry" style="margin-top:-70px">
       <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>

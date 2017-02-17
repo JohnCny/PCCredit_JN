@@ -9,12 +9,12 @@
 				<div class="forms" id="formsId">
 					<input type="hidden" name="id" value="$!role.id" />
 					<table class="rule">
+						<caption>角色信息</caption>
 						<colgroup>
 						    <col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 							<col width="10%" />
-							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 
 						</colgroup>
 						<!-- 
@@ -36,16 +36,16 @@
 							</select>
 							</tr> -->
 						<tr>
-							<td>#mi18n("name"):</td>
+							<td class="titlefc3"><label for="shortName">#mi18n("name"):</label></td>
 							<td><input type="text" id="name" name="name"
 								value="$!role.name" /></td>
-							<td>&nbsp;</td>
-							<td><label for="shortName">#mi18n("shortName"):</label></td>
+							
+							<td class="titlefc3"><label for="shortName">#mi18n("shortName"):</label></td>
 							<td><input type="text" id="shortName" name="shortName"
 								value="$!role.shortName" /></td>
 						</tr>
 						<tr>
-							<td>#mi18n("description"):</td>
+							<td class="titlefc3"><label for="shortName">#mi18n("description"):</label></td>
 							<td colspan="4"><textarea id="description"
 									name="description" rows="5" value="$!role.description">$!role.description</textarea></td>
 						</tr>

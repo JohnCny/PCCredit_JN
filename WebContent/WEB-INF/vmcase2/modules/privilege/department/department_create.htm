@@ -3,14 +3,14 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<form id="id_module_form" action="${contextPath}/system/department/insert.json">
-				<div class="forms" id="formsId">
-					<table class="rule">
+				<div class="forms" id="formsId" style="padding-top:0;">
+					<table class="rule" style="margin-top:0;">
+						<caption>机构信息</caption>
 						<colgroup>
 							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 							<col width="10%" />
-							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 						</colgroup>
 						<!-- 
 						<tr>
@@ -22,26 +22,26 @@
 						</tr>						
 						 -->
 						 <tr>
-							<td><label for="name">#mi18n("name"):</label></td>
+							<td class="titlefc3"><label>#mi18n("name"):</label></td>
 							<td><input type="text" id="name" name="name" value="$!department.name" /></td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
+							
+							<td class="titlefc3">&nbsp;</td>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
 						    <input type="hidden" id="type" name="type" value="$!department.type" />
 						    <input type="hidden" id="parentId" name="parentId" value="$!department.parentId" />
-							<td>#mi18n("shortName"):</td>
+							<td class="titlefc3"><label>#mi18n("shortName"):</label></td>
 							<td><input type="text" id="shortName" name="shortName" value="$!department.shortName" /></td>
-							<td>&nbsp;</td>
-							<td>上级组织:</td>
+							
+							<td class="titlefc3"><label>上级组织:</label></td>
 							<td>
 							<input type="hidden" id="orgId" name="orgId" value="$!department.orgId" />
 							<input type="text" id="parentName" name="parentName" value="$!department.parentName" readonly="readonly"/></td>
 						</tr>
 						<tr>
-							<td>#mi18n("description"):</td>
-							<td colspan="4"><textarea id="description" name="description" rows="5" value="$!department.description"></textarea></td>
+							<td class="titlefc3"><label>#mi18n("description"):</label></td>
+							<td colspan="3"><textarea id="description" name="description" rows="5" value="$!department.description"></textarea></td>
 						</tr>
 					</table>
 				</div>

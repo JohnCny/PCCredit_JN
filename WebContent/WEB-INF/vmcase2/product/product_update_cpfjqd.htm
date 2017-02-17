@@ -1,40 +1,43 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/customerInfor.htm")
   <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+  <style type="text/css">
+    table tr td{padding:0 5px;}
+</style>
 <body>
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				  <div class="dvTab">
-            <ul class="com-tab">
-            <li class="tab"><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
-            <li class="tab activeTab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
-        	<!-- <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
-         </ul>
-        </div>
-			</div>
+        		<div class="title">修改产品</div>
+      		</div>
+      		<div class="tabplace">
+	            <ul class="com-tab">
+		            <li class="tab"><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
+		            <li class="tab activeTab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
+		            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
+		            <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
+		        	<!-- <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
+		         </ul>
+	         </div>
+			
 			<form id="id_module_form" action="${contextPath}/product/productinformation/update_cpfjqd.json">
-				<div class="forms" id="formsId">
+				<div class="forms" id="formsId" style="padding-top:0;margin-left:-2px;">
 					<input type="hidden" name="id" value="$!productId" />
 					<table style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
 						<colgroup>
-						    <col width="5%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
 				
 						</colgroup>
 						<tr>
-                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品附件清单</td>
+                          <td colspan="4" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品附件清单</td>
                          </tr>
                           #set($test=$args)
 					      #set($total = ($accessorie.size()/4)) 
 					    #foreach ($!index in [0 .. $total])
 					      <tr>
-					      <td>&nbsp;</td>
 						  #set($current = $!index * 4 ) 
 						  #if($current<$accessorie.size())
 						     <td><input type="checkbox"  #if($test.contains($accessorie.get($current).typeCode)) checked="checked" #end name="accessorieId" value="$accessorie.get($current).typeCode" /> $accessorie.get($current).typeName</td>
@@ -60,7 +63,7 @@
 		
 			<div class="submit">
 			  <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
-				<input class="current" type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
+				<input type="button" onclick="javascript:history.go(-1);" value="#i18n('button.back')" />
 			</div>
 		</div>
 	</div>

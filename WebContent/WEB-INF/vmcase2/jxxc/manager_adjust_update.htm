@@ -17,78 +17,80 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-			   <div class="dvTab">
-	             <ul class="com-tab">
-	                <li class="tab activeTab" ><a href="${contextPath}/manager/leveladjustment/changeSalary.page?id=${id}">工资</a></li>
+        		<div class="title">四维授信评估模型</div>
+      		</div>
+      		<div class="tabplace">
+	            <ul class="com-tab">
+		             <li class="tab activeTab" ><a href="${contextPath}/manager/leveladjustment/changeSalary.page?id=${id}">工资</a></li>
 	             </ul>
-       		   </div>
-			</div>
+	         </div>
+		   	
 			<form id="id_module_form" action="${contextPath}/manager/leveladjustment/updateManagerSalary.json"  method="post">
-				<div class="forms" id="formsId">
+				<div class="forms" id="formsId" style="padding-top:0;">
 					<input type="hidden" name="id" value="$!id" />
-					<table class="rule">
+					<table class="rule" style="margin-top:0;margin-left:-2px;">
+						<caption style="border-top: 1px solid #9dbbda;">工资信息</caption>
 						<colgroup>
 							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 			 				<col width="10%" />
-							<col width="10%" />
-							<col width="30%" />
+							<col width="40%" />
 						</colgroup>
 						<tr>
-							<td><label for="name">客户姓名:</label></td>
+							<td class="titlefc3"><label for="name">客户姓名:</label></td>
 							<td><input type="text" id="managerName" name="managerName"
 								value="$!salary.managerName" disabled="disabled"/></td>
-							<td></td>
-							<td><label for="name">所属机构:</label></td>
+							
+							<td class="titlefc3"><label for="name">所属机构:</label></td>
 							<td><input type="text" id="instCode" name="instCode"
 								value="$!salary.instCode" disabled="disabled"/></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">年份:</label></td>
+							<td class="titlefc3"><label for="name">年份:</label></td>
 							<td><input type="text" id="year" name="year"
 								value="$!salary.year" disabled="disabled"/></td>
-							<td></td>
-							<td><label for="name">月份:</label></td>
+							
+							<td class="titlefc3"><label for="name">月份:</label></td>
 							<td><input type="text" id="month" name="month"
 								value="$!salary.month" disabled="disabled"/></td>
 						</tr>
 						
 						
 						<tr>
-							<td><label for="name">基本工资:</label></td>
+							<td class="titlefc3"><label for="name">基本工资:</label></td>
 							<td><input type="text" id="basePay" name="basePay"
 								value="$!salary.basePay" disabled="disabled"/></td>
-							<td></td>
-							<td><label for="name">基础任务量奖金(外聘):</label></td>
+							
+							<td class="titlefc3"><label for="name">基础任务量奖金(外聘):</label></td>
 							<td><input type="text" id="basicTaskBonus" name="basicTaskBonus"
 								value="$!salary.basicTaskBonus" disabled="disabled"/></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">岗位津贴(风险岗):</label></td>
+							<td class="titlefc3"><label for="name">岗位津贴(风险岗):</label></td>
 							<td><input type="text" id="subsidies" name="subsidies"
 								value="$!salary.subsidies" disabled="disabled"/></td>
-							<td></td>
+							<td class="titlefc3"></td><td></td>
 						</tr>
 						
 						
 						<tr>
-							<td><label for="name">贷款业务绩效:</label></td>
+							<td class="titlefc3"><label for="name">贷款业务绩效:</label></td>
 							<td><input type="text" id="rewardIncentiveInformation" name="rewardIncentiveInformation"
 								value="$!salary.rewardIncentiveInformation" disabled="disabled"/></td>
-							<td></td>
-							<td><label for="name">业务量绩效:</label></td>
+							
+							<td class="titlefc3"><label for="name">业务量绩效:</label></td>
 							<td><input type="text" id="volumePerformance" name="volumePerformance"
 								value="$!salary.volumePerformance" disabled="disabled"/></td>
 						</tr>
 						
 						<tr>
-							<td><label for="name">利润提成:</label></td>
+							<td class="titlefc3"><label for="name">利润提成:</label></td>
 							<td><input type="text" id="profitDraw" name="profitDraw"
 								value="$!salary.profitDraw" disabled="disabled"/></td>
-							<td></td>
-							<td><label for="name">逾期扣款:</label></td>
+							
+							<td class="titlefc3"><label for="name">逾期扣款:</label></td>
 							<td><input type="text" id="overdueDeduct" name="overdueDeduct"
 								value="$!salary.overdueDeduct" disabled="disabled"/></td>
 						</tr>
@@ -96,19 +98,19 @@
 						
 						
 						<tr>
-							<td><label for="name">风险准备金余额:</label></td>
+							<td class="titlefc3"><label for="name">风险准备金余额:</label></td>
 							<td><input type="text" id="riskReserveBalances" name="riskReserveBalances"
 								value="$!salary.riskReserveBalances" disabled="disabled"/></td>
-							<td></td>
+							<td class="titlefc3"></td><td></td>
 						</tr>
 						
 						
 						<tr>
-							<td><label for="name">新增风险保证金:</label></td>
+							<td class="titlefc3"><label for="name">新增风险保证金:</label></td>
 							<td><input type="text" id="insertPrepareAmount" name="insertPrepareAmount"
 								value="$!salary.insertPrepareAmount" disabled="disabled"/></td>
-							<td></td>
-							<td><label for="name">返还的风险保证金:</label></td>
+							
+							<td class="titlefc3"><label for="name">返还的风险保证金:</label></td>
 							<td><input type="text" id="returnPrepareAmount" name="returnPrepareAmount"
 								value="$!salary.returnPrepareAmount" disabled="disabled"/></td>
 						</tr>

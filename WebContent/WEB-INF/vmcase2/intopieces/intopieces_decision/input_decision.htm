@@ -32,6 +32,7 @@
               <td class="titlefc3"><label for="applyQuota">申请额度(元):</label></td>
 	          <td><input  type="text" class="rinpsty" name="applyQuota" id="applyQuota" 
 	              value="$!customerApplicationInfo.applyQuota" disabled="disabled"/></td>
+	          <td class="titlefc3"></td><td></td>
               </tr>
               <tr>
               <td class="titlefc3"><span style="color:red">*</span><label for="prodName" style="color:red">产品名称:</label></td>
@@ -68,6 +69,7 @@
             <tr>
 			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
               <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!appManagerAuditLog.userId_3" disabled="disabled"/></td>
+              <td class="titlefc3"></td><td></td>
             </tr>
           </table>
          </div>
@@ -136,6 +138,7 @@
             <tr>
             	<td  class="titlefc3"><label id ="beiZhu" for="beiZhu">备注:</label></td>
 				<td><textarea style="width: 300px;" name="beiZhu" id="beiZhu">$!appManagerAuditLog.beiZhu</textarea></td>
+				<td class="titlefc3"></td><td></td>
             </tr>
             <tr style="display :none">
               <td  class="titlefc3"><label id ="reason" for=reason>原因:</label></td>
@@ -145,9 +148,7 @@
         </div>
       </form>
       <div class="submit">
-      	<a id="id_image_button" class="btn_g" href="javascript:void(0);" title=导入审贷会纪要">导入审贷会纪要</a>
-      </div>
-      <div class="submit">
+      	<input id="id_image_button" type="button" class="current" value="导入审贷会纪要" style="width:100px;"/>      
       #if($!customerApplicationInfo.status=='audit')
         <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
       #end
