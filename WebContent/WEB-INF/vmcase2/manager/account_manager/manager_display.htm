@@ -18,19 +18,20 @@
               <col width="40%" />
             </colgroup>
             <tr>
-            <td><label for="userId">客户经理姓名：</label></td>
+            <td class="titlefc3"><label for="userId">客户经理姓名：</label></td>
               <td><input type="hidden" id="userId" name="userId" value="$!accountManagerParameter.userId" >
                   <input type="text" id ="displayName" name="displayName" readonly="readonly" value="$!displayName">
                 </td>
-                 <td><label for="levelInformation">客户经理层级信息:</label></td>
+                 <td class="titlefc3"><label for="levelInformation">客户经理层级信息:</label></td>
               <td>  <select disabled="disabled" class="rinpsty"  id="levelInformation" name="levelInformation" >
                  			   <option value=""></option>
                 			    #dict("CUSTOMERMANAGERLEVEL","$!accountManagerParameter.levelInformation")
               </td>
              </tr>
               <tr>
-              <td><label for="entryTime">入职时间:</label></td>
+              <td class="titlefc3"><label for="entryTime">入职时间:</label></td>
              <td><input type="text" id="entryTime" name="entryTime" value="$!date.format("yyyy-MM-dd",$!accountManagerParameter.entryTime)" onmouseover="_calendar()" disabled="disabled"/></td>
+             <td class="titlefc3"></td><td></td>
               <!-- <td><label for="basePay">底薪:</label></td>
              <td><input class="rinpsty"  type="text" id="basePay" name="basePay" value="$format.formatNumber($!accountManagerParameter.basePay,2,100)" readonly="readonly"/></td> -->
             </tr>

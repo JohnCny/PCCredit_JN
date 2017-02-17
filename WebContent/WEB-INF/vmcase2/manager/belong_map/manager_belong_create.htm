@@ -3,24 +3,23 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<form id="id_module_form" action="${contextPath}/manager/belongmap/insert.json">
-				<div class="forms" id="formsId">
-					<table class="rule">
+				<div class="forms" id="formsId" style="padding-top:0;">
+					<table class="rule" style="margin-top:0;">
 						<colgroup>
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
-							<col width="10%" />
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
 						</colgroup>
+						<caption>客户经理信息</caption>
 						<tr>
-							<td><label for="childId">客户经理:</label></td>
+							<td class="titlefc3"><label for="childId">客户经理:</label></td>
 							<td>
 							  <select id="childId" name="childId">
 			                    #dict("CONGSHUMANAGER", '')
 			                  </select>
 			                </span></td>
-							<td>&nbsp;</td>
-							<td>归属客户经理:</td>
+							<td class="titlefc3"><label for="">客归属客户经理:</label></td>
 							<td>
 							<input type="hidden" id="parentId" name="parentId" value="$!organization.parentId" />
 							<input type="text" id="userName" name="userName" value="$!organization.userName" readonly="readonly"/></td>

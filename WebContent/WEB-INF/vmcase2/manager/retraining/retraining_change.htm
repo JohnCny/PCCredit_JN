@@ -17,31 +17,31 @@
               <col width="40%" />
             </colgroup>
             <tr>
-              <td><label>培训目标:</label></td>
+              <td class="titlefc3"><label>培训目标:</label></td>
               <td>
               	<input type="text" id="trainingObjective" name="trainingObjective" value="$!retraining.trainingObjective" />
              
-              <td><label>培训方式:</label></td>
+              <td class="titlefc3"><label>培训方式:</label></td>
               <td>
               	<input type="text" id="trainingMethod" name="trainingMethod" value="$!retraining.trainingMethod" />
               </td>
             </tr>
             <tr>
-              <td><label>培训地点:</label></td>
+              <td class="titlefc3"><label>培训地点:</label></td>
               <td>
               	<input type="text" id="trainingLocation" name="trainingLocation" value="$!retraining.trainingLocation" />
              
-              <td><label>培训时间:</label></td>
+              <td class="titlefc3"><label>培训时间:</label></td>
               <td>
               	<input type="text" name="trainingTime" id="trainingTime"  value="$!date.format("yyyy-MM-dd", $!retraining.trainingTime)" onmouseover="_calendar()"/>
               </td>
             </tr>
             <tr>
-              <td><label>实施人:</label></td>
+              <td class="titlefc3"><label>实施人:</label></td>
               <td>
               	<input type="text" id="trainingPeople" name="trainingPeople" value="$!retraining.trainingPeople" />
              
-              <td><label>是否废弃:</label></td>
+              <td class="titlefc3"><label>是否废弃:</label></td>
               <td>
               	<input type="radio" name="whetherAbandoned" value="false" #if($!retraining.whetherAbandoned == "false") checked #end/>否
 				    &nbsp;&nbsp;&nbsp;
@@ -49,7 +49,7 @@
               </td>
             </tr>
             <tr>
-              <td><label>培训内容:</label></td>
+              <td class="titlefc3"><label>培训内容:</label></td>
               <td colspan="4">
                <textarea id="trainingContent" name="trainingContent" rows="3">$!retraining.trainingContent</textarea>
               </td>

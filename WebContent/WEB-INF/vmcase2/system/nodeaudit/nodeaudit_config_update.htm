@@ -14,23 +14,23 @@
           <table class="rule">
             <colgroup> 
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
               <col width="10%" />
-              <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
             </colgroup>
+            <caption>审批流程节点</caption>
             <tr>
-              <td><label for="seqNo">序号:</label></td>
+              <td class="titlefc3"><label for="seqNo">序号:</label></td>
               <td><input type="text" id="seqNo" name="seqNo" value="$!nodeAudit.seqNo"/></td>
-              <td>&nbsp;</td>
-              <td><label for="nodeName">节点名称:</label></td>
+             
+              <td class="titlefc3"><label for="nodeName">节点名称:</label></td>
               <td><input type="text" id="nodeName" name="nodeName" value="$!nodeAudit.nodeName"/></td>
             </tr>
             <tr>
-              <td><label for="auditUserNames">审批人员:</label></td>
+              <td class="titlefc3"><label for="auditUserNames">审批人员:</label></td>
               <td><input type="text" id="auditUserNames" name="auditUserNames" value="$!nodeAudit.auditUserNames" onclick="selectNodeConfigUsers()" readonly="readonly"/></td>
-              <td>&nbsp;</td>
-              <td><label for="nodeTypeView">节点类型:</label></td>
+              
+              <td class="titlefc3"><label for="nodeTypeView">节点类型:</label></td>
               <td>
                <select id="nodeTypeView" name="nodeTypeView" disabled="disabled">
                 #dict("NODETYPE", $!nodeType)
@@ -38,14 +38,13 @@
               </td>
             </tr>
             <tr>
-              <td><label for="isstart">是否开始节点:</label></td>
+              <td class="titlefc3"><label for="isstart">是否开始节点:</label></td>
               <td>
               	<select id="isstart" name="isstart">
                 #dict("YESNO", $!nodeAudit.isstart)
                 </select>
               </td>
-              <td>&nbsp;</td>
-              <td><label for="isend">是否结束节点:</label></td>
+              <td class="titlefc3"><label for="isend">是否结束节点:</label></td>
               <td>
                <select id="isend" name="isend">
                 #dict("YESNO", $!nodeAudit.isend)
@@ -53,13 +52,13 @@
               </td>
             </tr>
             <tr>
-              <td><label for="type">节点操作类型:</label></td>
+              <td class="titlefc3"><label for="type">节点操作类型:</label></td>
               <td>
                <select id="type" name="type">
                 #dict("NODEOPTYPE", $!nodeAudit.type)
                </select>
               </td>
-              <td colspan="3">&nbsp;</td>
+              <td  class="titlefc3">&nbsp;</td><td></td>
             </tr>
           </table>
         </div>

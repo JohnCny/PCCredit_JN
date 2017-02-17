@@ -9,6 +9,11 @@
 
 #n{margin:10px auto; width:920px; border:1px solid #CCC;font-size:12px; line-height:30px;}
 #n a{ padding:0 4px; color:#333}
+
+.titlefc3{background:#d9edf7;}
+table{border-collapse:collapse;}
+table caption{border-top:1px solid #9dbbda;}
+table tr td{border:1px solid #9dbbda;}
 </style>
 <script type="text/javascript" src="${contextPath}/common/js/common/tinybox.js"></script>
 <script src="${contextPath}/common/js/common/jquery.form.js"></script>
@@ -17,43 +22,42 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				  <div class="dvTab">
-            <ul class="com-tab">
-            <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
-            <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
-            <!-- <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
-         </ul>
-        </div>
-			</div>
+        		<div class="title">修改产品</div>
+      		</div>
+      		<div class="tabplace">
+	            <ul class="com-tab">
+		           <li class="tab activeTab" ><a href="${contextPath}/product/productinformation/change.page?id=${productId}">产品属性</a></li>
+		            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpfjqd.page?id=${productId}">附件清单</a></li>
+		            <li class="tab"><a href="${contextPath}/product/productinformation/change_cpgz.page?id=${productId}">产品规则</a></li>
+		            <li class="tab"><a href="${contextPath}/product/productinformation/change_csgz.page?id=${productId}">催收规则</a></li>
+		            <!-- <li class="tab"><a href="${contextPath}/product/productinformation/change_cpsxgz.page?id=${productId}">筛选规则</a></li> -->
+		         </ul>
+	         </div>
 			<form id="id_module_form" action="${contextPath}/product/productinformation/update.json"  method="post">
-				<div class="forms" id="formsId">
+				<div class="forms" id="formsId" style="padding-top:0;margin-left:-2px;">
 					<input type="hidden" name="id" value="$!product.id" />
-					<table class="rule">
+					<table class="rule" style="margin-top:0;">
+					<caption>产品属性</caption>
 						<colgroup>
-							<col width="10%" />
-							<col width="30%" />
-			 				<col width="10%" />
-							<col width="10%" />
-							<col width="30%" />
+             			<col width="10%" />
+              			<col width="40%" />
+             			<col width="10%" />
+              			<col width="40%" />
 						</colgroup>
 						<tr>
-							<td><label for="name">产品名称:</label></td>
+							<td class="titlefc3"><label for="name">产品名称:</label></td>
 							<td><input type="text" id="productName" name="productName"
 								value="$!product.productName" /></td>
-							<td></td>
-							<td><label for="name">贷款用途:</label></td>
+							<td class="titlefc3"><label for="name">贷款用途:</label></td>
 							<td><input type="text" id="purposeLoan" name="purposeLoan"
 								value="$!product.purposeLoan" /></td>
 						</tr>
 						
 					    <tr>
-							<td><label for="name">产品授信区间:</label></td>
+							<td class="titlefc3"><label for="name">产品授信区间:</label></td>
 							<td><input type="text" id="prodCreditRange" name="prodCreditRange"
 								value="$!product.prodCreditRange" /></td>
-							<td></td>
-							<td><label for="name">产品期限:</label></td>
+							<td class="titlefc3"><label for="name">产品期限:</label></td>
 						    <td><input type="text" id="prodLimitTime" name="prodLimitTime" 
 						   			   value="$!date.format('yyyy-MM-dd HH:mm:ss',$!product.prodLimitTime)"
 						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"
@@ -61,16 +65,15 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">信用额度:</label></td>
+							<td class="titlefc3"><label for="name">信用额度:</label></td>
 							<td><input type="text" id="creditLine" name="creditLine"
 								value="$!product.creditLine" /></td>
-							<td></td>
-							<td><label for="name">利率区间(%):</label></td>
+							<td class="titlefc3"><label for="name">利率区间(%):</label></td>
 							<td><input type="text" id="rateRange" name="rateRange"
 								value="$!product.rateRange" /></td>
 						</tr>
 						<tr>
-								<td><label for="name">贷款期限:</label></td>
+								<td class="titlefc3"><label for="name">贷款期限:</label></td>
 							<td>
 							 <select id="type" name="loanTimeLimit">
 							  <option value="$!product.loanTimeLimit"></option>
@@ -112,8 +115,7 @@
                 			                			<option  #if($!product.loanTimeLimit == "36个月") selected="selected" #end value="36个月">36个月</option>
                 			  </select>
                 			  </td>
-							<td></td>
-							<td><label for="name">产品种类:</label></td>
+							<td class="titlefc3"><label for="name">产品种类:</label></td>
 							<td>
 							   <select id="productTypeCode" name="productTypeCode">
                  			   <option value=""></option>
@@ -125,11 +127,10 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">贷款主体:</label></td>
+							<td class="titlefc3"><label for="name">贷款主体:</label></td>
 							<td><input type="text" id="loanPrincipal" name="loanPrincipal"
 								value="$!product.loanPrincipal" /></td>
-							<td></td>
-							<td><label for="name">信用(还款）方式:</label></td>
+							<td class="titlefc3"><label for="name">信用(还款）方式:</label></td>
 							<td>
 								<select id="letterPaymentWay" name="letterPaymentWay">
                  			   <option value=""></option>
@@ -139,7 +140,7 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">结息方式:</label></td>
+							<td class="titlefc3"><label for="name">结息方式:</label></td>
 							<td>
 								<select id="numbererestSettlementWay" name="numbererestSettlementWay">
                  			   <option value=""></option>
@@ -147,8 +148,7 @@
                 			  </select>
 								
 								</td>
-							<td></td>
-							<td><label for="name">担保方式:</label></td>
+							<td class="titlefc3"><label for="name">担保方式:</label></td>
 							<td>
 								 <select id="assureMeans" name="assureMeans">
                  			   <option value=""></option>
@@ -159,11 +159,10 @@
 						</tr>
 
 						<tr>
-							<td><label for="name">罚息:</label></td>
+							<td class="titlefc3"><label for="name">罚息:</label></td>
 							<td><input type="text" id="penaltyNumbererest" name="penaltyNumbererest"
 								value="$!product.penaltyNumbererest" /></td>
-							<td></td>
-							<td><label for="name">该产品风险容忍度:</label></td>
+							<td class="titlefc3"><label for="name">该产品风险容忍度:</label></td>
 							<td><input type="text" id="productRiskTolerance" name="productRiskTolerance"
 								value="$!product.productRiskTolerance" /></td>
 						</tr>
@@ -186,7 +185,7 @@
 		
 			<div class="submit">
 			  <input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
-				<input class="current" type="button" onclick="toBrowse();" value="#i18n('button.back')" />
+				<input type="button" onclick="toBrowse();" value="#i18n('button.back')" />
 			</div>
 		</div>
 	</div>

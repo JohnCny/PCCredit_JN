@@ -17,7 +17,7 @@
       <form id="id_module_form" action="${contextPath}/product/productinformation/updateBaseCustomer.json"  method="post">
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <input type="hidden" id="id" name="id" value="$!{customerNm}" />
-          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 90%">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%">
             <colgroup>
               <col width="10%" />
               <col width="30%" />
@@ -68,7 +68,7 @@
         </div>
       </form>
       <div class="submit">
-     		<input type="button" onclick="updateClick();" value="修改" />
+     		<input type="button" onclick="updateClick();" value="修改" class="current"/>
  			<input type="button" onclick="returnClick();" value="返回" />
  			
       </div>

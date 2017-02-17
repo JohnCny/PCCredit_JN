@@ -5,6 +5,7 @@
 <script src="${contextPath}/common/js/common/Stack.js"></script>
 <script src="${contextPath}/common/js/common/Tokanizer.js"></script>
 <script src="${contextPath}/common/js/common/Evaluator.js"></script>
+<script src="${contextPath}/common/js/common/EditCell.js"></script>
 <script type="text/javascript">
 	var rules = [
 	            ]
@@ -38,23 +39,23 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">调查报告>固定资产</div>
+        <div class="title">调查报告>建议</div>
       </div>
         <div class="tabplace">
             <ul class="com-tab" >
-            <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=${appId}&urlType=${urlType}">建议</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=${appId}&urlType=${urlType}">建议</a></li>
 			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jjbs.page?appId=${appId}&urlType=${urlType}">进件标识</a></li> -->
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jbzk.page?appId=${appId}&urlType=${urlType}">基本状况</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_fz.page?appId=${appId}&urlType=${urlType}">资产负债</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_bzlrb.page?appId=${appId}&urlType=${urlType}">标准利润</a></li>
-	<!-- 		<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyyw.page?appId=${appId}&urlType=${urlType}">主营业务明细</a></li> -->
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_zyyw.page?appId=${appId}&urlType=${urlType}">主营业务明细</a></li> -->
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_xjllb.page?appId=${appId}&urlType=${urlType}">现金流</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jc.page?appId=${appId}&urlType=${urlType}">交叉</a></li>
-<!-- 			<li class="tab "><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li>
- -->			<li class="tab activeTab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_gdzc.page?appId=${appId}&urlType=${urlType}">固资</a></li>
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_dhd.page?appId=${appId}&urlType=${urlType}">点货单</a></li> -->
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_gdzc.page?appId=${appId}&urlType=${urlType}">固资</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_yfys.page?appId=${appId}&urlType=${urlType}">应付预收</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ysyf.page?appId=${appId}&urlType=${urlType}">应收预付</a></li>
-		<!-- 	<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lsfx.page?appId=${appId}&urlType=${urlType}">流水</a></li>
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lsfx.page?appId=${appId}&urlType=${urlType}">流水</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_lrjb.page?appId=${appId}&urlType=${urlType}">利润简表</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_jyzt.page?appId=${appId}&urlType=${urlType}">经营状态</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_sczt.page?appId=${appId}&urlType=${urlType}">生存状态</a></li>
@@ -63,8 +64,14 @@
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddtjy.page?appId=${appId}&urlType=${urlType}">抵贷通经营表</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddtxf.page?appId=${appId}&urlType=${urlType}">抵贷通消费表</a></li>
 			
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/imageImport.page?applicationId=${appId}&urlType=${urlType}">影像资料</a></li>
+			<li class="tab"><a  href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">审批记录</a></li>
+			<li class="tab"><a  href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory2('NO')">审议结论</a></li>
+			<!-- <li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddtxf.page?appId=${appId}&urlType=${urlType}">补充调查</a></li>
+			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddtxf.page?appId=${appId}&urlType=${urlType}">影像补扫</a></li> -->
          </ul>
-      </div>
+         </div>
+      <div class="tabplace"></div>
       <form id="id_module_form">
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>
       </form>
@@ -75,9 +82,9 @@
       #if($!urlType==1)
         <input type="button" onclick="window.location.href='${contextPath}/intopieces/intopiecesquery/browse.page'" value="返回" />
       #else
-   	    <input type="button" onclick="javascript:history.back();" value="返回" />
-<!--       	<input type="button" onclick="window.location.href='${contextPath}/customer/customerInfor_wh_ty/browse.page'" value="返回" />
- -->      #end
+      <a href="javascript:history.back();" class="btn_g">返回</a>
+      	<!-- <input type="button" onclick="window.location.href='${contextPath}/customer/customerInfor_wh_ty/browse.page'" value="返回" />  -->
+      #end
       </div>
     </div>
   </div>
@@ -87,11 +94,44 @@
 	#set ($formName = "'#id_module_form'")
 	#parse ("customer/customerInfor_wh_ty/customer_iframe_1_change_validation.js")
 	
+	
+	function viewIntoPicesApproveHistory(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			
+		});
+			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id=${appId}&ifHideUser="+"NO"+"&dataType=application";
+			Dialog.table(url, "审批历史", "get", null, 800, 340);
+	}
+	
+	
+	//审议结论
+	function viewIntoPicesApproveHistory2(ifHideUser){
+		var id = null;
+		$("input[name='checkbox']:checked").each(function() {
+			id = $(this).val().split("@")[0];
+			
+		});
+			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureFormById.page?id=${appId}";
+			window.location.href = url;
+	}
+	
 	$(document).ready(function() {		
 		$("#id_save_button").click(function() {
+			var applyQuota=$("td[name='E3']").text();
+			applyQuota=money(applyQuota);
+			
+			//正则表达式判断是否是整数
+			var number = /^[0-9]*$/;
+			if(!number.test(applyQuota)){
+				alert("申请金额格式有误！");
+				return;
+			}
+			
 			var b = new Base64(); 
 			var content = {'content':b.encode($("#formsId").html())};
-			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_gdzc.json?appId=${appId}";
+			var url = "${contextPath}/customer/customerInfor_wh_ty/change_report_jy.json?appId=${appId}&applyQuota="+applyQuota;
 			$.ajax({
 				 url : url,
 				 type : "post",
@@ -159,6 +199,13 @@
 				exp.Reset();
 			}
 		});
+		function money(str){
+			var b=str.substring(str.length-1,str.length);
+			if(b=="元"){
+			str=str.substring(0,str.length-1);
+			}
+			return str;
+		}
 	});
   </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>

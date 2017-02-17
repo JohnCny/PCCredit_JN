@@ -1,42 +1,48 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/macro.htm")
   <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+   <style type="text/css">
+.titlefc3{background:#d9edf7;}
+table{border-collapse:collapse;}
+table caption{border-top:1px solid #9dbbda;}
+table tr td{border:1px solid #9dbbda;}
+</style>
 <body>
 
 	<div class="content_main">
 		<div class="contentinner">
-		 <div class="place">
-			 <div class="dvTab">
+		 	<div class="place">
+        		<div class="title">创建产品</div>
+      		</div>
+      		<div class="tabplace">
 	            <ul class="com-tab">
 		            <li class="tab">产品属性</li>
 		            <li class="tab">附件清单</li>
 		            <li class="tab activeTab"><a href="#">产品规则</a></li>
 		            <li class="tab">催收规则</li>
 		       <!-- <li class="tab">筛选规则</li> -->
-	           </ul>
-	         </div>  
-		</div>
+		         </ul>
+	         </div>
+	           
 			<form id="id_module_form"
 				action="${contextPath}/product/association/marketing_insert.json">
 				<input type="hidden" id="productId" name="productId" value="${productId}">
 				
-				<div class="forms" id="formsId">
+				<div class="forms" id="formsId" style="padding-top:0;margin-left:-2px;">
 				 
-					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
-						<colgroup>
-							<col width="10%" />
+					<table class="table-bd"  style="width: 100%">
+						<colgroup>							
+							<col width="20%" />
 							<col width="30%" />
-							<col width="10%" />
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
 						</colgroup>
 						<caption>产品营销规则</caption>
 						<tr>
-							<td><label for="name">营销时间(几天内):</label></td>
+							<td class="titlefc3"><label for="name">营销时间(几天内):</label></td>
 							<td><input type="text" id="marketingTime" name="marketingTime"
 								value="" /></td>
-							<td></td>
-							<td><label for="name">营销方式:</label></td>
+							<td class="titlefc3"><label for="name">营销方式:</label></td>
 							<td>	 <select id="marketingMethod" name="marketingMethod">
 							    #customerInfo($request.getAttribute("collectionMethodList"),'')
                 			  </select></td>
@@ -44,19 +50,17 @@
 					</table>
 					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
 						<colgroup>
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
-							<col width="10%" />
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
 						</colgroup>
 						<caption>产品维护规则</caption>
 						<tr>
-							<td><label for="name">维护时间(几天内):</label></td>
+							<td class="titlefc3"><label for="name">维护时间(几天内):</label></td>
 							<td><input type="text" id="day" name="day"
 								value="" /></td>
-							<td></td>
-							<td><label for="name">维护方式:</label></td>
+							<td class="titlefc3"><label for="name">维护方式:</label></td>
 							<td>	 <select id="maintenanceWay" name="maintenanceWay">
 							    #customerInfo($request.getAttribute("collectionMethodList"),'')
                 			  </select></td>
@@ -64,83 +68,75 @@
 					</table>
 					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
 						<colgroup>
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
-							<col width="10%" />
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
 						</colgroup>
 						<caption>产品问责规则</caption>
 						<tr>
-							<td><label for="name">账龄:</label></td>
+							<td class="titlefc3"><label for="name">账龄:</label></td>
 							<td><input type="text" id="aging" name="aging"
 								value="" /></td>
-							<td></td>
-							<td><label for="name">逾期天数:</label></td>
+							<td class="titlefc3"><label for="name">逾期天数:</label></td>
 							<td><input type="text" id="overdueDay" name="overdueDay"
 								value="" /></td>
 						</tr>
 						<tr>
-							<td><label for="name">逾期金额:</label></td>
+							<td class="titlefc3"><label for="name">逾期金额:</label></td>
 							<td><input type="text" id="overdueAmount" name="overdueAmount"
 								value="" /></td>
-							<td></td>
-							<td><label for="name">累计逾期次数:</label></td>
+							<td class="titlefc3"><label for="name">累计逾期次数:</label></td>
 							<td><input type="text" id="overdueTotalTime" name="overdueTotalTime"
 								value="" /></td>
 						</tr>
 						<tr>
-							<td><label for="name">累计逾期金额:</label></td>
+							<td class="titlefc3"><label for="name">累计逾期金额:</label></td>
 							<td><input type="text" id="overdueTotalAmount" name="overdueTotalAmount"
 								value="" /></td>
-							
+							<td class="titlefc3"></td><td></td>
 						</tr>
 					</table>
 					
 					
 					<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
 						<colgroup>
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
-							<col width="10%" />
-							<col width="10%" />
+							<col width="20%" />
 							<col width="30%" />
 						</colgroup>
 					<caption>产品奖励激励参数</caption>
 						<tr>
-							<td><label for="name">奖励收益基数参数-循环利息收入:</label></td>
+							<td class="titlefc3"><label for="name">奖励收益基数参数-循环利息收入:</label></td>
 							<td><input type="text" id="nterestIncomeParameter" name="nterestIncomeParameter"
 								value="" /></td>
-								<td></td>
-								<td><label for="name">奖励收益基数参数-手续费:</label></td>
+								<td class="titlefc3"><label for="name">奖励收益基数参数-手续费:</label></td>
 							<td><input type="text" id="feeSparameter" name="feeSparameter"
 								value="" /></td>
 							
 						</tr>
 						<tr>
 						
-							<td><label for="name">奖励收益基数参数-滞纳金:</label></td>
+							<td class="titlefc3"><label for="name">奖励收益基数参数-滞纳金:</label></td>
 							<td><input type="text" id="parametersFine" name="parametersFine"
 								value="" /></td>
-								<td></td>
-								<td><label for="name">奖励收益基数参数-年费:</label></td>
+								<td class="titlefc3"><label for="name">奖励收益基数参数-年费:</label></td>
 							<td><input type="text" id="parametersAnnualFee" name="parametersAnnualFee"
 								value="" /></td>
 						</tr>
 						<tr>
 							
-							<td><label for="name">扣除项参数-资金成本:</label></td>
+							<td class="titlefc3"><label for="name">扣除项参数-资金成本:</label></td>
 							<td><input type="text" id="parametersCost" name="parametersCost"
 								value="" /></td>
-									<td></td>
-										<td><label for="name">扣除项参数-风险成本:</label></td>
+										<td class="titlefc3"><label for="name">扣除项参数-风险成本:</label></td>
 							<td><input type="text" id="parametersRiskCost" name="parametersRiskCost"
 								value="" /></td>
 						</tr>
 					</table>
 						<table class="table-bd"  bordercolor="#cccccc" border="1" style="width: 100%">
 						<colgroup>
-							<col width="25%" />
 							<col width="25%" />
 							<col width="25%" />
 							<col width="25%" />
@@ -155,10 +151,10 @@
 		     #foreach($dict in $!dictItems)
 		     #set($total = $!{dictItems.size()}) 
                <tr>
-               <td ><input type="hidden" name="customerManagerLevel$!{velocityCount}" value="$!dict.name">$!dict.title</td>
-               <td><input  type="text" id="creditLine" name="creditLine$!{velocityCount}" value="" /></td>
-               <td><input  type="text" id="marginExtractInfo" name="marginExtractInfo$!{velocityCount}" value="" /></td>
-               <td><input  type="text" id="riskToleranceInformation" name="riskToleranceInformation$!{velocityCount}" value="" /></td>
+               <td style="text-align:center"><input type="hidden" name="customerManagerLevel$!{velocityCount}" value="$!dict.name"><b>$!dict.title</b></td>
+               <td style="text-align:center"><input  type="text" id="creditLine" name="creditLine$!{velocityCount}" value="" /></td>
+               <td style="text-align:center"><input  type="text" id="marginExtractInfo" name="marginExtractInfo$!{velocityCount}" value="" /></td>
+               <td style="text-align:center"><input  type="text" id="riskToleranceInformation" name="riskToleranceInformation$!{velocityCount}" value="" /></td>
              </tr>
             #end
 					

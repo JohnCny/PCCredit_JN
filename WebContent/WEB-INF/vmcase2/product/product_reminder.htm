@@ -1,30 +1,37 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/macro.htm")
   <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+  <style type="text/css">
+.titlefc3{background:#d9edf7;}
+table{border-collapse:collapse;}
+table tr td,table tr th{border:1px solid #9dbbda;}
+table tr th{padding:5px;}
+</style>
 <body>
 
 	<div class="content_main">
 		<div class="contentinner">
-        <div class="place">
-	      <div class="dvTab">
-            <ul class="com-tab">
-	            <li class="tab">产品属性</li>
-	            <li class="tab">附件清单</li>
-	            <li class="tab">产品规则</li>
-	            <li class="tab activeTab"><a href="#">催收规则</a></li> 
-	       <!-- <li class="tab">筛选规则</li> -->
-           </ul>
-         </div>  
-	   </div>
-			
+        	<div class="place">
+        		<div class="title">创建产品</div>
+      		</div>
+      		<div class="tabplace">
+	            <ul class="com-tab">
+		             <li class="tab">产品属性</li>
+		            <li class="tab">附件清单</li>
+		            <li class="tab">产品规则</li>
+		            <li class="tab activeTab"><a href="#">催收规则</a></li> 
+		       <!-- <li class="tab">筛选规则</li>  -->
+		         </ul>
+	         </div>
+           
 			<form id="id_module_form" action="${contextPath}/product/association/collection_rules_insert.json">
 				<input type="hidden" id="productId" name="productId" value="${productId}">
 				
 				<div class="forms" id="formsId">
-					<div>
-                     <label for="">催收类型:</label>
-					 <input id="AccountAge" type="radio" value="age" name="reminderClass" onclick="age()" checked/>账龄
-                     <input id="OutOfDate" type="radio" value="date" name="reminderClass" onclick="date()"/>逾期天数
+					<div style="background:#135AA4;padding:5px;color:#fff;border-top:1px solid #9dbbda;font-size:16px;margin-top:-15px;text-align:center;">
+                    	催收类型：
+					 <label for=""><input id="AccountAge" type="radio" value="age" name="reminderClass" onclick="age()" checked/>账龄</label>
+                     <label for=""><input id="OutOfDate" type="radio" value="date" name="reminderClass" onclick="date()"/>逾期天数</label>
 
                     </div>
 					<table id="age" class="table-bd" bordercolor="#CCCCCC" border="1" style="width: 100%; display:none;">
@@ -37,19 +44,18 @@
                             <col width="10%" />
 							<col width="10%" />     
 						</colgroup>
-			     	<caption>催收规则</caption>
 
 						<tr class="" id="">
-							<th><label for="">期数/天数</label></th>
-                            <th><label for="">逾期金额</label></th>
-							<th><label for="">催收时间（<=逾期金额）</label></th>
-							<th><label for="">催收方式</label></th>
-							<th><label for="">催收时间（>逾期金额）</label></th>
-							<th><label for="">催收方式</label></th>
+							<th class="titlefc3"><label for="">期数/天数</label></th>
+                            <th class="titlefc3"><label for="">逾期金额</label></th>
+							<th class="titlefc3"><label for="">催收时间（<=逾期金额）</label></th>
+							<th class="titlefc3"><label for="">催收方式</label></th>
+							<th class="titlefc3"><label for="">催收时间（>逾期金额）</label></th>
+							<th class="titlefc3"><label for="">催收方式</label></th>
 						</tr>
 						<tr class="accountAge" id="no1">
 							
-							<td><label for="">第一期</label></td>
+							<td class="titlefc3"><label for="">第一期</label></td>
 					     	<input type="hidden" value="1" name="aging1"/>
 							<td><input type="text" value="" name="money1" /></td>
 							<input type="hidden" value="<=" name="operation1"/>
@@ -60,7 +66,7 @@
                             <td><select id="collectionWay" name="collectionWay11">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no2">
-							<td><label for="">第二期</label></td>
+							<td class="titlefc3"><label for="">第二期</label></td>
 						    <input type="hidden" value="2" name="aging2"/>
 						    <input type="hidden" value="<=" name="operation2"/>
 							<td><input type="text" value="" name="money2" /></td>
@@ -71,7 +77,7 @@
                             <td><select id="collectionWay" name="collectionWay22">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no3">
-							<td><label for="">第三期</label></td>
+							<td class="titlefc3"><label for="">第三期</label></td>
 							<input type="hidden" value="3" name="aging3"/>
 							<input type="hidden" value="<=" name="operation3"/>
 							<td><input type="text" value="" name="money3" /></td>
@@ -82,7 +88,7 @@
                             <td><select id="collectionWay" name="collectionWay33">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no4">
-							<td><label for="">第四期</label></td>
+							<td class="titlefc3"><label for="">第四期</label></td>
 							<input type="hidden" value="4" name="aging4"/>
 							<input type="hidden" value="<=" name="operation4"/>
 							<td><input type="text" value="" name="money4" /></td>
@@ -93,7 +99,7 @@
                             <td><select id="collectionWay" name="collectionWay44">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no5">
-							<td><label for="">第五期</label></td>
+							<td class="titlefc3"><label for="">第五期</label></td>
 							<input type="hidden" value="5" name="aging5"/>
 							<input type="hidden" value="<=" name="operation5"/>
 							<td><input type="text" value="" name="money5" /></td>
@@ -104,7 +110,7 @@
                             <td><select id="collectionWay" name="collectionWay55">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no6">
-							<td><label for="">第六期</label></td>
+							<td class="titlefc3"><label for="">第六期</label></td>
 							<input type="hidden" value="6" name="aging6"/>
 							<input type="hidden" value="<=" name="operation6"/>
 							<td><input type="text" value="" name="money6" /></td>
@@ -114,7 +120,7 @@
 							<input type="hidden" value=">" name="operation66"/>
                             <td><select id="collectionWay" name="collectionWay66">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr><tr class="accountAge" id="no7">
-							<td><label for="">第七期</label></td>
+							<td class="titlefc3"><label for="">第七期</label></td>
 							<input type="hidden" value="7" name="aging7"/>
 							<input type="hidden" value="<=" name="operation7"/>
 							<td><input type="text" value="" name="money7" /></td>
@@ -124,7 +130,7 @@
 							<input type="hidden" value=">" name="operation77"/>
                             <td><select id="collectionWay" name="collectionWay77">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr><tr class="accountAge" id="no8">
-							<td><label for="">第八期</label></td>
+							<td class="titlefc3"><label for="">第八期</label></td>
 							<input type="hidden" value="8" name="aging8"/>
 							<input type="hidden" value="<=" name="operation8"/>
 							<td><input type="text" value="" name="money8" /></td>
@@ -134,7 +140,7 @@
 							<input type="hidden" value=">" name="operation88"/>
                             <td><select id="collectionWay" name="collectionWay88">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr><tr class="accountAge" id="no9">
-							<td><label for="">第九期</label></td>
+							<td class="titlefc3"><label for="">第九期</label></td>
 							<input type="hidden" value="9" name="aging9"/>
 							<input type="hidden" value="<=" name="operation9"/>
 							<td><input type="text" value="" name="money9" /></td>
@@ -145,7 +151,7 @@
                             <td><select id="collectionWay" name="collectionWay99">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no10">
-							<td><label for="">第十~十二期</label></td>
+							<td class="titlefc3"><label for="">第十~十二期</label></td>
 							<input type="hidden" value="10" name="aging10"/>
 							<input type="hidden" value="<=" name="operation10"/>
 							<td><input type="text" value="" name="money10" /></td>
@@ -156,7 +162,7 @@
                             <td><select id="collectionWay" name="collectionWay110">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="accountAge" id="no11">
-							<td><label for="">第十二期以上</label></td>
+							<td class="titlefc3"><label for="">第十二期以上</label></td>
 							<input type="hidden" value="13" name="aging13"/>
 							<input type="hidden" value="<=" name="operation13"/>
 							<td><input type="text" value="" name="money13" /></td>
@@ -179,19 +185,18 @@
                             <col width="10%" />
 							<col width="10%" />     
 						</colgroup>
-			     	<caption>催收规则</caption>
 
 						<tr class="" id="">
-							<th><label for="">期数/天数</label></th>
-                            <th><label for="">逾期金额</label></th>
-							<th><label for="">催收时间（<=逾期金额）</label></th>
-							<th><label for="">催收方式</label></th>
-							<th><label for="">催收时间（>逾期金额）</label></th>
-							<th><label for="">催收方式</label></th>
+							<th class="titlefc3"><label for="">期数/天数</label></th>
+                            <th class="titlefc3"><label for="">逾期金额</label></th>
+							<th class="titlefc3"><label for="">催收时间（<=逾期金额）</label></th>
+							<th class="titlefc3"><label for="">催收方式</label></th>
+							<th class="titlefc3"><label for="">催收时间（>逾期金额）</label></th>
+							<th class="titlefc3"><label for="">催收方式</label></th>
 						</tr>
                     	
                         <tr class="outofDate" id="day1">
-							<td><label for="">1~30天</label></td>
+							<td class="titlefc3"><label for="">1~30天</label></td>
 							<input type="hidden" value="1" name="overdueDayStart1"/>
 							<input type="hidden" value="30" name="overdueDayEnd1"/>
 							<td><input type="text" value="" name="money1111"  /></td>
@@ -203,7 +208,7 @@
                             <td><select id="collectionWay" name="collectionWay11111">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day2">
-							<td><label for="">31~60天</label></td>
+							<td class="titlefc3"><label for="">31~60天</label></td>
 							<input type="hidden" value="31" name="overdueDayStart2"/>
 							<input type="hidden" value="60" name="overdueDayEnd2"/>
 							<td><input type="text" value="" name="money1112"  /></td>
@@ -215,7 +220,7 @@
                             <td><select id="collectionWay" name="collectionWay11112">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day3">
-							<td><label for="">61~90天</label></td>
+							<td class="titlefc3"><label for="">61~90天</label></td>
 							<input type="hidden" value="61" name="overdueDayStart3"/>
 							<input type="hidden" value="90" name="overdueDayEnd3"/>
 							<td><input type="text" value="" name="money1113"  /></td>
@@ -227,7 +232,7 @@
                             <td><select id="collectionWay" name="collectionWay11113">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day4">
-							<td><label for="">91~120天</label></td>
+							<td class="titlefc3"><label for="">91~120天</label></td>
 							<input type="hidden" value="91" name="overdueDayStart4"/>
 							<input type="hidden" value="120" name="overdueDayEnd4"/>
 							<td><input type="text" value="" name="money1114"  /></td>
@@ -239,7 +244,7 @@
                             <td><select id="collectionWay" name="collectionWay11114">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day5">
-							<td><label for="">121~150天</label></td>
+							<td class="titlefc3"><label for="">121~150天</label></td>
 							<input type="hidden" value="121" name="overdueDayStart5"/>
 							<input type="hidden" value="150" name="overdueDayEnd5"/>
 							<td><input type="text" value="" name="money1115"  /></td>
@@ -251,7 +256,7 @@
                             <td><select id="collectionWay" name="collectionWay11115">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day6">
-							<td><label for="">151~180天</label></td>
+							<td class="titlefc3"><label for="">151~180天</label></td>
 							<input type="hidden" value="151" name="overdueDayStart6"/>
 							<input type="hidden" value="180" name="overdueDayEnd6"/>
 							<td><input type="text" value="" name="money1116"  /></td>
@@ -262,7 +267,7 @@
 							<td><input type="text" value="" name="collectionTime11116"  /> </td>
                             <td><select id="collectionWay" name="collectionWay11116">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr><tr class="outofDate" id="day7">
-							<td><label for="">181~210天</label></td>
+							<td class="titlefc3"><label for="">181~210天</label></td>
 						<input type="hidden" value="181" name="overdueDayStart7"/>
 							<input type="hidden" value="210" name="overdueDayEnd7"/>
 							<td><input type="text" value="" name="money1117"  /></td>
@@ -273,7 +278,7 @@
 							<td><input type="text" value="" name="collectionTime11117"  /> </td>
                             <td><select id="collectionWay" name="collectionWay11117">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr><tr class="outofDate" id="day8">
-							<td><label for="">211~240天</label></td>
+							<td class="titlefc3"><label for="">211~240天</label></td>
 							<input type="hidden" value="211" name="overdueDayStart8"/>
 							<input type="hidden" value="240" name="overdueDayEnd8"/>
 							<td><input type="text" value="" name="money1118"  /></td>
@@ -284,7 +289,7 @@
 							<td><input type="text" value="" name="collectionTime11118"  /> </td>
                             <td><select id="collectionWay" name="collectionWay11118">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr><tr class="outofDate" id="day9">
-							<td><label for="">241~270天</label></td>
+							<td class="titlefc3"><label for="">241~270天</label></td>
 							<input type="hidden" value="241" name="overdueDayStart9"/>
 							<input type="hidden" value="270" name="overdueDayEnd9"/>
 							<td><input type="text" value="" name="money1119"  /></td>
@@ -296,7 +301,7 @@
                             <td><select id="collectionWay" name="collectionWay11119">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day10">
-							<td><label for="">271~360天</label></td>
+							<td class="titlefc3"><label for="">271~360天</label></td>
 							<input type="hidden" value="271" name="overdueDayStart10"/>
 							<input type="hidden" value="360" name="overdueDayEnd10"/>
 							<td><input type="text" value="" name="money11110"  /></td>
@@ -308,7 +313,7 @@
                             <td><select id="collectionWay" name="collectionWay111110">#customerInfo($request.getAttribute("collectionMethodList"),'')</select></td>
 						</tr>
                         <tr class="outofDate" id="day11">
-							<td><label for="">大于360天</label></td>
+							<td class="titlefc3"><label for="">大于360天</label></td>
 							<input type="hidden" value="360" name="overdueDayStart14"/>
 							<input type="hidden" value="" name="overdueDayEnd14"/>
 							<td><input type="text" value="" name="money111114"/></td>

@@ -10,7 +10,7 @@
       
       <div class="inquiry">
 <!-----------搜索------------------------------------------->  
-  <div class="search_tag">#i18n("label.browse.filter")</div>
+  	 <div class="search_tag">#i18n("label.browse.filter")</div>
      <div class="search">
           <form id="submitForm">
             <ul>
@@ -38,11 +38,11 @@
           <table>
             <colgroup>
               <col width="5%" />
-			  <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
+			  <col width="15%" />
+              <col width="25%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -58,12 +58,11 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-		  <!--<col width="10%" />-->
-              <col width="10%" />
+			  <col width="15%" />
+              <col width="25%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
@@ -80,6 +79,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
+          
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

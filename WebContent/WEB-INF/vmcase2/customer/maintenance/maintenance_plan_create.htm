@@ -18,13 +18,13 @@
               <col width="40%" />
 			</colgroup>
             <tr>
-              <td><label>客户经理:</label></td>
+              <td class="titlefc3"><label>客户经理:</label></td>
               <td>
                <input type="text" id="displayName" name="displayName" value="$!maintenance.displayName" disabled="disabled"/>
                <input type="hidden" id="customerManagerId" name="customerManagerId" value="$!maintenance.userId" />
               <!-- <select id="customerManagerId" name="customerManagerId" ></select> -->
               </td>
-              <td><label>客户名称:</label></td>
+              <td class="titlefc3"><label>客户名称:</label></td>
               <td><input type="text" id="chineseName" name="chineseName" value="$!maintenance.chineseName" disabled="disabled"/>
                   <input type="hidden" id="customerId" name="customerId" value="$!maintenance.customerId" />
                   <input type="hidden" id="appId" name="appId" value="$!appId" />
@@ -32,41 +32,42 @@
             </tr>
             
             <tr>
-              <td><label>证件号码:</label></td>
+              <td class="titlefc3"><label>证件号码:</label></td>
               <td><input type="text" id="cardId" name="cardId" value="$!maintenance.cardId" disabled="disabled"/>
-              <td><label>产品名称:</label></td>
+              <td class="titlefc3"><label>产品名称:</label></td>
               <td><input type="text" id="productName" name="productName" value="$!maintenance.productName" disabled="disabled"/></td>
             </tr>
             
             <tr>
-              <td><label>授信金额:</label></td>
+              <td class="titlefc3"><label>授信金额:</label></td>
               <td><input type="text" id="actualQuote" name="actualQuote" value="$!maintenance.actualQuote" disabled="disabled"/>
+            	<td class="titlefc3"></td><td></td>
             </tr>
             
              <tr>
-              <td><label>还款计划:</label></td>
+              <td class="titlefc3"><label>还款计划:</label></td>
               <td><select id="repayWay" name="repayWay" disabled="disabled">
                     #dict("repayWay",$!maintenance.repayWay)
                   </select></td>
-              <td><label>还款状态:</label></td>
+              <td class="titlefc3"><label>还款状态:</label></td>
               <td><select id="repayStatus" name="repayStatus" disabled="disabled">
                     #dict("repayStatus",$!maintenance.repayStatus)
                   </select></td>
             </tr>
             
             <tr>
-              <td><label>维护目标:</label></td>
+              <td class="titlefc3"><label>维护目标:</label></td>
               <td><input  type="text" id="maintenanceGoal" name="maintenanceGoal" value="" /></td>
-              <td><label>维护方式:</label></td>
+              <td class="titlefc3"><label>维护方式:</label></td>
               <td><select name="maintenanceWay" id="maintenanceWay" >
               #customerInfo($request.getAttribute("collectionMethodList"),'')
               </select></td>
                <td><input type="text" name="maintenanceStartTime" hidden="hidden" value="-1" /></td>
             </tr>
             <tr>
-              <td><label>备注:</label></td>
+              <td class="titlefc3"><label>备注:</label></td>
               <td><textarea id="remarksCreateReason" name="remarksCreateReason" ></textarea>
-              <td><label>维护天数:</label></td>
+              <td class="titlefc3"><label>维护天数:</label></td>
               <td><input type="text" id="maintenanceDay" name="maintenanceDay" value=""/></td>
             </tr>
             
