@@ -137,7 +137,7 @@ public class BatchReturnRunController extends BaseController{
 				incrementService.doReadFileWholeByDate(dateString);
 			}*/
 		    else if(batchCode.equals("hk")){
-		    	applicationInfoSynchScheduleService.returnReimbursement(dateString);
+		    	applicationInfoSynchScheduleService.doReturnReimbursement();
 		    }
 			//同步进件状态
 			//绩效

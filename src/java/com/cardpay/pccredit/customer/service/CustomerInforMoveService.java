@@ -159,6 +159,7 @@ public class CustomerInforMoveService {
 			//申请状态
 			tyCustomerMove.setStatus("1");
 			tyCustomerMove.setId(IDGenerator.generateID());
+			tyCustomerMove.setCreatedTime(new Date());
 			//删除历史记录
 			commonDao.queryBySql("delete from ty_customer_move where customer_id='"+customerId+"'", null);
 			commonDao.insertObject(tyCustomerMove);

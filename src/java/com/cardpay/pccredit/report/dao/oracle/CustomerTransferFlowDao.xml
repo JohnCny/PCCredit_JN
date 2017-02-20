@@ -14,6 +14,7 @@
 		<result property="chineseName" column="CHINESE_NAME" />
 		<result property="certiCode" column="CARD_ID" />
 		<result property="rowIndex" column="row_index" />
+		<result property="createdTime" column="CREATED_TIME" />
 	</resultMap>
 	
 	
