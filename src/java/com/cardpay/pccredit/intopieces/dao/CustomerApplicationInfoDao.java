@@ -37,4 +37,9 @@ public interface CustomerApplicationInfoDao {
      * 统计每日任务的条数
      */
     public int findDailyTaskCount(@Param("userId") String userId,@Param("dateString") String dateString);
+    
+    /**
+     * 统计还款通知
+     */
+    public int findRepayLoanCount(@Param("userId") String userId);
 }
