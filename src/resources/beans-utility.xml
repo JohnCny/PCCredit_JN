@@ -203,7 +203,7 @@
         </property>
         <!-- 调用类中的方法 -->
         <property name="targetMethod">
-            <value>reimbursement</value>
+            <value>doReturnReimbursement</value>
         </property>
     </bean>
     <!-- 定义触发时间 -->
@@ -212,7 +212,7 @@
             <ref bean="reimbursementStatusJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 0 0 1 * ? *</value>
+            <value>0 00 06 ? * *</value>
         </property>
     </bean>
     
@@ -272,7 +272,7 @@
             <ref bean="runBatchGeneratePerformancePayJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 0 3 5 * ? *</value><!-- 每月5号生成数据 凌晨三点-->
+            <value>0 0 3 3 * ? *</value><!-- 每月3号生成数据 凌晨三点-->
         </property>
     </bean>
     

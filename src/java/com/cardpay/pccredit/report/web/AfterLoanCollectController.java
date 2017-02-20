@@ -83,10 +83,8 @@ public class AfterLoanCollectController extends BaseController{
 	private static final Logger logger = Logger.getLogger(AfterLoanCollectController.class);
 	/**
 	 * 贷款汇总查询(卡中心)
-	 * 
 	 * @param filter
 	 * @param request
-	 * @return
 	 * 新增用信客户:首次提款时间在选定时间段内的客户		  |新增用信余额:提款时间在选定时间段内 且在结束时间前未还清的借据
 	 * 累计用信客户:结束时间前提过款的客户                                              |累计用信余额:结束时间前未还清的所有借据
 	 * 新增授信客户:授信时间在选定时间段内的客户                                  |新增授信余额:授信时间在选定时间段内的合同,且结束日期前未结束的合同
@@ -102,10 +100,11 @@ public class AfterLoanCollectController extends BaseController{
 		filter.setRequest(request);
         IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
         
-        //如果当前客户是客户经理角色 userId is not null
+        // 如果当前客户是客户经理角色 userId is not null
         List<AccountManagerParameter> list = customerTransferFlowService.findManager(user.getId());
+        // 客户经理
         if(list != null && list.size() > 0){
-        	if(user.getUserType() ==1){//客户经理
+        	if(user.getUserType() ==1){
         		filter.setUserId(user.getId());
         	}
 		}
@@ -120,22 +119,19 @@ public class AfterLoanCollectController extends BaseController{
 		
 		long start = System.currentTimeMillis();
 		List<AccLoanCollectInfo> accloanList = customerTransferFlowService.getAccLoanCollect(filter);
-		//查询 pos流水贷产品的贷款余额
+		// 查询 pos流水贷产品的贷款余额
 		BigDecimal pslsd = customerTransferFlowService.findSubListManagerByManagerId(user);
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setPos(pslsd.toString());
 		}
 		
-		//查询客户经理count 去掉平均到客户经理的条件
-		//int count = customerTransferFlowService.findManagerListCount();
-		
-		//查询当月日均用信
+		// 查询当月日均用信
 		BigDecimal monthAverageAmt = customerTransferFlowService.findMonthAverageAmt();
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setMa(monthAverageAmt.multiply(calMonthGrade()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
-		//查询业务开展以来截止到如今的日均用信
+		// 查询业务开展以来截止到如今的日均用信
 		BigDecimal totalMonthAverageAmt = customerTransferFlowService.findToalMonthAverageAmt();
 		int monthCount = returnMonthCount();
 		BigDecimal monthManagerCount = new BigDecimal(monthCount);
@@ -143,7 +139,7 @@ public class AfterLoanCollectController extends BaseController{
 			acc.setTa(totalMonthAverageAmt.divide(monthManagerCount,2,BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
-		//信用、抵押 ,保证类贷款笔数占比   信用、抵押 ,保证类贷款金额占比  C101-保证    C102-抵押   C100-信用 
+		// 信用、抵押 ,保证类贷款笔数占比   信用、抵押 ,保证类贷款金额占比  C101-保证    C102-抵押   C100-信用 
 		Map<String, String> map =  calProportion(user);
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setC101numproportion(map.get("C101NumProportion"));
@@ -155,18 +151,18 @@ public class AfterLoanCollectController extends BaseController{
 		}
 		long end = System.currentTimeMillis();
 		logger.info("贷款汇总查询时间花费：" + (end - start) + "毫秒");
+		
+		// 控制参数 按钮显示
+		boolean lock = false;
+		String PARAM = (String) commonDao.queryBySql("select * from dict where dict_type = 'CTRL_STATUS_PARAM' ", null).get(0).get("TYPE_CODE");
+		if("1".equals(PARAM)){
+			lock = true;
+		}
+		
 		JRadModelAndView mv = new JRadModelAndView("/report/afteraccloan/afterAccLoanCollect_centre_browseAll", request);
 		mv.addObject("list", accloanList);
 		mv.addObject("filter", filter);
 		mv.addObject("urlType", user.getUserType());
-		
-		// 控制参数 按钮显示
-		boolean lock = false;
-		String sql = "select * from dict where dict_type = 'CTRL_STATUS_PARAM' ";
-		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
-		if("1".equals(PARAM)){
-			lock = true;
-		}
 		mv.addObject("lock", lock);
 		return mv;
 		
@@ -204,7 +200,6 @@ public class AfterLoanCollectController extends BaseController{
 	
 	/**
 	 * 1/31
-	 * @return
 	 */
 	public BigDecimal calMonthGrade(){
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");

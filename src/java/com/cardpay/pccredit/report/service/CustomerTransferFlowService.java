@@ -421,7 +421,7 @@ public class CustomerTransferFlowService {
         	row.createCell((short) 5).setCellValue(Double.parseDouble(form.getBalamt()+""));
         	//row.createCell((short) 6).setCellValue(form.getPaydebt()+"");
         	row.createCell((short) 6).setCellValue(Double.parseDouble(form.getPaydebt()+""));
-        	row.createCell((short) 7).setCellValue(Double.parseDouble(form.getContractmoney()));        
+        	row.createCell((short) 7).setCellValue(Double.parseDouble(form.getContractmoney()+""));        
         	row.createCell((short) 8).setCellValue(Double.parseDouble(form.getReqlmt()+""));
         	row.createCell((short) 9).setCellValue(form.getLoandate());         
         	row.createCell((short) 10).setCellValue(Double.parseDouble(form.getMoney()+""));
