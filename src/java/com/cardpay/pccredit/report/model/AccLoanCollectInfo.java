@@ -41,9 +41,9 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String pos;
 
 	private BigDecimal monthaverageamt;//当月日均贷款余额
-	private String  ma;
+	private String  ma;//当月日均贷款余额  显示用
 	private BigDecimal totalmonthaverageamt;//累计至今的日均贷款余额
-	private String  ta;
+	private String  ta;//累计至今的日均贷款余额 显示用
 	
 	//占比
 	private String  c101numproportion;
