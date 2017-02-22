@@ -4471,7 +4471,11 @@ public class CustomerInforService {
 	      out.close();
 		}
 	
-	//放款排名，显示前十放款的客户经理
+	/**
+	 * 放款排名，显示前十放款的客户经理
+	 * @author zwj
+	 * @throws IOException
+	 */
 	public void fkRanking() throws IOException{
 		//获取今日日期
 	      //yyyyMMdd格式

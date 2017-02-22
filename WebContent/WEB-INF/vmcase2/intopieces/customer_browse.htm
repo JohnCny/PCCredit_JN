@@ -135,9 +135,8 @@
  					    	}
  						}
  			    });
-   				
    				if(isTimeArrive){
-   				   window.top.Dialog.message("该客户为贷款结清时间小于6个月内,无法新增进件!");
+   				   window.top.Dialog.message("该客户距离上次贷款结清时间小于或等于6个月,无法新增进件!");
    				   return;
    				}
                 

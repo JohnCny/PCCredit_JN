@@ -706,8 +706,7 @@ public class ManagerSalaryService {
 		String dateString = format.format(new Date());
 		String year  = dateString.substring(0, 4);
 	    String month = dateString.substring(5, 7);
-	    year  = "2016";
-	    month = "11";
+
 		
 		// 计算当月的上一个月
 		String lastMonth = "";
@@ -1283,6 +1282,7 @@ public class ManagerSalaryService {
 		// 查询客户当月生成台帐BUSICODE编号的次数
 		List<Map<String, Object>> mapList =  managerSalaryDao.findDistinctBusicode(tyCustomerId, year, month);
 		
+		
 		// 根据BUSICODE再次筛选
 		for (Map<String, Object> obj : mapList){
 			String sql =    " select t.busicode,				   		    		"+				
@@ -1369,16 +1369,21 @@ public class ManagerSalaryService {
 			time1 = str1[1];
 			
 			// 计算两个时间戳的时间差
-		    ts = calMistTime(time0,time1);
-		    
+			if(list.size()==2){
+				ts = calMistTime(time0,time1)+1;
+			}else {
+				ts = calMistTime(time0,time1);
+			}
 		    // 计算Amt
-			amt = amt.add(amt0.multiply(new BigDecimal(ts)).divide(new BigDecimal(days),2,BigDecimal.ROUND_HALF_UP));
-			
+			//amt = amt.add(amt0.multiply(new BigDecimal(ts)).divide(new BigDecimal(days),2,BigDecimal.ROUND_HALF_UP));
+		    amt = amt.add(amt0.multiply(new BigDecimal(ts)));
+		    
 			// 计算完毕移除第0条数据 List的Size随之减小
 			list.remove(0);
 			//System.out.println(list.size());
 			i =0;
 		}
+		amt = amt.divide(new BigDecimal(days),2,BigDecimal.ROUND_HALF_UP);
 		return amt;
 	}
 	
