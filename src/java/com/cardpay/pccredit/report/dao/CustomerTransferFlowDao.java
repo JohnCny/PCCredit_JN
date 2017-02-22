@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.report.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -16,6 +17,7 @@ import com.cardpay.pccredit.report.model.BjjdktjbbForm;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.report.model.DkyetjbbForm;
 import com.cardpay.pccredit.report.model.DqzzdktjbbForm;
+import com.cardpay.pccredit.report.model.PercentForm;
 import com.cardpay.pccredit.report.model.XdlctjbbForm;
 import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.report.model.YqdktjbbForm;
@@ -60,6 +62,8 @@ public interface CustomerTransferFlowDao {
 	
 	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter);
 	
+	public List<PercentForm> getLoanAmtAndNum(AccLoanCollectFilter filter);
+	public List<PercentForm> getEmp(Map<String, Object> param);
 	
 	List<AccountManagerParameterForm> findAccountManagerParameterByUserId(@Param("userId") String userId);
 	

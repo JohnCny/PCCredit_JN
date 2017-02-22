@@ -43,6 +43,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.postLoan.service.PostLoanService;
 import com.cardpay.pccredit.report.filter.AccLoanCollectFilter;
 import com.cardpay.pccredit.report.model.AccLoanCollectInfo;
+import com.cardpay.pccredit.report.model.PercentForm;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -83,8 +84,6 @@ public class AfterLoanCollectController extends BaseController{
 	private static final Logger logger = Logger.getLogger(AfterLoanCollectController.class);
 	/**
 	 * 贷款汇总查询(卡中心)
-	 * @param filter
-	 * @param request
 	 * 新增用信客户:首次提款时间在选定时间段内的客户		  |新增用信余额:提款时间在选定时间段内 且在结束时间前未还清的借据
 	 * 累计用信客户:结束时间前提过款的客户                                              |累计用信余额:结束时间前未还清的所有借据
 	 * 新增授信客户:授信时间在选定时间段内的客户                                  |新增授信余额:授信时间在选定时间段内的合同,且结束日期前未结束的合同
@@ -92,7 +91,6 @@ public class AfterLoanCollectController extends BaseController{
 	 * 新增逾期客户数:逾期时间在选定时间段内的客户                              |新增逾期余额:逾期时间在选定时间段内的借据
 	 * 累计逾期客户数:逾期时间在结束时间前的客户                                  |累计逾期余额:逾期时间在结束时间前的借据
 	 * 用信余额（日均):(选定时间段内每天的用信余额求和)/时间段的天数
-	 * @throws ParseException 
 	 */
 	@ResponseBody
 	@RequestMapping(value = "browseAll.page", method = { RequestMethod.GET })
@@ -118,29 +116,31 @@ public class AfterLoanCollectController extends BaseController{
 		}
 		
 		long start = System.currentTimeMillis();
+		// 总查询链
 		List<AccLoanCollectInfo> accloanList = customerTransferFlowService.getAccLoanCollect(filter);
+		
 		// 查询 pos流水贷产品的贷款余额
 		BigDecimal pslsd = customerTransferFlowService.findSubListManagerByManagerId(user);
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setPos(pslsd.toString());
 		}
 		
-		// 查询当月日均用信
+		// 查询当月日均用信余额
 		BigDecimal monthAverageAmt = customerTransferFlowService.findMonthAverageAmt();
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setMa(monthAverageAmt.multiply(calMonthGrade()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
-		// 查询业务开展以来截止到如今的日均用信
+		// 查询业务开展以来截止到如今的日均用信余额
 		BigDecimal totalMonthAverageAmt = customerTransferFlowService.findToalMonthAverageAmt();
-		int monthCount = returnMonthCount();
-		BigDecimal monthManagerCount = new BigDecimal(monthCount);
+		//int monthCount = returnMonthCount();
+		BigDecimal monthManagerCount = new BigDecimal(returnMonthCount());
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setTa(totalMonthAverageAmt.divide(monthManagerCount,2,BigDecimal.ROUND_HALF_UP).toString());
 		}
 		
-		// 信用、抵押 ,保证类贷款笔数占比   信用、抵押 ,保证类贷款金额占比  C101-保证    C102-抵押   C100-信用 
-		Map<String, String> map =  calProportion(user);
+		// 信用、抵押 ,保证类贷款笔数占比   (C100-信用 ), (C102-抵押),(C101-保证 )
+		Map<String, String> map =  calProportion(user,filter);
 		for(AccLoanCollectInfo acc :accloanList){
 			acc.setC101numproportion(map.get("C101NumProportion"));
 			acc.setC102numproportion(map.get("C102NumProportion"));
@@ -149,6 +149,7 @@ public class AfterLoanCollectController extends BaseController{
 			acc.setC102amtproportion(map.get("C102AmtProportion"));
 			acc.setC100amtproportion(map.get("C100AmtProportion"));
 		}
+		
 		long end = System.currentTimeMillis();
 		logger.info("贷款汇总查询时间花费：" + (end - start) + "毫秒");
 		
@@ -173,10 +174,37 @@ public class AfterLoanCollectController extends BaseController{
 	 * C101-保证    C102-抵押   C100-信用 
 	 * @return
 	 */
-	public Map<String, String> calProportion(IUser user){
+	public Map<String, String> calProportion(IUser user,AccLoanCollectFilter filter){
+		/*test方法测试调用存储过程查询 是否能大幅度的提高查询效率  */
+	    //List<PercentForm> list = customerTransferFlowService.getEmp(filter);
+		
+	    List<PercentForm> list = customerTransferFlowService.getLoanAmtAndNum(filter);
+		
 		Map<String, String> map  = new HashMap<String, String>();
+		for(PercentForm form :list){
+			map.put(form.getNumStr(), form.getAtr());
+		}
 		
 		//笔数
+		BigDecimal totalNum = new BigDecimal(map.get("totalCount"));//总笔数
+		BigDecimal C101Num  = new BigDecimal(map.get("C101Count"));
+		BigDecimal C102Num  = new BigDecimal(map.get("C102Count"));
+		BigDecimal C100Num  = new BigDecimal(map.get("C100Count"));
+				
+		//金额
+		BigDecimal totalAmt =  new BigDecimal(map.get("totalMoney"));//总金额
+		BigDecimal C101Amt  =  new BigDecimal(map.get("C101Money"));//保证
+		BigDecimal C102Amt  =  new BigDecimal(map.get("C1O2Money"));//抵押
+		BigDecimal C100Amt  =  new BigDecimal(map.get("C100Money"));//信用
+				
+		map.put("C101NumProportion",C101Num.divide(totalNum,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C102NumProportion",C102Num.divide(totalNum,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C100NumProportion",C100Num.divide(totalNum,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		 
+		map.put("C101AmtProportion",C101Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C102AmtProportion",C102Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C100AmtProportion",C100Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		/*//笔数
 		BigDecimal totalNum = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"");//总笔数
 		BigDecimal C101Num  = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"C101");
 		BigDecimal C102Num  = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"C102");
@@ -194,7 +222,7 @@ public class AfterLoanCollectController extends BaseController{
 		
 		map.put("C101AmtProportion",C101Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
 		map.put("C102AmtProportion",C102Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
-		map.put("C100AmtProportion",C100Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		map.put("C100AmtProportion",C100Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());*/
 		return map;
 	}
 	
@@ -241,7 +269,7 @@ public class AfterLoanCollectController extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			String month = RequestHelper.getStringValue(request, ID);
-			attentiveBalanceSynchScheduleService.dosynchyxyeMethod(month);
+			attentiveBalanceSynchScheduleService.dosynchyxyeMethodByHand(month);
 			
 			returnMap.addGlobalMessage(ManagerLevelAdjustmentConstant.IF_HANDLE_SUCCESS);
 		} catch (Exception e) {
