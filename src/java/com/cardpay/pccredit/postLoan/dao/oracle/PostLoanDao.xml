@@ -123,7 +123,8 @@
 		 <result column="CREATE_TIME"        property="create_time"    jdbcType="VARCHAR" />    
 		 <result column="CUSTIDNO"        property="custidno"    jdbcType="VARCHAR" />  
 		 <result column="LIMIT"        property="limit"    jdbcType="VARCHAR" />  
-		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />  
+		 <result column="REPAYMETHOD"        property="repaymethod"    jdbcType="VARCHAR" />
+		 <result column="CONTRACTMONEY"        property="contractmoney"    jdbcType="VARCHAR" />
  	 </resultMap>
  	 
  	 

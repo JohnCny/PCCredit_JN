@@ -255,7 +255,6 @@ public class MainController {
 		    List<FkRankingFilter> fk=statisticalCommonService.queryFkRanking();
 		    mv.addObject("fk",fk);
 		    long end = System.currentTimeMillis();
-			//System.out.println("查询时间花费：" + (end - start) + "毫秒");
 			logger.info("查询时间花费：" + (end - start) + "毫秒");
 		}
 		
