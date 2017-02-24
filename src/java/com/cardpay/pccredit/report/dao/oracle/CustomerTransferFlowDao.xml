@@ -1166,26 +1166,26 @@
 		
 		select nvl(count(*), 0) as atr, 'totalCount' as numStr
 		from circle mi
-		union
+		union all
 		select nvl(count(*), 0) as atr, 'C101Count' as numStr
 		from circle mi where mi.MAINASSURE = 'C101'
-		union
+		union all
 		select nvl(count(*), 0) as atr, 'C102Count' as numStr
 		from circle mi where mi.MAINASSURE = 'C102'
-		union
+		union all
 		select nvl(count(*), 0) as atr, 'C100Count' as numStr
 		from circle mi where mi.MAINASSURE = 'C100'
 		
-		union
+		union all
 		select nvl(sum(money), 0) as atr, 'totalMoney' as numStr
 		from circle mi
-		union
+		union all
 		select nvl(sum(money), 0) as atr, 'C101Money' as numStr
 		from circle mi where  mi.MAINASSURE = 'C101'
-		union
+		union all
 		select nvl(sum(money), 0) as atr, 'C1O2Money' as numStr
 		from circle mi where mi.MAINASSURE = 'C102'
-		union
+		union all
 		select nvl(sum(money), 0) as atr, 'C100Money' as numStr
 		from circle mi where mi.MAINASSURE = 'C100'
 		
