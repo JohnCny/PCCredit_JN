@@ -101,14 +101,14 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 	  * 手工跑批
 	  * @param month
 	  */
-	 public void dosynchyxyeMethod(String dateString){
+	 public void dosynchyxyeMethodByHand(String dateString){
 			//获取今日日期
 			//DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			//String dateString = format.format(new Date());
 		    String []str = dateString.split("_");
 		    String year  = str[0];
 		    String month = str[1];
-			logger.info(dateString+"**********统计当月截止到今天的用信余额start**********");
+			logger.info(dateString+"**********统计当月用信余额start**********");
 			
 			//1.统计当月截止到今天的用信余额
 			//String year  = dateString.substring(0, 4);
@@ -127,7 +127,7 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 				generateJxSpecificParameters(accountManagerParameter.getUserId(),year, month,"");
 			}
 			
-			logger.info(dateString+"**********统计当月截止到今天的用信余额end**********");
+			logger.info(dateString+"**********统计当月用信余额end**********");
 			
      }
 	 

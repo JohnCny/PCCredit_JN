@@ -214,6 +214,8 @@ public class MainController {
 		mv.addObject("TrainingNoticeMessage",rightHomeData.get("TrainingNoticeMessage"));
 		mv.addObject("FengxianNoticeMessage",rightHomeData.get("FengxianNoticeMessage"));
 		mv.addObject("daily_task_message",rightHomeData.get("daily_task_message"));
+		mv.addObject("repay_loan_remind_message",rightHomeData.get("repay_loan_remind_message"));
+		
 		/*奖励激励状况*/
 		mv.addObject("reward",rightHomeData.get("reward"));
 		mv.addObject("riskGuarantee",rightHomeData.get("riskGuarantee"));
@@ -253,7 +255,6 @@ public class MainController {
 		    List<FkRankingFilter> fk=statisticalCommonService.queryFkRanking();
 		    mv.addObject("fk",fk);
 		    long end = System.currentTimeMillis();
-			//System.out.println("查询时间花费：" + (end - start) + "毫秒");
 			logger.info("查询时间花费：" + (end - start) + "毫秒");
 		}
 		
@@ -290,6 +291,8 @@ public class MainController {
 		int training_notice_message = customerApplicationInfoService.findNoticeMessageCount(userId, "peixun");
 		/*每日任务通知*/
 		int daily_task_message = customerApplicationInfoService.findDailyTaskCount(userId);
+		/*还款提醒通知*/
+		int repay_loan_remind_message = customerApplicationInfoService.findRepayLoanCount(userId);
 		
 		rightHomeData.put("UserApplicationInfo", application_info_size);
 		rightHomeData.put("UserApplicationSuccess", application_success_size);
@@ -299,6 +302,7 @@ public class MainController {
 		rightHomeData.put("TrainingNoticeMessage", training_notice_message);
 		rightHomeData.put("FengxianNoticeMessage", fengxian_notice_message);
 		rightHomeData.put("daily_task_message", daily_task_message);
+		rightHomeData.put("repay_loan_remind_message", repay_loan_remind_message);
 		
 		/*奖励激励状况*/
 		Calendar c = Calendar.getInstance();

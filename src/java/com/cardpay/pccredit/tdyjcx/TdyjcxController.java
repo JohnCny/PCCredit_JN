@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sun.misc.BASE64Decoder;
+
 import com.cardpay.pccredit.customer.dao.MaintenanceDao;
 import com.cardpay.pccredit.customer.filter.MaintenanceFilter;
+import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.customeradd.model.CIPERSONBASINFO;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
 import com.cardpay.pccredit.tdyjcx.model.MaintenanceForm;
@@ -39,6 +43,7 @@ import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 import com.wicresoft.util.web.RequestHelper;
+import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 /**
  * 
  * 描述 ：团队业绩查询
@@ -59,6 +64,10 @@ public class TdyjcxController extends BaseController{
 	private MaintenanceDao maintenanceDao;
 	@Autowired
 	private IntoPiecesService intoPiecesService;
+	@Autowired
+	private AddIntoPiecesService addIntoPiecesService;
+	@Autowired
+	private CustomerInforService customerInforService;
 	/**
 	 * 团队业绩  因为要显示到叶面的有同时有台帐进件两种类的内容所以用一个容器类Tdyjcx匹配后填装
 	 * @param request
@@ -123,6 +132,8 @@ public class TdyjcxController extends BaseController{
 						    tx=new Tdyjcx();
 							tx.setUserId(result.getItems().get(i).getUserId());
 							tx.setUserName(result.getItems().get(i).getUserName());
+						   /* tx.setUserId(appcount.get(i).getManager_id());
+							tx.setUserName(appcount.get(i).getUserName());*/
 							tx.setUser_type(result.getItems().get(i).getUser_type());
 							tx.setApplycount(appcount.get(i).getApplycount()); //进件总数
 							filter.setCustomerManagerId(result.getItems().get(i).getUserId());//添加    查询指定客户经理名下的客户条件
@@ -181,5 +192,40 @@ public class TdyjcxController extends BaseController{
 		return mv;
 	}
 	
+	//显示维护信息--建议
+		@ResponseBody
+		@RequestMapping(value = "report_jy.page")
+		public AbstractModelAndView report_jy(HttpServletRequest request) {
+			JRadModelAndView mv = new JRadModelAndView("/customeradd/report_jy", request);
+			String appId = RequestHelper.getStringValue(request, "appId");
+			String urlType = RequestHelper.getStringValue(request, "urlType");
+			if (StringUtils.isNotEmpty(appId)) {
+				LocalExcel localExcel = addIntoPiecesService.findLocalEXcelByApplication(appId);
+				String tableContent = getFromBASE64(localExcel.getSheetJy()).replaceAll("\n", "<br>").replace("><br><", "><");
+				mv.addObject("tableContent", tableContent);
+				mv.addObject("appId", appId);
+				mv.addObject("urlType", urlType);
+				//查询权限 非本人只能查看 不能操作
+				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+				String userId = user.getId();
+				boolean lock = false;
+				if(!customerInforService.findCustomerInforById(localExcel.getCustomerId()).getUserId().equals(userId)){
+					lock = true;
+				}
+				mv.addObject("lock", lock);
+			}
+			return mv;
+		}
+		//base64解码
+		public static String getFromBASE64(String s) { 
+	    	if (s == null) return null; 
+	    	BASE64Decoder decoder = new BASE64Decoder(); 
+	    	try { 
+	    	byte[] b = decoder.decodeBuffer(s); 
+	    	return new String(b); 
+	    	} catch (Exception e) { 
+	    	return null; 
+	    	} 
+		}
 	
 }

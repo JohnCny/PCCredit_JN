@@ -68,7 +68,7 @@ public class InspectScoreNotificationMessageController extends BaseController {
 		String userId= u.getId();
 		filter.setIsCheck(NotificationConstant.no_read);
 		filter.setUserId(userId);
-		filter.setNoticeType(NotificationEnum.kaocha.toString());
+		filter.setNoticeType("fengxian");
 		QueryResult<NotificationMessage> result = notificationService.findNotificationMessageByFilter(filter);
 		JRadPagedQueryResult<NotificationMessage> pagedResult = new JRadPagedQueryResult<NotificationMessage>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/notification/notification_browse", request);

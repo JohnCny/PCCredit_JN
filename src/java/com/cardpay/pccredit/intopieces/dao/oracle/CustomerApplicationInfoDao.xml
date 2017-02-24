@@ -290,4 +290,8 @@
 	  where USERID = #{userId} 
 	  and to_char(ZDTIME,'yyyymmdd') = #{dateString} 
   </select>
+  
+   <select id="findRepayLoanCount" resultType="int">
+	  select count(*) from t_reimbursement where CUSTOMER_MANAGER_ID = #{userId} 
+  </select>
 </mapper>

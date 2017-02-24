@@ -14,6 +14,7 @@
 		<result property="chineseName" column="CHINESE_NAME" />
 		<result property="certiCode" column="CARD_ID" />
 		<result property="rowIndex" column="row_index" />
+		<result property="createdTime" column="CREATED_TIME" />
 	</resultMap>
 	
 	
@@ -204,6 +205,11 @@
   		 <result column="DISPLAY_NAME"        property="displayName"    jdbcType="VARCHAR" />  
 		 <result column="STARTDATE"           property="startDate"    jdbcType="VARCHAR" /> 
  	 </resultMap>
+ 	 
+     <resultMap id="LoanMap" type="com.cardpay.pccredit.report.model.PercentForm">
+		<result property="atr" 	  column="atr" />
+		<result property="numStr" column="numStr" />
+	</resultMap>
   
 
 	<select id="findCustomerTransferList" resultMap="ResultMap" 
@@ -1145,6 +1151,134 @@
 	       order by a.deptcode asc 
 	</select>
 	
+	<select id="getLoanAmtAndNum" resultMap="LoanMap" parameterType="com.cardpay.pccredit.report.filter.AccLoanCollectFilter">
+	    with circle as (
+			select mi.busicode,
+				   mi.money,
+				   mi.MAINASSURE
+			from t_mibusidata_view mi,
+			basic_customer_information cust
+			where cust.ty_customer_id = mi.CUSTID
+			<if test="userId != null and userId != '' ">
+				and cust.user_id =#{userId}
+			</if>
+		)
+		
+		select nvl(count(*), 0) as atr, 'totalCount' as numStr
+		from circle mi
+		union all
+		select nvl(count(*), 0) as atr, 'C101Count' as numStr
+		from circle mi where mi.MAINASSURE = 'C101'
+		union all
+		select nvl(count(*), 0) as atr, 'C102Count' as numStr
+		from circle mi where mi.MAINASSURE = 'C102'
+		union all
+		select nvl(count(*), 0) as atr, 'C100Count' as numStr
+		from circle mi where mi.MAINASSURE = 'C100'
+		
+		union all
+		select nvl(sum(money), 0) as atr, 'totalMoney' as numStr
+		from circle mi
+		union all
+		select nvl(sum(money), 0) as atr, 'C101Money' as numStr
+		from circle mi where  mi.MAINASSURE = 'C101'
+		union all
+		select nvl(sum(money), 0) as atr, 'C1O2Money' as numStr
+		from circle mi where mi.MAINASSURE = 'C102'
+		union all
+		select nvl(sum(money), 0) as atr, 'C100Money' as numStr
+		from circle mi where mi.MAINASSURE = 'C100'
+		
+		
+		<!-- select nvl(count(*), 0) as atr, 'totalCount' as numStr
+		from t_mibusidata_view mi,
+		basic_customer_information cust
+		where cust.ty_customer_id = mi.CUSTID
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+		union
+		select nvl(count(*), 0) as atr, 'C101Count' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		and mi.MAINASSURE = 'C101'
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+		union
+		select nvl(count(*), 0) as atr, 'C102Count' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		and mi.MAINASSURE = 'C102'
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+		union
+		select nvl(count(*), 0) as atr, 'C100Count' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		and mi.MAINASSURE = 'C100'
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+	
+		union
+		select nvl(sum(money), 0) as atr, 'totalMoney' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+		union
+		select nvl(sum(money), 0) as atr, 'C101Money' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		and mi.MAINASSURE = 'C101'
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+		union
+		select nvl(sum(money), 0) as atr, 'C1O2Money' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		and mi.MAINASSURE = 'C102'
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if>
+		union
+		select nvl(sum(money), 0) as atr, 'C100Money' as numStr
+		from
+		t_mibusidata_view mi, basic_customer_information cust
+		where
+		cust.ty_customer_id = mi.CUSTID
+		and mi.MAINASSURE = 'C100'
+		<if test="userId != null and userId != '' ">
+			and cust.user_id =#{userId}
+		</if> -->
+	</select>
 	
 	
+	<select id="getEmp" parameterType="java.util.Map" statementType="CALLABLE">    
+		<![CDATA[
+		call mibudata_percent_select(#{userId,jdbcType=INTEGER,mode=IN},
+									 #{emps,jdbcType=CURSOR,,mode=OUT,javaType=java.sql.ResultSet,resultMap=empMap})  ]]>    
+	</select>
+	
+	<resultMap id="empMap" type="com.cardpay.pccredit.report.model.PercentForm" >
+	 	<result property="atr" 	  column="atr" />
+		<result property="numStr" column="numStr" />         
+    </resultMap>
+  
 </mapper>

@@ -422,6 +422,10 @@ public class CustomerFirsthendController extends BaseController{
 	public JRadReturnMap exportCustomerData(@ModelAttribute CustomerInforFilter filter, HttpServletRequest request,HttpServletResponse response) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		if(user.getUserType()==1){
+			filter.setCustomerManagerId(user.getId());
+		}
 		returnMap.setSuccess(true);
 		if (returnMap.isSuccess()) {
 			try {

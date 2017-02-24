@@ -25,7 +25,19 @@ public class CustomerInfoMoveForm extends BaseForm{
     private String moveGh;//转交人工号
     private String moveName;//转交人名称
     private String status;//状态
+    
+    private String createdTime;
+    
+    
    
+	public String getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
+	}
+
 	public String getCustomerId() {
 		return customerId;
 	}

@@ -71,7 +71,7 @@
               <td nowrap="nowrap">$!customer.certiCode</td>
               <td nowrap="nowrap">$!customer.approveName</td>
               <td nowrap="nowrap">$!customer.moveName</td>
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss ',$!customer.createdTime)</td>
             </tr>
             #end
           </table>

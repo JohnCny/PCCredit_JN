@@ -40,7 +40,7 @@
  	   		<menu id="070010" name="weeklyaccount" 			title="客户经理周报" 			url="/manager/weeklyaccount/browse.page" 			 img="" operations="change|display|browse"/> 
  	   		<menu id="070011" name="weeklyaccountzuzhang" 	title="所属客户经理周报列表"      	url="/manager/weeklyaccountzuzhang/browse.page" 	 img="" operations="change|display|browse"/>
 			<menu id="070012" name="weeklyaccountfuzeren" 	title="客户经理周报(微贷中心)"     url="/manager/weeklyaccountfuzeren/browse.page" 	 img="" operations="change|display|browse"/>
- 	        <menu id="070013" name="managerPromotionRule" 	title="客户经理层级信息维护" 		url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>
+ 	        <menu id="070013" name="managerPromotionRules" 	title="客户经理层级信息维护" 		url="/manager/managerPromotionRule/displayjjgz.page" img="" operations="browse|change|create"/>
  	        <menu id="070014" name="managerdaily" 			title="客户经理当日任务管理" 		url="/sys/user/browse.page"   						 img="" operations="change|display|browse"/>
  	        <menu id="070015" name="khjljyxx" 				title="团队业绩查询" 			url="/manager/tdyjcx/tdyjcx.page" 					 img="" operations="checked|display|browse"/>	
 		</menu>

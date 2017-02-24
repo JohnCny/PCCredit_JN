@@ -117,19 +117,18 @@
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.resvIntAccum)</font></td>
             	
             </tr>
-            <tr>
-            	<!-- <td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td> -->
+            
+            <!--  <tr>
+                <td nowrap="nowrap" style="background:#99CCFF">用信余额（日均）</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.increaseBalanceTheMonth)</font></td> 
             	#if($!urlType!=1)
-            	<!--  批处理每日更新一次 -->
             	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ma)</font></td> 
             	
-            	<!--  批处理每日更新一次 -->
             	<td nowrap="nowrap" style="background:#99CCFF">截止到今天的日均用信余额</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ta)</font></td>
             	 #end
-            </tr>
+            </tr> -->
             
              <tr>
             	<td nowrap="nowrap" style="background:#99CCFF">信用类产品贷款余额</td>
@@ -144,7 +143,7 @@
             </tr>
             
              <tr>
-            	<td nowrap="nowrap" style="background:#99CCFF">pos流水贷产品贷款余额</td>
+            	<td nowrap="nowrap" style="background:#99CCFF">POS流水贷产品贷款余额</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.pos)</font></td>
             	
             	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款笔数占比(%)</td>
@@ -168,6 +167,16 @@
             <tr>
             	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款金额占比(%)</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101amtproportion)%</font></td>
+            	
+            	#if($!urlType!=1)
+            	<!--  批处理每日更新一次 -->
+            	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ma)</font></td> 
+            	
+            	<!--  批处理每日更新一次 -->
+            	<td nowrap="nowrap" style="background:#99CCFF">截止到今天的日均用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ta)</font></td>
+            	#end
             </tr>
              #end
           </table>
