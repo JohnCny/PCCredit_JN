@@ -23,5 +23,7 @@ public interface TdyjcxDao {
 	int finappcount(MaintenanceFilter filter);
 
 	List<Tdyjcx> findappcount(MaintenanceFilter filter);
+	
+	int findappcount1(MaintenanceFilter filter);
 
 }

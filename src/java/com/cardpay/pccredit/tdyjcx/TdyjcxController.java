@@ -93,29 +93,33 @@ public class TdyjcxController extends BaseController{
 		
 		//result收集下发数据的信息，managerPerformmanceold收集进件的信息
 		QueryResult<MaintenanceForm> result = null;
-		List<Tdyjcx> appcount=new ArrayList<Tdyjcx>(); 
+		//List<Tdyjcx> appcount=new ArrayList<Tdyjcx>(); 
 		Tdyjcx tx;
 		//如果页面 传过来有信息怎显示客户经理手下信息
-		List<Tdyjcx>lists=new ArrayList<Tdyjcx>();
+		List<Tdyjcx> lists=new ArrayList<Tdyjcx>();
 		if(customerManagerId!=null && !customerManagerId.equals("")){
-			appcount=service.findappcount(filter);
+			//appcount=service.findappcount(filter);
 			result = service.findTdyjcxList(filter);
 			if(!result.getItems().isEmpty() ){
 			    tx=new Tdyjcx();
 				tx.setUserId(result.getItems().get(0).getUserId());
 				tx.setUserName(result.getItems().get(0).getUserName());
 				tx.setUser_type(result.getItems().get(0).getUser_type());
-				tx.setApplycount(appcount.get(0).getApplycount()); //进件总数
+				tx.setApplycount(service.findappcount1(filter)); //进件总数
 				tx.setCustomercount(service.fiindcustomercount(filter));  //客户数
 				tx.setGivemoneycount(result.getItems().get(0).getCustidcount()); //成功放款客户数
 				tx.setReqlmtsum(result.getItems().get(0).getReqlmtsum());
 				tx.setBalamtsum(result.getItems().get(0).getBalamtsum());
 				tx.setDlayamtsum(result.getItems().get(0).getDlayamtsum());
 				tx.setBadAmountsum(service.findbadAmountsum(filter));
-				tx.setZhlv(new BigDecimal(tx.getGivemoneycount())
-						   .divide(new BigDecimal(tx.getCustomercount()),
-						   4, BigDecimal.ROUND_HALF_UP)
-				           .multiply(new BigDecimal("100")).toString());
+				if(tx.getCustomercount() == 0){
+					tx.setZhlv("0");
+				}else{
+					tx.setZhlv(new BigDecimal(tx.getGivemoneycount())
+					   .divide(new BigDecimal(tx.getCustomercount()),
+					   4, BigDecimal.ROUND_HALF_UP)
+			           .multiply(new BigDecimal("100")).toString());
+				}
 				lists.add(tx);
 			}
 		}else{
@@ -123,7 +127,6 @@ public class TdyjcxController extends BaseController{
 			if(forms.size()>0){
 				    //用TotalCount纪录条数
 			    	filter.setCustomerManagerIds(forms);
-			    	appcount=service.findappcount(filter);
 			    	result = service.findTdyjcxList(filter);
 			    	List<MaintenanceForm> plans=result.getItems();
 			    	if(!plans.isEmpty()){
@@ -132,11 +135,9 @@ public class TdyjcxController extends BaseController{
 						    tx=new Tdyjcx();
 							tx.setUserId(result.getItems().get(i).getUserId());
 							tx.setUserName(result.getItems().get(i).getUserName());
-						   /* tx.setUserId(appcount.get(i).getManager_id());
-							tx.setUserName(appcount.get(i).getUserName());*/
 							tx.setUser_type(result.getItems().get(i).getUser_type());
-							tx.setApplycount(appcount.get(i).getApplycount()); //进件总数
 							filter.setCustomerManagerId(result.getItems().get(i).getUserId());//添加    查询指定客户经理名下的客户条件
+							tx.setApplycount(service.findappcount1(filter)); //进件总数
 							tx.setCustomercount(service.fiindcustomercount(filter));  //客户数
 							tx.setGivemoneycount(result.getItems().get(i).getCustidcount());//成功放款客户数
 							tx.setReqlmtsum(result.getItems().get(i).getReqlmtsum());
@@ -144,10 +145,14 @@ public class TdyjcxController extends BaseController{
 							tx.setDlayamtsum(result.getItems().get(i).getDlayamtsum());
 							tx.setBadAmountsum(service.findbadAmountsum(filter));
 							//计算转化率 (成功放款客户数/客户数)
-							tx.setZhlv(new BigDecimal(tx.getGivemoneycount())
-									.divide(new BigDecimal(tx.getCustomercount()),
-											4, BigDecimal.ROUND_HALF_UP)
-									.multiply(new BigDecimal("100")).toString());
+							if(tx.getCustomercount() == 0){
+								tx.setZhlv("0");
+							}else{
+								tx.setZhlv(new BigDecimal(tx.getGivemoneycount())
+								   .divide(new BigDecimal(tx.getCustomercount()),
+								   4, BigDecimal.ROUND_HALF_UP)
+						           .multiply(new BigDecimal("100")).toString());
+							}
 							lists.add(tx);
 			    		}
 			    	}
