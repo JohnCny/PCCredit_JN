@@ -1,0 +1,1039 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+<STYLE id=survey_style type=text/css>
+.forms table tr td{line-height:25px;height:25px;}
+.forms table tr td input[type=text]{height:20px;line-height:20px;}
+.forms table tr td.titlefc3{text-align:center;}
+</STYLE>
+</head>
+<body>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">四维授信评估模型</div>
+      </div>
+	  <form id="id_module_form" >
+	    <input type="hidden" name="excelId" id="excelId" value="$!result.filter.excelId" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>基本信息</caption>
+            <!--  applicantInfo   开始-->
+			<tr>
+              <td class="titlefc3">姓名</td>
+              <td><input type="text" name="cname" id ="cname" value="$!form.cname"/></td>
+              <td class="titlefc3">性别</td>
+              <td><input type="text" name="sex"   id ="sex" value="$!form.sex"/></td>
+              <td class="titlefc3">身份证号</td>
+              <td><input type="text" name="cardNo" id ="cardNo" value="$!form.cardNo"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3">户籍所在地</td>
+              <td><input type="text" name="domicileLocation" id ="domicileLocation" value="$!form.domicileLocation"/></td>
+              <td class="titlefc3">详细地址</td>
+              <td><input type="text" name="address" id ="address" value="$!form.address"/></td>
+              <td class="titlefc3">电话</td>
+              <td><input type="text" name="phoneNo" id ="phoneNo" value="$!form.phoneNo"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3">配偶身份证号</td>
+              <td><input type="text" name="spouseIdNo" id ="spouseIdNo" value="$!form.spouseIdNo"/></td>
+              <td class="titlefc3">店铺/企业地址</td>
+              <td><input type="text" name="companyAddress" id ="companyAddress" value="$!form.companyAddress"/></td>
+              <td class="titlefc3">所属行业</td>
+              <td><input type="text" name="industry" id ="industry" value="$!form.industry"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3">经营时间</td>
+              <td><input type="text" name="operatingTime" id ="operatingTime" value="$!form.operatingTime"/></td>
+              <td class="titlefc3"></td>
+              <td></td>
+              <td class="titlefc3"></td>
+              <td></td>
+			</tr> 
+			<!--  applicantInfo   结束-->
+            <!--  repayAbilities   开始-->
+			<tr>
+              <td class="titlefc3">自有资金(万元)</td>
+              <td><input type="text" name="ownFunds" id ="ownFunds" value="$!form.ownFunds"/></td>
+              <td class="titlefc3">配偶年收入(万元)</td>
+              <td><input type="text" name="spouseIncome" id ="spouseIncome" value="$!form.spouseIncome"/></td>
+              <td class="titlefc3">非经营总资产(万元)</td>
+              <td><input type="text" name="totalNonOperatingAssets" id ="totalNonOperatingAssets" value="$!form.totalNonOperatingAssets"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3">月利润(万元)</td>
+              <td><input type="text" name="monthlyProfit" id ="monthlyProfit" value="$!form.monthlyProfit"/></td>
+              <td class="titlefc3">申请期限(月)</td>
+              <td><input type="text" name="applicationPeriod" id ="applicationPeriod" value="$!form.applicationPeriod"/></td>
+              <td class="titlefc3">非经营总负债(负值,万元)</td>
+              <td><input type="text" name="nonPperatingTotalLiabilities" id ="nonPperatingTotalLiabilities" value="$!form.nonPperateTotalLiabilities"/></td>
+			</tr>
+			<!--  repayAbilities   结束-->
+			
+			
+		  </table>
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>评估参数</caption>
+            <colgroup>
+              <col width="15%" />
+              <col width="35%" />
+              <col width="15%" />
+              <col width="35%" />
+            </colgroup>
+            <tr>
+             <!--  livingCondition   开始 -->
+              <td class="titlefc3">居住类型</td>
+              <td>
+				<label><INPUT name="radio1" type=radio  value="自有">自有</label>
+				<label><INPUT name="radio1" type=radio  value="自建房">自建房</label>
+				<label><INPUT name="radio1" type=radio  value="住经营场所">住经营场所</label>
+				<label><INPUT name="radio1" type=radio  value="租住">租住</label>
+				<label><INPUT name="radio1" type=radio  value="其他">其他</label>
+				<input type="hidden" name="dwellingType" id="dwellingType" value="" />
+			  </td>
+              <td class="titlefc3">装修情况</td>
+              <td>
+				<label><INPUT name="radio2" type=radio  value="好">好</label>
+				<label><INPUT name="radio2" type=radio  value="中">中</label>
+				<label><INPUT name="radio2" type=radio  value="差">差</label>
+				<label><INPUT name="radio2" type=radio  value="其他">其他</label>
+				<input type="hidden" name="decorationSituation" id="decorationSituation" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">住房面积</td>
+              <td colspan="3">
+				<label><INPUT name="radio3" type=radio  value="≤100">≤100</label>
+				<label><INPUT name="radio3" type=radio  value="100-200">100-200</label>
+				<label><INPUT name="radio3" type=radio  value="200-300">200-300</label>
+				<label><INPUT name="radio3" type=radio  value="300-400">300-400</label>
+				<label><INPUT name="radio3" type=radio  value="400-500">400-500</label>
+				<label><INPUT name="radio3" type=radio  value="≥500">≥500</label>
+				<input type="hidden" name="housingArea" id="housingArea" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">自有房产数量</td>
+              <td>
+				<label><INPUT name="radio4" type=radio  value="0">0</label>
+				<label><INPUT name="radio4" type=radio  value="1">1</label>
+				<label><INPUT name="radio4" type=radio  value="2">2</label>
+				<label><INPUT name="radio4" type=radio  value="3">3</label>
+				<label><INPUT name="radio4" type=radio  value="4">4</label>
+				<label><INPUT name="radio4" type=radio  value="≥5">≥5</label>
+				<input type="hidden" name="ownedPropertyQuantity" id="ownedPropertyQuantity" value="" />
+			  </td>
+              <td class="titlefc3">按揭房产数量</td>
+              <td>
+				<label><INPUT name="radio5" type=radio  value="0">0</label>
+				<label><INPUT name="radio5" type=radio  value="1">1</label>
+				<label><INPUT name="radio5" type=radio  value="2">2</label>
+				<label><INPUT name="radio5" type=radio  value="3">3</label>
+				<label><INPUT name="radio5" type=radio  value="4">4</label>
+				<label><INPUT name="radio5" type=radio  value="≥5">≥5</label>
+				<input type="hidden" name="numberOfMortgage" id="numberOfMortgage" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">房产总价</td>
+              <td colspan="3">
+				<label><INPUT name="radio6" type=radio  value="≤100">≤100</label>
+				<label><INPUT name="radio6" type=radio  value="100-300">100-300</label>
+				<label><INPUT name="radio6" type=radio  value="300-500">300-500</label>
+				<label><INPUT name="radio6" type=radio  value="500-1000">500-1000</label>
+				<label><INPUT name="radio6" type=radio  value="1000-3000">1000-3000</label>
+				<label><INPUT name="radio6" type=radio  value="3000-5000">3000-5000</label>
+				<label><INPUT name="radio6" type=radio  value="5000-10000">5000-10000</label>
+				<label><INPUT name="radio6" type=radio  value="≥10000">≥10000</label>
+				<input type="hidden" name="housePrice" id="housePrice" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">自有房产总面积</td>
+              <td colspan="3">
+				<label><INPUT name="radio7" type=radio  value="≤100">≤100</label>
+				<label><INPUT name="radio7" type=radio  value="100-200">100-200</label>
+				<label><INPUT name="radio7" type=radio  value="200-300">200-300</label>
+				<label><INPUT name="radio7" type=radio  value="300-400">300-400</label>
+				<label><INPUT name="radio7" type=radio  value="400-500">400-500</label>
+				<label><INPUT name="radio7" type=radio  value="≥500">≥500</label>
+				<input type="hidden" name="totalPropertyArea" id="totalPropertyArea" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">自有车辆数量</td>
+              <td>
+				<label><INPUT name="radio8" type=radio  value="0">0</label>
+				<label><INPUT name="radio8" type=radio  value="1">1</label>
+				<label><INPUT name="radio8" type=radio  value="2">2</label>
+				<label><INPUT name="radio8" type=radio  value="3">3</label>
+				<label><INPUT name="radio8" type=radio  value="4">4</label>
+				<label><INPUT name="radio8" type=radio  value="≥5">≥5</label>
+				<input type="hidden" name="numberOfPrivateVehicles" id="numberOfPrivateVehicles" value="" />
+			  </td>
+              <td class="titlefc3">货款车辆数量</td>
+              <td>
+				<label><INPUT name="radio9" type=radio  value="0">0</label>
+				<label><INPUT name="radio9" type=radio  value="1">1</label>
+				<label><INPUT name="radio9" type=radio  value="2">2</label>
+				<label><INPUT name="radio9" type=radio  value="3">3</label>
+				<label><INPUT name="radio9" type=radio  value="4">4</label>
+				<label><INPUT name="radio9" type=radio  value="≥5">≥5</label>
+				<input type="hidden" name="numberOfLoans" id="numberOfLoans" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">车辆总价</td>
+              <td colspan="3">
+				<label><INPUT name="radio10" type=radio  value="≤10">≤10</label>
+				<label><INPUT name="radio10" type=radio  value="10-20">10-20</label>
+				<label><INPUT name="radio10" type=radio  value="20-50">20-50</label>
+				<label><INPUT name="radio10" type=radio  value="50-100">50-100</label>
+				<label><INPUT name="radio10" type=radio  value="100-300">100-300</label>
+				<label><INPUT name="radio10" type=radio  value="300-500">300-500</label>
+				<label><INPUT name="radio10" type=radio  value="500-1000">500-1000</label>
+				<label><INPUT name="radio10" type=radio  value="1000-2000">1000-2000</label>
+				<label><INPUT name="radio10" type=radio  value="2000-3000">2000-3000</label>
+				<label><INPUT name="radio10" type=radio  value="≥3000">≥3000</label>
+				<input type="hidden" name="vehiclePrice" id="vehiclePrice" value="" />
+			  </td>
+			</tr>
+            <tr>
+			  <td class="titlefc3">除经营生意外是否有其他工作</td>
+              <td>
+				<label><INPUT name="radio11" type=radio  value="是">是</label>
+				<label><INPUT name="radio11" type=radio  value="否">否</label>
+				<input type="hidden" name="others" id="others" value="" />
+			  </td>
+			  
+              <td class="titlefc3">信用卡授信总额</td>
+              <td>
+				<label><INPUT name="radio14" type=radio  value="≤5">≤5</label>
+				<label><INPUT name="radio14" type=radio  value="5-10">5-10</label>
+				<label><INPUT name="radio14" type=radio  value="≥10">≥10</label>
+				<input type="hidden" name="totalCreditCardCredit" id="totalCreditCardCredit" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">个人银行账户余额</td>
+              <td colspan="3">
+				<label><INPUT name="radio12" type=radio  value="≤50">≤50</label>
+				<label><INPUT name="radio12" type=radio  value="50-100">50-100</label>
+				<label><INPUT name="radio12" type=radio  value="100-300">100-300</label>
+				<label><INPUT name="radio12" type=radio  value="300-500">300-500</label>
+				<label><INPUT name="radio12" type=radio  value="500-1000">500-1000</label>
+				<label><INPUT name="radio12" type=radio  value="≥1000">≥1000</label>
+				<input type="hidden" name="personalBankAccountBalance" id="personalBankAccountBalance" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">生意账户余额</td>
+              <td colspan="3">
+				<label><INPUT name="radio13" type=radio  value="≤300">≤300</label>
+				<label><INPUT name="radio13" type=radio  value="300-500">300-500</label>
+				<label><INPUT name="radio13" type=radio  value="500-1000">500-1000</label>
+				<label><INPUT name="radio13" type=radio  value="1000-3000">1000-3000</label>
+				<label><INPUT name="radio13" type=radio  value="3000-5000">3000-5000</label>
+				<label><INPUT name="radio13" type=radio  value="≥5000">≥5000</label>
+				<input type="hidden" name="businessAccountBalance" id="businessAccountBalance" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">月平均还款金额占收入比例</td>
+              <td colspan="3">
+				<label><INPUT name="radio15" type=radio  value="≥70%">≥70%</label>
+				<label><INPUT name="radio15" type=radio  value="50%-70%">50%-70%</label>
+				<label><INPUT name="radio15" type=radio  value="30%-50%">30%-50%</label>
+				<label><INPUT name="radio15" type=radio  value="10%-30%">10%-30%</label>
+				<label><INPUT name="radio15" type=radio  value="≤10%">≤10%</label>
+				<input type="hidden" name="averageMonthlyRepaymentAmountOfIncome" id="averageMonthlyRepaymentAmountOfIncome" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">是否为他人担保</td>
+              <td colspan="3">
+				<label><INPUT name="radio16" type=radio  value="是">是</label>
+				<label><INPUT name="radio16" type=radio  value="否">否</label>
+				<input type="hidden" name="guaranteeForOthers" id="guaranteeForOthers" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">担保金额占本人自有资产比例</td>
+              <td colspan="3">
+				<label><INPUT name="radio17" type=radio  value="≥100%">≥100%</label>
+				<label><INPUT name="radio17" type=radio  value="50%-100%">50%-100%</label>
+				<label><INPUT name="radio17" type=radio  value="10%-50%">10%-50%</label>
+				<label><INPUT name="radio17" type=radio  value="5%-10%">5%-10%</label>
+				<label><INPUT name="radio17" type=radio  value="≤5%">≤5%</label>
+				<input type="hidden" name="theProportionOfTheAmountOfTheSecuredAssets" id="theProportionOfTheAmountOfTheSecuredAssets" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">担保用途</td>
+              <td>
+				<label><INPUT name="radio18" type=radio  value="经营">经营</label>
+				<label><INPUT name="radio18" type=radio  value="朋友买房/车/消费">朋友买房/车/消费</label>
+				<input type="hidden" name="securedUse" id="securedUse" value="" />
+			  </td>
+              <td class="titlefc3">担保期限</td>
+              <td>
+				<label><INPUT name="radio19" type=radio  value="1">1</label>
+				<label><INPUT name="radio19" type=radio  value="2">2</label>
+				<label><INPUT name="radio19" type=radio  value=">5">>5</label>
+				<label><INPUT name="radio19" type=radio  value="3-5">3-5</label>
+				<label><INPUT name="radio19" type=radio  value="<1"><1</label>
+				<input type="hidden" name="guaranteePeriod" id="guaranteePeriod" value="" />
+			  </td>
+			</tr>
+			<!--  livingCondition   结束 -->
+			
+			
+			<!--  operateCondition   开始-->
+            <tr>
+              <td class="titlefc3">组织类型</td>
+              <td>
+				<label><INPUT name="radio20" type=radio  value="个体">个体</label>
+				<label><INPUT name="radio20" type=radio  value="民营">民营</label>
+				<label><INPUT name="radio20" type=radio  value="股份制公司">股份制公司</label>
+				<label><INPUT name="radio20" type=radio  value="上市公司">上市公司</label>
+				<input type="hidden" name="organizationType" id="organizationType" value="" />
+			  </td>
+			  <td class="titlefc3">营业执照</td>
+              <td>
+				<label><INPUT name="radio24" type=radio  value="有">有</label>
+				<label><INPUT name="radio24" type=radio  value="无">无</label>
+				<input type="hidden" name="businessLicense" id="businessLicense" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">经营场所面积</td>
+              <td colspan="3">
+				<label><INPUT name="radio21" type=radio  value="≤100">≤100</label>
+				<label><INPUT name="radio21" type=radio  value="100-200">100-200</label>
+				<label><INPUT name="radio21" type=radio  value="200-300">200-300</label>
+				<label><INPUT name="radio21" type=radio  value="300-400">300-400</label>
+				<label><INPUT name="radio21" type=radio  value="400-500">400-500</label>
+				<label><INPUT name="radio21" type=radio  value="≥500">≥500</label>
+				<input type="hidden" name="operatingArea" id="operatingArea" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">股东占比情况</td>
+              <td colspan="3">
+				<label><INPUT name="radio22" type=radio  value=">70%">>70%</label>
+				<label><INPUT name="radio22" type=radio  value="50%-70%">50%-70%</label>
+				<label><INPUT name="radio22" type=radio  value="30%-50%">30%-50%</label>
+				<label><INPUT name="radio22" type=radio  value="10%-30%">10%-30%</label>
+				<label><INPUT name="radio22" type=radio  value="<10%"><10%</label>
+				<input type="hidden" name="proportionofShareholders" id="proportionofShareholders" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">雇佣人数</td>
+              <td colspan="3">
+				<label><INPUT name="radio23" type=radio  value=">200">>200</label>
+				<label><INPUT name="radio23" type=radio  value="100-200">100-200</label>
+				<label><INPUT name="radio23" type=radio  value="50-100">50-100</label>
+				<label><INPUT name="radio23" type=radio  value="30-50">30-50</label>
+				<label><INPUT name="radio23" type=radio  value="10-30">10-30</label>
+				<label><INPUT name="radio23" type=radio  value="<10"><10</label>
+				<input type="hidden" name="employees" id="employees" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">店铺类型</td>
+              <td>
+				<label><INPUT name="radio25" type=radio  value="自有产权">自有产权</label>
+				<label><INPUT name="radio25" type=radio  value="按揭商铺">按揭商铺</label>
+				<label><INPUT name="radio25" type=radio  value="租用">租用</label>
+				<label><INPUT name="radio25" type=radio  value="其他">其他</label>
+				<input type="hidden" name="storeType" id="storeType" value="" />
+			  </td>
+              <td class="titlefc3">店铺装修情况</td>
+              <td>
+				<label><INPUT name="radio26" type=radio  value="好">好</label>
+				<label><INPUT name="radio26" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio26" type=radio  value="差">差</label>
+				<input type="hidden" name="shopDecoration" id="shopDecoration" value="" />
+			  </td>
+			</tr>
+			<!--  operateCondition   结束-->
+			
+			<!--  creditCondition   开始-->
+            <tr>
+              <td class="titlefc3">婚姻状况</td>
+              <td>
+				<label><INPUT name="radio27" type=radio  value="已婚">已婚</label>
+				<label><INPUT name="radio27" type=radio  value="未婚">未婚</label>
+				<label><INPUT name="radio27" type=radio  value="离异">离异</label>
+				<input type="hidden" name="maritalStatus" id="maritalStatus" value="" />
+			  </td>
+              <td class="titlefc3">最高学位</td>
+              <td>
+				<label><INPUT name="radio28" type=radio  value="本科及以上">本科及以上</label>
+				<label><INPUT name="radio28" type=radio  value="大专">大专</label>
+				<label><INPUT name="radio28" type=radio  value="高中或中专">高中或中专</label>
+				<label><INPUT name="radio28" type=radio  value="初中及以上">初中及以上</label>
+				<input type="hidden" name="highestDegree" id="highestDegree" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">家人对申请人评价</td>
+              <td>
+				<label><INPUT name="radio29" type=radio  value="好">好</label>
+				<label><INPUT name="radio29" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio29" type=radio  value="差">差</label>
+				<input type="hidden" name="familyEvaluationOfApplicants" id="familyEvaluationOfApplicants" value="" />
+			  </td>
+              <td class="titlefc3">邻居对申请人评价</td>
+              <td>
+				<label><INPUT name="radio30" type=radio  value="好">好</label>
+				<label><INPUT name="radio30" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio30" type=radio  value="差">差</label>
+				<input type="hidden" name="neighborEvaluation" id="neighborEvaluation" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">重要联系人对申请人评价</td>
+              <td>
+				<label><INPUT name="radio31" type=radio  value="好">好</label>
+				<label><INPUT name="radio31" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio31" type=radio  value="差">差</label>
+				<input type="hidden" name="evaluationOfImportantContactPerson" id="evaluationOfImportantContactPerson" value="" />
+			  </td>
+              <td class="titlefc3">生意关联人对申请人评价</td>
+              <td>
+				<label><INPUT name="radio32" type=radio  value="好">好</label>
+				<label><INPUT name="radio32" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio32" type=radio  value="差">差</label>
+				<input type="hidden" name="evaluationOfBusinessAssociates" id="evaluationOfBusinessAssociates" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">社会公益状况</td>
+              <td>
+				<label><INPUT name="radio33" type=radio  value="有">有</label>
+				<label><INPUT name="radio33" type=radio  value="无">无</label>
+				<input type="hidden" name="socialWelfareSituation" id="socialWelfareSituation" value="" />
+			  </td>
+              <td class="titlefc3">违法违纪情况</td>
+              <td>
+				<label><INPUT name="radio34" type=radio  value="有">有</label>
+				<label><INPUT name="radio34" type=radio  value="无">无</label>
+				<input type="hidden" name="violationOfLaw" id="violationOfLaw" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">家庭是否和睦</td>
+              <td>
+				<label><INPUT name="radio35" type=radio  value="是">是</label>
+				<label><INPUT name="radio35" type=radio  value="否">否</label>
+				<input type="hidden" name="familyHarmony" id="familyHarmony" value="" />
+			  </td>
+              <td class="titlefc3">经济上依赖的人数</td>
+              <td>
+				<label><INPUT name="radio36" type=radio  value="0">0</label>
+				<label><INPUT name="radio36" type=radio  value="1">1</label>
+				<label><INPUT name="radio36" type=radio  value="≥2">≥2</label>
+				<input type="hidden" name="economicDependence" id="economicDependence" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">不良嗜好</td>
+              <td>
+				<label><INPUT name="radio37" type=radio  value="有">有</label>
+				<label><INPUT name="radio37" type=radio  value="无">无</label>
+				<input type="hidden" name="badHabits" id="badHabits" value="" />
+			  </td>
+              <td class="titlefc3">不良公共记录</td>
+              <td>
+				<label><INPUT name="radio38" type=radio  value="有">有</label>
+				<label><INPUT name="radio38" type=radio  value="无">无</label>
+				<input type="hidden" name="badPublicRecords" id="badPublicRecords" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">政治情况</td>
+              <td>
+				<label><INPUT name="radio39" type=radio  value="党员">党员</label>
+				<label><INPUT name="radio39" type=radio  value="群众">群众</label>
+				<input type="hidden" name="politicalSituation" id="politicalSituation" value="" />
+			  </td>
+              <td class="titlefc3">商业保险情况</td>
+              <td>
+				<label><INPUT name="radio40" type=radio  value="有">有</label>
+				<label><INPUT name="radio40" type=radio  value="无">无</label>
+				<input type="hidden" name="commercialInsurance" id="commercialInsurance" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">社会关系</td>
+              <td>
+				<label><INPUT name="radio41" type=radio  value="好">好</label>
+				<label><INPUT name="radio41" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio41" type=radio  value="差">差</label>
+				<input type="hidden" name="socialRelations" id="socialRelations" value="" />
+			  </td>
+              <td class="titlefc3">赡养父母状况</td>
+              <td>
+				<label><INPUT name="radio42" type=radio  value="好">好</label>
+				<label><INPUT name="radio42" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio42" type=radio  value="差">差</label>
+				<input type="hidden" name="parentalSupport" id="parentalSupport" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">亲戚和睦状况</td>
+              <td>
+				<label><INPUT name="radio43" type=radio  value="好">好</label>
+				<label><INPUT name="radio43" type=radio  value="一般">一般</label>
+				<label><INPUT name="radio43" type=radio  value="差">差</label>
+				<input type="hidden" name="dfamilyHarmony" id="dfamilyHarmony" value="" />
+			  </td>
+              <td class="titlefc3">信用状况</td>
+              <td>
+				<label><INPUT name="radio44" type=radio  value="正常">正常</label>
+				<label><INPUT name="radio44" type=radio  value="不正常">不正常</label>
+				<label><INPUT name="radio44" type=radio  value="无记录">无记录</label>
+				<input type="hidden" name="creditStatus" id="creditStatus" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">信用卡逾期情况</td>
+              <td colspan="3">
+				<label><INPUT name="radio45" type=radio  value="征信报告无逾期">征信报告无逾期</label>
+				<label><INPUT name="radio45" type=radio  value="24个月内无逾期，5年内有逾期">24个月内无逾期，5年内有逾期</label>
+				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），无连续逾期，5年内有逾期">24个月内有逾期（逾期<5次），无连续逾期，5年内有逾期</label>
+				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），无连续逾期，5年内无逾期">24个月内有逾期（逾期<5次），无连续逾期，5年内无逾期</label>
+				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），且为连续逾期，5年内有逾期">24个月内有逾期（逾期<5次），且为连续逾期，5年内有逾期</label>
+				<label><INPUT name="radio45" type=radio  value="24个月内逾期≥5次">24个月内逾期≥5次</label>
+				<input type="hidden" name="creditCardOverdue" id="creditCardOverdue" value="" />
+			  </td>
+			</tr>
+            <tr>
+              <td class="titlefc3">信用卡总数</td>
+              <td colspan="3">
+				<label><INPUT name="radio46" type=radio  value="0">0</label>
+				<label><INPUT name="radio46" type=radio  value="1">1</label>
+				<label><INPUT name="radio46" type=radio  value="2">2</label>
+				<label><INPUT name="radio46" type=radio  value="3">3</label>
+				<label><INPUT name="radio46" type=radio  value="4">4</label>
+				<label><INPUT name="radio46" type=radio  value="≥5">≥5</label>
+				<input type="hidden" name="creditCardTotalNum" id="creditCardTotalNum" value="" />
+			  </td>
+			</tr>
+			<!--  creditCondition   结束-->
+			
+			
+		  </table>
+		</div>
+	  </form>
+	  <div class="submit" style="margin-top:-20px;">
+	    <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+      </div>
+	</div>
+</div>
+</body>
+<script language="javascript" type="text/javascript">
+	#set ($formName = "'#id_module_form'")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+		$("#id_next_button").click(function() {
+			 //判断所有非null  然后取radio值赋值给隐藏域
+		     /*ApplicantInfoVo*/
+		     var cardNo =  $('#cardNo').val();
+			 if(cardNo == ''){
+				alert("请输入[身份证号]!");	
+		        return; 
+			 }
+   			 var cname =  $('#cname').val();
+   			 if(cname == ''){
+ 				alert("请输入[姓名]!");	
+ 		        return; 
+ 			 }
+   			 var sex   =  $('#sex').val();
+   			 if(sex == ''){
+ 				alert("请输入[性别]!");	
+ 		        return; 
+ 			 }
+   			 var domicileLocation =  $('#domicileLocation').val();
+   			 if(domicileLocation == ''){
+ 				alert("请输入[户籍所在地]!");	
+ 		        return; 
+ 			 }
+   			 var address =  $('#address').val();
+   			 if(address == ''){
+  				alert("请输入[详细地址]!");	
+  		        return; 
+  			 }
+   			 var phoneNo =  $('#phoneNo').val();
+   			 if(phoneNo == ''){
+  				alert("请输入[电话]!");	
+  		        return; 
+  			 }
+   			 var spouseIdNo  =  $('#spouseIdNo').val();
+   			 if(spouseIdNo == ''){
+  				alert("请输入[配偶身份证号]!");	
+  		        return; 
+  			 }
+   			 var companyAddress  =  $('#companyAddress').val();
+   			 if(companyAddress == ''){
+  				alert("请输入[店铺/企业地址]!");	
+  		        return; 
+  			 }
+   			 var industry =  $('#industry').val();
+   			 if(industry == ''){
+  				alert("请输入[所属行业]!");	
+  		        return; 
+  			 }
+   			 var operatingTime  =  $('#operatingTime').val();
+   			 if(operatingTime == ''){
+  				alert("请输入[经营时间]!");	
+  		        return; 
+  			 }
+   			/*RepayAbilitiesVo*/
+   			 var   ownFunds	=$('#ownFunds').val();
+   			 if(ownFunds == ''){
+  				alert("请输入[自有资金]!");	
+  		        return; 
+  			 }
+			 var   spouseIncome  =$('#spouseIncome').val();
+			 if(spouseIncome == ''){
+	  				alert("请输入[配偶年收入]!");	
+	  		        return; 
+	  		 }
+			 var   totalNonOperatingAssets  =$('#totalNonOperatingAssets').val();
+			 if(totalNonOperatingAssets == ''){
+	  				alert("请输入[非经营总资产]!");	
+	  		        return; 
+	  	     }
+			 var   monthlyProfit =$('#monthlyProfit').val();
+			 if(monthlyProfit == ''){
+	  				alert("请输入[月利润]!");	
+	  		        return; 
+	  		 }
+			 var   applicationPeriod  =$('#applicationPeriod').val();
+			 if(applicationPeriod == ''){
+	  				alert("请输入[申请期限]!");	
+	  		        return; 
+	  	     }
+			 var   nonPperatingTotalLiabilities =$('#nonPperatingTotalLiabilities').val();
+			 if(nonPperatingTotalLiabilities == ''){
+	  				alert("请输入[非经营总负债]!");	
+	  		        return; 
+	  		 }
+
+			 /*LivingConditionVo*/
+			 var radio1= $('input[name="radio1"]:checked').val();
+			 if(typeof(radio1) == 'undefined'){
+	        	alert("请选择[居住类型]!");	
+	        	return;
+		     }
+			 $('#dwellingType').val(radio1);
+			 
+			 var radio2= $('input[name="radio2"]:checked').val();
+			 if(typeof(radio2) == 'undefined'){
+	        	alert("请选择[装修情况]!");	
+	        	return;
+		     }
+			 $('#decorationSituation').val(radio2);
+		     
+			 var radio3= $('input[name="radio3"]:checked').val();
+			 if(typeof(radio3) == 'undefined'){
+	        	alert("请选择[住房面积]!");	
+	        	return;
+		     }
+			 $('#housingArea').val(radio3);
+			 
+			 
+			 var radio4= $('input[name="radio4"]:checked').val();
+			 if(typeof(radio4) == 'undefined'){
+	        	alert("请选择[自有房产数量]!");	
+	        	return;
+		     }
+			 $('#ownedPropertyQuantity').val(radio4);
+			 
+			 var radio5= $('input[name="radio5"]:checked').val();
+			 if(typeof(radio5) == 'undefined'){
+	        	alert("请选择[按揭房产数量]!");	
+	        	return;
+		     }
+			 $('#numberOfMortgage').val(radio5);
+			 
+			 var radio6= $('input[name="radio6"]:checked').val();
+			 if(typeof(radio6) == 'undefined'){
+	        	alert("请选择[房产总价]!");	
+	        	return;
+		     }
+			 $('#housePrice').val(radio6);
+		     
+			 var radio7= $('input[name="radio7"]:checked').val();
+			 if(typeof(radio7) == 'undefined'){
+	        	alert("请选择[自有房产总面积]!");	
+	        	return;
+		     }
+			 $('#totalPropertyArea').val(radio7);
+			 
+			 var radio8= $('input[name="radio8"]:checked').val();
+			 if(typeof(radio8) == 'undefined'){
+	        	alert("请选择[自有车辆数量]!");	
+	        	return;
+		     }
+			 $('#numberOfPrivateVehicles').val(radio8);
+			 
+			 var radio9= $('input[name="radio9"]:checked').val();
+			 if(typeof(radio9) == 'undefined'){
+	        	alert("请选择[贷款车辆数量]!");	
+	        	return;
+		     }
+			 $('#numberOfLoans').val(radio9);
+			 
+			 var radio10= $('input[name="radio10"]:checked').val();
+			 if(typeof(radio10) == 'undefined'){
+	        	alert("请选择[车辆总价]!");	
+	        	return;
+		     }
+			 $('#vehiclePrice').val(radio10);
+			 
+			 
+			 var radio11= $('input[name="radio11"]:checked').val();
+			 if(typeof(radio11) == 'undefined'){
+	        	alert("请选择[除经营生意外是否有其他工作]!");	
+	        	return;
+		     }
+			 $('#others').val(radio11);
+			 
+			 var radio14= $('input[name="radio14"]:checked').val();
+			 if(typeof(radio14) == 'undefined'){
+	        	alert("请选择[信用卡授信总额]!");	
+	        	return;
+		     }
+			 $('#totalCreditCardCredit').val(radio14);
+			 
+			 var radio12= $('input[name="radio12"]:checked').val();
+			 if(typeof(radio12) == 'undefined'){
+	        	alert("请选择[个人银行账户余额]!");	
+	        	return;
+		     }
+			 $('#personalBankAccountBalance').val(radio12);
+			 
+			 
+			 var radio13= $('input[name="radio13"]:checked').val();
+			 if(typeof(radio13) == 'undefined'){
+	        	alert("请选择[生意账户余额]!");	
+	        	return;
+		     }
+			 $('#businessAccountBalance').val(radio13);
+			 
+			 var radio15= $('input[name="radio15"]:checked').val();
+			 if(typeof(radio15) == 'undefined'){
+	        	alert("请选择[月平均还款金额占收入比例]!");	
+	        	return;
+		     }
+			 $('#averageMonthlyRepaymentAmountOfIncome').val(radio15);
+			 
+			 var radio16= $('input[name="radio16"]:checked').val();
+			 if(typeof(radio16) == 'undefined'){
+	        	alert("请选择[是否为他人担保]!");	
+	        	return;
+		     }
+			 $('#guaranteeForOthers').val(radio16);
+			 
+			 var radio17= $('input[name="radio17"]:checked').val();
+			 if(typeof(radio17) == 'undefined'){
+	        	alert("请选择[担保金额占本人自有资产比例]!");	
+	        	return;
+		     }
+			 $('#theProportionOfTheAmountOfTheSecuredAssets').val(radio17);
+			 
+			 var radio18= $('input[name="radio18"]:checked').val();
+			 if(typeof(radio18) == 'undefined'){
+	        	alert("请选择[担保用途]!");	
+	        	return;
+		     }
+			 $('#securedUse').val(radio18);
+			 
+			 var radio19= $('input[name="radio19"]:checked').val();
+			 if(typeof(radio19) == 'undefined'){
+	        	alert("请选择[担保期限]!");	
+	        	return;
+		     }
+			 $('#guaranteePeriod').val(radio19);
+			 
+			 
+			 /*OperateConditionVo*/
+			 var radio20= $('input[name="radio20"]:checked').val();
+			 if(typeof(radio20) == 'undefined'){
+	        	alert("请选择[组织类型]!");	
+	        	return;
+		     }
+			 $('#organizationType').val(radio20);
+			 
+			 
+			 var radio24= $('input[name="radio24"]:checked').val();
+			 if(typeof(radio24) == 'undefined'){
+	        	alert("请选择[营业执照]!");	
+	        	return;
+		     }
+			 $('#businessLicense').val(radio24);
+			 
+			 
+			 var radio21= $('input[name="radio21"]:checked').val();
+			 if(typeof(radio21) == 'undefined'){
+	        	alert("请选择[经营场所面积]!");	
+	        	return;
+		     }
+			 $('#operatingArea').val(radio21);
+			 
+			 var radio22= $('input[name="radio22"]:checked').val();
+			 if(typeof(radio22) == 'undefined'){
+	        	alert("请选择[股东占比情况]!");	
+	        	return;
+		     }
+			 $('#proportionofShareholders').val(radio22);
+			 
+			 
+			 var radio23= $('input[name="radio23"]:checked').val();
+			 if(typeof(radio23) == 'undefined'){
+	        	alert("请选择[雇佣人数]!");	
+	        	return;
+		     }
+			 $('#employees').val(radio23);
+			 
+			 
+			 var radio25= $('input[name="radio25"]:checked').val();
+			 if(typeof(radio25) == 'undefined'){
+	        	alert("请选择[店铺类型]!");	
+	        	return;
+		     }
+			 $('#storeType').val(radio25);
+			 
+			 var radio26= $('input[name="radio26"]:checked').val();
+			 if(typeof(radio26) == 'undefined'){
+	        	alert("请选择[店铺装修情况]!");	
+	        	return;
+		     }
+			 $('#shopDecoration').val(radio26);
+			 
+			 /*creditCondition*/
+			 
+			 var radio27= $('input[name="radio27"]:checked').val();
+			 if(typeof(radio27) == 'undefined'){
+	        	alert("请选择[婚姻状况]!");	
+	        	return;
+		     }
+			 $('#maritalStatus').val(radio27);
+			 
+			 var radio28= $('input[name="radio28"]:checked').val();
+			 if(typeof(radio28) == 'undefined'){
+	        	alert("请选择[最高学位]!");	
+	        	return;
+		     }
+			 $('#highestDegree').val(radio28);
+			 
+			 
+			 var radio29= $('input[name="radio29"]:checked').val();
+			 if(typeof(radio29) == 'undefined'){
+	        	alert("请选择[家人对申请人评价]!");	
+	        	return;
+		     }
+			 $('#familyEvaluationOfApplicants').val(radio29);
+			 
+			 var radio30= $('input[name="radio30"]:checked').val();
+			 if(typeof(radio30) == 'undefined'){
+	        	alert("请选择[邻居对申请人评价]!");	
+	        	return;
+		     }
+			 $('#neighborEvaluation').val(radio30);
+			 
+			 
+			 var radio31= $('input[name="radio31"]:checked').val();
+			 if(typeof(radio31) == 'undefined'){
+	        	alert("请选择[重要联系人对申请人评价]!");	
+	        	return;
+		     }
+			 $('#evaluationOfImportantContactPerson').val(radio31);
+			 
+			 
+			 var radio32= $('input[name="radio32"]:checked').val();
+			 if(typeof(radio32) == 'undefined'){
+	        	alert("请选择[生意关联人对申请人评价]!");	
+	        	return;
+		     }
+			 $('#evaluationOfBusinessAssociates').val(radio32);
+			
+			 
+			 var radio33= $('input[name="radio33"]:checked').val();
+			 if(typeof(radio33) == 'undefined'){
+	        	alert("请选择[社会公益状况]!");	
+	        	return;
+		     }
+			 $('#socialWelfareSituation').val(radio33);
+			 
+			 var radio34= $('input[name="radio34"]:checked').val();
+			 if(typeof(radio34) == 'undefined'){
+	        	alert("请选择[违法违纪情况]!");	
+	        	return;
+		     }
+			 $('#violationOfLaw').val(radio34);
+			 
+			 
+			 var radio35= $('input[name="radio35"]:checked').val();
+			 if(typeof(radio35) == 'undefined'){
+	        	alert("请选择[家庭是否和睦]!");	
+	        	return;
+		     }
+			 $('#familyHarmony').val(radio35);
+			 
+			 
+			 
+			 var radio36= $('input[name="radio36"]:checked').val();
+			 if(typeof(radio36) == 'undefined'){
+	        	alert("请选择[经济上依赖的人数]!");	
+	        	return;
+		     }
+			 $('#economicDependence').val(radio36);
+			 
+			 
+			 var radio37= $('input[name="radio37"]:checked').val();
+			 if(typeof(radio37) == 'undefined'){
+	        	alert("请选择[不良嗜好]!");	
+	        	return;
+		     }
+			 $('#badHabits').val(radio37);
+			 
+			 var radio38= $('input[name="radio38"]:checked').val();
+			 if(typeof(radio38) == 'undefined'){
+	        	alert("请选择[不良公共记录]!");	
+	        	return;
+		     }
+			 $('#badPublicRecords').val(radio38);
+			 
+			 
+			 var radio39= $('input[name="radio39"]:checked').val();
+			 if(typeof(radio39) == 'undefined'){
+	        	alert("请选择[政治情况]!");	
+	        	return;
+		     }
+			 $('#politicalSituation').val(radio39);
+			 
+			 var radio40= $('input[name="radio40"]:checked').val();
+			 if(typeof(radio40) == 'undefined'){
+	        	alert("请选择[商业保险情况]!");	
+	        	return;
+		     }
+			 $('#commercialInsurance').val(radio40);
+			 
+			 var radio41= $('input[name="radio41"]:checked').val();
+			 if(typeof(radio41) == 'undefined'){
+	        	alert("请选择[社会关系]!");	
+	        	return;
+		     }
+			 $('#socialRelations').val(radio41);
+			 
+			 var radio42= $('input[name="radio42"]:checked').val();
+			 if(typeof(radio42) == 'undefined'){
+	        	alert("请选择[赡养父母状况]!");	
+	        	return;
+		     }
+			 $('#parentalSupport').val(radio42);
+			 
+			 var radio43= $('input[name="radio43"]:checked').val();
+			 if(typeof(radio43) == 'undefined'){
+	        	alert("请选择[亲戚和睦情况]!");	
+	        	return;
+		     }
+			 $('#dfamilyHarmony').val(radio43);
+			 
+			 
+			 var radio44= $('input[name="radio44"]:checked').val();
+			 if(typeof(radio44) == 'undefined'){
+	        	alert("请选择[信用状况]!");	
+	        	return;
+		     }
+			 $('#creditStatus').val(radio44);
+			 
+			 
+			 var radio45= $('input[name="radio45"]:checked').val();
+			 if(typeof(radio45) == 'undefined'){
+	        	alert("请选择[信用卡逾期情况]!");	
+	        	return;
+		     }
+			 $('#creditCardOverdue').val(radio45);
+			 
+			 
+			 var radio46= $('input[name="radio46"]:checked').val();
+			 if(typeof(radio46) == 'undefined'){
+	        	alert("请选择[信用卡总数]!");	
+	        	return;
+		     }
+			 $('#creditCardTotalNum').val(radio46);
+			 
+			 //验证是经营时间和申请期限输入格式是否正确
+			 var Reg = /^[0-9]*$/;
+		     if(!Reg.test(applicationPeriod)){
+		    	 alert("申请期限必须是整数!");	
+		         return;
+		     }
+		     if(!Reg.test(operatingTime)){
+		    	 alert("经营时间必须是整数!");	
+		         return;
+		     }
+		     
+		     //验证是否是double类型
+		     var dob =/^[-\+]?\d+(\.\d+)?$/
+	    	 if(!dob.test(ownFunds)){
+		    	 alert("自有资金应为数值类型!");	
+		         return;
+		     }
+		     
+		     if(!dob.test(spouseIncome)){
+		    	 alert("配偶年收入应为数值类型!");	
+		         return;
+		     }
+		     
+		     if(!dob.test(totalNonOperatingAssets)){
+		    	 alert("非经营总资产应为数值类型!");	
+		         return;
+		     }
+		     if(!dob.test(monthlyProfit)){
+		    	 alert("月利润应为数值类型!");	
+		         return;
+		     }
+		     
+		     if(!dob.test(nonPperatingTotalLiabilities)){
+		    	 alert("非经营总负债应为数值类型!");	
+		         return;
+		     }
+		     
+		     
+			 
+			 //获取form表单数局 提交
+			 var formjson = $($formName).serialize();
+			 //调用授信评估方法 返回数据 插表
+			 $.ajax({
+					url : "${contextPath}/intopieces/addIntopieces/callModel.json",
+					type : "get",
+					data : formjson,
+					success : function(data) {
+						if (data.success) {
+							 //跳转导入影像资料页面
+				             var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+				             window.location.href = url;
+						}else{
+							window.top.Dialog.message("系统出现异常,请联系管理员");
+				    	}
+					}
+		    });
+        });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

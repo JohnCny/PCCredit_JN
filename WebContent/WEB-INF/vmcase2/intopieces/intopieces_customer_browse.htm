@@ -20,22 +20,9 @@
                <li>
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
-              <li>
-	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7" style="width: 100px;"/></span> <span>-</span>
-              </li>
-              <li>
-                  <span><input type="text" name="endAmt" value=''  maxlength="7" style="width: 100px;"/></span>
-              </li>
-              <li>
-                <span>客户经理：
-                	<select  name="custManagerId" id="custManagerId" style="width: 100px;" >
-                  	#dict("MANAGERUSERS","")
-                  </select>
-                </span>
-              </li>
-              
-              <li>
-                <span>所属机构：<select id="organName" style="width: 100px;" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              <li style="width:300px">
+	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7" style="width: 80px;min-width:80px"/></span>&nbsp;-
+	          	  <span><input type="text" name="endAmt" value=''  maxlength="7" style="width: 80px;min-width:80px"/></span>
               </li>
               
               <li>
@@ -49,6 +36,20 @@
                 </select>
                 </span>
               </li>
+              
+              <li>
+                <span>客户经理：
+                	<select  name="custManagerId" id="custManagerId" style="width: 100px;" >
+                  	#dict("MANAGERUSERS","")
+                  </select>
+                </span>
+              </li>
+              
+              <li>
+                <span>所属机构：<select id="organName" style="width: 100px;" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              </li>
+              
+              
               
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
