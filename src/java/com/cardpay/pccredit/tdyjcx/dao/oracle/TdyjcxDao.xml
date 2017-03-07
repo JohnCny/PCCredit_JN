@@ -75,6 +75,7 @@
 		id="Tdyjcxform">
 		<result property="applycount" column="applycount" />
 		<result property="manager_id" column="manager_id" />
+		<result property="userName" column="userName" />
 	</resultMap>
 
 
@@ -214,12 +215,12 @@
 	</select>
 	
 		<select id="findappcount" resultMap="Tdyjcxform">
-		select count(app.id) as applycount ,sysuser.id as manager_id from basic_customer_information basic,
-		customer_application_info app,
-		sys_user sysuser
-		where 1=1 and
-		app.customer_id=basic.id and
-		basic.user_id=sysuser.id
+		select count(app.id) as applycount ,sysuser.id as manager_id ,sysuser.display_name as userName from basic_customer_information basic,
+	    customer_application_info app,
+	    sys_user sysuser
+	    where 1=1 and
+	    app.customer_id=basic.id and
+	    basic.user_id=sysuser.id
 		<if test="customerManagerIds != null and customerManagerIds != '' ">  
  					  	AND basic.user_id in  
 	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
@@ -229,6 +230,6 @@
 		<if test="customerManagerId != null and customerManagerId != '' ">
 		  and basic.user_id=#{customerManagerId}
 		</if>
-		 group by sysuser.id
+		 group by sysuser.id,sysuser.display_name
 		</select>
 </mapper>

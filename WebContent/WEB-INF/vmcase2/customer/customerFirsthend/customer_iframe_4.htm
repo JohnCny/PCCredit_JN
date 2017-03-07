@@ -1,6 +1,45 @@
 #parse ("common/iframe_page_header.htm")
 #parse ("common/macro.htm")
   <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+  <style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 微软雅黑;
+}
+
+.mytable table {
+	width: 100%;
+	border-radius: 0 0 5px 5px;
+	border-collapse: collapse;
+	border: 1px solid #9dbbda;
+}
+
+.mytable table th {
+	color: #fff;
+	text-align: center;
+	padding: 10px 0;
+	background:#135AA4;
+}
+
+.mytable table th span {
+	display: inline-block;
+	width: 100%;
+	line-height: 18px;
+	border-right: 1px solid #9dbbda;
+}
+
+.mytable table td {
+	text-align: center;
+	line-height: 35px;
+	font-size: 12px;
+	border-bottom: 1px solid #9dbbda;
+}
+
+.mytable table tr:nth-child(2n+1) {
+	background: #d0e5fc;
+}
+</style>
 <body class="whitebg">
   <div class="content_main">
     <div class="contentinner">
@@ -23,8 +62,43 @@
 	            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_10.page?id=${customerNm}">入保信息</a></li> -->
          	</ul>
          </div>
-<!-------------- 信息显示 ------------------------------------->        
-        <div id="topDiv" class="inquiry_list inquiry_top">
+      <div class="inquiry" style="padding-top:0;">
+<!-------------- 信息显示 ------------------------------------->    
+		<div class="mytable">
+			<table>
+				<colgroup>
+	              <col width="10%" />
+	              <col width="10%" />
+	              <col width="10%"/>
+	              <col width="10%" />
+	              <col width="10%"/>
+	              <col width="10%"/>
+	              <col width="16%" />
+	            </colgroup>
+	            <tr>
+	              <th><span>家庭成员名称</span></th>
+	              <th><span>家庭关系</span></th>
+	              <th><span>证件类型</span></th>
+	              <th><span>证件号码</span></th>
+	              <th><span>联系手机</span></th>
+	              <th><span>联系电话</span></th>
+	              <th><span style="border-right: 0;">工作单位</span></th>
+	            </tr>
+				
+            #foreach ($customer in $result)
+            <tr>
+              <td nowrap="nowrap">$!customer.name</td>
+              <td nowrap="nowrap">#dictVal("FAMILYMBERCCTION",$!customer.familymbercction)</td>
+              <td nowrap="nowrap">#dictVal("CARDTYPEJN",$!customer.papertype)</td>
+              <td nowrap="nowrap">$!customer.papercode</td>
+              <td nowrap="nowrap">$!customer.movephone</td>
+              <td nowrap="nowrap">$!customer.fixationphone</td>
+              <td nowrap="nowrap">$!customer.jobunit</td>
+            </tr>
+            #end
+			</table>
+		</div>    
+         <!--  <div id="topDiv" class="inquiry_list inquiry_top" STYLE="margin-top:0;">
          <table>
             <colgroup>
               <col width="10%" />
@@ -46,7 +120,7 @@
             </tr>
           </table>
         </div>
-        <div id="downDiv" class="inquiry_list inquiry_down">
+      <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
               <col width="10%" />
@@ -69,17 +143,16 @@
             </tr>
             #end
           </table>
-        </div>
+        </div> -->
       </div>
-      <div class="pagebar">
-        <div class="submit">
-        <!--   <input type="button" onclick="returnClick();" value="返回" /> -->
-        	<a href="javascript:history.back();" class="btn_g">返回</a>
-        </div>
+       <div class="submit">
+       <!--   <input type="button" onclick="returnClick();" value="返回" /> -->
+       		<input type="button" onclick="javascript:history.back();" value="返回" />
+       </div>
     
         <div class="clear"></div>
-      </div>
     </div>
+   </div>
 <script type="text/javascript">
 	function returnClick(){
 		 window.location.href= contextPath + "/customer/firsthend/browse.page" ;

@@ -11,48 +11,49 @@
           <input type="hidden" name="id" value="$!collectionPlan.id" />
           <table class="rule">
             <colgroup>
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
+
             </colgroup>
+			<caption>催收计划</caption>
             <tr>
-              <td>客户名称:</td>
+              <td class="titlefc3">客户名称:</td>
               <td><input type="text" value="$!collectionPlan.chineseName" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>创建方式:</td>
+              
+              <td class="titlefc3">创建方式:</td>
               <td><input type="text" value="#dictVal('MarketingCreateWay',$!collectionPlan.createWay)" disabled="disabled" /></td>
             </tr>
             <tr>
-              <td>产品名称:</td>
+              <td class="titlefc3">产品名称:</td>
               <td><input type="text" value="$!collectionPlan.productName"
                   disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>催收目标:</td>
+             
+              <td class="titlefc3">催收目标:</td>
               <td><input type="text" value="$!collectionPlan.implementationObjective" disabled="disabled" /></td>
             </tr>
             <tr>
-              <td>催收天数:</td>
+              <td class="titlefc3">催收天数:</td>
               <td><input type="text" value="$!collectionPlan.collectionTime" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>催收方式:</td>
+             
+              <td class="titlefc3">催收方式:</td>
               <td><select disabled="disabled">
               #customerInfo($request.getAttribute('collectionMethodList'),$!collectionPlan.collectionMethod)
               </select> </td>
             </tr>
             <tr>
-              <td>催收结果:</td>
+              <td class="titlefc3">催收结果:</td>
               <td><input type="text" value="#dictVal('CollectionPlanEndResult',$!collectionPlan.endResult)" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>催收结束时间:</td>
+              
+              <td class="titlefc3">催收结束时间:</td>
               <td><input type="text" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionPlan.collectionEndtime)" disabled="disabled" /></td>
             </tr>
             <tr>
-              <td>承诺还款时间:</td>
+              <td class="titlefc3">承诺还款时间:</td>
               <td><input type="text" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionPlan.collectionPromiseDate)" disabled="disabled" /></td>
-              <td>&nbsp;</td>
-              <td>承诺还款金额:</td>
+              
+              <td class="titlefc3">承诺还款金额:</td>
               <td><input type="text" value="$!collectionPlan.collectionAmount" disabled="disabled" /></td>
             </tr>
           </table>

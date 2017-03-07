@@ -12,36 +12,37 @@
           <input type="hidden" name="collectionPlanId" value="$!collectionPlansAction.collectionPlanId"/>
           <table class="rule">
             <colgroup>
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
             </colgroup>
+			<caption>催收计划</caption>
             <tr>
-              <td>实施催收方式:</td>
+              <td class="titlefc3">实施催收方式:</td>
               <td><select id="collection" name="collection">
               #customerInfo($request.getAttribute("collectionMethodList"),$!collectionPlansAction.collection)
               </select>
               </td>
-              <td>&nbsp;</td>
-              <td>实施催收结果描述:</td>
+              <td class="titlefc3">实施催收结果描述:</td>
               <td><textarea id="collectionResult" name="collectionResult" >$!collectionPlansAction.collectionResult</textarea>
               </td>
             </tr>
             <tr>
-              <td>实施催收开始时间:</td>
+              <td class="titlefc3">实施催收开始时间:</td>
               <td><input type="text" id="collectionStartTime" name="collectionStartTime" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionPlansAction.collectionStartTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/>
-              <td>&nbsp;</td>
-              <td>实施催收结束时间:</td>
+             
+              <td class="titlefc3">实施催收结束时间:</td>
               <td><input type="text" id="collectionEndTime" name="collectionEndTime" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!collectionPlansAction.collectionEndTime)" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
             </tr>
             <tr>
-              <td hidden="hidden">是否实施:</td>
+              <td hidden="hidden" class="titlefc3">是否实施:</td>
               <td hidden="hidden"><select name="whetherImplement" id="whetherImplement" disabled="disabled">
               #dict("SystemRole","$!collectionPlansAction.whetherImplement")
               </select>
               </td>
+              
+              <td class="titlefc3"></td><td></td>
             </tr>
           </table>
         </div>

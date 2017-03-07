@@ -10,7 +10,7 @@
       
       <div class="inquiry">
 <!-----------搜索------------------------------------------->  
-  <div class="search_tag">#i18n("label.browse.filter")</div>
+  	 <div class="search_tag">#i18n("label.browse.filter")</div>
      <div class="search">
           <form id="submitForm">
             <ul>
@@ -38,11 +38,11 @@
           <table>
             <colgroup>
               <col width="5%" />
-			  <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
+			  <col width="15%" />
+              <col width="25%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -58,12 +58,11 @@
           <table>
             <colgroup>
               <col width="5%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-              <col width="10%" />
-		  <!--<col width="10%" />-->
-              <col width="10%" />
+			  <col width="15%" />
+              <col width="25%" />
+              <col width="15%" />
+              <col width="20%" />
+              <col width="20%" />
             </colgroup>
             #foreach ($customer in $result.items)
             <tr>
@@ -72,7 +71,7 @@
               <td nowrap="nowrap">$!customer.certiCode</td>
               <td nowrap="nowrap">$!customer.approveName</td>
               <td nowrap="nowrap">$!customer.moveName</td>
-              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">$!date.format('yyyy-MM-dd HH:mm:ss ',$!customer.createdTime)</td>
             </tr>
             #end
           </table>
@@ -80,6 +79,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
+          
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

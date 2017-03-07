@@ -13,6 +13,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import oracle.jdbc.OracleTypes;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -47,6 +49,7 @@ import com.cardpay.pccredit.report.model.CustomerMove;
 import com.cardpay.pccredit.report.model.CustomerMoveForm;
 import com.cardpay.pccredit.report.model.DkyetjbbForm;
 import com.cardpay.pccredit.report.model.DqzzdktjbbForm;
+import com.cardpay.pccredit.report.model.PercentForm;
 import com.cardpay.pccredit.report.model.XdlctjbbForm;
 import com.cardpay.pccredit.report.model.YffdktjbbForm;
 import com.cardpay.pccredit.report.model.YqdktjbbForm;
@@ -185,6 +188,20 @@ public class CustomerTransferFlowService {
 	 */
 	public List<AccLoanCollectInfo> getAccLoanCollect(AccLoanCollectFilter filter){
 		return customerTransferFlowDao.getAccLoanCollect(filter);
+	}
+	
+	
+	public List<PercentForm> getLoanAmtAndNum(AccLoanCollectFilter filter){
+		return customerTransferFlowDao.getLoanAmtAndNum(filter);
+	}
+	
+	public List<PercentForm> getEmp(AccLoanCollectFilter filter){
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("userId",filter.getUserId());//in参数
+	    param.put("emps",OracleTypes.CURSOR);//out参数
+	    customerTransferFlowDao.getEmp(param);
+	    List<PercentForm> list = (List<PercentForm>) param.get("emps");
+	    return list;
 	}
 	
 	public List<AccountManagerParameter> findManager(String userId){
@@ -421,7 +438,7 @@ public class CustomerTransferFlowService {
         	row.createCell((short) 5).setCellValue(Double.parseDouble(form.getBalamt()+""));
         	//row.createCell((short) 6).setCellValue(form.getPaydebt()+"");
         	row.createCell((short) 6).setCellValue(Double.parseDouble(form.getPaydebt()+""));
-        	row.createCell((short) 7).setCellValue(Double.parseDouble(form.getContractmoney()));        
+        	row.createCell((short) 7).setCellValue(Double.parseDouble(form.getContractmoney()+""));        
         	row.createCell((short) 8).setCellValue(Double.parseDouble(form.getReqlmt()+""));
         	row.createCell((short) 9).setCellValue(form.getLoandate());         
         	row.createCell((short) 10).setCellValue(Double.parseDouble(form.getMoney()+""));

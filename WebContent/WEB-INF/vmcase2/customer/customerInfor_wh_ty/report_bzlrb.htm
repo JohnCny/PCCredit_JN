@@ -112,8 +112,7 @@
         	<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddtjy.page?appId=${appId}&urlType=${urlType}">抵贷通经营表</a></li>
 			<li class="tab"><a href="${contextPath}/customer/customerInfor_wh_ty/report_ddtxf.page?appId=${appId}&urlType=${urlType}">抵贷通消费表</a></li>
          </ul>
-         </div>
-      <div class="tabplace"></div>
+      </div>
       <form id="id_module_form">
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>
       </form>
@@ -125,7 +124,7 @@
       #if($!urlType==1)
         <input type="button" onclick="window.location.href='${contextPath}/intopieces/intopiecesquery/browse.page'" value="返回" />
       #else
-      <a href="javascript:history.back();" class="btn_g">返回</a>
+        <input type="button" onclick="javascript:history.back();" value="返回" />
 <!--       	<input type="button" onclick="window.location.href='${contextPath}/customer/customerInfor_wh_ty/browse.page'" value="返回" />
  -->      #end
       </div>

@@ -43,7 +43,7 @@ public class MibusidataForm extends BusinessModel {
 	private String custscale;
 	private String controlmode;
 	private String contractno;
-	private String contractmoney;
+	private BigDecimal contractmoney;
 	private String delaytype;
 	private String loantype;
 	private String mainassure;
@@ -368,10 +368,10 @@ public class MibusidataForm extends BusinessModel {
 	public void setContractno(String contractno) {
 		this.contractno = contractno;
 	}
-	public String getContractmoney() {
+	public BigDecimal getContractmoney() {
 		return contractmoney;
 	}
-	public void setContractmoney(String contractmoney) {
+	public void setContractmoney(BigDecimal contractmoney) {
 		this.contractmoney = contractmoney;
 	}
 	public String getDelaytype() {

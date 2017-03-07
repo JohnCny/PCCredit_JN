@@ -1,4 +1,8 @@
 #parse ("common/iframe_page_header.htm")
+<style>
+	table.rule tr td{border:none;}
+	select{padding:10px;}
+</style>
 <body>
   <div class="content_main">
     <div class="contentinner">
@@ -9,25 +13,24 @@
         <div class="forms" id="formsId">
           <table class="rule">
             <colgroup>
-              <col width="30%" />
+              <col width="45%" />
               <col width="10%" />
-              <col width="30%" />
+              <col width="45%" />
               <col />
             </colgroup>
             <tr>
-              <td><b>已包含人员:</b>
+              <td><b>已包含人员:</b><br/><br/>
               <select name="userIds" id="userIds" multiple="true" size="10" style="height: 300px;">
                 #dict("RoleUsers", "", false, $role.id)
                 </select></td>
-              <td style="text-align: center; vertical-align: middle; padding-left: 1%; padding-right: 1%;">
-                  <a type="button" value="增加" class="btn_g" href="javascript:void(0);" onclick="addMembers()" />增&nbsp;&nbsp;加</a><br /> 
-                  <a type="button" value="删除" class="btn_gr" href="javascript:void(0);" onclick="removeMembers()" />删&nbsp;&nbsp;除>></a>
+              <td style="text-align: center; vertical-align: middle;">
+                  <a type="button" value="增加" class="btn_g" href="javascript:void(0);" onclick="addMembers()" >增&nbsp;&nbsp;加</a><br /> 
+                  <a type="button" value="删除" class="btn_gr" href="javascript:void(0);" onclick="removeMembers()" >删&nbsp;&nbsp;除</a>
               </td>
-              <td><b>所有人员:</b>
+              <td><b>所有人员:</b><br/><br/>
               <select id="allUserIds" name="allUserIds" multiple="true" size="10" style="height: 300px;">
                 #dict("AllUsers", "")
               </select></td>
-              <td>&nbsp;</td>
             </tr>
           </table>
         </div>

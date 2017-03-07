@@ -11,32 +11,33 @@
           <input type="hidden" name="id" value="$!collectionplan.id" />
           <table class="rule">
             <colgroup>
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
-              <col width="10%" />
-              <col width="10%" />
+              <col width="20%" />
               <col width="30%" />
 
             </colgroup>
+			<caption>催收计划</caption>
             <tr>
-              <td>客户名称:</td>
+              <td class="titlefc3">客户名称:</td>
               <td><input type="text" value="$!collectionplan.chineseName" readonly="readonly"/></td>
-              <td>&nbsp;</td>
-              <td>产品名称:</td>
+              
+              <td class="titlefc3">产品名称:</td>
               <td><input type="text" value="$!collectionplan.productName" readonly="readonly"/></td>
             </tr>
             <tr>
-              <td><label>催收目标:</label></td>
+              <td class="titlefc3"><label>催收目标:</label></td>
               <td><input type="text" id="implementationObjective" name="implementationObjective" value="$!collectionplan.implementationObjective"/></td>
-              <td>&nbsp;</td>
-              <td><label>催收天数:</label></td>
+             
+              <td class="titlefc3"><label>催收天数:</label></td>
               <td><input type="text" id="collectionTime" name="collectionTime" value="$!collectionplan.collectionTime"/></td>
             </tr>
             <tr>
-              <td>催收方式:</td>
+              <td class="titlefc3">催收方式:</td>
               <td><select name="collectionMethod" id="collectionMethod" >
               #customerInfo($request.getAttribute("collectionMethodList"),$!collectionplan.collectionMethod)
               </select></td>
+              <td class="titlefc3"></td><td></td>
               <!-- <td><input type="text" name="collectionStartTime" hidden="hidden" value="-1" /></td> -->
             </tr>
           </table>

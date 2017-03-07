@@ -304,6 +304,30 @@ var Dialog = function() {
 			});
 			dia.dialog("open");
 		},
+		aform : function(fromId, title, save, cancel, width, height) {
+			var dia = window.top.$("#form_diaog");
+
+			if (dia.length == 0) {
+				window.top.$("body").append('<div id="form_diaog" style="display: none;" class="form_diaog"></div>');
+				dia = window.top.$("#form_diaog");
+			} else {
+				dia.html("");
+			}
+			dia.html($(fromId).html());
+			dia.dialog({
+				modal : true,
+				zIndex : 2000,
+				width : width || 800,
+				autoOpen : false,
+				height : height || 500,
+				title : title || "消息",
+				position : 'center',
+				style : "text-align:center;",
+				open : Dialog.open,
+				close : Dialog.close
+			});
+			dia.dialog("open");
+		},
 		formPosition : function(fromId, title, save, cancel, width, height, pleft, ptop) {
 			var dia = window.top.$("#form_diaog");
 

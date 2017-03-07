@@ -13,35 +13,35 @@
           <table class="rule">
             <colgroup>
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
               <col width="10%" />
-              <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
             </colgroup>
+            <caption>维护实施计划</caption>
             <tr>
-              <td>实施维护方式:</td>
+              <td class="titlefc3">实施维护方式:</td>
               <td><select id="maintenanceWay" name="maintenanceWay">
               #customerInfo($request.getAttribute("collectionMethodList"),"")
               </select>
               </td>
-              <td>&nbsp;</td>
-              <td>实施维护结果描述:</td>
+              <td class="titlefc3">实施维护结果描述:</td>
               <td><textarea id="maintenanceResult" name="maintenanceResult"></textarea>
               </td>
             </tr>
             <tr>
-              <td>实施维护开始时间:</td>
+              <td class="titlefc3">实施维护开始时间:</td>
               <td><input type="text" id="maintenanceStartTime" name="maintenanceStartTime" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"/>
-              <td>&nbsp;</td>
-              <td>实施维护结束时间:</td>
+              
+              <td class="titlefc3">实施维护结束时间:</td>
               <td><input type="text" id="maintenanceEndTime" name="maintenanceEndTime" onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"/></td>
             </tr>
             <tr>
-              <td>维护结果:</td>
+              <td class="titlefc3">维护结果:</td>
               <td><select id="endResult" name="endResult">
               #dict("MaintenanceEndResult","")
               </select>
               </td>
+              <td class="titlefc3"></td><td></td>
             </tr>
  			<!-- <tr>
               <td>是否有客户信息表更:</td>

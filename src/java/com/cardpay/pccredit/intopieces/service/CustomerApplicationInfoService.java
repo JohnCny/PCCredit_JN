@@ -129,4 +129,11 @@ public class CustomerApplicationInfoService {
 		 String dateString = format.format(new Date());
 		 return customerApplicationInfoDao.findDailyTaskCount(userId,dateString);
 	 }
+	 
+	 /**
+	  * 统计还款通知
+	  */
+	 public int findRepayLoanCount(String userId){
+		 return customerApplicationInfoDao.findRepayLoanCount(userId);
+	 }
 }

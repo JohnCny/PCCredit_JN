@@ -14,32 +14,33 @@
           <table class="rule">
             <colgroup>
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
               <col width="10%" />
-              <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
             </colgroup>
+            <caption>维护计划</caption>
             <tr>
-              <td>客户名称:</td>
+              <td class="titlefc3">客户名称:</td>
               <td><input type="text" value="$!maintenance.chineseName" readonly="readonly"/></td>
-              <td>&nbsp;</td>
-              <td>&nbsp;&nbsp;&nbsp;维护方式:</td>
+             
+              <td class="titlefc3">&nbsp;&nbsp;&nbsp;维护方式:</td>
               <td><select name="maintenanceWay" id="maintenanceWay" >
               #customerInfo($request.getAttribute("collectionMethodList"),$!maintenance.maintenanceWay)
               </select></td>
             </tr>
             
             <tr>
-            <td>维护目标:</td>
+            <td class="titlefc3">维护目标:</td>
               <td><input type="text" id="maintenanceGoal" name="maintenanceGoal" value="$!maintenance.maintenanceGoal" /></td>
-              <td>&nbsp;</td>
-              <td><label>维护天数:</label></td>
+             
+              <td class="titlefc3"><label>维护天数:</label></td>
               <td><input type="text" id="maintenanceDay" name="maintenanceDay" value="$!maintenance.maintenanceDay"/></td>
             </tr>
             <tr>
-               <td><label>&nbsp;&nbsp;&nbsp;&nbsp;备注:</label></td>
+               <td class="titlefc3"><label>&nbsp;&nbsp;&nbsp;&nbsp;备注:</label></td>
               <td><textarea  id="remarksCreateReason" name="remarksCreateReason" >$!maintenance.remarksCreateReason</textarea>
-              <td><input type="hidden" name="maintenanceStartTime" hidden="hidden" value="-1" /></td>
+             
+              <td class="titlefc3"><input type="hidden" name="maintenanceStartTime" hidden="hidden" value="-1" /></td><td></td>
             </tr>
           </table>
         </div>

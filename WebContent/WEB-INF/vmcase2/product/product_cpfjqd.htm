@@ -8,25 +8,28 @@ label{ display:block; width:100px;}
 #checkboxWrap li:hover{ float:left; margin-right:10px; width:100px; height:30px; background-color:#CCCCCC; color:#000; border:1px solid #1b68a9;}
 #checkboxWrap li.selected{ float:left; margin-right:10px; width:100px; height:30px; color:#FFFFFF; background-color:#1b68a9; border:1px solid #333;}
 #checkboxWrap li:hover.selected{ float:left; margin-right:10px; width:100px; height:30px; color:#FFFFFF; background-color:#1b68a9; border:1px dotted #CCC;}
+
+    table tr td{padding:0 5px;}
 </style> 
 <body>
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				  <div class="dvTab">
-            <ul class="com-tab">
-	            <li class="tab">产品属性</li>
-	            <li class="tab activeTab"><a href="#">附件清单</a></li>
-	            <li class="tab">营销规则</li>
-	            <li class="tab">催收规则</li> 
-	       <!-- <li class="tab">筛选规则</li> -->
-         </ul>
-        </div>
-			</div>
+        		<div class="title">创建产品</div>
+      		</div>
+      		<div class="tabplace">
+	            <ul class="com-tab">
+		             <li class="tab">产品属性</li>
+			            <li class="tab activeTab"><a href="#">附件清单</a></li>
+			            <li class="tab">营销规则</li>
+			            <li class="tab">催收规则</li> 
+			       <!-- <li class="tab">筛选规则</li> -->
+		         </ul>
+	         </div>
 			<form id="id_module_form"
 				action="${contextPath}/product/association/insertCpfjqd.json">
 				<input type="hidden" id="productId" name="productId" value="${productId}">
-				<div class="forms" id="formsId">
+				<div class="forms" id="formsId" style="padding-top:0;margin-left:-2px;">
 				<!-- 附件清单 列表 -->
 		 	<!--  	<ul id="checkboxWrap">
     				<li class="selected"><label for="product_1"><input type="checkbox" name="product" id="product_1" onclick="change(this.form.id)"/>附件一</label></li>
@@ -41,22 +44,20 @@ label{ display:block; width:100px;}
 				
 			 	<table style="border: 1px solid #dcdcdc;margin-bottom: 10px;">
 						<colgroup>
-						    <col width="5%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
 				
 						</colgroup>
 						<tr>
-                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品附件清单</td>
+                          <td colspan="4" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">产品附件清单</td>
                          </tr>
 					      #set($total = ($accessorie.size()/4)) 
 					      
 					      #foreach ($!index in [0 .. $total])
 					
 					      <tr>
-					      <td>&nbsp;</td>
 						  #set($current = $!index * 4 ) 
 						  #if($current<$accessorie.size())
 						     <td><input type="checkbox" name="accessorieId" value="$accessorie.get($current).typeCode"/> $accessorie.get($current).typeName</td>

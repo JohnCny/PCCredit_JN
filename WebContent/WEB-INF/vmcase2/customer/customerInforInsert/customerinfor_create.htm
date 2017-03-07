@@ -10,33 +10,31 @@
        
       <form id="id_module_form" action="${contextPath}/customer/basiccustomerinforCreate/insert.json"/>
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
-          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 50%">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;margin-top:20px;">
             <colgroup>
               <col width="10%" />
-              <col width="30%" />
-              <col width="10%" />
-              <col width="30%" />
+              <col width="90%" />
             </colgroup>
               <tr><td class="titlec" colspan="4" style="text-align: center;">基本信息</td></tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">姓名:</label></td>
-              <td><input class="rinpsty"  type="text" id="chineseName" name="chineseName" value="" /></td>
+              <td><input class="rinpsty"  type="text" id="chineseName" name="chineseName" value="" style="width:300px"/></td>
             </tr>
             <tr>
-			  <td class="titlefc3"><label for="cardType">身份证件类型:</label></td>
-              <td><select class="rinpsty"  id="cardType" name="cardType" >
+			  <td class="titlefc3"><label for="cardType">证件类型:</label></td>
+              <td><select class="rinpsty"  id="cardType" name="cardType" style="width:300px" >
                  <option value=""></option>
               		#dict("CARDTYPEJN", "0")
                   </select></td>
             </tr>
             <tr>
              	<td class="titlefc3"><label for="cardId">证件号码:</label></td>
-                <td><input class="rinpsty"  type="text" name="cardId" id="cardId"  value="" /></td>
+                <td><input class="rinpsty"  type="text" name="cardId" id="cardId"  value="" style="width:300px" /></td>
             </tr>
             
             <tr>
               <td class="titlefc3"><label for="spmc">商铺名称:</label></td>
-              <td><input class="rinpsty"  type="text" name="spmc" id="spmc"  value="" /></td>
+              <td><input class="rinpsty"  type="text" name="spmc" id="spmc"  value=""  style="width:300px"/></td>
             </tr>
           </table>
         </div>

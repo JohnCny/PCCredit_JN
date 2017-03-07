@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.cardpay.pccredit.manager.service;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -9,12 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -24,7 +18,7 @@ import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 
 /**
- * 描述 ：同步系统中的进件的statusservice
+ * 描述 ：同步系统中的进件的statuService
  * @author 宋辰
  */
 @Service
@@ -77,13 +71,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 		}
 		logger.info(dateString+"进件状态更新结束（已还清）**********");
 	}
-	
-
-	
-	
-	
-	
-////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+		
 	
 
 	/**
@@ -109,7 +97,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 		logger.info(dateString+"进件状态更新结束（已放款）**********");
 	}*/
 	
-/*	
+    /*	
 	private void dosynchMethodEnd() throws IOException{
 		//获取今日日期
 		DateFormat format = new SimpleDateFormat("yyyyMMdd");
@@ -131,6 +119,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 	/**
 	 * 每月定时计算客户经理管户、主调、辅调等信息
 	 */
+	
 	/*private void monthParmter() throws Exception{
 		//获取所有客户经理
 		List<AccountManagerParameterForm> accountList = accountManagerParameterService.findAccountManagerParameterAll();
@@ -190,7 +179,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 			parameter.setCompeterCount(zdCount+"");//完成笔数不折算，按实际笔数
 			commonDao.insertObject(parameter);
 		}
-}*/
+}		*/
 	
 	/*
 	 * 笔数折算
@@ -211,256 +200,7 @@ public class CustomerApplicationInfoSynchScheduleService {
 	}
 	*/
 	
-	//================================================济南项目=======================================//
-	/**
-	 * 还款提醒 不包含随借随还的贷款
-	 * 批处理 每月月初生成 还款提醒记录
-	 * @author songchen 
-	 * @datetime 2016-10-09 下午 14:00:00
-	 * 批处理自动
-	 */
-	public void reimbursement(){
-		/**
-		 * 1.定期结息，到期日利随本清（即按月付息 到期还本） 每月20号扣款  25再扣一次 ,如果是循环的 随借随还  还使用期限的利息和本金
-		 * 2.等额本息 例:10月7号放款 下月 10月7日扣款  客户经理需提前两三天提醒客户还款 提前存入指定账户
-		 */
-		
-		//获取今日日期
-		DateFormat format = new SimpleDateFormat("yyyyMMdd");
-		String dateString = format.format(new Date());
-		logger.info(dateString+"还款提醒生成数据start**********");
-		
-		//1.查询未结清的贷款且非循环的贷款 2.循环的贷款可以随借随还难以控制
-		String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='0001'";
-		List<MibusidataForm> lists = commonDao.queryBySql(MibusidataForm.class,sql, null);
-		
-		
-		for(MibusidataForm mibu:lists){
-			//台帐号
-			String busiCode = mibu.getBusicode();
-			
-			//贷款发放日期
-			String loandate = mibu.getLoandate();
-			
-			//利率
-			String lv = mibu.getInterest().toString();
-			
-			//贷款期限 
-			String qx = mibu.getLimit().toString();
-			
-			//发放金额（核心）
-			String money = mibu.getMoney().toString();
-			
-			//还款方法(01-定期结息，到期日利随本清;03-等额本息;)    
-			String repayMethod = mibu.getRepaymethod();
-			
-			//还款日期
-			String  repaydate ="";
-			
-			//还款本金
-			String repaybj ="";
-			
-			//还款利息
-			String repaylx ="";
-			
-			//计算使用天数
-			String day="";
-			
-			//等额本息 还款总额
-			String repayZe ="";
-			
-			/**
-			 * 1).等额本息 ：
-			 * 例：贷款发放日 10.07 下次还款日期 11.07
-			 * 2).按月付息 到期还本 
-			 * 1.22前的贷款   例：贷款发放日期10月07日     下次还款日  10月20日  计息周期（10月7日  至  10月20日） 这个时间段  下次 还款日期11月20日（10月20日  下次还款日  12月20日）
-			 * 2.22后的贷款   例：贷款发放日期10月23日     下次还款日  11月20日  计息周期（10月23日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
-			 */
-			if("03".equals(repayMethod)){//等额本息
-				repaydate = getDeBx(dateString,loandate);
-				day = "31";
-				repayZe = getAmt(money,lv,qx);
-				
-			}else{//按月付息,到期还本
-				if(loandate.substring(0, 4).equals(dateString.substring(0, 4))
-				 &&loandate.substring(5, 7).equals(dateString.substring(4, 6))){//当年当月的放款
-					//TODO 按月付息 放款日期不固定 跑批时间难设定
-				}else{
-					day = "31";
-					repaydate = getAnyueBx2(dateString);
-					repaybj ="";//一年清一次本金
-					repaylx = gotLx(money, lv,day);
-				}
-			}
-			
-			/**
-			 * 查询客户经理 id name
-			 */
-			String customerManagerId ="";
-			String customerManagerName ="";
-			String mysql = "select *                                                             "+
-						   "  from sys_user                                                      "+
-						   " where id = (select t.USER_ID                                        "+
-						   "               from basic_customer_information t          			 "+
-						   "              where t.ty_customer_id = '"+mibu.getCustid()+"')       ";
-			List<SystemUser> alist = commonDao.queryBySql(SystemUser.class,mysql, null);
-			
-			if(alist !=null&&alist.size()>0){
-				customerManagerId=alist.get(0).getId();
-				customerManagerName=alist.get(0).getDisplayName();
-			}
-			
-			/**
-			 * 插入还款计划提醒表
-			 */
-			REIMBURSEMENT re = new REIMBURSEMENT();
-			re.setCustomerId(mibu.getCustid());//ty_customer_id
-			re.setCustomerName(mibu.getCname());
-			re.setCustomerManagerId(customerManagerId);
-			re.setCustomerManagerName(customerManagerName);
-			re.setLoandate(loandate);
-			re.setMoney(money);
-			re.setLv(lv);
-			re.setRepayTime(repaydate);
-			re.setRepayBj(repaybj);
-			re.setRepayLx(repaylx);
-			re.setRepayMethod(repayMethod);
-			re.setRepayMzee(repayZe);
-			re.setBusiCode(busiCode);
-			re.setHasTell("0");
-			commonDao.insertObject(re);
-		}
-		//succ
-		//accountManagerParameterService.updBatchTaskFlow("100","hk",dateString);
-		logger.info(dateString+"还款提醒生成数据end**********");
-	}
-	
-	
-	
-	/**
-	 * 还款提醒 不包含随借随还的贷款
-	 * 批处理 每月月初生成 还款提醒记录
-	 * @author songchen 
-	 * @datetime 2016-10-09 下午 14:00:00
-	 * 批处理手工
-	 */
-	public void returnReimbursement(String dateString){
-		/**
-		 * 1.定期结息，到期日利随本清（即按月付息 到期还本） 每月20号扣款  25再扣一次 ,如果是循环的 随借随还  还使用期限的利息和本金
-		 * 2.等额本息 例:10月7号放款 下月 10月7日扣款  客户经理需提前两三天提醒客户还款 提前存入指定账户
-		 */
-		
-		//获取今日日期
-		//DateFormat format = new SimpleDateFormat("yyyyMMdd");
-		//String dateString = format.format(new Date());
-		logger.info(dateString+"还款提醒生成数据start**********");
-		
-		//1.查询未结清的贷款且非循环的贷款 2.循环的贷款可以随借随还难以控制
-		String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='0001'";
-		List<MibusidataForm> lists = commonDao.queryBySql(MibusidataForm.class,sql, null);
-		
-		
-		for(MibusidataForm mibu:lists){
-			//台帐号
-			String busiCode = mibu.getBusicode();
-			
-			//贷款发放日期
-			String loandate = mibu.getLoandate();
-			
-			//利率
-			String lv = mibu.getInterest().toString();
-			
-			//贷款期限 
-			String qx = mibu.getLimit().toString();
-			
-			//发放金额（核心）
-			String money = mibu.getMoney().toString();
-			
-			//还款方法(01-定期结息，到期日利随本清;03-等额本息;)    
-			String repayMethod = mibu.getRepaymethod();
-			
-			//还款日期
-			String  repaydate ="";
-			
-			//还款本金
-			String repaybj ="";
-			
-			//还款利息
-			String repaylx ="";
-			
-			//计算使用天数
-			String day="";
-			
-			//等额本息 还款总额
-			String repayZe ="";
-			
-			/**
-			 * 1).等额本息 ：
-			 * 例：贷款发放日 10.07 下次还款日期 11.07
-			 * 2).按月付息 到期还本 
-			 * 1.22前的贷款   例：贷款发放日期10月07日     下次还款日  11月20日  计息周期（10月7日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
-			 * 2.22后的贷款   例：贷款发放日期10月23日     下次还款日  11月20日  计息周期（10月23日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
-			 */
-			if("03".equals(repayMethod)){//等额本息
-				repaydate = getDeBx(dateString,loandate);
-				day = "31";
-				repayZe = getAmt(money,lv,qx);
-				
-			}else{//按月付息,到期还本
-				if(loandate.substring(0, 4).equals(dateString.substring(0, 4))
-				 &&loandate.substring(5, 7).equals(dateString.substring(4, 6))){
-					//TODO 按月付息 放款日期不固定 跑批时间难设定
-				}else{
-					day = "31";
-					repaydate = getAnyueBx2(dateString);
-					repaybj ="";//一年清一次本金
-					repaylx = gotLx(money, lv,day);
-				}
-			}
-			
-			/**
-			 * 查询客户经理 id name
-			 */
-			String customerManagerId ="";
-			String customerManagerName ="";
-			String mysql = "select *                                                             "+
-						   "  from sys_user                                                      "+
-						   " where id = (select t.USER_ID                                        "+
-						   "               from basic_customer_information t          			 "+
-						   "              where t.ty_customer_id = '"+mibu.getCustid()+"')       ";
-			List<SystemUser> alist = commonDao.queryBySql(SystemUser.class,mysql, null);
-			
-			if(alist !=null&&alist.size()>0){
-				customerManagerId=alist.get(0).getId();
-				customerManagerName=alist.get(0).getDisplayName();
-			}
-			
-			/**
-			 * 插入还款计划提醒表
-			 */
-			REIMBURSEMENT re = new REIMBURSEMENT();
-			re.setCustomerId(mibu.getCustid());//ty_customer_id
-			re.setCustomerName(mibu.getCname());
-			re.setCustomerManagerId(customerManagerId);
-			re.setCustomerManagerName(customerManagerName);
-			re.setLoandate(loandate);
-			re.setMoney(money);
-			re.setLv(lv);
-			re.setRepayTime(repaydate);
-			re.setRepayBj(repaybj);
-			re.setRepayLx(repaylx);
-			re.setRepayMethod(repayMethod);
-			re.setRepayMzee(repayZe);
-			re.setBusiCode(busiCode);
-			re.setHasTell("0");
-			commonDao.insertObject(re);
-		}
-		//succ
-		accountManagerParameterService.updBatchTaskFlow("100","hk",dateString);
-		logger.info(dateString+"还款提醒生成数据end**********");
-	}
-	
-	
+//================================================济南项目=========================================================================//
 	
 	/**
 	 * 按月付息,到期还款计算还款日
@@ -630,18 +370,143 @@ public class CustomerApplicationInfoSynchScheduleService {
 	 
 	 
 	 
-	 /**
-	  * 用信余额
-	  * 1.补充当月截止到今天的用信余额.
-	  * 2.补充业务开展以来截止到今天的用信余额.
-	  */
-	 public void dosynchyxyeMethod(){
+	 
+	 
+	 
+//======================================================每天都生成还款计划 2017年2月20日 14:08:58================================================================//
+	 
+	   /**
+		 * 还款提醒 不包含随借随还的贷款
+		 * @Desc  批处理时间  每天跑批
+		 * @author songchen 
+		 * @datetime 2017年2月20日 14:09:52
+		 */
+		public void doReturnReimbursement(){
+			/**
+			 * 1.定期结息，到期日利随本清（即按月付息 到期还本） 每月20号扣款  25再扣一次 ,如果是循环的 随借随还  还使用期限的利息和本金
+			 * 2.等额本息 例:10月7号放款 下月 10月7日扣款  客户经理需提前两三天提醒客户还款 提前存入指定账户
+			 */
 			//获取今日日期
-			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat format = new SimpleDateFormat("yyyyMMdd");
 			String dateString = format.format(new Date());
-			//1.当月截止到今天的用信余额
+			logger.info(dateString+"还款提醒生成数据start**********");
 			
-			//2.补充业务开展以来截止到今天的用信余额
+			String sql = "select * from t_mibusidata_view  where trim(ACCOUNTSTATE) != '5' and trim(USEMODE) ='0001'";
+			//1.查询未结清的贷款且非循环的贷款 2.循环的贷款可以随借随还难以控制
+			List<MibusidataForm> lists = commonDao.queryBySql(MibusidataForm.class,sql, null);
+			
+			for(MibusidataForm mibu:lists){
+				//台帐号
+				String busiCode = mibu.getBusicode().trim();
+				
+				/*查询下当月的还款记录是否生成 dateString.substring(0, 4),dateString.substring(4, 6)  
+				subStr(loandate,'0','4'),  subStr(loandate,'6','2')*/
+				String repeatSelectSql = "  select busi_code from t_reimbursement 					   	   "+
+										 "	where busi_code = '"+busiCode+"'   					   		   "+ 
+										 "  and subStr(REPAY_TIME,'0','4') ='"+dateString.substring(0, 4)+"' "+
+										 "  and subStr(REPAY_TIME,'6','2') ='"+dateString.substring(4, 6)+"' ";
+				List<REIMBURSEMENT> list = commonDao.queryBySql(REIMBURSEMENT.class,repeatSelectSql, null);
+				if(list !=null && list.size()>0){
+					continue;
+				}
+				//贷款发放日期
+				String loandate = mibu.getLoandate();
+				
+				//利率
+				String lv = mibu.getInterest().toString();
+				
+				//贷款期限 
+				String qx = mibu.getLimit().toString();
+				
+				//发放金额
+				String money = mibu.getMoney().toString();
+				
+				//还款方法(01-定期结息，到期日利随本清;03-等额本息;)    
+				String repayMethod = mibu.getRepaymethod();
+				
+				//还款日期
+				String  repaydate ="";
+				
+				//还款本金
+				String repaybj ="";
+				
+				//还款利息
+				String repaylx ="";
+				
+				//计算使用天数
+				String day="";
+				
+				//等额本息 还款总额
+				String repayZe ="";
+				
+				/**
+				 * (1).等额本息
+				 * 例：贷款发放日 10.07 下次还款日期 11.07
+				 * (2).按月付息 到期还本 
+				 * 1.22前的贷款   例：贷款发放日期10月07日     下次还款日  10月20日  计息周期（10月7日  至  10月20日） 这个时间段  下次 还款日期11月20日（10月20日  下次还款日  12月20日）
+				 * 2.22后的贷款   例：贷款发放日期10月23日     下次还款日  11月20日  计息周期（10月23日  至  11月20日） 这个时间段  下次 还款日期12月20日（11月20日  下次还款日  12月20日）
+				 */
+				if("03".equals(repayMethod)){//等额本息
+					repaydate = getDeBx(dateString,loandate);
+					day = "31";//满月算
+					repayZe = getAmt(money,lv,qx);
+				}else{//按月付息,到期还本
+					if(loandate.substring(0, 4).equals(dateString.substring(0, 4))
+					 &&loandate.substring(5, 7).equals(dateString.substring(4, 6))){//当年当月的放款
+						if(Integer.parseInt(loandate.substring(8, 10))>=20){// 20号之后放款
+							repaydate = getAnyueBx(loandate);
+							//计算 repaydate 和 loandate 连个时间相差多少天
+							day = String.valueOf(calMistTime(loandate,repaydate));//收息天数
+							repaybj ="";//一年清一次本金TODO
+							repaylx = gotLx(money, lv,day);
+						}else {// 20号之前放款
+							day = String.valueOf(20-Integer.parseInt(loandate.substring(8, 10)));//收息天数
+							repaydate = loandate.substring(0, 4)+loandate.substring(5, 7)+"20";//当月月20号
+							repaybj ="";//一年清一次本金TODO
+							repaylx = gotLx(money, lv,day);
+						}
+					}else{
+						day = "31";//满月算
+						repaydate = getAnyueBx2(dateString);
+						repaybj ="";//一年清一次本金
+						repaylx = gotLx(money, lv,day);
+					}
+				}
+				
+				
+				/*查询客户经理 id name*/
+				String customerManagerId ="";
+				String customerManagerName ="";
+				String mysql = "select *                                                             "+
+							   "  from sys_user                                                      "+
+							   " where id = (select t.USER_ID                                        "+
+							   "               from basic_customer_information t          			 "+
+							   "              where t.ty_customer_id = '"+mibu.getCustid()+"')       ";
+				List<SystemUser> alist = commonDao.queryBySql(SystemUser.class,mysql, null);
+				
+				if(alist !=null&&alist.size()>0){
+					customerManagerId=alist.get(0).getId();
+					customerManagerName=alist.get(0).getDisplayName();
+				}
+				
+				/*插入还款计划提醒表*/
+				REIMBURSEMENT re = new REIMBURSEMENT();
+				re.setCustomerId(mibu.getCustid());//ty_customer_id
+				re.setCustomerName(mibu.getCname());
+				re.setCustomerManagerId(customerManagerId);
+				re.setCustomerManagerName(customerManagerName);
+				re.setLoandate(loandate);
+				re.setMoney(money);
+				re.setLv(lv);
+				re.setRepayTime(repaydate);
+				re.setRepayBj(repaybj);
+				re.setRepayLx(repaylx);
+				re.setRepayMethod(repayMethod);
+				re.setRepayMzee(repayZe);
+				re.setBusiCode(busiCode);
+				re.setHasTell("0");
+				commonDao.insertObject(re);
+			}
+			logger.info(dateString+"还款提醒生成数据end**********");
 		}
-		
 }

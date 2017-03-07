@@ -21,9 +21,9 @@
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
               <col width="10%" />
-              <col width="30%" />
+              <col width="40%" />
             </colgroup>
               <tr>
               	<td class="titlec" colspan="4" style="text-align: center;">进件申请信息</td>
@@ -32,6 +32,7 @@
               <td class="titlefc3"><label for="applyQuota">申请额度(元):</label></td>
 	          <td><input  type="text" class="rinpsty" name="applyQuota" id="applyQuota" 
 	              value="$!customerApplicationInfo.applyQuota" disabled="disabled"/></td>
+	              <td  class="titlefc3"></td><td ></td>
               </tr>
               <tr>
               <td class="titlefc3"><span style="color:red">*</span><label for="prodName" style="color:red">产品名称:</label></td>
@@ -67,6 +68,7 @@
             <tr>
 			  <td class="titlefc3"><label for="csAmount">辅调客户经理:</label></td>
               <td><input  type="text" class="rinpsty" name="chu_fdUser" id="chu_fdUser" value="$!appManagerAuditLog1.userId_3" disabled="disabled"/></td>
+            	<td  class="titlefc3"></td><td ></td>
             </tr>
           </table>
          </div>
@@ -113,6 +115,7 @@
             <tr>
             	<td  class="titlefc3"><label id ="sd_beizhu" for=sd_beizhu>备注:</label></td>
 				<td><textarea disabled="disabled" style="width: 300px;" name="sd_beizhu" id="sd_beizhu">$!appManagerAuditLog2.beiZhu</textarea></td>
+           		<td  class="titlefc3"></td><td ></td>
             </tr>
           </table>
          </div>
@@ -224,6 +227,48 @@
       </div>
     </div>
   </div>
+  
+  
+    <!-- 弹出框 -->
+  <div class="content_main" style="display: none;">
+    <div class="contentinner">
+	  <form id="form1" >
+        <div class="forms">
+          <div class="myInfo" style="background:#f7f7f7;padding:20px 30px;">
+       		<table>
+       			<tr>
+       				<td colspan="3" style="border:0;font-size:14px;color: #7a7676;width:33%;">
+	       				评估结果：
+	       				#if($!evaResult.result =='允许')
+	       				<span style="background: #5cb85c;color:#fff;padding:3px 10px;">允许</span>
+	       				#else
+	       				<span style="background: #d9534f;color:#fff;padding:3px 10px;">禁止</span>
+	       				#end
+       				</td>
+       			</tr>
+       			<tr>
+       				<td style="border:0;font-size:14px;color: #7a7676;width:32%;">姓名：<span style="color: #428bca;">$!evaResult.cname</span></td>
+       				<td style="border:0;font-size:14px;color: #7a7676;width:36%;">身份证号：<span style="color: #428bca;">$!evaResult.cardNo</span></td>
+       				<td style="border:0;font-size:14px;color: #7a7676;width:32%;">性别：<span style="color: #428bca;">$!evaResult.sex</span></td>
+       			</tr>
+       			<tr>
+       				<td style="border:0;font-size:14px;color: #7a7676;">经营状况得分：<span style="color: #428bca;">$!evaResult.busScore</span></td>
+       				<td style="border:0;font-size:14px;color: #7a7676;">道德品质得分：<span style="color: #428bca;">$!evaResult.habScore</span></td>
+       				<td style="border:0;font-size:14px;color: #7a7676;">生存状况得分：<span style="color: #428bca;">$!evaResult.liveScore</span></td>
+       			</tr>
+       			<tr>
+       				<td style="border:0;font-size:14px;color: #7a7676;">还款能力（万元）：<span style="color: #428bca;">$!evaResult.payAbli</span></td>
+       				<td colspan="2" style="border:0;font-size:14px;color: #7a7676;">拟授信额度（万元）：<span style="color: #428bca;">$!evaResult.money</span></td>
+       			</tr>
+       			<tr>
+       				<td colspan="3" style="border:0;font-size:14px;color: #7a7676;">未评估项/总项：<span style="color: #428bca;">$!evaResult.project</span></td>
+       			</tr>
+       		</table>
+          </div>
+		</div>
+	  </form>
+	</div>
+</div>
  <script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
   <script type="text/javascript">
   	#set ($formName = "'#id_module_form'")
@@ -236,6 +281,10 @@
 		var info = "$!customerApplicationInfo.status";
 		//已提交的显示只读
 		
+		//跳转先加载  四维授信评估结果悬浮框
+		Dialog.aform("#form1", "评估结果", function(){
+	      			window.top.$("#form_diaog").dialog("close");
+    		    }, null, 750, 100);
 		
 		if(info!='audit'){
 			$("input[type='text']").attr("disabled",true);

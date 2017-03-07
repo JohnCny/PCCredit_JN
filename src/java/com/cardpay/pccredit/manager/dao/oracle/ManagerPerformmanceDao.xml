@@ -222,7 +222,7 @@
 	<select id="findALlbank" resultMap="bankList">
 
 		select s.id,s.name from sys_organization s where is_deleted=0 and
-		parent_id='000000' order by seq_no
+		parent_id='000000'  and name !='小微贷管理团队' order by seq_no
 
 	</select>
 	<select id="findALLDeptSumPerformmanceById" resultMap="managerperformsum">

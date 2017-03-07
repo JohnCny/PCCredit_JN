@@ -4,16 +4,18 @@
     <div class="contentinner">
       <div class="place">
        <div class="title">每日任务>任务完成情况($!result2.time)>$!result.name</div>
-      </div>  <div class="search">
+      </div>  
+      <div class="inquiry">
+      <div class="search">
             <ul>
             
               <li>
-               <select id='ri'>
+               <span>日期：<select id='ri'>
                <option >选择日期</option>"
                 #foreach ($time1 in $result1) 
 					<option >$!time1.time</option>"
 				   #end 
-					</select>
+					</select></span>
               </li>
               
               <li class="search_button">
@@ -22,37 +24,22 @@
               </li>
             </ul>
         </div>
-     <!--    <div class="search">
-            <ul>
-            
-              <li>
-               <select id='ri'>
-                #foreach ($time1 in $result1.items) 
-					<option value = '1'>$!time1.time</option>"
-				   #end 
-					</select>
-              </li>
-              
-              <li class="search_button">
-                <input id="select1" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                   style="height: 26px; line-height: 24px;" />
-              </li>
-            </ul>
-        </div> -->
+    
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
               <col width="10%" />
               <col width="10%" />
-                <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
               <col width="10%" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap">工作任务内容</th>
               <th nowrap="nowrap">计划完成数量</th>
-               <th nowrap="nowrap">实际完成数量</th>
-               <th nowrap="nowrap">通知状态</th>
-                <th nowrap="nowrap">完成状态</th>
+              <th nowrap="nowrap">实际完成数量</th>
+              <th nowrap="nowrap">通知状态</th>
+              <th nowrap="nowrap">完成状态</th>
             </tr>
           </table>
         </div>
@@ -61,7 +48,8 @@
             <colgroup>
               <col width="10%" />
               <col width="10%" />
-                <col width="10%" />
+              <col width="10%" />
+              <col width="10%" />
               <col width="10%" />
             </colgroup>
             <tr>
@@ -160,6 +148,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn">
+        	   <a  class="btn_g" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")">返回</a>
 <!--           <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
  -->        </div>
         #parse ("common/pagination.htm")

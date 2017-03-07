@@ -1,38 +1,34 @@
 #parse ("common/iframe_page_header.htm")
   <link rel="stylesheet" type="text/css" href="${uicasePath}/css/tab.css" />
+  <style>
+  table#tab tr td{border:none;padding-left:10px;}
+  </style>
 <body>
 	<div class="content_main">
 		<div class="contentinner">
-		
+		  <div class="place">
+	        <div class="title">产品审核</div>
+	      </div>
 			<form id="id_module_form"
 				action="${contextPath}/product/productpublic/insertCpjg.json">
 				<input type="hidden" id="productId" name="productId" value="${productId}">
 				<div class="forms" id="formsId">
-				<tr>
-				<td>产品编号：</td>
-				<td>
-					<input id="seqno" name="seqno" value="">
-				</td>
-				</tr>
-				<br>
-				<br>
-           <table style="border: 1px solid #dcdcdc;margin-bottom: 10px;" id="tab";>
+				<div style="border: 1px solid #bad3e0;padding: 15px;background: #d9edf7;margin-bottom:15px;">产品编号：<input id="seqno" name="seqno" value=""></div>
+           <table style="background:#eee;margin-bottom: 10px;" id="tab">
 						<colgroup>
-						    <col width="5%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
-							<col width="24%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
+							<col width="25%" />
 						</colgroup>
 						<tr>
-                          <td colspan="5" style="text-align:center;font-weight: bold;background-color:#ECFDF9;">机构清单</td>
+                          <td colspan="4" style="text-align:center;font-weight: bold;background-color:#dedede;">机构清单</td>
                          </tr>
 					      #set($total = ($organization.size()/4)) 
 					      
 					      #foreach ($!index in [0 .. $total])
 					
 					      <tr>
-					      <td>&nbsp;</td>
 						  #set($current = $!index * 4 ) 
 						  #if($current<$organization.size())
 						     <td><input type="checkbox" name="organizationId" value="$organization.get($current).id"/> $organization.get($current).name</td>
