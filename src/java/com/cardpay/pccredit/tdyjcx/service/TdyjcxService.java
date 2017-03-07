@@ -58,4 +58,9 @@ public class TdyjcxService {
 		// TODO Auto-generated method stub
 		return tdyjcxdao.findappcount(filter);
 	}
+	
+	public int findappcount1(MaintenanceFilter filter) {
+		// TODO Auto-generated method stub
+		return tdyjcxdao.findappcount1(filter);
+	}
 }
