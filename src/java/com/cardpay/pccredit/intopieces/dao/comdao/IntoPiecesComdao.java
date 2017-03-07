@@ -31,6 +31,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
+import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
@@ -393,6 +394,18 @@ public class IntoPiecesComdao {
 	public CustomerInfor findCustomerManager(String id) {//客户id
 		String sql ="select * from basic_customer_information t where  t.ID='"+id+"'";
 		List<CustomerInfor> list = commonDao.queryBySql(CustomerInfor.class,sql, null);
+		if(list!=null&&!list.isEmpty()){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
+	
+	
+	public EvaResult findEvaResult(String id) {//app_id
+		//String sql ="select * from EVA_RESULT t where  t.ID='"+id+"'";
+		String sql ="select * from EVA_RESULT t where  t.excel_id =(select id from local_excel where APPLICATION_ID ='"+id+"')";
+		List<EvaResult> list = commonDao.queryBySql(EvaResult.class,sql, null);
 		if(list!=null&&!list.isEmpty()){
 			return list.get(0);
 		}else{
@@ -769,4 +782,13 @@ public class IntoPiecesComdao {
 		return commonDao.queryBySql(IntoPieces.class, sql.toString(), params)
 				.size();
 	}
+	
+	public void deleteEvaResult(String excelId){
+		commonDao.queryBySql("delete from EVA_RESULT where excel_id='"+excelId+"'", null);
+	}
+	
+	public void saveEvaResult(EvaResult result){
+		commonDao.insertObject(result);
+	}
+	
 }

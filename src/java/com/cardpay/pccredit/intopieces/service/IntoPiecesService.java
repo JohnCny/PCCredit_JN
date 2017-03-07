@@ -43,6 +43,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
 import com.cardpay.pccredit.intopieces.model.CustomerCareersInformationS;
 import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
+import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
@@ -852,6 +853,10 @@ public class IntoPiecesService {
 	public CustomerInfor findCustomerManager(String id) {
 		return intoPiecesComdao.findCustomerManager(id);
 	}
+	
+	public EvaResult findEvaResult(String id) {
+		return intoPiecesComdao.findEvaResult(id);
+	}
 
 	/* 查询申请的某一笔进件申请单中上传的产品的附件 */
 	public List<AddressAccessories> findAddressAccessories(
@@ -963,5 +968,14 @@ public class IntoPiecesService {
 		params.put("applyQuota", applyQuota);
 		params.put("id", id);
 		String sql = "update LOCAL_EXCEL set APPROVE_VALUE=#{applyQuota} where APPLICATION_ID=#{id}";
+	}
+	
+	
+	public void deleteEvaResult(String excelId){
+		intoPiecesComdao.deleteEvaResult(excelId);
+	}
+	
+	public void saveEvaResult(EvaResult result){
+		intoPiecesComdao.saveEvaResult(result);
 	}
 }

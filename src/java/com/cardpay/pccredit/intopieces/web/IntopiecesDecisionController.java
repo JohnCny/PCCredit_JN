@@ -36,6 +36,7 @@ import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcessForm;
+import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
@@ -149,6 +150,10 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("customerApplicationProcess", processForm);
 		mv.addObject("appManagerAuditLog", appManagerAuditLog.get(0));
 		mv.addObject("custManagerId", customerInfor.getUserId());
+		
+		//查询评估结果
+		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		mv.addObject("evaResult", evaResult);
 		return mv;
 	}
 	
@@ -166,6 +171,10 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("customerApplicationInfo", customerApplicationInfo);
 		mv.addObject("producAttribute", producAttribute);
 		mv.addObject("custManagerId", customerInfor.getUserId());
+		
+		//查询评估结果
+		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		mv.addObject("evaResult", evaResult);
 		return mv;
 	}
 	
@@ -204,7 +213,6 @@ public class IntopiecesDecisionController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "updateAll.json")
-	@JRadOperation(JRadOperation.APPROVE)
 	public JRadReturnMap update(HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 
@@ -255,6 +263,10 @@ public class IntopiecesDecisionController extends BaseController {
 			mv.addObject("appManagerAuditLog1", appManagerAuditLog1.get(0));
 			mv.addObject("appManagerAuditLog2", appManagerAuditLog2.get(0));
 			mv.addObject("custManagerId", customerInfor.getUserId());
+			
+			//查询评估结果
+			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+			mv.addObject("evaResult", evaResult);
 			return mv;
 		}
 		
@@ -281,10 +293,14 @@ public class IntopiecesDecisionController extends BaseController {
 			mv.addObject("appManagerAuditLog2", appManagerAuditLog2.get(0));
 			mv.addObject("appManagerAuditLog3", appManagerAuditLog3.get(0));
 			mv.addObject("custManagerId", customerInfor.getUserId());
+			
+			//查询评估结果
+			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+			mv.addObject("evaResult", evaResult);
 			return mv;
 		}
 		
-		//显示总经理审批
+		//显示行长审批
 		@ResponseBody
 		@RequestMapping(value = "input_decision_hz.page", method = { RequestMethod.GET })
 		@JRadOperation(JRadOperation.BROWSE)
@@ -308,6 +324,10 @@ public class IntopiecesDecisionController extends BaseController {
 			mv.addObject("appManagerAuditLog3", appManagerAuditLog3.get(0));
 			mv.addObject("appManagerAuditLog4", appManagerAuditLog4.get(0));
 			mv.addObject("custManagerId", customerInfor.getUserId());
+			
+			//查询评估结果
+			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+			mv.addObject("evaResult", evaResult);
 			return mv;
 		}
 	
