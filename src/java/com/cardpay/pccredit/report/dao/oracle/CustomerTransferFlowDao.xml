@@ -1164,16 +1164,16 @@
 			</if>
 		)
 		
-		select nvl(count(*), 0) as atr, 'totalCount' as numStr
+		select count(*) as atr, 'totalCount' as numStr
 		from circle mi
 		union all
-		select nvl(count(*), 0) as atr, 'C101Count' as numStr
+		select count(*) as atr, 'C101Count' as numStr
 		from circle mi where mi.MAINASSURE = 'C101'
 		union all
-		select nvl(count(*), 0) as atr, 'C102Count' as numStr
+		select count(*) as atr, 'C102Count' as numStr
 		from circle mi where mi.MAINASSURE = 'C102'
 		union all
-		select nvl(count(*), 0) as atr, 'C100Count' as numStr
+		select count(*) as atr, 'C100Count' as numStr
 		from circle mi where mi.MAINASSURE = 'C100'
 		
 		union all

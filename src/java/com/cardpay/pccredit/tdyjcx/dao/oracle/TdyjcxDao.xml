@@ -215,7 +215,6 @@
 	</select>
 	
 		<select id="findappcount" resultMap="Tdyjcxform">
-		select count (*) from (    
 		select count(app.id) as applycount 
 		<!-- ,sysuser.id as manager_id ,sysuser.display_name as userName  -->
 		from basic_customer_information basic,
@@ -233,12 +232,11 @@
 		<if test="customerManagerId != null and customerManagerId != '' ">
 		  and basic.user_id=#{customerManagerId}
 		</if>
-		 group by sysuser.id,sysuser.display_name)
+		 <!-- group by sysuser.id,sysuser.display_name -->
 		</select>
 		
 		
 		<select id="findappcount1" resultType="int">
-		    select count (*) from (
 		select count(app.id) as applycount 
 		from basic_customer_information basic,
 	    customer_application_info app,
@@ -249,6 +247,5 @@
 		<if test="customerManagerId != null and customerManagerId != '' ">
 		  and basic.user_id=#{customerManagerId}
 		</if>
-		 group by sysuser.id,sysuser.display_name)
 		</select>
 </mapper>
