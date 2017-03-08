@@ -17,13 +17,62 @@
       <input type="hidden" name="auditType" id="auditType" value="5" />
       <input type="hidden" name="custManagerId" id="custManagerId" value="$!custManagerId" />
       <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
+         <!--start  -->
+	     <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+	     <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
+            <colgroup>
+              <col width="13%" />
+              <col width="20%" />
+              <col width="13%" />
+              <col width="20%" />
+              <col width="13%" />
+              <col width="20%" />
+            </colgroup>
+            <tr><td class="titlec" colspan="6" style="text-align: center;">评估结果</td></tr>
+            <tr>
+              <td  class="titlefc3">评估结果：</td>
+              <td colspan="5" style="padding-left:5px;">
+           			#if($!evaResult.result =='允许')
+     				<span class="label" style="background: #5cb85c;color:#fff;padding:3px 10px;">允许</span>
+     				#else
+     				<span class="label" style="background: #d9534f;color:#fff;padding:3px 10px;">禁止</span>
+     				#end
+			  </td>
+            </tr>
+            <tr>
+			  <td class="titlefc3">姓名：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.cname</span></td>
+              <td class="titlefc3">身份证号：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.cardNo</span></td>
+              <td class="titlefc3">性别：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.sex</span></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3">经营状况得分：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.busScore</span></td>
+              <td class="titlefc3">道德品质得分：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.habScore</span></td>
+              <td class="titlefc3">生存状况得分：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.liveScore</span></td>
+            </tr>
+            <tr>
+			  <td class="titlefc3">还款能力（万元）：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td>
+              <td class="titlefc3">拟授信额度（万元）：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.money</span></td>
+              <td class="titlefc3">未评估项/总项：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td>
+            </tr>
+          </table>
+	     </div>	 
+	     <!--end  -->
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
               <col width="10%" />
-              <col width="40%" />
+              <col width="30%" />
               <col width="10%" />
-              <col width="40%" />
+              <col width="30%" />
             </colgroup>
               <tr>
               	<td class="titlec" colspan="4" style="text-align: center;">进件申请信息</td>
@@ -282,9 +331,9 @@
 		//已提交的显示只读
 		
 		//跳转先加载  四维授信评估结果悬浮框
-		Dialog.aform("#form1", "评估结果", function(){
+		/* Dialog.aform("#form1", "评估结果", function(){
 	      			window.top.$("#form_diaog").dialog("close");
-    		    }, null, 750, 100);
+    		    }, null, 750, 100); */
 		
 		if(info!='audit'){
 			$("input[type='text']").attr("disabled",true);
@@ -368,8 +417,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(21)").show();
-				$("tr:eq(23)").hide();
+				$("tr:eq(26)").show();
+				$("tr:eq(28)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -379,16 +428,16 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(21)").hide();
-				$("tr:eq(23)").show();
+				$("tr:eq(26)").hide();
+				$("tr:eq(28)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(21)").hide();
-				$("tr:eq(23)").show();
+				$("tr:eq(26)").hide();
+				$("tr:eq(28)").show();
 			}
 			
  			if(status =='RETURNAPPROVE'){

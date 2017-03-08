@@ -183,17 +183,17 @@
 	<!-- 不良金额 -->
 	<select id="findbadAmountsum" resultType="String"
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
-		   select sum(nvl(tc.REFERAOMUNT,0)) from t_cipersonbadrecord tc,basic_customer_information basic
+		   select nvl(sum(tc.REFERAOMUNT),0) from t_cipersonbadrecord tc,basic_customer_information basic
         where 1=1 and basic.ty_customer_id=tc.custid
       <if test="customerManagerId != null and customerManagerId != '' ">
 				  and basic.user_id=#{customerManagerId}
 				</if>
-				<if test="customerManagerIds != null and customerManagerIds != '' ">  
+				<!-- <if test="customerManagerIds != null and customerManagerIds != '' ">  
  					  	AND basic.user_id in  
 	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
 							#{item.userId} 
 						</foreach>
-					</if>
+					</if> -->
 	</select>
 	
 	<!--查询进件的信息  -->
@@ -215,21 +215,37 @@
 	</select>
 	
 		<select id="findappcount" resultMap="Tdyjcxform">
-		select count(app.id) as applycount ,sysuser.id as manager_id ,sysuser.display_name as userName from basic_customer_information basic,
+		select count(app.id) as applycount 
+		<!-- ,sysuser.id as manager_id ,sysuser.display_name as userName  -->
+		from basic_customer_information basic,
 	    customer_application_info app,
 	    sys_user sysuser
 	    where 1=1 and
 	    app.customer_id=basic.id and
 	    basic.user_id=sysuser.id
-		<if test="customerManagerIds != null and customerManagerIds != '' ">  
+		<!-- <if test="customerManagerIds != null and customerManagerIds != '' ">  
  					  	AND basic.user_id in  
 	 					<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
 							#{item.userId} 
 						</foreach>
-					</if>
+					</if> -->
 		<if test="customerManagerId != null and customerManagerId != '' ">
 		  and basic.user_id=#{customerManagerId}
 		</if>
-		 group by sysuser.id,sysuser.display_name
+		 <!-- group by sysuser.id,sysuser.display_name -->
+		</select>
+		
+		
+		<select id="findappcount1" resultType="int">
+		select count(app.id) as applycount 
+		from basic_customer_information basic,
+	    customer_application_info app,
+	    sys_user sysuser
+	    where 1=1 and
+	    app.customer_id=basic.id and
+	    basic.user_id=sysuser.id
+		<if test="customerManagerId != null and customerManagerId != '' ">
+		  and basic.user_id=#{customerManagerId}
+		</if>
 		</select>
 </mapper>
