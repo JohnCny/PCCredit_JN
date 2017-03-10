@@ -16,7 +16,7 @@ $(document).ready(function() {
 	if(province && city & country){
 	Init(province,city,country);
 	}else{
-	Init("福建省","厦门市","");	
+	Init("山东省","青岛市","");	
 		
 	}
 	
