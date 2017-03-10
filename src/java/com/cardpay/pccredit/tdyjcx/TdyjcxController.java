@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +29,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.report.web.AfterLoanCollectController;
 import com.cardpay.pccredit.tdyjcx.model.MaintenanceForm;
 import com.cardpay.pccredit.tdyjcx.model.ManagerPerformmance;
 import com.cardpay.pccredit.tdyjcx.model.Tdyjcx;
@@ -55,6 +57,7 @@ import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 @RequestMapping("/manager/tdyjcx/*")
 @JRadModule("manager.khgl")
 public class TdyjcxController extends BaseController{
+	private static final Logger logger = Logger.getLogger(TdyjcxController.class);
 	
 	@Autowired
 	private TdyjcxService service;
@@ -90,7 +93,7 @@ public class TdyjcxController extends BaseController{
 			forms = maintenanceService.findSubListManagerByManagerId(user);
 		}
 		String customerManagerId = filter.getCustomerManagerId();
-		
+		long start = System.currentTimeMillis();
 		//result收集下发数据的信息，managerPerformmanceold收集进件的信息
 		QueryResult<MaintenanceForm> result = null;
 		//List<Tdyjcx> appcount=new ArrayList<Tdyjcx>(); 
@@ -161,6 +164,8 @@ public class TdyjcxController extends BaseController{
 				return mv;
 			}
 		}
+		long end = System.currentTimeMillis();
+		logger.info("贷款汇总查询时间花费：" + (end - start) + "毫秒");
 		JRadPagedQueryResult<MaintenanceForm> pagedResult = new JRadPagedQueryResult<MaintenanceForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		mv.addObject("forms", forms);

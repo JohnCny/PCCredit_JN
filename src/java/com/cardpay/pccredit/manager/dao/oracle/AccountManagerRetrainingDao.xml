@@ -74,9 +74,9 @@
 		   from (select * 
 				   from sys_organization 
 				   where 1=1 
-				 <!--   <if test="orgId != null and orgId != '' ">
+				   <if test="orgId != null and orgId != '' ">
 				   		and id=#{orgId}
-				   </if> -->
+				   </if> 
 				   ) org
 		  inner join sys_department dep 
 			 on org.id = dep.org_id 

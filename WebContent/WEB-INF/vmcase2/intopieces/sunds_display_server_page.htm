@@ -15,8 +15,8 @@
 		$("#id_beer_button").click(function() {
 			var currentPage = Number($!rowNum) - Number(1);
 			if(Number(currentPage)<0){
-			    	alert("已经是第一张");
-			    	return;
+				alert("已经是第一张");
+			    return;
 			}
 			var url = "${contextPath}/intopieces/intopiecesquery/display_server.page?currentPage="+currentPage+"&batchId="+batchId;
 			window.location.href = url;
