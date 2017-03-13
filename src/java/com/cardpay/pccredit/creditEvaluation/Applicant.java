@@ -87,7 +87,8 @@ public class Applicant {
 			}
 		}
 		
-		if(Age >= 18 && whether && loanPeriod <= 65-Age && operatePeriod > 1) {
+		//if(Age >= 18 && whether && loanPeriod <= 65-Age && operatePeriod > 1) {
+		if(Age >= 18 && whether  && operatePeriod > 1) {
 			try {
 				DecimalFormat df = new DecimalFormat("0.00");  
 		        df.setRoundingMode(RoundingMode.HALF_UP);  

@@ -185,7 +185,7 @@ public class BatchReturnRunController extends BaseController{
 		return null;
 	}
 	
-	private String log_path = "/home/jradbaseweb.log";
+	private String log_path = "/home/log/jradbaseweb.log";
 //	private String log_path = "E:/jradbaseweb.log";
 	private String log_name = "jradbaseweb.log";
 	

@@ -551,98 +551,98 @@
 		     /*ApplicantInfoVo*/
 		     var cardNo =  $('#cardNo').val();
 			 if(cardNo == ''){
-				alert("请输入[身份证号]!");
+				Dialog.message("请输入[身份证号]!");
 				$("#sfz").css({color:"red"})
 		        return; 
 			 }
    			 var cname =  $('#cname').val();
    			 if(cname == ''){
- 				alert("请输入[姓名]!");	
+ 				Dialog.message("请输入[姓名]!");	
 				$("#xm").css({color:"red"})
  		        return; 
  			 }
    			 var sex   =  $('#sex').val();
    			 if(sex == ''){
- 				alert("请输入[性别]!");	
+ 				Dialog.message("请输入[性别]!");	
 				$("#xb").css({color:"red"})
  		        return; 
  			 }
    			 var domicileLocation =  $('#domicileLocation').val();
    			 if(domicileLocation == ''){
- 				alert("请输入[户籍所在地]!");	
+ 				Dialog.message("请输入[户籍所在地]!");	
 				$("#hjsz").css({color:"red"})
  		        return; 
  			 }
    			 var address =  $('#address').val();
    			 if(address == ''){
-  				alert("请输入[详细地址]!");	
+  				Dialog.message("请输入[详细地址]!");	
 				$("#xxdz").css({color:"red"})
   		        return; 
   			 }
    			 var phoneNo =  $('#phoneNo').val();
    			 if(phoneNo == ''){
-  				alert("请输入[电话]!");	
+  				Dialog.message("请输入[电话]!");	
 				$("#dh").css({color:"red"})
   		        return; 
   			 }
-   			 var spouseIdNo  =  $('#spouseIdNo').val();
+   			/*  var spouseIdNo  =  $('#spouseIdNo').val();
    			 if(spouseIdNo == ''){
-  				alert("请输入[配偶身份证号]!");	
+  				Dialog.message("请输入[配偶身份证号]!");	
 				$("#posfz").css({color:"red"})
   		        return; 
-  			 }
+  			 } */
    			 var companyAddress  =  $('#companyAddress').val();
    			 if(companyAddress == ''){
-  				alert("请输入[店铺/企业地址]!");	
+  				Dialog.message("请输入[店铺/企业地址]!");	
 				$("#qydz").css({color:"red"})
   		        return; 
   			 }
    			 var industry =  $('#industry').val();
    			 if(industry == ''){
-  				alert("请输入[所属行业]!");	
+  				Dialog.message("请输入[所属行业]!");	
 				$("#sshy").css({color:"red"})
   		        return; 
   			 }
    			 var operatingTime  =  $('#operatingTime').val();
    			 if(operatingTime == ''){
-  				alert("请输入[经营时间]!");	
+  				Dialog.message("请输入[经营时间]!");	
 				$("#jysj").css({color:"red"})
   		        return; 
   			 }
    			/*RepayAbilitiesVo*/
    			 var   ownFunds	=$('#ownFunds').val();
    			 if(ownFunds == ''){
-  				alert("请输入[自有资金]!");	
+  				Dialog.message("请输入[自有资金]!");	
 				$("#zyzj").css({color:"red"})
   		        return; 
   			 }
 			 var   spouseIncome  =$('#spouseIncome').val();
 			 if(spouseIncome == ''){
-	  				alert("请输入[配偶年收入]!");	
+	  				Dialog.message("请输入[配偶年收入]!");	
 				$("#ponsr").css({color:"red"})
 	  		        return; 
 	  		 }
 			 var   totalNonOperatingAssets  =$('#totalNonOperatingAssets').val();
 			 if(totalNonOperatingAssets == ''){
-	  				alert("请输入[非经营总资产]!");	
+	  				Dialog.message("请输入[非经营总资产]!");	
 				$("#fjyzzc").css({color:"red"})
 	  		        return; 
 	  	     }
 			 var   monthlyProfit =$('#monthlyProfit').val();
 			 if(monthlyProfit == ''){
-	  				alert("请输入[月利润]!");	
+	  				Dialog.message("请输入[月利润]!");	
 				$("#ylr").css({color:"red"})
 	  		        return; 
 	  		 }
 			 var   applicationPeriod  =$('#applicationPeriod').val();
 			 if(applicationPeriod == ''){
-	  				alert("请输入[申请期限]!");	
+	  				Dialog.message("请输入[申请期限]!");	
 				$("#sqqx").css({color:"red"})
 	  		        return; 
 	  	     }
 			 var   nonPperatingTotalLiabilities =$('#nonPperatingTotalLiabilities').val();
 			 if(nonPperatingTotalLiabilities == ''){
-	  				alert("请输入[非经营总负债]!");	
+	  				Dialog.message("请输入[非经营总负债]!");	
 				$("#fjyzfz").css({color:"red"})
 	  		        return; 
 	  		 }
@@ -651,7 +651,7 @@
 			 /*LivingConditionVo*/
 			 var radio1= $('input[name="radio1"]:checked').val();
 			 if(typeof(radio1) == 'undefined'){
-	        	alert("请选择[居住类型]!");
+	        	Dialog.message("请选择[居住类型]!");
 	        	$("#jzlx").css({color:"red"})
 	        	return;
 		     }
@@ -660,7 +660,7 @@
 			 
 			 var radio2= $('input[name="radio2"]:checked').val();
 			 if(typeof(radio2) == 'undefined'){
-	        	alert("请选择[装修情况]!");	
+	        	Dialog.message("请选择[装修情况]!");	
 			 $('#zxqk').css({color:'red'})
 	        	return;
 		     }
@@ -669,7 +669,7 @@
 		     
 			 var radio3= $('input[name="radio3"]:checked').val();
 			 if(typeof(radio3) == 'undefined'){
-	        	alert("请选择[住房面积]!");	
+	        	Dialog.message("请选择[住房面积]!");	
 			 $('#zfmj').css({color:'red'})
 	        	return;
 		     }
@@ -679,7 +679,7 @@
 			 
 			 var radio4= $('input[name="radio4"]:checked').val();
 			 if(typeof(radio4) == 'undefined'){
-	        	alert("请选择[自有房产数量]!");	
+	        	Dialog.message("请选择[自有房产数量]!");	
 			 $('#zyfc').css({color:'red'})
 	        	return;
 		     }
@@ -688,7 +688,7 @@
 			 
 			 var radio5= $('input[name="radio5"]:checked').val();
 			 if(typeof(radio5) == 'undefined'){
-	        	alert("请选择[按揭房产数量]!");	
+	        	Dialog.message("请选择[按揭房产数量]!");	
 			 $('#ajfc').css({color:'red'})
 	        	return;
 		     }
@@ -697,7 +697,7 @@
 			 
 			 var radio6= $('input[name="radio6"]:checked').val();
 			 if(typeof(radio6) == 'undefined'){
-	        	alert("请选择[房产总价]!");	
+	        	Dialog.message("请选择[房产总价]!");	
 			 $('#fczj').css({color:'red'})
 	        	return;
 		     }
@@ -706,7 +706,7 @@
 		     
 			 var radio7= $('input[name="radio7"]:checked').val();
 			 if(typeof(radio7) == 'undefined'){
-	        	alert("请选择[自有房产总面积]!");	
+	        	Dialog.message("请选择[自有房产总面积]!");	
 			 $('#zymj').css({color:'red'})
 	        	return;
 		     }
@@ -715,7 +715,7 @@
 			 
 			 var radio8= $('input[name="radio8"]:checked').val();
 			 if(typeof(radio8) == 'undefined'){
-	        	alert("请选择[自有车辆数量]!");	
+	        	Dialog.message("请选择[自有车辆数量]!");	
 			 $('#zycs').css({color:'red'})
 	        	return;
 		     }
@@ -724,7 +724,7 @@
 			 
 			 var radio9= $('input[name="radio9"]:checked').val();
 			 if(typeof(radio9) == 'undefined'){
-	        	alert("请选择[贷款车辆数量]!");	
+	        	Dialog.message("请选择[贷款车辆数量]!");	
 			 $('#dkcs').css({color:'red'})
 	        	return;
 		     }
@@ -733,7 +733,7 @@
 			 
 			 var radio10= $('input[name="radio10"]:checked').val();
 			 if(typeof(radio10) == 'undefined'){
-	        	alert("请选择[车辆总价]!");	
+	        	Dialog.message("请选择[车辆总价]!");	
 			 $('#clzj').css({color:'red'})
 	        	return;
 		     }
@@ -743,7 +743,7 @@
 			 
 			 var radio11= $('input[name="radio11"]:checked').val();
 			 if(typeof(radio11) == 'undefined'){
-	        	alert("请选择[除经营生意外是否有其他工作]!");	
+	        	Dialog.message("请选择[除经营生意外是否有其他工作]!");	
 			 $('#qtgz').css({color:'red'})
 	        	return;
 		     }
@@ -752,7 +752,7 @@
 			 
 			 var radio14= $('input[name="radio14"]:checked').val();
 			 if(typeof(radio14) == 'undefined'){
-	        	alert("请选择[信用卡授信总额]!");	
+	        	Dialog.message("请选择[信用卡授信总额]!");	
 			 $('#xyked').css({color:'red'})
 	        	return;
 		     }
@@ -761,7 +761,7 @@
 			 
 			 var radio12= $('input[name="radio12"]:checked').val();
 			 if(typeof(radio12) == 'undefined'){
-	        	alert("请选择[个人银行账户余额]!");	
+	        	Dialog.message("请选择[个人银行账户余额]!");	
 			 $('#yhye').css({color:'red'})
 	        	return;
 		     }
@@ -771,7 +771,7 @@
 			 
 			 var radio13= $('input[name="radio13"]:checked').val();
 			 if(typeof(radio13) == 'undefined'){
-	        	alert("请选择[生意账户余额]!");	
+	        	Dialog.message("请选择[生意账户余额]!");	
 			 $('#syye').css({color:'red'})
 	        	return;
 		     }
@@ -780,7 +780,7 @@
 			 
 			 var radio15= $('input[name="radio15"]:checked').val();
 			 if(typeof(radio15) == 'undefined'){
-	        	alert("请选择[月平均还款金额占收入比例]!");	
+	        	Dialog.message("请选择[月平均还款金额占收入比例]!");	
 			 $('#hkzb').css({color:'red'})
 	        	return;
 		     }
@@ -789,7 +789,7 @@
 			 
 			 var radio16= $('input[name="radio16"]:checked').val();
 			 if(typeof(radio16) == 'undefined'){
-	        	alert("请选择[是否为他人担保]!");	
+	        	Dialog.message("请选择[是否为他人担保]!");	
 			 $('#sfdb').css({color:'red'})
 	        	return;
 		     }
@@ -797,7 +797,7 @@
 			 $('#sfdb').css({color:'black'})
 			 var radio17= $('input[name="radio17"]:checked').val();
 			 if(typeof(radio17) == 'undefined'){
-	        	alert("请选择[担保金额占本人自有资产比例]!");	
+	        	Dialog.message("请选择[担保金额占本人自有资产比例]!");	
 			 $('#dzzb').css({color:'red'})
 	        	return;
 		     }
@@ -806,7 +806,7 @@
 			 
 			 var radio18= $('input[name="radio18"]:checked').val();
 			 if(typeof(radio18) == 'undefined'){
-	        	alert("请选择[担保用途]!");	
+	        	Dialog.message("请选择[担保用途]!");	
 			 $('#dbyt').css({color:'red'})
 	        	return;
 		     }
@@ -815,7 +815,7 @@
 			 
 			 var radio19= $('input[name="radio19"]:checked').val();
 			 if(typeof(radio19) == 'undefined'){
-	        	alert("请选择[担保期限]!");	
+	        	Dialog.message("请选择[担保期限]!");	
 			 $('#dbqx').css({color:'red'})
 	        	return;
 		     }
@@ -826,7 +826,7 @@
 			 /*OperateConditionVo*/
 			 var radio20= $('input[name="radio20"]:checked').val();
 			 if(typeof(radio20) == 'undefined'){
-	        	alert("请选择[组织类型]!");	
+	        	Dialog.message("请选择[组织类型]!");	
 			 $('#zzlx').css({color:'red'})
 	        	return;
 		     }
@@ -836,7 +836,7 @@
 			 
 			 var radio24= $('input[name="radio24"]:checked').val();
 			 if(typeof(radio24) == 'undefined'){
-	        	alert("请选择[营业执照]!");	
+	        	Dialog.message("请选择[营业执照]!");	
 			 $('#yyzz').css({color:'red'})
 	        	return;
 		     }
@@ -846,7 +846,7 @@
 			 
 			 var radio21= $('input[name="radio21"]:checked').val();
 			 if(typeof(radio21) == 'undefined'){
-	        	alert("请选择[经营场所面积]!");	
+	        	Dialog.message("请选择[经营场所面积]!");	
 			 $('#jymj').css({color:'red'})
 	        	return;
 		     }
@@ -855,7 +855,7 @@
 			 
 			 var radio22= $('input[name="radio22"]:checked').val();
 			 if(typeof(radio22) == 'undefined'){
-	        	alert("请选择[股东占比情况]!");	
+	        	Dialog.message("请选择[股东占比情况]!");	
 			 $('#gdzb').css({color:'red'})
 	        	return;
 		     }
@@ -865,7 +865,7 @@
 			 
 			 var radio23= $('input[name="radio23"]:checked').val();
 			 if(typeof(radio23) == 'undefined'){
-	        	alert("请选择[雇佣人数]!");	
+	        	Dialog.message("请选择[雇佣人数]!");	
 			 $('#gyrs').css({color:'red'})
 	        	return;
 		     }
@@ -875,7 +875,7 @@
 			 
 			 var radio25= $('input[name="radio25"]:checked').val();
 			 if(typeof(radio25) == 'undefined'){
-	        	alert("请选择[店铺类型]!");	
+	        	Dialog.message("请选择[店铺类型]!");	
 			 $('#dplx').css({color:'red'})
 	        	return;
 		     }
@@ -884,7 +884,7 @@
 			 
 			 var radio26= $('input[name="radio26"]:checked').val();
 			 if(typeof(radio26) == 'undefined'){
-	        	alert("请选择[店铺装修情况]!");	
+	        	Dialog.message("请选择[店铺装修情况]!");	
 			 $('#dpzxqk').css({color:'red'})
 	        	return;
 		     }
@@ -895,7 +895,7 @@
 			 
 			 var radio27= $('input[name="radio27"]:checked').val();
 			 if(typeof(radio27) == 'undefined'){
-	        	alert("请选择[婚姻状况]!");	
+	        	Dialog.message("请选择[婚姻状况]!");	
 			 $('#hyzk').css({color:'red'})
 	        	return;
 		     }
@@ -904,7 +904,7 @@
 			 
 			 var radio28= $('input[name="radio28"]:checked').val();
 			 if(typeof(radio28) == 'undefined'){
-	        	alert("请选择[最高学位]!");	
+	        	Dialog.message("请选择[最高学位]!");	
 			 $('#zgxw').css({color:'red'})
 	        	return;
 		     }
@@ -914,7 +914,7 @@
 			 
 			 var radio29= $('input[name="radio29"]:checked').val();
 			 if(typeof(radio29) == 'undefined'){
-	        	alert("请选择[家人对申请人评价]!");	
+	        	Dialog.message("请选择[家人对申请人评价]!");	
 			 $('#jrpj').css({color:'red'})
 	        	return;
 		     }
@@ -923,7 +923,7 @@
 			 
 			 var radio30= $('input[name="radio30"]:checked').val();
 			 if(typeof(radio30) == 'undefined'){
-	        	alert("请选择[邻居对申请人评价]!");	
+	        	Dialog.message("请选择[邻居对申请人评价]!");	
 			 $('#ljpj').css({color:'red'})
 	        	return;
 		     }
@@ -933,7 +933,7 @@
 			 
 			 var radio31= $('input[name="radio31"]:checked').val();
 			 if(typeof(radio31) == 'undefined'){
-	        	alert("请选择[重要联系人对申请人评价]!");	
+	        	Dialog.message("请选择[重要联系人对申请人评价]!");	
 			 $('#lxrpj').css({color:'red'})
 	        	return;
 		     }
@@ -943,7 +943,7 @@
 			 
 			 var radio32= $('input[name="radio32"]:checked').val();
 			 if(typeof(radio32) == 'undefined'){
-	        	alert("请选择[生意关联人对申请人评价]!");	
+	        	Dialog.message("请选择[生意关联人对申请人评价]!");	
 			 $('#syrpj').css({color:'red'})
 	        	return;
 		     }
@@ -953,7 +953,7 @@
 			 
 			 var radio33= $('input[name="radio33"]:checked').val();
 			 if(typeof(radio33) == 'undefined'){
-	        	alert("请选择[社会公益状况]!");	
+	        	Dialog.message("请选择[社会公益状况]!");	
 			 $('#gyzk').css({color:'red'})
 	        	return;
 		     }
@@ -962,7 +962,7 @@
 			 
 			 var radio34= $('input[name="radio34"]:checked').val();
 			 if(typeof(radio34) == 'undefined'){
-	        	alert("请选择[违法违纪情况]!");	
+	        	Dialog.message("请选择[违法违纪情况]!");	
 			 $('#wfwj').css({color:'red'})
 	        	return;
 		     }
@@ -972,7 +972,7 @@
 			 
 			 var radio35= $('input[name="radio35"]:checked').val();
 			 if(typeof(radio35) == 'undefined'){
-	        	alert("请选择[家庭是否和睦]!");	
+	        	Dialog.message("请选择[家庭是否和睦]!");	
 			 $('#jqhm').css({color:'red'})
 	        	return;
 		     }
@@ -983,7 +983,7 @@
 			 
 			 var radio36= $('input[name="radio36"]:checked').val();
 			 if(typeof(radio36) == 'undefined'){
-	        	alert("请选择[经济上依赖的人数]!");	
+	        	Dialog.message("请选择[经济上依赖的人数]!");	
 			 $('#ylrs').css({color:'red'})
 	        	return;
 		     }
@@ -993,7 +993,7 @@
 			 
 			 var radio37= $('input[name="radio37"]:checked').val();
 			 if(typeof(radio37) == 'undefined'){
-	        	alert("请选择[不良嗜好]!");	
+	        	Dialog.message("请选择[不良嗜好]!");	
 			 $('#blsh').css({color:'red'})
 	        	return;
 		     }
@@ -1002,7 +1002,7 @@
 			 
 			 var radio38= $('input[name="radio38"]:checked').val();
 			 if(typeof(radio38) == 'undefined'){
-	        	alert("请选择[不良公共记录]!");	
+	        	Dialog.message("请选择[不良公共记录]!");	
 			 $('#bljl').css({color:'red'})
 	        	return;
 		     }
@@ -1012,7 +1012,7 @@
 			 
 			 var radio39= $('input[name="radio39"]:checked').val();
 			 if(typeof(radio39) == 'undefined'){
-	        	alert("请选择[政治情况]!");	
+	        	Dialog.message("请选择[政治情况]!");	
 			 $('#zzqk').css({color:'red'})
 	        	return;
 		     }
@@ -1021,7 +1021,7 @@
 			 
 			 var radio40= $('input[name="radio40"]:checked').val();
 			 if(typeof(radio40) == 'undefined'){
-	        	alert("请选择[商业保险情况]!");	
+	        	Dialog.message("请选择[商业保险情况]!");	
 			 $('#sybx').css({color:'red'})
 	        	return;
 		     }
@@ -1030,7 +1030,7 @@
 			 
 			 var radio41= $('input[name="radio41"]:checked').val();
 			 if(typeof(radio41) == 'undefined'){
-	        	alert("请选择[社会关系]!");	
+	        	Dialog.message("请选择[社会关系]!");	
 			 $('#shgx').css({color:'red'})
 	        	return;
 		     }
@@ -1039,7 +1039,7 @@
 			 
 			 var radio42= $('input[name="radio42"]:checked').val();
 			 if(typeof(radio42) == 'undefined'){
-	        	alert("请选择[赡养父母状况]!");	
+	        	Dialog.message("请选择[赡养父母状况]!");	
 			 $('#syfm').css({color:'red'})
 	        	return;
 		     }
@@ -1048,7 +1048,7 @@
 			 
 			 var radio43= $('input[name="radio43"]:checked').val();
 			 if(typeof(radio43) == 'undefined'){
-	        	alert("请选择[亲戚和睦情况]!");	
+	        	Dialog.message("请选择[亲戚和睦情况]!");	
 			 $('#qqhm').css({color:'red'})
 	        	return;
 		     }
@@ -1058,7 +1058,7 @@
 			 
 			 var radio44= $('input[name="radio44"]:checked').val();
 			 if(typeof(radio44) == 'undefined'){
-	        	alert("请选择[信用状况]!");	
+	        	Dialog.message("请选择[信用状况]!");	
 			 $('#xyzk').css({color:'red'})
 	        	return;
 		     }
@@ -1068,7 +1068,7 @@
 			 
 			 var radio45= $('input[name="radio45"]:checked').val();
 			 if(typeof(radio45) == 'undefined'){
-	        	alert("请选择[信用卡逾期情况]!");	
+	        	Dialog.message("请选择[信用卡逾期情况]!");	
 			 $('#xykyq').css({color:'red'})
 	        	return;
 		     }
@@ -1078,7 +1078,7 @@
 			 
 			 var radio46= $('input[name="radio46"]:checked').val();
 			 if(typeof(radio46) == 'undefined'){
-	        	alert("请选择[信用卡总数]!");	
+	        	Dialog.message("请选择[信用卡总数]!");	
 			 $('#xyks').css({color:'red'})
 	        	return;
 		     }
@@ -1088,37 +1088,37 @@
 			 //验证是经营时间和申请期限输入格式是否正确
 			 var Reg = /^[0-9]*$/;
 		     if(!Reg.test(applicationPeriod)){
-		    	 alert("申请期限必须是整数!");	
+		    	 Dialog.message("申请期限必须是整数!");	
 		         return;
 		     }
 		     if(!Reg.test(operatingTime)){
-		    	 alert("经营时间必须是整数!");	
+		    	 Dialog.message("经营时间必须是整数!");	
 		         return;
 		     }
 		     
 		     //验证是否是double类型
 		     var dob =/^[-\+]?\d+(\.\d+)?$/
 	    	 if(!dob.test(ownFunds)){
-		    	 alert("自有资金应为数值类型!");	
+		    	 Dialog.message("自有资金应为数值类型!");	
 		         return;
 		     }
 		     
 		     if(!dob.test(spouseIncome)){
-		    	 alert("配偶年收入应为数值类型!");	
+		    	 Dialog.message("配偶年收入应为数值类型!");	
 		         return;
 		     }
 		     
 		     if(!dob.test(totalNonOperatingAssets)){
-		    	 alert("非经营总资产应为数值类型!");	
+		    	 Dialog.message("非经营总资产应为数值类型!");	
 		         return;
 		     }
 		     if(!dob.test(monthlyProfit)){
-		    	 alert("月利润应为数值类型!");	
+		    	 Dialog.message("月利润应为数值类型!");	
 		         return;
 		     }
 		     
 		     if(!dob.test(nonPperatingTotalLiabilities)){
-		    	 alert("非经营总负债应为数值类型!");	
+		    	 Dialog.message("非经营总负债应为数值类型!");	
 		         return;
 		     }
 		     

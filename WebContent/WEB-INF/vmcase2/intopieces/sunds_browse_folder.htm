@@ -116,11 +116,15 @@
 		<p style="color:red;padding-left:20px;margin-top:10px;" >注意请先【缓存】图片再【上传】!</p>
 		<div class="submit">
 	        <!-- <input type="button" onclick="returnClick();" value="返回" /> -->
-	        <input class="current" type="button" onclick="javascript:$('#file_upload').uploadify('upload', '*');" value="开始缓存">
+	       <!--  <input class="current" type="button" onclick="javascript:$('#file_upload').uploadify('upload', '*');" value="开始缓存">
 			<input class="current" type="button" onclick="javascript:$('#file_upload').uploadify('cancel', '*');" value="清除队列">
 			<input class="current" type="button" onclick="javascript:void(0);" onclick="browse_folder_complete('$!custId')" value="上传"> 
 			
-			<input type="button" onclick="javascript:history.back();" value="返回">
+			<input type="button" onclick="javascript:history.back();" value="返回"> -->
+			<a class="btn_g" href="javascript:$('#file_upload').uploadify('upload', '*');">开始缓存</a> &nbsp;&nbsp;
+			<a class="btn_g" href="javascript:$('#file_upload').uploadify('cancel', '*');">清除队列</a> &nbsp;&nbsp;
+			<a class="btn_g" href="javascript:void(0);" onclick="browse_folder_complete('$!custId')">上传</a> &nbsp;&nbsp;
+			<a class="btn_g" href="javascript:history.back();">返回</a> &nbsp;&nbsp;
 	    </div>
     </div>
 </div>
