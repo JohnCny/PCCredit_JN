@@ -54,9 +54,56 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String  c102amtproportion;
 	private String  c100amtproportion;
 	
+	//笔数 
+	private String c101Num;
+	private String c102Num;
+	private String c100Num;
+	
+	//金额
+	private String c101Amt;
+	private String c102Amt;
+	private String c100Amt;
 	
 	
 	
+	
+	
+	public String getC101Num() {
+		return c101Num;
+	}
+	public void setC101Num(String c101Num) {
+		this.c101Num = c101Num;
+	}
+	public String getC102Num() {
+		return c102Num;
+	}
+	public void setC102Num(String c102Num) {
+		this.c102Num = c102Num;
+	}
+	public String getC100Num() {
+		return c100Num;
+	}
+	public void setC100Num(String c100Num) {
+		this.c100Num = c100Num;
+	}
+	public String getC101Amt() {
+		return c101Amt;
+	}
+	public void setC101Amt(String c101Amt) {
+		this.c101Amt = c101Amt;
+	}
+	public String getC102Amt() {
+		return c102Amt;
+	}
+	public void setC102Amt(String c102Amt) {
+		this.c102Amt = c102Amt;
+	}
+	public String getC100Amt() {
+		return c100Amt;
+	}
+	public void setC100Amt(String c100Amt) {
+		this.c100Amt = c100Amt;
+	}
 	public String getC101numproportion() {
 		return c101numproportion;
 	}

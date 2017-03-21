@@ -272,7 +272,7 @@
             <ref bean="runBatchGeneratePerformancePayJob"/>
         </property>
         <property name="cronExpression">
-            <value>0 0 3 3 * ? *</value><!-- 每月3号生成数据 凌晨三点-->
+            <value>0 0 3 5 * ? *</value><!-- 每月5号生成数据 凌晨三点-->
         </property>
     </bean>
     

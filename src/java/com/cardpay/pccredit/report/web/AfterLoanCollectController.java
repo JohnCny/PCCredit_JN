@@ -148,6 +148,12 @@ public class AfterLoanCollectController extends BaseController{
 			acc.setC101amtproportion(map.get("C101AmtProportion"));
 			acc.setC102amtproportion(map.get("C102AmtProportion"));
 			acc.setC100amtproportion(map.get("C100AmtProportion"));
+			acc.setC101Num(map.get("C101Num"));//保证笔数 
+			acc.setC102Num(map.get("C102Num"));//抵押笔数
+			acc.setC100Num(map.get("C100Num"));//信用笔数
+			acc.setC101Amt(map.get("C101Amt"));//保证金额
+			acc.setC102Amt(map.get("C102Amt"));//抵押金额
+			acc.setC100Amt(map.get("C100Amt"));//信用金额
 		}
 		
 		long end = System.currentTimeMillis();
@@ -155,11 +161,14 @@ public class AfterLoanCollectController extends BaseController{
 		
 		// 控制参数 按钮显示
 		boolean lock = false;
-		String PARAM = (String) commonDao.queryBySql("select * from dict where dict_type = 'CTRL_STATUS_PARAM' ", null).get(0).get("TYPE_CODE");
-		if("1".equals(PARAM)){
+		String PARAM = (String) commonDao
+				.queryBySql(
+						"select * from dict where dict_type = 'CTRL_STATUS_PARAM' ",
+						null).get(0).get("TYPE_CODE");
+		if ("1".equals(PARAM)) {
 			lock = true;
 		}
-		
+
 		JRadModelAndView mv = new JRadModelAndView("/report/afteraccloan/afterAccLoanCollect_centre_browseAll", request);
 		mv.addObject("list", accloanList);
 		mv.addObject("filter", filter);
@@ -204,6 +213,16 @@ public class AfterLoanCollectController extends BaseController{
 		map.put("C101AmtProportion",C101Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
 		map.put("C102AmtProportion",C102Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
 		map.put("C100AmtProportion",C100Amt.divide(totalAmt,4,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal("100")).toString());
+		
+		
+		map.put("C101Num",C101Num.toString());
+		map.put("C102Num",C102Num.toString());
+		map.put("C100Num",C100Num.toString());
+		
+		
+		map.put("C101Amt",C101Amt.toString());
+		map.put("C102Amt",C102Amt.toString());
+		map.put("C100Amt",C100Amt.toString());
 		/*//笔数
 		BigDecimal totalNum = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"");//总笔数
 		BigDecimal C101Num  = customerTransferFlowService.findNumsOfPensByUserIdAndProdType(user,"C101");

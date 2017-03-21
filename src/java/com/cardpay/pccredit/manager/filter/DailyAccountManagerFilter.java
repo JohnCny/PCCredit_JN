@@ -23,6 +23,35 @@ public class DailyAccountManagerFilter extends BaseQueryFilter {
 
     private String displayName;
     
+    
+    private String actionTime;
+    private String startDate;
+    private String endDate;
+    
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getActionTime() {
+		return actionTime;
+	}
+
+	public void setActionTime(String actionTime) {
+		this.actionTime = actionTime;
+	}
 
 	public String getDisplayName() {
 		return displayName;

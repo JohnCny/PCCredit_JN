@@ -24,12 +24,15 @@ import com.cardpay.pccredit.report.filter.CustomerMoveFilter;
 import com.cardpay.pccredit.report.filter.ReportFilter;
 import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.report.service.CustomerTransferFlowService;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
+import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 @Controller
@@ -52,6 +55,10 @@ public class OverDueLoanController extends BaseController{
 	public AbstractModelAndView queryExpireLoan(@ModelAttribute ReportFilter filter,HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/report/overdue/overDueLoan", request);
 		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		if(user.getUserType() ==1){
+    		filter.setUserId(user.getId());
+    	}
 		QueryResult<YqdktjbbForm> result =  customerTransferFlowService.findYqdktjbbFormList(filter);
 		JRadPagedQueryResult<YqdktjbbForm> pagedResult = new JRadPagedQueryResult<YqdktjbbForm>(filter, result);
 		mv.addObject(PAGED_RESULT, pagedResult);

@@ -90,7 +90,10 @@ public class StatisticsAttentiveBalanceSynchScheduleService {
 			if(Integer.parseInt(lastDate)<10){
 				lastDate = "0"+lastDate;
 			}
-			System.out.println(lastYear+"-"+lastMonth+"-"+lastDate);
+			if(Integer.parseInt(lastMonth)<10){
+				lastMonth = "0"+lastMonth;
+			}
+			//System.out.println(lastYear+"-"+lastMonth+"-"+lastDate);
 			logger.info(lastYear+"-"+lastMonth+"-"+lastDate);
 			
 			String lastDateTime = lastYear+"-"+lastMonth+"-"+lastDate;
