@@ -146,37 +146,58 @@
             	<td nowrap="nowrap" style="background:#99CCFF">POS流水贷产品贷款余额</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.pos)</font></td>
             	
+            	<!--批处理每日更新一次-->
+            	#if($!urlType!=1)
+            	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ma)</font></td> 
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">截止到今天的日均用信余额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ta)</font></td>
+            	#end
+            </tr>
+            
+            <tr>
+            	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款笔数</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c100Num)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">抵押类贷款笔数</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c102Num)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款笔数</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101Num)</font></td>
+            </tr>
+            
+            <tr>
             	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款笔数占比(%)</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c100numproportion)%</font></td>
             	
             	<td nowrap="nowrap" style="background:#99CCFF">抵押类贷款笔数占比(%)</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c102numproportion)%</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款笔数占比(%)</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101numproportion)%</font></td>
             </tr>
             
             <tr>
-            	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款笔数占比(%)</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101numproportion)%</font></td>
+            	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款金额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c100Amt)</font></td>
             	
+            	<td nowrap="nowrap" style="background:#99CCFF">抵押类贷款金额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c102Amt)</font></td>
+            	
+            	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款金额</td>
+            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101Amt)</font></td>
+            </tr>
+            
+            <tr>
             	<td nowrap="nowrap" style="background:#99CCFF">信用类贷款金额占比(%)</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c100amtproportion)%</font></td>
             	
             	<td nowrap="nowrap" style="background:#99CCFF">抵押类贷款金额占比(%)</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c102amtproportion)%</font></td>
-            </tr>
-            
-            <tr>
+            	
             	<td nowrap="nowrap" style="background:#99CCFF">保证类贷款金额占比(%)</td>
             	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.c101amtproportion)%</font></td>
-            	
-            	#if($!urlType!=1)
-            	<!--  批处理每日更新一次 -->
-            	<td nowrap="nowrap" style="background:#99CCFF">当月截止到今天的日均用信余额</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ma)</font></td> 
-            	
-            	<!--  批处理每日更新一次 -->
-            	<td nowrap="nowrap" style="background:#99CCFF">截止到今天的日均用信余额</td>
-            	<td nowrap="nowrap"><font size='4'>$format.formatNumber(2,$!accloan.ta)</font></td>
-            	#end
             </tr>
              #end
           </table>

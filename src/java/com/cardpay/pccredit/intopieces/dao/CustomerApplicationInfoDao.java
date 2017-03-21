@@ -42,4 +42,9 @@ public interface CustomerApplicationInfoDao {
      * 统计还款通知
      */
     public int findRepayLoanCount(@Param("userId") String userId);
+    
+    /**
+     * 统计逾期通知
+     */
+    public int findYqLoanCount(@Param("userId") String userId);
 }

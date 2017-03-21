@@ -997,7 +997,7 @@ public class JXLReadExcel {
         String industry			= getCellValue(wb.getSheetAt(1).getRow(27).getCell(1));//所属行业(1,27,1)
         String operatingTime	= getCellValue(wb.getSheetAt(1).getRow(3).getCell(9));//经营时间 -取业务开始时期 然后 年戳计算（1,3,9）
       
-        String dwellingType=getCellValue(wb.getSheetAt(0).getRow(17).getCell(2));  // 居住类型 (0,17,2)
+        /*String dwellingType=getCellValue(wb.getSheetAt(0).getRow(17).getCell(2));  // 居住类型 (0,17,2)
 		String decorationSituation=getCellValue(wb.getSheetAt(0).getRow(18).getCell(3)); // 装修情况(0,18,3)
 		String housingArea=getCellValue(wb.getSheetAt(0).getRow(17).getCell(7));   // 住房面积(0,17,7)
 		String ownedPropertyQuantity=getCellValue(wb.getSheetAt(0).getRow(20).getCell(1));// 自有房产数量(0,20,1)
@@ -1016,16 +1016,16 @@ public class JXLReadExcel {
 		String theProportionOfTheAmountOfTheSecuredAssets= "";  //TODO 担保金额占本人自有资产比例    去担余额???
 		String securedUse=getCellValue(wb.getSheetAt(1).getRow(14).getCell(5));  // 担保用途(1,14,5)
 		String guaranteePeriod= getCellValue(wb.getSheetAt(1).getRow(14).getCell(7)); // 担保期限(1,14,7)
+*/		
 		
-		
-		String organizationType=getCellValue(wb.getSheetAt(1).getRow(1).getCell(5));          // 组织类型(1,1,5)     
+		/*String organizationType=getCellValue(wb.getSheetAt(1).getRow(1).getCell(5));          // 组织类型(1,1,5)     
 		String operatingArea=getCellValue(wb.getSheetAt(1).getRow(1).getCell(7));             // 经营场所面积(1,1,7) 
 		String proportionofShareholders=getCellValue(wb.getSheetAt(1).getRow(2).getCell(4));  // 股东占比情况(1,2,4) 
 		String employees=getCellValue(wb.getSheetAt(1).getRow(2).getCell(6));                 // 雇员人数(1,2,6)     
 		String businessLicense=getCellValue(wb.getSheetAt(1).getRow(3).getCell(2));           // 营业执照(1,3,1)     
 		String storeType=getCellValue(wb.getSheetAt(1).getRow(5).getCell(3));                 // 店铺类型(1,5,2)     
 		String shopDecoration=getCellValue(wb.getSheetAt(1).getRow(6).getCell(3));            // 店铺装修情况(1,6,3) 
-		
+*/		
 		
 		String ownFunds= getCellValue(wb.getSheetAt(0).getRow(3).getCell(6));                      	 //自有资金(0,3,6)                                             
 	  	String spouseIncome=getCellValue(wb.getSheetAt(0).getRow(24).getCell(4));                  	 //配偶年收入:(0,24,4),
@@ -1035,7 +1035,7 @@ public class JXLReadExcel {
 	  	String nonPperatingTotalLiabilities=getCellValue(wb.getSheetAt(0).getRow(26).getCell(9));  	 //非经营总负债(0,26,9)
 	  	
 	  	
-	    String maritalStatus=getCellValue(wb.getSheetAt(0).getRow(14).getCell(9));                     	 //婚姻状况: (0,14,9),
+	    /*String maritalStatus=getCellValue(wb.getSheetAt(0).getRow(14).getCell(9));                     	 //婚姻状况: (0,14,9),
 		String highestDegree=getCellValue(wb.getSheetAt(0).getRow(16).getCell(1));                     	 //最高学位: (0,16,1),
 		String familyEvaluationOfApplicants=getCellValue(wb.getSheetAt(1).getRow(20).getCell(1));      	 //家人对申请人评价: (1,20,1),
 		String neighborEvaluation=getCellValue(wb.getSheetAt(1).getRow(20).getCell(6));                 //邻居对申请人评价: (1,20,6),
@@ -1055,7 +1055,7 @@ public class JXLReadExcel {
 		String creditStatus=getCellValue(wb.getSheetAt(1).getRow(11).getCell(1));                      	 //信用状况: (1,11,1),
 		String creditCardOverdue="";                   													 //信用卡逾期情况: (),
 		String creditCardTotalNum=getCellValue(wb.getSheetAt(1).getRow(12).getCell(1));                	 //信用卡总数: (1,12,1)                             
-        /*end */ 
+*/        /*end */ 
 		TModelForm form = new TModelForm();
 		form.setCardNo(cardNo.trim());
 		form.setCname(cname);

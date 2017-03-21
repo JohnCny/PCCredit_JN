@@ -3009,7 +3009,7 @@ public class AddIntoPiecesControl extends BaseController {
 			mv.addObject(PAGED_RESULT, pagedResult);
 			//查询 t_Model_form 最新的一条
 			TModelForm form;
-			String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"')";
+			String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
 			List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
 			if(list!=null&&!list.isEmpty()){
 				 form =  list.get(0);

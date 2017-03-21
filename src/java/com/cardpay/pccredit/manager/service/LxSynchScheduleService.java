@@ -3,9 +3,11 @@ package com.cardpay.pccredit.manager.service;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
+
 import com.cardpay.pccredit.manager.dao.ManagerSalaryDao;
 import com.cardpay.pccredit.manager.model.InComeStateMentDay;
 import com.cardpay.pccredit.manager.model.InComeStateMentHistory;
@@ -44,6 +46,12 @@ public class LxSynchScheduleService {
 		  * 1.select distinct(t.BUSICODE) from t_mibusidata t
 		  * 2.for循环所有台帐业务编号 
 		  */
+		//删除汇总历史数据
+		String sql = " truncate   table   t_income_statement_day";
+		commonDao.queryBySql(sql, null);
+		
+		String sqlHis = " truncate   table   t_income_statement_history";
+		commonDao.queryBySql(sqlHis, null);
 		 
 	     // 利息
 		 BigDecimal lx = new BigDecimal("0");

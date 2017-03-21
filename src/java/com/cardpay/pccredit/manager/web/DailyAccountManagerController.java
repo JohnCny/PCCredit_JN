@@ -67,6 +67,19 @@ public class DailyAccountManagerController extends BaseController {
 			lock = true;
 		}
 		filter.setDisplayName(request.getParameter("displayName"));
+		String startDate =null;
+        String endDate =null;
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	startDate = filter.getActionTime()+ " 00:00:00";
+        }
+        
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	endDate = filter.getActionTime()+ " 23:59:59";
+        }
+        filter.setEndDate(endDate);
+        filter.setStartDate(startDate);
+		
+		
 		QueryResult<DailyAccountManagerForm> result = dailyAccountService.findDailyAccountManagersByFilter(filter);
 		JRadPagedQueryResult<DailyAccountManagerForm> pagedResult = new JRadPagedQueryResult<DailyAccountManagerForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/manager/dailyreport/daily_browse", request);

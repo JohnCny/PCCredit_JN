@@ -33,6 +33,13 @@
             </tr>
             
             <tr>
+             	<td class="titlefc3"><label for="cardIds"><span style="color:red">确认证件号码:</span></label></td>
+                <td><input class="rinpsty"  type="text" name="cardIds" id="cardIds"  value="" style="width:300px" 
+                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"/>
+                <span style="color:red">(只支持手输)</span></td>
+            </tr>
+            
+            <tr>
               <td class="titlefc3"><label for="spmc">商铺名称:</label></td>
               <td><input class="rinpsty"  type="text" name="spmc" id="spmc"  value=""  style="width:300px"/></td>
             </tr>
@@ -74,6 +81,17 @@
 				}
 			var leng = 0;
 	    	 leng = $("#cardIde").length;
+	    	 
+	    	 // 验证两次输入的证件号码是否一致
+	    	 var cardIds = $("#cardIds").val();
+	    	 if(cardId!=cardIds){
+	    		 Dialog.message("两次输入的证件号码不一致,请重新输入!"); 
+	    		 $("#cardId").val("");
+	    		 $("#cardIds").val("");
+	    		 return;
+	    	 }
+	    	 
+	    	 
 	    	if(leng > 0){
 	    		return;
 	    	}else{

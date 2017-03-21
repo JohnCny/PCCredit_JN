@@ -8,6 +8,21 @@ public class ReportFilter extends BaseQueryFilter {
 	private String organName;//所属机构
 	private String custManagerName;
 	private String status;
+	private String userId;
+	
+	
+	public String getCustomerName() {
+		return customerName;
+	}
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getCertiCode() {
 		return certiCode;
 	}
