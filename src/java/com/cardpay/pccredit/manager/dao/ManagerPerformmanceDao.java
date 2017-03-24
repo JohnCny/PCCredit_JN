@@ -25,7 +25,7 @@ public interface ManagerPerformmanceDao {
 	//将当天数量累加到总进度
 	void updateManagerPerformmanceSum(ManagerPerformmanceSum managerPerformmance);
 	//查询总进度
-	ManagerPerformmanceForm findSumPerformmanceById(@Param(value="managerId") String Id,
+	List<ManagerPerformmanceForm> findSumPerformmanceById(@Param(value="managerId") String Id,
 													@Param(value="startDate") String startDate,
 													@Param(value="endDate") String endDate);
 	//查询指定支行进度
@@ -64,4 +64,15 @@ public interface ManagerPerformmanceDao {
 															 @Param(value="classes")String classes);
 	//根据Id获取客户经理姓名
 	String findmanagerName(@Param(value="managerId")String managerId);
+	//机构列表
+	//客户经理放款金额
+	long findPersonFangkuan( @Param(value="managerId")String managerId,  
+								@Param(value="startDate")String satrtDate, 
+								@Param(value="endDate")String endDate);
+	
+	long findDeptSumFangkuan(@Param(value="id")String id,  
+								@Param(value="startDate")String satrtDate, 
+								@Param(value="endDate")String endDate);
+	//支行名称
+	String getOrgName(@Param(value="orgId")String orgId);
 }

@@ -4,13 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,6 +23,7 @@ import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.main.MainController;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
@@ -46,7 +47,7 @@ import net.sf.json.JsonConfig;
 @RequestMapping("/manager/performmance/*")
 @JRadModule("manager.performmance")
 public class ManagerPerformmanceController extends BaseController {
-
+	private static final Logger logger = Logger.getLogger(ManagerPerformmanceController.class);
 	@Autowired
 	private ManagerPerformmanceService managerPerformmanceService;
 
@@ -88,90 +89,43 @@ public class ManagerPerformmanceController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "browse.page")
-	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(HttpServletRequest request) { 
 		List<BankListForm> bankListForm = managerPerformmanceService.findALlbank();
 		List<ManagerPerformmanceForm> gxperformList = new ArrayList<ManagerPerformmanceForm>();
 		String satrtDate = request.getParameter("startdate");
 		String endDate = request.getParameter("enddate");
+		String orgId = request.getParameter("orgId");
 		if(satrtDate!=null&&satrtDate!=""){
 			satrtDate+=" 00:00:00";
 		}
 		if(endDate!=null&&endDate!=""){
 			endDate+=" 23:59:59";
 		}
-		for(int j=0;j<bankListForm.size();j++){
-			String id= bankListForm.get(j).getId();
-			List<DeptMemberForm> gxMumberList = managerPerformmanceService.findMumberByDeptId(id);
-			for(int i=0;i<gxMumberList.size();i++){
-				String managerId =gxMumberList.get(i).getId();
-				ManagerPerformmanceForm managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(managerId,satrtDate,endDate);
-				if(managerPerformmanceForm==null){
-					continue;
+		long start = System.currentTimeMillis();
+		if(orgId==null||orgId==""){
+			for (BankListForm bankListForms : bankListForm) {
+				String id = bankListForms.getId();
+				List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(id,satrtDate,endDate);
+				for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
+					managerPerformmanceForm2.setName(bankListForms.getName());
 				}
-				ManagerPerformmance managerPerformmanceold = managerPerformmanceService.finManagerPerformmanceById(managerId);
-				if(managerPerformmanceold!=null){
-				managerPerformmanceForm.setApplycount(managerPerformmanceold.getApplycount());
-				managerPerformmanceForm.setApplyrefuse(managerPerformmanceold.getApplyrefuse());
-				managerPerformmanceForm.setCreditcount(managerPerformmanceold.getCreditcount());
-				managerPerformmanceForm.setCreditrefuse(managerPerformmanceold.getCreditrefuse());
-				managerPerformmanceForm.setGivemoneycount(managerPerformmanceold.getGivemoneycount());
-				managerPerformmanceForm.setInternalcount(managerPerformmanceold.getInternalcount());
-				managerPerformmanceForm.setMeetingcout(managerPerformmanceold.getMeetingcout());
-				managerPerformmanceForm.setPasscount(managerPerformmanceold.getPasscount());
-				managerPerformmanceForm.setRealycount(managerPerformmanceold.getRealycount());
-				managerPerformmanceForm.setReportcount(managerPerformmanceold.getReportcount());
-				managerPerformmanceForm.setSigncount(managerPerformmanceold.getSigncount());
-				managerPerformmanceForm.setVisitcount(managerPerformmanceold.getVisitcount());
-				}
-				managerPerformmanceForm.setName(gxMumberList.get(i).getOname());
-				managerPerformmanceForm.setManagerName(gxMumberList.get(i).getDisplay_name());
-				gxperformList.add(managerPerformmanceForm);
+				gxperformList.addAll(managerPerformmanceForm);
+
 			}
-			ManagerPerformmanceForm managerPerformmanceForm1 = managerPerformmanceService.findDeptSumPerformmanceById(id,satrtDate,endDate);
-			if(managerPerformmanceForm1==null){
-				continue;
-			}
-			ManagerPerformmance managerPerformmancezhi = managerPerformmanceService.findDeptTodayPerformmanceById(id);
-			if(managerPerformmancezhi!=null){
-				managerPerformmanceForm1.setApplycount(managerPerformmancezhi.getApplycount());
-				managerPerformmanceForm1.setApplyrefuse(managerPerformmancezhi.getApplyrefuse());
-				managerPerformmanceForm1.setCreditcount(managerPerformmancezhi.getCreditcount());
-				managerPerformmanceForm1.setCreditrefuse(managerPerformmancezhi.getCreditrefuse());
-				managerPerformmanceForm1.setGivemoneycount(managerPerformmancezhi.getGivemoneycount());
-				managerPerformmanceForm1.setInternalcount(managerPerformmancezhi.getInternalcount());
-				managerPerformmanceForm1.setMeetingcout(managerPerformmancezhi.getMeetingcout());
-				managerPerformmanceForm1.setPasscount(managerPerformmancezhi.getPasscount());
-				managerPerformmanceForm1.setRealycount(managerPerformmancezhi.getRealycount());
-				managerPerformmanceForm1.setReportcount(managerPerformmancezhi.getReportcount());
-				managerPerformmanceForm1.setSigncount(managerPerformmancezhi.getSigncount());
-				managerPerformmanceForm1.setVisitcount(managerPerformmancezhi.getVisitcount());
-			}
-			managerPerformmanceForm1.setName(bankListForm.get(j).getName());
-			managerPerformmanceForm1.setManagerName("汇总");
-			gxperformList.add(managerPerformmanceForm1);
-		}
+			
 		ManagerPerformmanceForm managerPerformmanceForm2 = managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
-		if(managerPerformmanceForm2!=null){
-			ManagerPerformmance managerPerformmancezong = managerPerformmanceService.findDeptTodaySumPerformmanceById();	
-			if(managerPerformmancezong!=null){
-				managerPerformmanceForm2.setApplycount(managerPerformmancezong.getApplycount());
-				managerPerformmanceForm2.setApplyrefuse(managerPerformmancezong.getApplyrefuse());
-				managerPerformmanceForm2.setCreditcount(managerPerformmancezong.getCreditcount());
-				managerPerformmanceForm2.setCreditrefuse(managerPerformmancezong.getCreditrefuse());
-				managerPerformmanceForm2.setGivemoneycount(managerPerformmancezong.getGivemoneycount());
-				managerPerformmanceForm2.setInternalcount(managerPerformmancezong.getInternalcount());
-				managerPerformmanceForm2.setMeetingcout(managerPerformmancezong.getMeetingcout());
-				managerPerformmanceForm2.setPasscount(managerPerformmancezong.getPasscount());
-				managerPerformmanceForm2.setRealycount(managerPerformmancezong.getRealycount());
-				managerPerformmanceForm2.setReportcount(managerPerformmancezong.getReportcount());
-				managerPerformmanceForm2.setSigncount(managerPerformmancezong.getSigncount());
-				managerPerformmanceForm2.setVisitcount(managerPerformmancezong.getVisitcount());
-			}
 			managerPerformmanceForm2.setName("统计");
 			managerPerformmanceForm2.setManagerName("总计");
 			gxperformList.add(managerPerformmanceForm2);
+		}else{
+			String name=managerPerformmanceService.getOrgName(orgId);
+			List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(orgId,satrtDate,endDate);
+			for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
+				managerPerformmanceForm2.setName(name);
+			}
 		}
+		 long end = System.currentTimeMillis();
+		logger.info("查询时间花费：" + (end - start) + "毫秒");
 		JRadModelAndView mv = new JRadModelAndView("/manager/performmance/performmance_sum", request);
 		mv.addObject("gxperformList", gxperformList);
 		mv.addObject("satrtDate", satrtDate);
@@ -250,6 +204,7 @@ public class ManagerPerformmanceController extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String satrtDate = request.getParameter("startdate");
 		String endDate = request.getParameter("enddate");
+		String orgId = request.getParameter("orgId");
 		String satrtDate1 = satrtDate;
 		String endDate1 = endDate;
 		try{
@@ -261,78 +216,32 @@ public class ManagerPerformmanceController extends BaseController {
 			if(endDate!=null&&endDate!=""){
 				endDate+=" 23:59:59";
 			}
-			for(int j=0;j<bankListForm.size();j++){
-				String id= bankListForm.get(j).getId();
-				List<DeptMemberForm> gxMumberList = managerPerformmanceService.findMumberByDeptId(id);
-				for(int i=0;i<gxMumberList.size();i++){
-					String managerId =gxMumberList.get(i).getId();
-					ManagerPerformmanceForm managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(managerId,satrtDate,endDate);
-					if(managerPerformmanceForm==null){
-						continue;
+			long start = System.currentTimeMillis();
+			if(orgId==null||orgId==""){
+				for (BankListForm bankListForms : bankListForm) {
+					String id = bankListForms.getId();
+					List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(id,satrtDate,endDate);
+					for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
+						managerPerformmanceForm2.setName(bankListForms.getName());
 					}
-					ManagerPerformmance managerPerformmanceold = managerPerformmanceService.finManagerPerformmanceById(managerId);
-					if(managerPerformmanceold!=null){
-					managerPerformmanceForm.setApplycount(managerPerformmanceold.getApplycount());
-					managerPerformmanceForm.setApplyrefuse(managerPerformmanceold.getApplyrefuse());
-					managerPerformmanceForm.setCreditcount(managerPerformmanceold.getCreditcount());
-					managerPerformmanceForm.setCreditrefuse(managerPerformmanceold.getCreditrefuse());
-					managerPerformmanceForm.setGivemoneycount(managerPerformmanceold.getGivemoneycount());
-					managerPerformmanceForm.setInternalcount(managerPerformmanceold.getInternalcount());
-					managerPerformmanceForm.setMeetingcout(managerPerformmanceold.getMeetingcout());
-					managerPerformmanceForm.setPasscount(managerPerformmanceold.getPasscount());
-					managerPerformmanceForm.setRealycount(managerPerformmanceold.getRealycount());
-					managerPerformmanceForm.setReportcount(managerPerformmanceold.getReportcount());
-					managerPerformmanceForm.setSigncount(managerPerformmanceold.getSigncount());
-					managerPerformmanceForm.setVisitcount(managerPerformmanceold.getVisitcount());
-					}
-					managerPerformmanceForm.setName(gxMumberList.get(i).getOname());
-					managerPerformmanceForm.setManagerName(gxMumberList.get(i).getDisplay_name());
-					gxperformList.add(managerPerformmanceForm);
+					gxperformList.addAll(managerPerformmanceForm);
+
 				}
-				ManagerPerformmanceForm managerPerformmanceForm1 = managerPerformmanceService.findDeptSumPerformmanceById(id,satrtDate,endDate);
-				if(managerPerformmanceForm1==null){
-					continue;
-				}
-				ManagerPerformmance managerPerformmancezhi = managerPerformmanceService.findDeptTodayPerformmanceById(id);
-				if(managerPerformmancezhi!=null){
-					managerPerformmanceForm1.setApplycount(managerPerformmancezhi.getApplycount());
-					managerPerformmanceForm1.setApplyrefuse(managerPerformmancezhi.getApplyrefuse());
-					managerPerformmanceForm1.setCreditcount(managerPerformmancezhi.getCreditcount());
-					managerPerformmanceForm1.setCreditrefuse(managerPerformmancezhi.getCreditrefuse());
-					managerPerformmanceForm1.setGivemoneycount(managerPerformmancezhi.getGivemoneycount());
-					managerPerformmanceForm1.setInternalcount(managerPerformmancezhi.getInternalcount());
-					managerPerformmanceForm1.setMeetingcout(managerPerformmancezhi.getMeetingcout());
-					managerPerformmanceForm1.setPasscount(managerPerformmancezhi.getPasscount());
-					managerPerformmanceForm1.setRealycount(managerPerformmancezhi.getRealycount());
-					managerPerformmanceForm1.setReportcount(managerPerformmancezhi.getReportcount());
-					managerPerformmanceForm1.setSigncount(managerPerformmancezhi.getSigncount());
-					managerPerformmanceForm1.setVisitcount(managerPerformmancezhi.getVisitcount());
-				}
-				managerPerformmanceForm1.setName(bankListForm.get(j).getName());
-				managerPerformmanceForm1.setManagerName("汇总");
-				gxperformList.add(managerPerformmanceForm1);
-			}
+				
 			ManagerPerformmanceForm managerPerformmanceForm2 = managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
-			if(managerPerformmanceForm2!=null){
-				ManagerPerformmance managerPerformmancezong = managerPerformmanceService.findDeptTodaySumPerformmanceById();	
-				if(managerPerformmancezong!=null){
-					managerPerformmanceForm2.setApplycount(managerPerformmancezong.getApplycount());
-					managerPerformmanceForm2.setApplyrefuse(managerPerformmancezong.getApplyrefuse());
-					managerPerformmanceForm2.setCreditcount(managerPerformmancezong.getCreditcount());
-					managerPerformmanceForm2.setCreditrefuse(managerPerformmancezong.getCreditrefuse());
-					managerPerformmanceForm2.setGivemoneycount(managerPerformmancezong.getGivemoneycount());
-					managerPerformmanceForm2.setInternalcount(managerPerformmancezong.getInternalcount());
-					managerPerformmanceForm2.setMeetingcout(managerPerformmancezong.getMeetingcout());
-					managerPerformmanceForm2.setPasscount(managerPerformmancezong.getPasscount());
-					managerPerformmanceForm2.setRealycount(managerPerformmancezong.getRealycount());
-					managerPerformmanceForm2.setReportcount(managerPerformmancezong.getReportcount());
-					managerPerformmanceForm2.setSigncount(managerPerformmancezong.getSigncount());
-					managerPerformmanceForm2.setVisitcount(managerPerformmancezong.getVisitcount());
-				}
 				managerPerformmanceForm2.setName("统计");
 				managerPerformmanceForm2.setManagerName("总计");
 				gxperformList.add(managerPerformmanceForm2);
+			}else{
+				String name=managerPerformmanceService.getOrgName(orgId);
+				List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(orgId,satrtDate,endDate);
+				for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
+					managerPerformmanceForm2.setName(name);
+				}
+				gxperformList.addAll(managerPerformmanceForm);
 			}
+			 long end = System.currentTimeMillis();
+			 logger.info("查询时间花费：" + (end - start) + "毫秒");
 			managerPerformmanceService.getExportWageData(gxperformList, response,satrtDate1,endDate1);
 		}
 		catch (Exception e) {

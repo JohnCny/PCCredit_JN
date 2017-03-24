@@ -97,7 +97,6 @@ public class IntopiecesDecisionController extends BaseController {
 	//审贷决议
 	@ResponseBody
 	@RequestMapping(value = "browse.page", method = { RequestMethod.GET })
-	@JRadOperation(JRadOperation.BROWSE)
 	public AbstractModelAndView browse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 		filter.setRequest(request);
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
@@ -246,7 +245,6 @@ public class IntopiecesDecisionController extends BaseController {
 		//显示部门审批
 		@ResponseBody
 		@RequestMapping(value = "input_decision_bumeng.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView input_decision_bumeng(HttpServletRequest request) {
 			String appId = request.getParameter("appId");
 			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
@@ -274,7 +272,6 @@ public class IntopiecesDecisionController extends BaseController {
 		//显示总经理审批
 		@ResponseBody
 		@RequestMapping(value = "input_decision_zjl.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView input_decision_zjl(HttpServletRequest request) {
 			String appId = request.getParameter("appId");
 			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
@@ -303,7 +300,6 @@ public class IntopiecesDecisionController extends BaseController {
 		//显示行长审批
 		@ResponseBody
 		@RequestMapping(value = "input_decision_hz.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView input_decision_hz(HttpServletRequest request) {
 			String appId = request.getParameter("appId");
 			CustomerApplicationInfo customerApplicationInfo = intoPiecesService.findCustomerApplicationInfoById(appId);
@@ -336,7 +332,6 @@ public class IntopiecesDecisionController extends BaseController {
 		//小微负责人审批
 		@ResponseBody
 		@RequestMapping(value = "bzBrowse.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView bzBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
@@ -354,7 +349,6 @@ public class IntopiecesDecisionController extends BaseController {
 		//零售业务部总经理审批
 		@ResponseBody
 		@RequestMapping(value = "zjBrowse.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView zjBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
@@ -372,7 +366,6 @@ public class IntopiecesDecisionController extends BaseController {
 		//行长审批
 		@ResponseBody
 		@RequestMapping(value = "hzBrowse.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView hzBrowse(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
