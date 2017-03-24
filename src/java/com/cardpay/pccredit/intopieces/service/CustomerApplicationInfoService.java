@@ -136,4 +136,11 @@ public class CustomerApplicationInfoService {
 	 public int findRepayLoanCount(String userId){
 		 return customerApplicationInfoDao.findRepayLoanCount(userId);
 	 }
+	 
+	 /**
+	  * 统计逾期通知
+	  */
+	 public int findYqLoanCount(String userId){
+		 return customerApplicationInfoDao.findYqLoanCount(userId);
+	 }
 }

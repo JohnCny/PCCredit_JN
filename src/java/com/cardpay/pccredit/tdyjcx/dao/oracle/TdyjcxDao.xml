@@ -93,6 +93,20 @@
 </select>
 <select id="findMaintenancePlansList" resultMap="MaintenanceWebResultMap" 
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+		with circle as (
+	    SELECT *
+		  FROM (select T.BUSICODE,
+		  			   T.CUSTID,
+		  			   T.money,
+		  			   T.BALAMT,
+		  			   T.DLAYAMT,
+		  			   T.INDEBTAMT,
+		  			   T.OUTDEBTAMT,
+		  			   ROW_NUMBER() OVER(PARTITION BY 
+		  busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
@@ -107,7 +121,7 @@
 		           <!--  count(t.CUSTID)/( select count(distinct basic.id)from basic_customer_information basic ,
 		            customer_application_info app where basic.id=app.customer_id) as zhlv -->
 		         from 
-		        T_MIBUSIDATA_VIEW t,
+		        circle t,
 		        basic_customer_information basic,
 		        sys_user sysuser,
 		        ACCOUNT_MANAGER_PARAMETER amp
@@ -133,6 +147,21 @@
 	
 <select id="findMaintenancePlansCountList" resultType="int"
 			parameterType="com.cardpay.pccredit.customer.filter.MaintenanceFilter">
+				
+    	with circle as (
+	    SELECT *
+		  FROM (select T.BUSICODE,
+		  			   T.CUSTID,
+		  			   T.money,
+		  			   T.BALAMT,
+		  			   T.DLAYAMT,
+		  			   T.INDEBTAMT,
+		  			   T.OUTDEBTAMT,
+		  			   ROW_NUMBER() OVER(PARTITION BY 
+		  busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
 		  select  	   count(*)
 				       from(select  
 				       sysuser.id as userId,
@@ -145,7 +174,7 @@
 		              <!--  count(t.CUSTID)/( select count(distinct basic.id)  from basic_customer_information basic ,
 		               customer_application_info app where basic.id=app.customer_id) as zhlv -->
 		         from 
-		        T_MIBUSIDATA_VIEW t,
+		        circle t,
 		        basic_customer_information basic,
 		        sys_user sysuser,
 		        ACCOUNT_MANAGER_PARAMETER amp

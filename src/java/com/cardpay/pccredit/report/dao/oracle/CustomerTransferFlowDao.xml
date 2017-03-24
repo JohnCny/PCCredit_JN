@@ -564,6 +564,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
+					<if test="userId != null and userId != '' ">
+		             	AND a.id =#{userId}
+		            </if>
 		 			<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -588,6 +591,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
+					<if test="userId != null and userId != '' ">
+		             	AND a.id =#{userId}
+		            </if>
 	</select>
 	
 	
@@ -605,6 +611,9 @@
 		</if>
 		<if test="custManagerName != null and custManagerName != '' ">
 			AND a.busimanager=#{custManagerName}
+		</if>
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
 		</if>
 	</select>
 	
@@ -1107,6 +1116,7 @@
 	 	where  t.busimanager = su.external_id
 	   	   and t.operdatetime <![CDATA[ <=  ]]> #{endDate}
 	       and t.operdatetime <![CDATA[ >=  ]]> #{startDate}
+	       and t.paydebt!=0
 	    order by t.deptcode asc 
 	</select>
 	

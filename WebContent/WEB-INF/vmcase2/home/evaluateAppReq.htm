@@ -20,6 +20,13 @@
           <table class="rule" border="1" bordercolor="#CCCCCC">
 			<caption>基本信息</caption>
             <!--  applicantInfo   开始-->
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
 			<tr>
               <td class="titlefc3" id='xm'>姓名</td>
               <td><input type="text" name="cname" id ="cname" value="$!form.cname" onblur="if(value!=''){$('#xm').css({color:'black'})}"/></td>
@@ -506,7 +513,7 @@
 				<label><INPUT name="radio45" type=radio  value="征信报告无逾期">征信报告无逾期</label>
 				<label><INPUT name="radio45" type=radio  value="24个月内无逾期，5年内有逾期">24个月内无逾期，5年内有逾期</label>
 				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），无连续逾期，5年内有逾期">24个月内有逾期（逾期<5次），无连续逾期，5年内有逾期</label>
-				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），无连续逾期，5年内无逾期">24个月内有逾期（逾期<5次），无连续逾期，5年内无逾期</label>
+				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），无连续逾期，5年内无逾期">24个月内有逾期（逾期<5次），无连续逾期，5年内无逾期</label><br/>
 				<label><INPUT name="radio45" type=radio  value="24个月内有逾期（逾期<5次），且为连续逾期，5年内有逾期">24个月内有逾期（逾期<5次），且为连续逾期，5年内有逾期</label>
 				<label><INPUT name="radio45" type=radio  value="24个月内逾期≥5次">24个月内逾期≥5次</label>
 				<input type="hidden" name="creditCardOverdue" id="creditCardOverdue" value="" />
