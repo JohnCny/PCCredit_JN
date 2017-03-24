@@ -23,19 +23,16 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-               <col width="5%" />
+              <col width="5%" />
               <col width="25%" />
               <col width="25%" />
               <col width="25%" />
-              <col  width="20%" />
-              
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
               <th nowrap="nowrap">姓名</th>
               <th nowrap="nowrap">层级信息</th>
               <th nowrap="nowrap">入职时间</th>
-              <th nowrap="nowrap">底薪</th>
             </tr>
           </table>
         </div>
@@ -46,16 +43,14 @@
               <col width="25%" />
               <col width="25%" />
               <col width="25%" />
-              <col  width="20%" />
             </colgroup>
             #foreach ($manager in $result.items)
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!manager.id"
                   #if ($!request.getParameter("recordId") == $manager.id) checked="checked" #end /></td>
               <td nowrap="nowrap">$!manager.displayName</td>
-                 <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL","$!manager.levelInformation")</td>
+              <td nowrap="nowrap">#dictVal("CUSTOMERMANAGERLEVEL","$!manager.levelInformation")</td>
               <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!manager.entryTime)</td>
-              <td nowrap="nowrap">$format.formatNumber($!manager.basePay,2,100)</td>
             </tr>
             #end
           </table>
