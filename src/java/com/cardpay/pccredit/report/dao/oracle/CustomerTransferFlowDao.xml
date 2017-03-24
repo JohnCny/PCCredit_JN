@@ -798,8 +798,8 @@
                basic_customer_information c
          where trim(a.KEYCODE) = b.KEYCODE
            and c.ty_customer_id = b.CUSTID
-          <!--  and a.keyeffectedstate in('1','2')
-           and b.keyeffectedstate in('1','2') -->
+           and a.keyeffectedstate in('1','2')
+           and b.keyeffectedstate in('1','2')
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            and a.STARTDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
@@ -812,8 +812,8 @@
                basic_customer_information c
          where trim(a.KEYCODE) = b.KEYCODE
            and c.ty_customer_id = b.CUSTID
-          <!--  and a.keyeffectedstate in('1','2')
-           and b.keyeffectedstate in('1','2') -->
+           and a.keyeffectedstate in('1','2')
+           and b.keyeffectedstate in('1','2')
            and a.STARTDATE <![CDATA[ <=  ]]> #{endDate}
            <if test="userId != null and userId != '' ">
              and c.USER_ID =#{userId}

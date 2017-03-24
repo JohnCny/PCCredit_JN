@@ -296,6 +296,6 @@
    </select>
    
    <select id="findYqLoanCount" resultType="int">
-	  select count(*) from yqdktjbb where id = #{userId} 
+	  select count(*) from yqdktjbb a where a.id = #{userId} 
    </select>
 </mapper>
