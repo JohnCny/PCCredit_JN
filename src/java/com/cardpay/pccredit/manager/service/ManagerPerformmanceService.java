@@ -79,7 +79,7 @@ public class ManagerPerformmanceService {
 	}
 
 	//查询总进度
-	public ManagerPerformmanceForm findSumPerformmanceById(String Id,String startDate,String endDate){
+	public List<ManagerPerformmanceForm> findSumPerformmanceById(String Id,String startDate,String endDate){
 		
 		return managerPerformmanceDao.findSumPerformmanceById(Id,startDate,endDate);
 	
@@ -316,9 +316,6 @@ public class ManagerPerformmanceService {
 			String classes) {
 		
 		List<ManagerPerformmance> ls= managerPerformmanceDao.findSumPerformmanceRanking(orgId,satrtDate,endDate,classes);
-		for (int i = 0; i < ls.size(); i++) {
-		ls.get(i).setManagername(managerPerformmanceDao.findmanagerName(ls.get(i).getManager_id()));
-		}
 		return ls;
 	}
 	
@@ -484,6 +481,21 @@ public class ManagerPerformmanceService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		//客户经理放款金额
+		public long findPersonFangkuan(String managerId, String satrtDate, String endDate) {
+			// TODO Auto-generated method stub
+			return managerPerformmanceDao.findPersonFangkuan(managerId,satrtDate,endDate);
+		}
+
+		public long findDeptSumFangkuan(String id, String satrtDate, String endDate) {
+			// TODO Auto-generated method stub
+			return managerPerformmanceDao.findDeptSumFangkuan(id, satrtDate,endDate);
+		}
+
+		public String getOrgName(String orgId) {
+			// TODO Auto-generated method stub
+			return managerPerformmanceDao.getOrgName(orgId);
 		}
 }
 
