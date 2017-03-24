@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -25,7 +24,6 @@ import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
-import com.cardpay.pccredit.manager.web.ManagerPerformmanceController;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -36,13 +34,12 @@ import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 @Controller
 public class JnpadManagerPerformmanceController {
-	private static final Logger logger = Logger.getLogger(JnpadManagerPerformmanceController.class);
+	
 	@Autowired
 	private ManagerPerformmanceService managerPerformmanceService;
 	
@@ -135,38 +132,84 @@ public class JnpadManagerPerformmanceController {
 		List<ManagerPerformmanceForm> gxperformList = new ArrayList<ManagerPerformmanceForm>();
 		String satrtDate = request.getParameter("startdate");
 		String endDate = request.getParameter("enddate");
-		String orgId = request.getParameter("orgId");
 		if(satrtDate!=null&&satrtDate!=""){
 			satrtDate+=" 00:00:00";
 		}
 		if(endDate!=null&&endDate!=""){
 			endDate+=" 23:59:59";
 		}
-		long start = System.currentTimeMillis();
-		if(orgId==null||orgId==""){
-			for (BankListForm bankListForms : bankListForm) {
-				String id = bankListForms.getId();
-				List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(id,satrtDate,endDate);
-				for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
-					managerPerformmanceForm2.setName(bankListForms.getName());
+		for(int j=0;j<bankListForm.size();j++){
+			String id= bankListForm.get(j).getId();
+			List<DeptMemberForm> gxMumberList = managerPerformmanceService.findMumberByDeptId(id);
+			for(int i=0;i<gxMumberList.size();i++){
+				String managerId =gxMumberList.get(i).getId();
+				ManagerPerformmanceForm managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(managerId,satrtDate,endDate);
+				if(managerPerformmanceForm==null){
+					continue;
 				}
-				gxperformList.addAll(managerPerformmanceForm);
-
+				ManagerPerformmance managerPerformmanceold = managerPerformmanceService.finManagerPerformmanceById(managerId);
+				if(managerPerformmanceold!=null){
+				managerPerformmanceForm.setApplycount(managerPerformmanceold.getApplycount());
+				managerPerformmanceForm.setApplyrefuse(managerPerformmanceold.getApplyrefuse());
+				managerPerformmanceForm.setCreditcount(managerPerformmanceold.getCreditcount());
+				managerPerformmanceForm.setCreditrefuse(managerPerformmanceold.getCreditrefuse());
+				managerPerformmanceForm.setGivemoneycount(managerPerformmanceold.getGivemoneycount());
+				managerPerformmanceForm.setInternalcount(managerPerformmanceold.getInternalcount());
+				managerPerformmanceForm.setMeetingcout(managerPerformmanceold.getMeetingcout());
+				managerPerformmanceForm.setPasscount(managerPerformmanceold.getPasscount());
+				managerPerformmanceForm.setRealycount(managerPerformmanceold.getRealycount());
+				managerPerformmanceForm.setReportcount(managerPerformmanceold.getReportcount());
+				managerPerformmanceForm.setSigncount(managerPerformmanceold.getSigncount());
+				managerPerformmanceForm.setVisitcount(managerPerformmanceold.getVisitcount());
+				}
+				managerPerformmanceForm.setName(gxMumberList.get(i).getOname());
+				managerPerformmanceForm.setManagerName(gxMumberList.get(i).getDisplay_name());
+				gxperformList.add(managerPerformmanceForm);
 			}
-			
+			ManagerPerformmanceForm managerPerformmanceForm1 = managerPerformmanceService.findDeptSumPerformmanceById(id,satrtDate,endDate);
+			if(managerPerformmanceForm1==null){
+				continue;
+			}
+			ManagerPerformmance managerPerformmancezhi = managerPerformmanceService.findDeptTodayPerformmanceById(id);
+			if(managerPerformmancezhi!=null){
+				managerPerformmanceForm1.setApplycount(managerPerformmancezhi.getApplycount());
+				managerPerformmanceForm1.setApplyrefuse(managerPerformmancezhi.getApplyrefuse());
+				managerPerformmanceForm1.setCreditcount(managerPerformmancezhi.getCreditcount());
+				managerPerformmanceForm1.setCreditrefuse(managerPerformmancezhi.getCreditrefuse());
+				managerPerformmanceForm1.setGivemoneycount(managerPerformmancezhi.getGivemoneycount());
+				managerPerformmanceForm1.setInternalcount(managerPerformmancezhi.getInternalcount());
+				managerPerformmanceForm1.setMeetingcout(managerPerformmancezhi.getMeetingcout());
+				managerPerformmanceForm1.setPasscount(managerPerformmancezhi.getPasscount());
+				managerPerformmanceForm1.setRealycount(managerPerformmancezhi.getRealycount());
+				managerPerformmanceForm1.setReportcount(managerPerformmancezhi.getReportcount());
+				managerPerformmanceForm1.setSigncount(managerPerformmancezhi.getSigncount());
+				managerPerformmanceForm1.setVisitcount(managerPerformmancezhi.getVisitcount());
+			}
+			managerPerformmanceForm1.setName(bankListForm.get(j).getName());
+			managerPerformmanceForm1.setManagerName("汇总");
+			gxperformList.add(managerPerformmanceForm1);
+		}
 		ManagerPerformmanceForm managerPerformmanceForm2 = managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
+		if(managerPerformmanceForm2!=null){
+			ManagerPerformmance managerPerformmancezong = managerPerformmanceService.findDeptTodaySumPerformmanceById();	
+			if(managerPerformmancezong!=null){
+				managerPerformmanceForm2.setApplycount(managerPerformmancezong.getApplycount());
+				managerPerformmanceForm2.setApplyrefuse(managerPerformmancezong.getApplyrefuse());
+				managerPerformmanceForm2.setCreditcount(managerPerformmancezong.getCreditcount());
+				managerPerformmanceForm2.setCreditrefuse(managerPerformmancezong.getCreditrefuse());
+				managerPerformmanceForm2.setGivemoneycount(managerPerformmancezong.getGivemoneycount());
+				managerPerformmanceForm2.setInternalcount(managerPerformmancezong.getInternalcount());
+				managerPerformmanceForm2.setMeetingcout(managerPerformmancezong.getMeetingcout());
+				managerPerformmanceForm2.setPasscount(managerPerformmancezong.getPasscount());
+				managerPerformmanceForm2.setRealycount(managerPerformmancezong.getRealycount());
+				managerPerformmanceForm2.setReportcount(managerPerformmancezong.getReportcount());
+				managerPerformmanceForm2.setSigncount(managerPerformmancezong.getSigncount());
+				managerPerformmanceForm2.setVisitcount(managerPerformmancezong.getVisitcount());
+			}
 			managerPerformmanceForm2.setName("统计");
 			managerPerformmanceForm2.setManagerName("总计");
 			gxperformList.add(managerPerformmanceForm2);
-		}else{
-			String name=managerPerformmanceService.getOrgName(orgId);
-			List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(orgId,satrtDate,endDate);
-			for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
-				managerPerformmanceForm2.setName(name);
-			}
 		}
-		 long end = System.currentTimeMillis();
-		logger.info("查询时间花费：" + (end - start) + "毫秒");
 		map.put("result", gxperformList);
 		map.put("satrtDate", satrtDate);
 		map.put("endDate", endDate);
@@ -236,110 +279,4 @@ public class JnpadManagerPerformmanceController {
 				return json.toString();
 			}
 
-			//查看转化率统计图
-			@ResponseBody
-			@RequestMapping(value = "/ipad/performmance/performMakeRates.json")
-			public String performakeRates(HttpServletRequest request) {
-				String satrtDate = request.getParameter("startdate");
-				String endDate = request.getParameter("enddate");
-				String orgId=request.getParameter("orgId");
-				ManagerPerformmanceForm managerPerformmanceForm;
-				if(orgId!=null&&orgId!=""){
-					if(orgId.equals("000000")){
-						managerPerformmanceForm= managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
-					}else{
-					managerPerformmanceForm = managerPerformmanceService.findDeptSumPerformmanceById(orgId,satrtDate,endDate);	
-					}
-					}else{
-					managerPerformmanceForm= managerPerformmanceService.findALLDeptSumPerformmanceById(satrtDate,endDate);
-				}
-				Map<String, String> map = new LinkedHashMap<String, String>();
-				List<BankListForm> bankListForm = managerPerformmanceService.findALlbank();
-				String bankList="";
-				for (BankListForm bankListForm2 : bankListForm) {
-					bankList += "<option value = '"+bankListForm2.getId()+"'>"+bankListForm2.getName()+"</option>";
-				}
-				map.put("classifiedJsonData",getClassifiedJson(managerPerformmanceForm));
-				map.put("satrtDates", satrtDate);
-				map.put("endDates", endDate);
-				map.put("bankList", bankList);
-				map.put("orgId", orgId);
-				JSONObject json = JSONObject.fromObject(map);
-				String jsons=json.toString();
-				return jsons;
-			}
-			public String getClassifiedJson(ManagerPerformmanceForm managerPerformmanceForm){
-				ArrayList<Object> datajson= new ArrayList<Object>();
-				if(managerPerformmanceForm!=null){
-				//拜访到申请转化率
-				double shenqing=0;
-				if(managerPerformmanceForm.getVisitcount_s()>0){
-					shenqing=((double)managerPerformmanceForm.getApplycount_s()/(double)managerPerformmanceForm.getVisitcount_s())*100;
-				}
-				datajson.add(shenqing);
-				//申请到内审转化率
-				double neishen=0;
-				if(managerPerformmanceForm.getApplycount_s()>0){
-				neishen=((double)managerPerformmanceForm.getInternalcount_s()/(double)managerPerformmanceForm.getApplycount_s())*100;
-				}
-				datajson.add(neishen);
-				//内审到上会转化率
-				double shanghui=0;
-				if(managerPerformmanceForm.getInternalcount_s()>0){
-					 shanghui =((double)managerPerformmanceForm.getMeetingcout_s()/(double)managerPerformmanceForm.getInternalcount_s())*100;
-				}
-				datajson.add(shanghui);
-				//过会比率
-				double guohui=0;
-				if(managerPerformmanceForm.getMeetingcout_s()>0){
-					guohui =((double)managerPerformmanceForm.getPasscount_s()/(double)managerPerformmanceForm.getMeetingcout_s())*100;
-				}
-				datajson.add(guohui);
-				//放款比率
-				double fangkuan=0;
-				if(managerPerformmanceForm.getPasscount_s()>0){
-				fangkuan =((double)managerPerformmanceForm.getGivemoneycount_s()/(double)managerPerformmanceForm.getPasscount_s())*100;
-				}
-				datajson.add(fangkuan);
-				}else{
-					datajson.add(0);
-					datajson.add(0);
-					datajson.add(0);
-					datajson.add(0);
-					datajson.add(0);
-				}
-				return JSONArray.fromObject(datajson).toString();
-			}
-			
-			//业绩进度排名
-			@ResponseBody
-			@RequestMapping(value = "/ipad/performmance/performRanking.json")
-			@JRadOperation(JRadOperation.BROWSE)
-			public String performmancepaiming(HttpServletRequest request){
-				String satrtDate = request.getParameter("startdate");
-				String endDate = request.getParameter("enddate");
-				String orgId = request.getParameter("orgId");
-				String classes = request.getParameter("classes");
-				if(classes==null||classes==""){
-					classes="money";
-				}
-				List<ManagerPerformmance> gxperformList = managerPerformmanceService.findSumPerformmanceRanking(orgId,satrtDate,endDate,classes);
-				Map<Object, Object> map = new LinkedHashMap<Object, Object>();
-				List<BankListForm> bankListForm = managerPerformmanceService.findALlbank();
-				String bankList="";
-				for (BankListForm bankListForm2 : bankListForm) {
-					bankList += "<option value = '"+bankListForm2.getId()+"'>"+bankListForm2.getName()+"</option>";
-				}
-				map.put("bankList", bankList);
-				map.put("orgId", orgId);
-				map.put("classes", classes);
-				map.put("result", gxperformList);
-				map.put("satrtDate", satrtDate);
-				map.put("endDate", endDate);
-				JsonConfig jsonConfig = new JsonConfig();
-				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-				JSONObject json = JSONObject.fromObject(map, jsonConfig);
-				return json.toString();
-				
-			}
 }
