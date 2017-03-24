@@ -18,6 +18,9 @@
 	          	<span>结束日期:&nbsp;<input type="text" id ="enddate" name="enddate" value='$!date.format("yyyy-MM-dd",$!endDate)' 
 	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
+              <li><span>支行名称:&nbsp;<select id="orgId" name="orgId">
+									<option value=""></option> #dict("Organizations","$!orgId")
+							</select></span></li>
               <li class="search_button">
                 <input id="export_button" type="button" value="导出Excel" class="search_button_inquiry"
                   title="导出Excel" style="height: 26px; line-height: 24px;" />
@@ -129,7 +132,7 @@
      document.getElementById("submitForm").submit();
  });
  $("#export_button").click(function() {
-     var exporturl = "${contextPath}/manager/performmance/performexport.json?startdate="+$("#date").val()+"&enddate="+$("#enddate").val();
+     var exporturl = "${contextPath}/manager/performmance/performexport.json?startdate="+$("#date").val()+"&enddate="+$("#enddate").val()+"&orgId="+$("#orgId").val();
      window.location.href = exporturl;
 
  });
