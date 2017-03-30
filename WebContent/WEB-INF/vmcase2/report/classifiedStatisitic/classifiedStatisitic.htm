@@ -53,8 +53,10 @@
 							<col width="10%" />
 							<col width="10%" />
 							<col width="10%" />
+							<col width="10%" />
 						</colgroup>
 						<tr class="title">
+							<th nowrap="nowrap"></th>
 							<th nowrap="nowrap">客户名称</th>
 							<th nowrap="nowrap">证件号码</th>
 							<th nowrap="nowrap">产品名称</th>
@@ -81,9 +83,11 @@
 							<col width="10%" />
 							<col width="10%" />
 							<col width="10%" />
+							<col width="10%" />
 						</colgroup>
 						#foreach ($classified in $result.items)
 						<tr>
+							<td class="checkbox"><input type="radio" name="checkbox"/>
 							<td nowrap="nowrap">$!classified.chineseName</td>
 							<td nowrap="nowrap">$!classified.cardId</td>
 							<td nowrap="nowrap">$!classified.productName</td>

@@ -205,7 +205,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end') 
 		  and a.customer_id = b.id 
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='高新支行')ttt
@@ -217,7 +217,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end')  
 		  and a.customer_id = b.id 
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='天桥支行')ttt
@@ -229,7 +229,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end')  
 		  and a.customer_id = b.id
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='长清支行')ttt
@@ -241,7 +241,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end')  
 		  and a.customer_id = b.id
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='历城支行')ttt
@@ -253,7 +253,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end') 
 		  and a.customer_id = b.id
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='历下支行')ttt
@@ -265,7 +265,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end')  
 		  and a.customer_id = b.id 
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
@@ -277,7 +277,7 @@ union all
 		from customer_application_info a,
 		     basic_customer_information b,
 		     sys_user u
-		where status ='approved' 
+		where status in('approved','end') 
 		  and a.customer_id = b.id
 		  and u.id = b.user_id
 		group by  b.user_id)tt where tt.instcode ='槐荫支行') ttt
