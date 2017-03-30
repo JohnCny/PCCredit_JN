@@ -73,6 +73,10 @@ public class OverDueLoanController extends BaseController{
 	@RequestMapping(value = "exportAll.page", method = { RequestMethod.GET })
 	public void exportAll(@ModelAttribute ReportFilter filter, HttpServletRequest request,HttpServletResponse response){
 		filter.setRequest(request);
+		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+		if(user.getUserType() ==1){
+    		filter.setUserId(user.getId());
+    	}
 		List<YqdktjbbForm> list = customerTransferFlowService.getYqdktjbbFormList(filter);
 		create(list,response);
 	}

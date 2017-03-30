@@ -385,8 +385,9 @@
 	and b.USER_ID=#{userId}
 	</select>
 <select id="finManagerPerformmanceByIdAndDate" resultMap="managerperform">
-    SELECT *  FROM manager_performmance_view 
+    SELECT *  FROM manager_performmance 
 		WHERE manager_id=#{managerId}
+		      and trunc(CRATEDAY) = trunc(#{reportDate})
 </select>
 <select id="findmanagerName" resultType="String">
     SELECT s.DISPLAY_NAME FROM SYS_USER s WHERE s.ID=#{managerId}

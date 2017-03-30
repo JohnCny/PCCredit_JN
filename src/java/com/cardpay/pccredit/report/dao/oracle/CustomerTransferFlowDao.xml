@@ -288,6 +288,10 @@
 						AND a.busimanager=#{custManagerName}
 					</if>
 					
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
+					
 					<if test="status != null and status != '' ">
 						AND a.state=#{status}
 					</if>
@@ -318,6 +322,10 @@
 						AND a.busimanager=#{custManagerName}
 					</if>
 					
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
+					
 					<if test="status != null and status != '' ">
 						AND a.state=#{status}
 					</if>
@@ -342,6 +350,10 @@
 			AND a.busimanager=#{custManagerName}
 		</if>
 		
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
+		</if>
+		
 		<if test="status != null and status != '' ">
 			AND a.state=#{status}
 		</if>
@@ -363,6 +375,10 @@
 					<if test="organName != null and organName != '' ">
 					    AND a.name=#{organName}
 					</if>
+					
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 					
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
@@ -392,6 +408,10 @@
 			AND a.busimanager=#{custManagerName}
 		</if>
 		
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
+		</if>
+		
 	</select>
 	
 	
@@ -410,6 +430,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 	</select>
 	
 	<!-- 到期终止贷款统计 -->
@@ -431,6 +454,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -453,6 +479,9 @@
 		<if test="custManagerName != null and custManagerName != '' ">
 			AND a.busimanager=#{custManagerName}
 		</if>
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
+		</if>
 	</select>
 	
 	
@@ -470,6 +499,9 @@
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+		    			AND a.id =#{userId}
 					</if>
 	</select>
 	
@@ -492,7 +524,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
-					
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 					<if test="status != null and status != '' ">
 						AND a.state=#{status}
 					</if>
@@ -518,7 +552,9 @@
 		<if test="custManagerName != null and custManagerName != '' ">
 			AND a.busimanager=#{custManagerName}
 		</if>
-		
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
+		</if>
 		<if test="status != null and status != '' ">
 			AND a.state=#{status}
 		</if>
@@ -539,7 +575,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
-					
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 					<if test="status != null and status != '' ">
 						AND a.state=#{status}
 					</if>
@@ -636,6 +674,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
 					</if>
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 		 			<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -658,6 +699,9 @@
 		<if test="custManagerName != null and custManagerName != '' ">
 			AND a.busimanager=#{custManagerName}
 		</if>
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
+		</if>
 	</select>
 	
 	<select id="getYqhkdktjbbFormList" resultMap="YqhkdktjbbFormResultMap" 
@@ -674,6 +718,9 @@
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.busimanager=#{custManagerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+		    			AND a.id =#{userId}
 					</if>
 	</select>
 	
@@ -697,6 +744,9 @@
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.custManager=#{custManagerName}
 					</if>
+					<if test="userId != null and userId != '' ">
+		      			AND a.id =#{userId}
+		  			</if>
 					
 		 			<![CDATA[		
 							) ROW_
@@ -720,6 +770,9 @@
 		<if test="custManagerName != null and custManagerName != '' ">
 			AND a.custManager=#{custManagerName}
 		</if>
+		<if test="userId != null and userId != '' ">
+		    AND a.id =#{userId}
+		</if>
 	</select>
 	
 	<select id="getXdlctjbbFormList" resultMap="XdlctjbbFormResultMap" 
@@ -736,6 +789,9 @@
 					</if>
 					<if test="custManagerName != null and custManagerName != '' ">
 						AND a.custManager=#{custManagerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+		    			AND a.id =#{userId}
 					</if>
 	</select>
 	
