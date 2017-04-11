@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.creditEvaluation.vo.TModelForm;
 import com.cardpay.pccredit.customer.constant.WfProcessInfoType;
 import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
@@ -1164,5 +1165,8 @@ public class AddIntoPiecesService {
 		}
 	}
 	
+	public void saveModelForm(TModelForm form){
+		commonDao.insertObject(form);
+	}
 	
 }

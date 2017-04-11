@@ -906,7 +906,7 @@ public class ManagerSalaryService {
 		salary.setRiskReserveBalances(String.valueOf(lastRisk));//风险准备金余额总额
 		//salary.setDeductAmount(String.valueOf(deduceRisk));//当月扣除金额
 		salary.setReturnPrepareAmount(String.valueOf(outRisk));//当月返还金额
-		salary.setInsertPrepareAmount(new BigDecimal(String.valueOf(addRisk)).setScale(2,BigDecimal.ROUND_HALF_UP)+"");//当月存入的风险准备金
+		salary.setInsertPrepareAmount(String.valueOf(addRisk));//当月存入的风险准备金
 		salary.setVolumePerformance(map.get("portfolioPerformance").toString());//业务量绩效
 		salary.setProfitDraw(map.get("lr").toString());//利润提成
 		salary.setOverdueDeduct(map.get("overdueDeduct").toString());//逾期扣款
@@ -1052,7 +1052,8 @@ public class ManagerSalaryService {
 		}else{
 			addRisk = 2000 * 0.1 + 3000*0.2 + 3000*0.3 + 7000*0.4+ (monthPerform-15000)*0.5;
 		}
-		return addRisk;
+		double  add = new  BigDecimal(addRisk).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();  
+		return add;
 	}
 	
 	/**

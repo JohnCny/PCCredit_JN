@@ -7,8 +7,8 @@ public class ManagerPerformmanceForm {
 
 	private String name;
 	private String managerName;
-	private int manager_id;
-	private int manager_id_s;
+	private String manager_id;
+	private String manager_id_s;
 	private int visitcount;
 	private int visitcount_s;
 	private int applycount;
@@ -39,6 +39,19 @@ public class ManagerPerformmanceForm {
 	
 	
 	
+	
+	public String getManager_id() {
+		return manager_id;
+	}
+	public void setManager_id(String manager_id) {
+		this.manager_id = manager_id;
+	}
+	public String getManager_id_s() {
+		return manager_id_s;
+	}
+	public void setManager_id_s(String manager_id_s) {
+		this.manager_id_s = manager_id_s;
+	}
 	public long getMoney() {
 		return money;
 	}
@@ -56,18 +69,6 @@ public class ManagerPerformmanceForm {
 	}
 	public void setManagerName(String managerName) {
 		this.managerName = managerName;
-	}
-	public int getManager_id() {
-		return manager_id;
-	}
-	public void setManager_id(int manager_id) {
-		this.manager_id = manager_id;
-	}
-	public int getManager_id_s() {
-		return manager_id_s;
-	}
-	public void setManager_id_s(int manager_id_s) {
-		this.manager_id_s = manager_id_s;
 	}
 	public int getVisitcount() {
 		return visitcount;

@@ -1,13 +1,18 @@
-
+#parse ("common/iframe_page_header.htm")
 #parse ("common/iframe_page_header4.htm")
 
 
 <body>
-	<h1>图片批量上传</h1>
-	<form style="margin-left:10px">
-		<div id="queue"></div>
-		<input id="file_upload" name="file_upload" type="file" multiple="true">
-	</form>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">上传影像资料</div>
+      </div>
+
+		<form style="margin-left:20px;margin-top:20px;">
+			<div id="queue" style="height:250px;"></div>
+			<input id="file_upload" name="file_upload" type="file" multiple="true">
+		</form>
 	
 	<script type="text/javascript">
 	$(document).ready(function() {
@@ -106,14 +111,15 @@
 			});
 		}
 	</script>
-	<h4>操作:</h4> 
-	<a href="javascript:$('#file_upload').uploadify('upload', '*');">开始缓存</a> &nbsp;|&nbsp;
-	<a href="javascript:$('#file_upload').uploadify('cancel', '*');">清除队列</a> &nbsp;|&nbsp;
-	<a href="javascript:history.back();">返回</a> &nbsp;|&nbsp;
-	<a href="javascript:void(0);" onclick="browse_folder_complete('$!custId')">上传</a> &nbsp;|&nbsp;
-	<br><br/>
-	<label style="color:red" >&nbsp;&nbsp;&nbsp;注意请先【缓存】图片再【上传】!</label>
-	<h4>大小:</h4>
-	<div id='progress'></div>
+		<h4 style="padding-left:20px;color:#7b7b7b;">大小:<span id='progress'></span> </h4>
+		<p style="color:red;padding-left:20px;margin-top:10px;" >注意请先【缓存】图片再【上传】!</p>
+		<div class="submit">
+	        <a class="btn_g" href="javascript:$('#file_upload').uploadify('upload', '*');">开始缓存</a> &nbsp;&nbsp;
+			<a class="btn_g" href="javascript:$('#file_upload').uploadify('cancel', '*');">清除队列</a> &nbsp;&nbsp;
+			<a class="btn_g" href="javascript:void(0);" onclick="browse_folder_complete('$!custId')">上传</a> &nbsp;&nbsp;
+			<a class="btn_g" href="javascript:history.back();">返回</a> &nbsp;&nbsp;
+	    </div>
+    </div>
+</div>	
 </body>
 #parse ("common/iframe_page_footer.htm")

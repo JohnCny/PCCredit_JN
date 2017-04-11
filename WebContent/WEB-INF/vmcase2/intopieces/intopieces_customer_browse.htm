@@ -20,22 +20,9 @@
                <li>
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
-              <li>
-	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7" style="width: 100px;"/></span> <span>-</span>
-              </li>
-              <li>
-                  <span><input type="text" name="endAmt" value=''  maxlength="7" style="width: 100px;"/></span>
-              </li>
-              <li>
-                <span>客户经理：
-                	<select  name="custManagerId" id="custManagerId" style="width: 100px;" >
-                  	#dict("MANAGERUSERS","")
-                  </select>
-                </span>
-              </li>
-              
-              <li>
-                <span>所属机构：<select id="organName" style="width: 100px;" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              <li style="width:300px">
+	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7" style="width: 80px;min-width:80px"/></span>&nbsp;-
+	          	  <span><input type="text" name="endAmt" value=''  maxlength="7" style="width: 80px;min-width:80px"/></span>
               </li>
               
               <li>
@@ -49,6 +36,20 @@
                 </select>
                 </span>
               </li>
+              
+              <li>
+                <span>客户经理：
+                	<select  name="custManagerId" id="custManagerId" style="width: 100px;" >
+                  	#dict("MANAGERUSERS","")
+                  </select>
+                </span>
+              </li>
+              
+              <li>
+                <span>所属机构：<select id="organName" style="width: 100px;" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
+              </li>
+              
+              
               
               <li class="search_button">
                 <input type="button" value="#i18n('button.browse')" class="search_button_inquiry"
@@ -106,7 +107,7 @@
               <col width="10%"/>
             </colgroup>
            #foreach ($wait in $result.items)
-            <tr onclick="showButton();">
+            <tr ondblclick="javascript:$('#id_change_button').click();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
@@ -166,7 +167,7 @@
 			var url = contextPath+"/intopieces/intopiecesquery/findApproveHistoryById.page?id="+id+"&ifHideUser="+ifHideUser+"&dataType=application";
 			Dialog.table(url, "审批历史", "get", null, 800, 340);
 		}else{
-			Dialog.message("请选择要被查看的进件!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	
@@ -183,7 +184,7 @@
 			var url = contextPath+"/intopieces/intopiecesquery/findYxMsg.page?id="+id;
 			Dialog.table(url, "查看用信信息", "get", null, 900, 340);
 		}else{
-			Dialog.message("请选择要被查看的进件!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	
@@ -198,7 +199,7 @@
 			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureById.page?id="+id;
 			Dialog.table(url, "审议结论", "get", null, 900, 300);
 		}else{
-			Dialog.message("请选择要被查看的进件!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	
@@ -213,7 +214,7 @@
 			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureFormById.page?id="+id;
 			window.location.href = url;
 		}else{
-			Dialog.message("请选择要被查看的进件!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	
@@ -238,8 +239,8 @@
 	$(document).ready(function() {
 		var opsObj = new Object();
 		
-		$("#id_bc_button").hide();
-		$("#id_return_button").hide();
+		/* $("#id_bc_button").hide();
+		$("#id_return_button").hide(); */
 		
 		$("#id_report_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
@@ -355,7 +356,7 @@
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
 				if(rowid.split("@")[6] != 'returnedToFirst'){
-					alert("审核状态非退回至客户经理!");
+					Dialog.message("审核状态非退回至客户经理!");
 					return;
 				}
 				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("@")[1]+"&productId="+rowid.split("@")[7]+"&applicationId="+rowid.split("@")[0];
@@ -412,6 +413,7 @@
 	                Dialog.message("请选择一行!");
 	            } 
 	     });
+		 prepareOperations(opsObj);
 	});
 	
 	
@@ -428,7 +430,7 @@
 			window.location.href = url;
 		
 		}else{
-			Dialog.message("请选择一条记录!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	

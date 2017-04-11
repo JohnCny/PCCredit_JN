@@ -30,6 +30,20 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jfree.util.Log;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.cardpay.pccredit.creditEvaluation.vo.ApplicantInfoVo;
+import com.cardpay.pccredit.creditEvaluation.vo.CreditConditionVo;
+import com.cardpay.pccredit.creditEvaluation.vo.LivingConditionVo;
+import com.cardpay.pccredit.creditEvaluation.vo.OperateConditionVo;
+import com.cardpay.pccredit.creditEvaluation.vo.RepayAbilitiesVo;
+import com.cardpay.pccredit.creditEvaluation.vo.TModelForm;
+import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.spring.Beans;
 
 import sun.misc.BASE64Encoder;
 /**
@@ -41,7 +55,7 @@ public class JXLReadExcel {
 		String path = "C:\\Users\\Administrator\\Desktop\\小微贷标准版0806模板---周素平12万.xlsx";
 		jxl.readExcelToHtml(path, 0, true);
 	}*/
-	
+	private CommonDao commonDao;
 	
 	
     /**
@@ -318,7 +332,7 @@ public class JXLReadExcel {
     				   continue;
     			   }
 					String	stringValue = getCellValue(cell);
-					System.out.println(stringValue);
+					//System.out.println(stringValue);
     			   if (map[0].containsKey(rowNum + "," + colNum)) {
     				   String pointString = map[0].get(rowNum + "," + colNum);
     				   map[0].remove(rowNum + "," + colNum);
@@ -687,7 +701,7 @@ public class JXLReadExcel {
     	String sheet[] = new String[13];
         InputStream is = null;
         String approveValue="";
-//        String htmlExcel = null;
+//      String htmlExcel = null;
         Map<String, String> map = new HashMap<String, String>();
         try {
             File sourcefile = new File(filePath);
@@ -704,10 +718,12 @@ public class JXLReadExcel {
                         Row row = st.getRow(2);
                         Cell cell = row.getCell(4);
                         approveValue = getCellValue(cell);
+                        //get excel msg save model data
+                        saveModelForm(wb);
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }else if(wb instanceof HSSFWorkbook){
                         HSSFWorkbook hWb = (HSSFWorkbook) wb;
-                      //取申请金额（第三行第四列）
+                        //取申请金额（第三行第四列）
                         Sheet st = wb.getSheetAt(0);
                         Row row = st.getRow(2);
                         Cell cell = row.getCell(4);
@@ -962,4 +978,108 @@ public class JXLReadExcel {
         }
         return sheet;
     }
+  
+  /**
+   * @author songchen
+   * @time   2017年3月2日 11:37:09
+   */
+  public void  saveModelForm(Workbook wb){
+	    /*start */
+	    try{
+        String cardNo = getCellValue(wb.getSheetAt(0).getRow(14).getCell(6));//身份证号号码 (0,14,6)
+        String cname  = getCellValue(wb.getSheetAt(0).getRow(14).getCell(1)); //姓名  (0,14,1)
+        String sex    = getCellValue(wb.getSheetAt(0).getRow(14).getCell(4)); //性别(0,14,4)
+        String domicileLocation = getCellValue(wb.getSheetAt(0).getRow(15).getCell(1));//户籍所在地(0,15,1)
+        String address			= getCellValue(wb.getSheetAt(0).getRow(15).getCell(4));//详细地址(0,15,4)
+        String phoneNo          = getCellValue(wb.getSheetAt(0).getRow(16).getCell(4));//电话(0,16,4)
+        String spouseIdNo 		= getCellValue(wb.getSheetAt(0).getRow(23).getCell(7));//配偶身份证号(0,23,7)
+        String companyAddress   = getCellValue(wb.getSheetAt(1).getRow(1).getCell(1));//店铺/企业地址(1,1,1)
+        String industry			= getCellValue(wb.getSheetAt(1).getRow(27).getCell(1));//所属行业(1,27,1)
+        String operatingTime	= getCellValue(wb.getSheetAt(1).getRow(3).getCell(9));//经营时间 -取业务开始时期 然后 年戳计算（1,3,9）
+      
+        /*String dwellingType=getCellValue(wb.getSheetAt(0).getRow(17).getCell(2));  // 居住类型 (0,17,2)
+		String decorationSituation=getCellValue(wb.getSheetAt(0).getRow(18).getCell(3)); // 装修情况(0,18,3)
+		String housingArea=getCellValue(wb.getSheetAt(0).getRow(17).getCell(7));   // 住房面积(0,17,7)
+		String ownedPropertyQuantity=getCellValue(wb.getSheetAt(0).getRow(20).getCell(1));// 自有房产数量(0,20,1)
+		String numberOfMortgage=getCellValue(wb.getSheetAt(0).getRow(20).getCell(3));// 按揭房产数量(0,20,3)
+		String housePrice=getCellValue(wb.getSheetAt(0).getRow(20).getCell(7));// 房产总价(0,20,7)
+		String totalPropertyArea= getCellValue(wb.getSheetAt(0).getRow(20).getCell(9)); // 自有房产总面积(0,20,9)
+		String numberOfPrivateVehicles= getCellValue(wb.getSheetAt(0).getRow(22).getCell(1));// 自有车辆数量(0,22,1)
+		String numberOfLoans=getCellValue(wb.getSheetAt(0).getRow(22).getCell(3)); // 贷款车辆数量(0,22,3)
+		String vehiclePrice=getCellValue(wb.getSheetAt(0).getRow(22).getCell(7)); // 车辆总价(0,22,7)
+		String others=getCellValue(wb.getSheetAt(0).getRow(23).getCell(1)); // 除经营生意外是否有其他工作(0,23,1)
+		String personalBankAccountBalance="";								// 个人银行帐户余额(1,13,6)???
+		String businessAccountBalance= "";   								// 生意帐户余额(1,13,6)???
+		String totalCreditCardCredit=  getCellValue(wb.getSheetAt(1).getRow(12).getCell(3));  // 信用卡授信总额(1,12,3)
+		String averageMonthlyRepaymentAmountOfIncome=getCellValue(wb.getSheetAt(0).getRow(10).getCell(5));  // 月平均还款金额占收入比例(0,10,5)
+		String guaranteeForOthers=getCellValue(wb.getSheetAt(1).getRow(14).getCell(1));          // 是否为他人担保(1,14,1)
+		String theProportionOfTheAmountOfTheSecuredAssets= "";  //TODO 担保金额占本人自有资产比例    去担余额???
+		String securedUse=getCellValue(wb.getSheetAt(1).getRow(14).getCell(5));  // 担保用途(1,14,5)
+		String guaranteePeriod= getCellValue(wb.getSheetAt(1).getRow(14).getCell(7)); // 担保期限(1,14,7)
+*/		
+		
+		/*String organizationType=getCellValue(wb.getSheetAt(1).getRow(1).getCell(5));          // 组织类型(1,1,5)     
+		String operatingArea=getCellValue(wb.getSheetAt(1).getRow(1).getCell(7));             // 经营场所面积(1,1,7) 
+		String proportionofShareholders=getCellValue(wb.getSheetAt(1).getRow(2).getCell(4));  // 股东占比情况(1,2,4) 
+		String employees=getCellValue(wb.getSheetAt(1).getRow(2).getCell(6));                 // 雇员人数(1,2,6)     
+		String businessLicense=getCellValue(wb.getSheetAt(1).getRow(3).getCell(2));           // 营业执照(1,3,1)     
+		String storeType=getCellValue(wb.getSheetAt(1).getRow(5).getCell(3));                 // 店铺类型(1,5,2)     
+		String shopDecoration=getCellValue(wb.getSheetAt(1).getRow(6).getCell(3));            // 店铺装修情况(1,6,3) 
+*/		
+		
+		String ownFunds= getCellValue(wb.getSheetAt(0).getRow(3).getCell(6));                      	 //自有资金(0,3,6)                                             
+	  	String spouseIncome=getCellValue(wb.getSheetAt(0).getRow(24).getCell(4));                  	 //配偶年收入:(0,24,4),
+	  	String totalNonOperatingAssets=getCellValue(wb.getSheetAt(0).getRow(25).getCell(9));       	 //非经营总资产(0,25,9) 
+	  	String monthlyProfit="";                	   												 //月利润    ???                          
+	  	String applicationPeriod=getCellValue(wb.getSheetAt(0).getRow(3).getCell(1));                //申请期限:(0,3,1),                     
+	  	String nonPperatingTotalLiabilities=getCellValue(wb.getSheetAt(0).getRow(26).getCell(9));  	 //非经营总负债(0,26,9)
+	  	
+	  	
+	    /*String maritalStatus=getCellValue(wb.getSheetAt(0).getRow(14).getCell(9));                     	 //婚姻状况: (0,14,9),
+		String highestDegree=getCellValue(wb.getSheetAt(0).getRow(16).getCell(1));                     	 //最高学位: (0,16,1),
+		String familyEvaluationOfApplicants=getCellValue(wb.getSheetAt(1).getRow(20).getCell(1));      	 //家人对申请人评价: (1,20,1),
+		String neighborEvaluation=getCellValue(wb.getSheetAt(1).getRow(20).getCell(6));                 //邻居对申请人评价: (1,20,6),
+		String evaluationOfImportantContactPerson=getCellValue(wb.getSheetAt(1).getRow(21).getCell(1)); //重要联系人对申请人评价: (1,21,1),
+		String evaluationOfBusinessAssociates=getCellValue(wb.getSheetAt(1).getRow(21).getCell(6));     //生意 联人对申请人评价:(1,21,6),
+		String socialWelfareSituation=getCellValue(wb.getSheetAt(1).getRow(19).getCell(1));             //社会公益状况: (1,19,1),
+		String violationOfLaw=getCellValue(wb.getSheetAt(1).getRow(19).getCell(3));                    	 //违法违纪情况: (1,19,3),
+		String familyHarmony=getCellValue(wb.getSheetAt(1).getRow(16).getCell(3));                     	 //家庭是否和睦: (1,16,3),
+		String economicDependence=getCellValue(wb.getSheetAt(1).getRow(16).getCell(5));                	 //经济上依赖的人数: (1,16,5),
+		String badHabits=getCellValue(wb.getSheetAt(1).getRow(16).getCell(7));                          //不良嗜好: (1,16,7),
+		String badPublicRecords=getCellValue(wb.getSheetAt(1).getRow(16).getCell(9));                   //不良公共记录: (1,16,9),
+		String politicalSituation=getCellValue(wb.getSheetAt(1).getRow(17).getCell(7));                	 //政治情况: (1,17,7),
+		String commercialInsurance=getCellValue(wb.getSheetAt(1).getRow(17).getCell(9));               	 //商业保险情况:(1,17,9),
+		String socialRelations=getCellValue(wb.getSheetAt(1).getRow(18).getCell(9));                   	 //社会关系: (1,18,9),
+		String parentalSupport=getCellValue(wb.getSheetAt(1).getRow(19).getCell(5));                   	 //赡养父母状况:(1,19,5),
+		String dfamilyHarmony=getCellValue(wb.getSheetAt(1).getRow(19).getCell(8));                    	 //亲属和睦状况: (1,19,8),
+		String creditStatus=getCellValue(wb.getSheetAt(1).getRow(11).getCell(1));                      	 //信用状况: (1,11,1),
+		String creditCardOverdue="";                   													 //信用卡逾期情况: (),
+		String creditCardTotalNum=getCellValue(wb.getSheetAt(1).getRow(12).getCell(1));                	 //信用卡总数: (1,12,1)                             
+*/        /*end */ 
+		TModelForm form = new TModelForm();
+		form.setCardNo(cardNo.trim());
+		form.setCname(cname);
+		form.setSex(sex);
+		form.setDomicileLocation(domicileLocation);
+		form.setAddress(address);
+		form.setPhoneNo(phoneNo);
+		form.setSpouseIdNo(spouseIdNo);
+		form.setCompanyAddress(companyAddress);
+		form.setIndustry(industry);
+		form.setOperatingTime(operatingTime);
+		form.setOwnFunds(ownFunds);
+		form.setSpouseIncome(spouseIncome);
+		form.setTotalNonOperatingAssets(totalNonOperatingAssets);
+		form.setMonthlyProfit(monthlyProfit);
+		form.setApplicationPeriod(applicationPeriod);
+		form.setNonPperateTotalLiabilities(nonPperatingTotalLiabilities);
+		form.setCreatedTime(new Date());
+		AddIntoPiecesService addIntoPiecesService =Beans.get(AddIntoPiecesService.class);
+		addIntoPiecesService.saveModelForm(form);
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  Log.error("调查模板存取参数错误!");
+		 
+	  }
+  }
 }

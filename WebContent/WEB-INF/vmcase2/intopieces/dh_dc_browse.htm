@@ -76,7 +76,7 @@
               <col width="10%"/> -->
             </colgroup>
            #foreach ($wait in $result.items)
-            <tr onclick="showButton();">
+            <tr ondblclick="javascript:$('#id_change_button').click();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.id@$!wait.customerId@$!wait.id@$!wait.applyQuota@$!wait.serialNumber@$!wait.cardId@$!wait.status@$!wait.productId"/></td>
               <td nowrap="nowrap">$!wait.chineseName</td>
               <td nowrap="nowrap">$!wait.productName</td>
@@ -165,7 +165,7 @@
 			var url = contextPath+"/intopieces/intopiecesquery/findAuditConfigureFormById.page?id="+id;
 			window.location.href = url;
 		}else{
-			Dialog.message("请选择要被查看的进件!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	
@@ -364,6 +364,7 @@
 	                Dialog.message("请选择一行!");
 	            } 
 	     });
+		 prepareOperations(opsObj);
 	});
 	
 	
@@ -380,7 +381,7 @@
 			window.location.href = url;
 		
 		}else{
-			Dialog.message("请选择一条记录!");
+			Dialog.message("请选择一行!");
 		}
 	}
 	

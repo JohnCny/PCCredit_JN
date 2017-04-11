@@ -293,5 +293,9 @@
   
    <select id="findRepayLoanCount" resultType="int">
 	  select count(*) from t_reimbursement where CUSTOMER_MANAGER_ID = #{userId} 
-  </select>
+   </select>
+   
+   <select id="findYqLoanCount" resultType="int">
+	  select count(*) from yqdktjbb a where a.id = #{userId} 
+   </select>
 </mapper>
