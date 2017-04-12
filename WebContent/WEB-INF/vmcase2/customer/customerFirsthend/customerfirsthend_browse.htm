@@ -151,14 +151,19 @@
 		
 		$("#id_create_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
-				var value = $("input[name='checkbox']:checked").val();
+				/* var value = $("input[name='checkbox']:checked").val();
 				var rowid = value.split("@")[0];
 				if(rowid==''||rowid==null){
 					Dialog.message("无原始信息!");
 					return;
-				}
+				} */
 				//var url = "${modulePath}/showInfo.page?id=" + rowid;//ty
-				var url = "${modulePath}/showInfoJn.page?id=" + rowid;//jn
+				//var url = "${modulePath}/showInfoJn.page?id=" + rowid;//jn
+				
+				/*20170331改*/
+				var value = $("input[name='checkbox']:checked").val();
+				var rowid = value.split("@")[3];
+				var url = "${modulePath}/showInfoJn.page?id=" + rowid;
 				window.location.href = url;
 			}else{
 				Dialog.message("请选择记录!");
