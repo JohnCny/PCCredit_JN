@@ -36,8 +36,19 @@
 		1 = 1
 		AND D .WEEKLY_ID = w. ID
 		AND w.CUSTOMER_MANAGER_ID = s. ID
-		AND w.CUSTOMER_MANAGER_ID = #{loginId}
-		order by d.CREATED_TIME DESC
+		<if test="loginId != null and loginId != '' ">
+			AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		</if>
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME = #{displayName}
+		</if>
+		<if test="startDate != null and startDate != '' ">
+			AND d.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND d.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
+		order by d.created_time desc 
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -63,7 +74,18 @@
 		1 = 1
 		AND D .WEEKLY_ID = w. ID
 		AND w.CUSTOMER_MANAGER_ID = s. ID
-		AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		<if test="loginId != null and loginId != '' ">
+			AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		</if>
+		<if test="displayName != null and displayName != '' ">
+			AND s.DISPLAY_NAME = #{displayName}
+		</if>
+		<if test="startDate != null and startDate != '' ">
+			AND d.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND d.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if> 
 		
 		)
 	</select>
