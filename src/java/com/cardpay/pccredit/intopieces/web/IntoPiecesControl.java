@@ -1237,6 +1237,25 @@ public class IntoPiecesControl extends BaseController {
 	}
 	
 	/**
+	 * 图片
+	 * 2017年4月12日09:38:34
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "findPageView.page", method = { RequestMethod.GET })
+	public AbstractModelAndView findPageView(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/intopieces/picture_view_browse", request);
+		//客户id
+		/*String id = request.getParameter("id");
+		if(StringUtils.isNotEmpty(id)){
+			List<MibusidataForm> forms = intoPiecesService.findMibusidataForm(id);
+			mv.addObject("forms", forms);
+		}*/
+		return mv;
+	}
+	
+	/**
 	 * 查询审审议结论
 	 * @param request
 	 * @return
