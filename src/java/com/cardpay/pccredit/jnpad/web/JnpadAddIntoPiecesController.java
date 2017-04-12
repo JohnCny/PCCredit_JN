@@ -20,16 +20,27 @@ import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.filter.CustomerInforFilter;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
+import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
+import com.cardpay.pccredit.intopieces.web.LocalExcelForm;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadAddIntoPiecesService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.web.JRadModelAndView;
+import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
+import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.jrad.modules.log.model.OperationLog;
+import com.wicresoft.jrad.modules.log.service.UserLogService;
+import com.wicresoft.util.spring.Beans;
+import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -50,6 +61,8 @@ public class JnpadAddIntoPiecesController {
 	@Autowired
 	private JnpadAddIntoPiecesService jnpadaddIntoPiecesService;
 	
+	@Autowired
+	private UserLogService userLogService;
 	//选择客户
 	@ResponseBody
 	@RequestMapping(value = "/ipad/addIntoPieces/browseCustomer.json", method = { RequestMethod.GET })
@@ -146,6 +159,65 @@ public class JnpadAddIntoPiecesController {
 					map.put("mess","系统异常");
 					
 				}
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(map, jsonConfig);
+			return json.toString();
+		}
+		
+		//查询调查报告是否导入
+		@ResponseBody
+		@RequestMapping(value = "/ipad/addIntopieces/reportIsExist.json", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public String reportImport(@ModelAttribute AddIntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
+			Map<String, Object> map = new HashMap<String, Object>();
+			String excelId="";
+			if(!result.getItems().isEmpty()){
+				excelId=result.getItems().get(0).getId();
+			}
+			map.put("excelId", excelId);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(map, jsonConfig);
+			return json.toString();
+		}
+		
+		//提交申请
+		@ResponseBody
+		@RequestMapping(value = "/ipad/addIntopieces/addIntopieces.json", method = { RequestMethod.GET })
+		public String addIntopieces(@ModelAttribute AddIntoPiecesForm addIntoPiecesForm,HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			String loginId = request.getParameter("userId");
+			String displayName = request.getParameter("displayName");
+			Map<String, Object> map = new HashMap<String, Object>();
+			try {
+				addIntoPiecesService.addIntopieces(addIntoPiecesForm,loginId);
+				//日志记录
+				OperationLog ol = new OperationLog();
+				ol.setUser_id(loginId);
+			    ol.setUser_login(displayName);
+			    ol.setModule("进件新增");
+			    ol.setOperation_result("SUCCESS");
+			    ol.setOperation_name("ADD");
+			    ol.setIp_address(request.getRemoteAddr());
+				userLogService.addUserLog(ol);
+				returnMap.addGlobalMessage("system.change.success");
+				map.put("mess", "提交进件成功");
+			} catch (Exception e) {
+				//日志记录
+				OperationLog ol = new OperationLog();
+				ol.setUser_id(loginId);
+			    ol.setUser_login(displayName);
+			    ol.setModule("进件新增");
+			    ol.setOperation_result("FAIL");
+			    ol.setOperation_name("ADD");
+			    ol.setIp_address(request.getRemoteAddr());
+				userLogService.addUserLog(ol);
+				map.put("mess", e.getMessage());
+			}
+
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 			JSONObject json = JSONObject.fromObject(map, jsonConfig);

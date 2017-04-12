@@ -18,6 +18,8 @@
 		<result property="createdBy" column="CREATED_BY" />
 		<result property="modifiedTime" column="MODIFIED_TIME" />
 		<result property="modifiedBy" column="MODIFIED_BY" />
+		<result property="reportDate" column="REPORT_DATE" /> 
+		<result property="managerId" column="manager_Id" /> 
 	</resultMap>
 
 
