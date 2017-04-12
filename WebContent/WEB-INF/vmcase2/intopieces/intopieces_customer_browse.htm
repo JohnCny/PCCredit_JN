@@ -354,11 +354,13 @@
 		
 		$("#id_bc_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
+				Dialog.confirm("该操作将覆盖原有调查模板是否继续？", "提示",
+						function(){
 				var rowid = $("input[name='checkbox']:checked").val();
-				if(rowid.split("@")[6] != 'returnedToFirst'){
-					Dialog.message("审核状态非退回至客户经理!");
-					return;
-				}
+				//if(rowid.split("@")[6] != 'returnedToFirst'){
+				//	Dialog.message("审核状态非退回至客户经理!");
+				//	return;
+			//	}
 				var url ="${contextPath}/intopieces/intopiecesquery/reportImport.page?customerId="+rowid.split("@")[1]+"&productId="+rowid.split("@")[7]+"&applicationId="+rowid.split("@")[0];
 				if (opsObj.formObj) {
 	                // 回调URL
@@ -376,6 +378,8 @@
 	                }
 	            }
 				window.location.href=url;
+				
+				})
 			}
 			else{
 				Dialog.message("请选择一行!");

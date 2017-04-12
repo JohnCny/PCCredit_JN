@@ -274,4 +274,28 @@
   )
   </if>
   </select>
+  
+  
+   <select id="findNoticeMessageCount" resultType="int">
+	  select count(*) from notification_message 
+	  where user_id = #{userId} 
+	  and is_check='0'
+	  <if test="status1!=null and status1!=''">
+	  	and notice_type = #{status1,jdbcType=VARCHAR}
+	  </if>
+  </select>
+  
+   <select id="findDailyTaskCount" resultType="int">
+	  select count(*) from sys_dateplan 
+	  where USERID = #{userId} 
+	  and to_char(ZDTIME,'yyyymmdd') = #{dateString} 
+  </select>
+  
+   <select id="findRepayLoanCount" resultType="int">
+	  select count(*) from t_reimbursement where CUSTOMER_MANAGER_ID = #{userId} 
+   </select>
+   
+   <select id="findYqLoanCount" resultType="int">
+	  select count(*) from yqdktjbb a where a.id = #{userId} 
+   </select>
 </mapper>

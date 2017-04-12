@@ -102,7 +102,7 @@ public class ManagerPerformmanceController extends BaseController {
 			endDate+=" 23:59:59";
 		}
 		long start = System.currentTimeMillis();
-		if(orgId==null||orgId==""){
+		if(orgId==null||orgId==""||orgId.equals("000000")){
 			for (BankListForm bankListForms : bankListForm) {
 				String id = bankListForms.getId();
 				List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(id,satrtDate,endDate);
@@ -123,6 +123,7 @@ public class ManagerPerformmanceController extends BaseController {
 			for (ManagerPerformmanceForm managerPerformmanceForm2 : managerPerformmanceForm) {
 				managerPerformmanceForm2.setName(name);
 			}
+			gxperformList.addAll(managerPerformmanceForm);
 		}
 		 long end = System.currentTimeMillis();
 		logger.info("查询时间花费：" + (end - start) + "毫秒");
@@ -130,6 +131,7 @@ public class ManagerPerformmanceController extends BaseController {
 		mv.addObject("gxperformList", gxperformList);
 		mv.addObject("satrtDate", satrtDate);
 		mv.addObject("endDate", endDate);
+		mv.addObject("orgId", orgId);
 		return mv;
 	}
 
@@ -217,7 +219,7 @@ public class ManagerPerformmanceController extends BaseController {
 				endDate+=" 23:59:59";
 			}
 			long start = System.currentTimeMillis();
-			if(orgId==null||orgId==""){
+			if(orgId==null||orgId==""||orgId.equals("000000")){
 				for (BankListForm bankListForms : bankListForm) {
 					String id = bankListForms.getId();
 					List<ManagerPerformmanceForm> managerPerformmanceForm= managerPerformmanceService.findSumPerformmanceById(id,satrtDate,endDate);

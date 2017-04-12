@@ -13,6 +13,125 @@
     <result column="CREATED_TIME" property="createdTime" jdbcType="VARCHAR" />
   </resultMap>
   
+    <resultMap id="ResultMapAttachmentDetail" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail">
+		<result property="id" column="ID" />
+		<result property="batchId" column="BATCH_ID" />
+		<result property="originalName" column="ORIGINAL_NAME" />
+		<result property="picSize" column="PIC_SIZE" />
+		<result property="isUpload" column="IS_UPLOAD" />
+		<result property="fileNo" column="FILE_NO" />
+	</resultMap>
+	
+    <resultMap id="ResultMapDhAttachmentDetail" type="com.cardpay.pccredit.intopieces.model.DhApplnAttachmentDetail">
+		<result property="id" column="ID" />
+		<result property="batchId" column="BATCH_ID" />
+		<result property="originalName" column="ORIGINAL_NAME" />
+		<result property="picSize" column="PIC_SIZE" />
+		<result property="isUpload" column="IS_UPLOAD" />
+		<result property="fileNo" column="FILE_NO" />
+	</resultMap>
+	
+    <resultMap id="QzApplnDetailMap" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail">
+		<result property="id" column="ID" />
+		<result property="batchId" column="BATCH_ID" />
+	</resultMap>
+	
+    <resultMap id="DhApplnDetailMap" type="com.cardpay.pccredit.intopieces.model.DhApplnAttachmentDetail">
+		<result property="id" column="ID" />
+		<result property="batchId" column="BATCH_ID" />
+	</resultMap>
+	
+    <select id="findQzApplnDetailCount" resultType="int">
+			select count(*) from qz_appln_attachment_detail 
+			where BATCH_ID=#{batchId}
+	</select>
+	
+     <select id="findDhApplnDetailCount" resultType="int">
+			select count(*) from dh_appln_attachment_detail 
+			where BATCH_ID=#{batchId}
+	</select>
+	
+     <select id="findQzApplnDetail" resultMap="QzApplnDetailMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from qz_appln_attachment_detail
+		where BATCH_ID=#{batchId}
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+  
+     
+      <select id="findDhApplnDetail" resultMap="DhApplnDetailMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from dh_appln_attachment_detail
+		where BATCH_ID=#{batchId}
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    
+      
+    <select id="findDhApplnDetailPage" resultMap="DhApplnDetailMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from dh_appln_attachment_detail
+		where BATCH_ID in ( select BATCH_ID  
+		 from dh_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from dh_appln_attachment_list where APPLICATION_ID=#{appId}))
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    
+    
+    <select id="findQzApplnDetailPage" resultMap="QzApplnDetailMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from qz_appln_attachment_detail
+		where BATCH_ID in ( select BATCH_ID  
+		 from qz_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from qz_appln_attachment_list where APPLICATION_ID=#{appId}))
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
+    
+    <select id="findDhApplnDetailPageCount" resultType="int">
+			select count(*) from dh_appln_attachment_detail 
+			where BATCH_ID in ( select BATCH_ID  
+		 from dh_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from dh_appln_attachment_list where APPLICATION_ID=#{appId}))
+	</select>
+	
+    <select id="findQzApplnDetailPageCount" resultType="int">
+			select count(*) from qz_appln_attachment_detail 
+			where BATCH_ID in ( select BATCH_ID  
+		 from qz_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from qz_appln_attachment_list where APPLICATION_ID=#{appId}))
+	</select>
+    
   <select id="findByProductAndCustomer" resultMap="BaseResultMap">
       SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
@@ -117,5 +236,194 @@
    <select id="findDclsfx" resultType="com.cardpay.pccredit.intopieces.model.Dclsfx">
      select * from TY_DZ_MODEL_LSFX t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
   </select>
+  
+   
+    <resultMap id="ResultMapAttachmentList" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentList">
+        <result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="bussType" column="BUSS_TYPE" />
+		<result property="chkValue" column="CHK_VALUE" />
+		<result property="clientName" column="CLIENT_NAME" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="shopName" column="SHOP_NAME" />
+		<result property="shopId" column="SHOP_ID" />
+		<result property="user_1" column="USER_1" />
+		<result property="user_2" column="USER_2" />
+		<result property="user_3" column="USER_3" />
+		<result property="user_4" column="USER_4" />
+		<result property="docid" column="DOCID" />
+		<result property="uploadValue" column="UPLOAD_VALUE" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+	
+    <resultMap id="ResultMapDhAttachmentList" type="com.cardpay.pccredit.intopieces.model.DhApplnAttachmentList">
+        <result property="id" column="ID" />
+		<result property="customerId" column="CUSTOMER_ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+		<result property="bussType" column="BUSS_TYPE" />
+		<result property="chkValue" column="CHK_VALUE" />
+		<result property="clientName" column="CLIENT_NAME" />
+		<result property="globalId" column="GLOBAL_ID" />
+		<result property="shopName" column="SHOP_NAME" />
+		<result property="shopId" column="SHOP_ID" />
+		<result property="user_1" column="USER_1" />
+		<result property="user_2" column="USER_2" />
+		<result property="user_3" column="USER_3" />
+		<result property="user_4" column="USER_4" />
+		<result property="docid" column="DOCID" />
+		<result property="uploadValue" column="UPLOAD_VALUE" />
+		<result property="createdBy" column="CREATED_BY" />
+		<result property="createdTime" column="CREATED_TIME" />
+	</resultMap>
+	
+    <resultMap id="ResultMapAttachmentBatch" type="com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch">
+        <result property="id" column="ID" />
+		<result property="attId" column="ATT_ID" />
+		<result property="type" column="TYPE" />
+		<result property="name" column="NAME" />
+		<result property="folder" column="FOLDER" />
+		<result property="isUpload" column="IS_UPLOAD" />
+	</resultMap>
+	
+     <resultMap id="ResultMapDhAttachmentBatch" type="com.cardpay.pccredit.intopieces.model.DhApplnAttachmentBatch">
+        <result property="id" column="ID" />
+		<result property="attId" column="ATT_ID" />
+		<result property="type" column="TYPE" />
+		<result property="name" column="NAME" />
+		<result property="folder" column="FOLDER" />
+		<result property="isUpload" column="IS_UPLOAD" />
+	</resultMap>
+   
+   
+   <select id="findAttachmentListByAppId" resultMap="ResultMapAttachmentList">
+		 select * 
+		 from qz_appln_attachment_list   
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+<!-- 	 	<if test="bussType == null or bussType == '' "> -->
+<!-- 			AND BUSS_TYPE is null -->
+<!-- 		</if> -->
+<!-- 		<if test="bussType != null and bussType != '' "> -->
+<!-- 			AND BUSS_TYPE =#{bussType} -->
+<!-- 		</if> -->
+		
+	</select>
+	
+   <select id="findDhAttachmentListByAppId" resultMap="ResultMapDhAttachmentList">
+		 select * 
+		 from dh_appln_attachment_list   
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+	 	<!-- <if test="bussType == null or bussType == '' ">
+			AND BUSS_TYPE is null
+		</if>
+		<if test="bussType != null and bussType != '' ">
+			AND BUSS_TYPE =#{bussType}
+		</if> -->
+		
+	</select>
+	
+	<select id="findAttachmentBatchByAppId" resultMap="ResultMapAttachmentBatch">
+		 select * 
+		 from qz_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from qz_appln_attachment_list 
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+		)
+	</select>
+	
+	<select id="findDhAttachmentBatchByAppId" resultMap="ResultMapDhAttachmentBatch">
+		 select * 
+		 from dh_appln_attachment_batch   
+		 where att_id in (
+		 select id 
+		 from dh_appln_attachment_list 
+		 where 1=1
+	 	<if test="applicationId != null and applicationId != '' ">
+			AND APPLICATION_ID=#{applicationId}
+		</if>
+		)
+	</select>
+	
+	
+	<select id="findDetailByFilter" resultMap="ResultMapAttachmentDetail">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			
+	    select * from qz_appln_attachment_detail
+	    where batch_id = #{batchId}
+	    
+	    <if test="originalName != null and originalName != '' ">
+			AND ORIGINAL_NAME=#{originalName}
+		</if>
+		<if test="isUpload != null and isUpload != '' ">
+			AND IS_UPLOAD=#{isUpload}
+		</if>
+	    <![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	<select id="findDetailCountByFilter" resultType="int">
+	    select count(*) from qz_appln_attachment_detail
+	    where batch_id = #{batchId}
+	    
+	    <if test="originalName != null and originalName != '' ">
+			AND ORIGINAL_NAME=#{originalName}
+		</if>
+		<if test="isUpload != null and isUpload != '' ">
+			AND IS_UPLOAD=#{isUpload}
+		</if>
+	</select>
+	
+	
+	<select id="findDhDetailByFilter" resultMap="ResultMapDhAttachmentDetail">
+	    SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+			FROM (
+			
+	    select * from dh_appln_attachment_detail
+	    where batch_id = #{batchId}
+	    
+	    <if test="originalName != null and originalName != '' ">
+			AND ORIGINAL_NAME=#{originalName}
+		</if>
+		<if test="isUpload != null and isUpload != '' ">
+			AND IS_UPLOAD=#{isUpload}
+		</if>
+	    <![CDATA[		
+				) ROW_
+			WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+		WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	<select id="findDhDetailCountByFilter" resultType="int">
+	    select count(*) from dh_appln_attachment_detail
+	    where batch_id = #{batchId}
+	    
+	    <if test="originalName != null and originalName != '' ">
+			AND ORIGINAL_NAME=#{originalName}
+		</if>
+		<if test="isUpload != null and isUpload != '' ">
+			AND IS_UPLOAD=#{isUpload}
+		</if>
+	</select>
+	
+	
+	
   
 </mapper>
