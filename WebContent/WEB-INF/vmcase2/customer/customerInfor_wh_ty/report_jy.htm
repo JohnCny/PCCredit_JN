@@ -6,6 +6,12 @@
 <script src="${contextPath}/common/js/common/Tokanizer.js"></script>
 <script src="${contextPath}/common/js/common/Evaluator.js"></script>
 <script src="${contextPath}/common/js/common/EditCell.js"></script>
+
+<style type="text/css">
+	.slt{margin-top:10px;margin-left:20px;display:block;}
+	.slt li{display:inline-block;text-align:center;list-style:none;margin-right:5px;font-size:11px;}
+	.slt img{width:50px;height:50px;padding:5px;border:1px solid #ccc;display:block;margin-bottom:5px;}
+</style>
 <script type="text/javascript">
 	var rules = [
 	            ]
@@ -69,7 +75,13 @@
       <form id="id_module_form">
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>
       </form>
-      <div class="submit">
+      <ul class="slt">
+      	<li onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>房产</li>
+      	<li onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>银行流水</li>
+      	<li onclick="viewIntoYX()" onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>车产</li>
+      </ul>
+     
+      <div class="submit" style="padding:10px 0 0 10px;">
       #if(!$!lock)
       	<input type="button" class="current" id="id_save_button" value="保存" />
       #end
@@ -87,8 +99,12 @@
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
 	#parse ("customer/customerInfor_wh_ty/customer_iframe_1_change_validation.js")
+			
 	
-	$(document).ready(function() {		
+	$(document).ready(function() {	
+		var height=$(window).height();				
+		$("#formsId").css("height",(parseInt(height)-260)+"px");
+		
 		$("#id_save_button").click(function() {
 			var applyQuota=$("td[name='E3']").text();
 			applyQuota=money(applyQuota);
@@ -178,6 +194,12 @@
 			return str;
 		}
 	});
+	//查看图片
+	function viewIntoYX(){
+		var id = null;
+		var url = contextPath+"/intopieces/intopiecesquery/findPageView.page?id="+id;
+		Dialog.table(url, "查看图片", "get", null, 700,100);
+	}
   </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
   
