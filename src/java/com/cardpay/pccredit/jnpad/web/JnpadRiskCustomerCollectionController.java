@@ -17,6 +17,7 @@ import com.cardpay.pccredit.customer.constant.CustomerInforConstant;
 import com.cardpay.pccredit.customer.constant.MarketingCreateWayEnum;
 import com.cardpay.pccredit.datapri.constant.DataPriConstants;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.model.DelayInfoForm;
 import com.cardpay.pccredit.jnpad.service.JnpadRiskCustomerCollectionService;
 import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
@@ -169,9 +170,15 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 		 try {
 			 String customerId = RequestHelper.getStringValue(request, "customerId");
 			 List<Dict> products = JnpadriskCustomerCollectionService.getProductIdAndName(customerId);
-			 JSONArray json = new JSONArray();
-			 json = JSONArray.fromObject(products);
-			return json.toString();
+			 DelayInfoForm delayInfoForm = JnpadriskCustomerCollectionService.getDelayInfoByCustomerId(customerId);
+			 Map<String, Object> map =new LinkedHashMap<String, Object>();
+			 map.put("products", products);
+			 map.put("delayInfoForm", delayInfoForm);
+			 JsonConfig jsonConfig = new JsonConfig();
+			 jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			 JSONObject json = JSONObject.fromObject(map, jsonConfig);
+			 return json.toString();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -259,5 +266,19 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 			JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
 			return json.toString();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/ipad/risk/getCustomerRiskInfo.json",method = RequestMethod.GET)
+	public String getCustomerRiskInfo(HttpServletRequest request) {
+		String managerId = null;
+		String userType = RequestHelper.getStringValue(request, "userType");
+		if(userType.equals("1")){
+			managerId = RequestHelper.getStringValue(request, "managerId");
+		}
+		List<DelayInfoForm> cunstomerList =JnpadriskCustomerCollectionService.getCustomerRiskInfo(managerId);
+		JSONArray json = new JSONArray();
+		json = JSONArray.fromObject(cunstomerList);
+		return json.toString(); 
 	}
 }

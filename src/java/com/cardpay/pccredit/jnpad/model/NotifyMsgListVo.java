@@ -21,12 +21,18 @@ public class NotifyMsgListVo {
 	private int returnCount;/*补充调查*/
 	private int risk;/*风险客户数量*/
 	private int sum;/*总和*/
+	private int yuqi;/*逾期催收*/
 	
 	private int ziliaobiangeng;
 	private List<CustomerInfor> bianggeng;
 	
 	
-	
+	public int getYuqi() {
+		return yuqi;
+	}
+	public void setYuqi(int yuqi) {
+		this.yuqi = yuqi;
+	}
 	public List<CustomerInfor> getBianggeng() {
 		return bianggeng;
 	}

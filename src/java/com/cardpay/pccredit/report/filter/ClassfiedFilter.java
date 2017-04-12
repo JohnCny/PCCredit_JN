@@ -8,7 +8,15 @@ public class ClassfiedFilter extends BaseQueryFilter{
 	private String managerName;
 	private String startDate;
 	private String endDate;
+	private String orgId;
 	
+	
+	public String getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
 	public String getAssureMeans() {
 		return assureMeans;
 	}

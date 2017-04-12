@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,22 +16,31 @@ import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cardpay.pccredit.customer.model.CIPERSONBASINFOCOPY;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
+import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
+import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.AppInfoListVo;
+import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.jnpad.model.DelayInfoForm;
 import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
+import com.cardpay.pccredit.jnpad.model.NotificationmMessage;
 import com.cardpay.pccredit.jnpad.model.NotifyMsgListVo;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
+import com.cardpay.pccredit.jnpad.service.JnpadRiskCustomerCollectionService;
+import com.cardpay.pccredit.jnpad.service.JnpadZongBaoCustomerInsertService;
 import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
@@ -37,7 +48,11 @@ import com.cardpay.pccredit.notification.model.NotificationMessage;
 import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
+import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.util.web.RequestHelper;
 
 /**
  * ipad interface
@@ -54,7 +69,20 @@ public class JnIpadCustAppInfoXxController {
 	@Autowired
 	private JnIpadCustAppInfoXxService appInfoXxService;
 
+	@Autowired
+	private CustomerApplicationInfoService customerApplicationInfoService;
 	
+	@Autowired
+	private RiskCustomerCollectionService riskCustomerCollectionService;
+	
+	@Autowired
+	private JnpadRiskCustomerCollectionService JnpadriskCustomerCollectionService;
+	
+	@Autowired
+	private IntoPiecesComdao intoPiecesComdao;
+	
+	@Autowired
+	private JnpadZongBaoCustomerInsertService jnpadZongBaoCustomerInsertService;
 	/**
 	 * 进件信息查询 
 	 * 【查询进件数量/拒绝进件数量/申请通过进件数量/补充调查进件数量】
@@ -104,8 +132,11 @@ public class JnIpadCustAppInfoXxController {
 		if(s!=1){
 			userId="";
 		}
+		IntoPiecesFilter filter=new IntoPiecesFilter();
+		filter.setUserId(userId);
 		int refuse = appInfoXxService.findCustAppInfoXxCount(userId,null,status2, null,null);
 		int approved = appInfoXxService.findCustAppInfoXxCount(userId,null,null, status3,null);
+		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
 		AppInfoListVo vo = new AppInfoListVo();
@@ -113,6 +144,7 @@ public class JnIpadCustAppInfoXxController {
 		vo.setRefuseNum(refuse);
 		
 		result.put("result", vo);
+		result.put("sums", sum);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
@@ -312,14 +344,14 @@ public class JnIpadCustAppInfoXxController {
 		filter.setUserId(userId);
 		filter.setNoticeType("shendaihui");
 		int count1 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("yuanshiziliao");
-		int count2 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+//		filter.setNoticeType("yuanshiziliao");
+//		int count2 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		filter.setNoticeType("peixun");
 		int count3 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("kaocha");
-		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
-		filter.setNoticeType("qita");
-		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+//		filter.setNoticeType("kaocha");
+//		int count4 = appInfoXxService.findNotificationCountMessageByFilter(filter);
+//		filter.setNoticeType("qita");
+//		int count5 = appInfoXxService.findNotificationCountMessageByFilter(filter);
 		
 		//拒绝进件数量
 		filter.setNoticeType("refuse");
@@ -336,12 +368,24 @@ public class JnIpadCustAppInfoXxController {
 		//客户资料变更
 		List<CustomerInfor> cuslist=appInfoXxService.findbiangengCountByManagerId(userId);
 		int count6 = cuslist.size();
-		int sum=count1+count2+count3+count4+count5+refuseCount+returnCount+risk+count6;
+		//分配进件通知
+		String managerIds =null;
+		List<CustomerInfo> customerList = jnpadZongBaoCustomerInsertService.selectCustomerInfo(managerIds);
+		int count5 = customerList.size();
+		/*逾期催收*/
+		String managerId = null;
+		String userType = request.getParameter("userType");
+		if(userType.equals("1")){
+			managerId = request.getParameter("userId");
+		}
+		List<DelayInfoForm> cunstomerList =JnpadriskCustomerCollectionService.getCustomerRiskInfo(managerId);
+		int yq_remind_message = cunstomerList.size();
+		int sum=count1+count3+count5+refuseCount+returnCount+risk+count6+yq_remind_message;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();
 		vo.setShendaihui(count1);
-		vo.setYuanshiziliao(count2);
+//		vo.setYuanshiziliao(count2);
 		vo.setPeixun(count3);
-		vo.setKaocha(count4);
+//		vo.setKaocha(count4);
 		vo.setQita(count5);
 		vo.setRefuseCount(refuseCount);
 		vo.setReturnCount(returnCount);
@@ -349,7 +393,7 @@ public class JnIpadCustAppInfoXxController {
 		vo.setSum(sum);
 		vo.setZiliaobiangeng(count6);
 		vo.setBianggeng(cuslist);
-		
+		vo.setYuqi(yq_remind_message);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(vo, jsonConfig);
@@ -429,15 +473,27 @@ public class JnIpadCustAppInfoXxController {
 	public String returnPrepareAmount(HttpServletRequest request) {
 		//当前登录用户ID
 		String userId=request.getParameter("userId");
-		String year=request.getParameter("year");
-		String month=request.getParameter("month");
-		
-		String  return_prepare_amount = appInfoXxService.getReturnPrepareAmountById(Integer.parseInt(year),
-																				  	Integer.parseInt(month),
-																				    userId);
-		
+		String userType=request.getParameter("userType");
+		String  return_prepare_amount="";
+		if(userType.equals("1")){
+			return_prepare_amount = appInfoXxService.getReturnPrepareAmountById(userId);
+		}else{
+			return_prepare_amount = appInfoXxService.getSumReturnPrepareAmountById(userId);
+			userId=null;
+		}
+		/*奖励激励状况*/
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		if(month == 0){
+			year = year - 1;
+			month = 12;
+		}
+		/*奖励激励****************************************************************************/
+		String reward_incentive = appInfoXxService.getRewardIncentiveInformation(year, month, userId);
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		result.put("return_prepare_amount",return_prepare_amount);
+		result.put("reward_incentive",reward_incentive);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
@@ -452,6 +508,66 @@ public class JnIpadCustAppInfoXxController {
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		try {
 			appInfoXxService.changeIsLook(id,cardId);
+			result.put("mess","操作成功");
+		} catch (Exception e) {
+			// TODO: handle exception
+			result.put("mess","操作失败");
+		}
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	//创建审贷会通知
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/cjshendaihuitz.json", method = { RequestMethod.GET })
+	public String shendaihuitz(@ModelAttribute NotificationmMessage notificationmmessage,HttpServletRequest request) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		try {
+			String id = IDGenerator.generateID();
+			notificationmmessage.setId(id);
+			SimpleDateFormat sf =new SimpleDateFormat("yyyy-MM-dd");
+			String ss= request.getParameter("zhidingdate");
+			Date modifiedTime =sf.parse(ss);
+			notificationmmessage.setModifiedTime(modifiedTime);
+			notificationmmessage.setCreatedTime(new Date());
+			appInfoXxService.insertShendaiTongzhi(notificationmmessage);
+			
+			result.put("mess","操作成功");
+		} catch (Exception e) {
+			result.put("mess","操作失败");
+		}
+		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	//查询审贷会通知
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/cxshendaihuitz.json", method = { RequestMethod.GET })
+	public String cxshendaihuitz(HttpServletRequest request) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		String managerId=request.getParameter("managerId");
+		List<NotificationmMessage> notificationmmessage =appInfoXxService.selectshendaihuitz(managerId) ;
+		result.put("result", notificationmmessage);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	//改变审贷会通知状态
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/changesdhtzstatus.json", method = { RequestMethod.GET })
+	public String changesdh(HttpServletRequest request) {
+		//当前登录用户ID
+		String id=request.getParameter("id");
+		String status=request.getParameter("status");
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		try {
+			appInfoXxService.changeSdhIsLook(id,status);
 			result.put("mess","操作成功");
 		} catch (Exception e) {
 			// TODO: handle exception

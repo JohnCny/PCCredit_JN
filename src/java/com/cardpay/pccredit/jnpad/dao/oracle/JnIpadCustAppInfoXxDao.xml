@@ -195,25 +195,30 @@
 			AND T.NOTICE_TYPE=#{noticeType}
 		</if>
 		AND T.IS_CHECK != 1
+		AND T.IS_CHECK != 4
 	</select>
 
 
 	<select id="getRewardIncentiveInformation" resultType="String">
 		select
-		reward_incentive_information from MANAGER_SALARY t
+		nvl(sum(reward_incentive_information),0) from MANAGER_SALARY t
 		where t.year=#{year}
 		and t.month=#{month}
+		<if test="id != null and id != '' ">
 		and t.customer_id=#{id}
+		</if>
 	</select>
 
 
 	<select id="getReturnPrepareAmountById" resultType="String">
 		select
-		return_prepare_amount from MANAGER_SALARY t
-		where t.year=#{year}
-		and
-		t.month=#{month}
-		and t.customer_id=#{id}
+		TOTAL_RISK_MARGIN from T_RISK_MARGIN t
+		where 
+		t.customer_id=#{id}
+	</select>
+	<select id="getSumReturnPrepareAmountById" resultType="String">
+		select
+		sum(TOTAL_RISK_MARGIN) from T_RISK_MARGIN t
 	</select>
 
 	<select id="findYunyinstatus" resultMap="YunyinstatusResultMap">
@@ -287,5 +292,8 @@
 	<update id="changeIsLook">
 	    
 	    UPDATE BASIC_CUSTOMER_INFORMATION SET islook ='0' WHERE id=#{id} and card_Id=#{cardId}
+	</update>
+	<update id="changeSdhIsLook">
+	    UPDATE notification_message SET is_check=#{status} WHERE id=#{id} 
 	</update>
 </mapper> 
