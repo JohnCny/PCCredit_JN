@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -17,7 +19,9 @@ import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.service.JnpadDailyAccountManagerService;
 import com.cardpay.pccredit.manager.filter.DailyAccountManagerFilter;
 import com.cardpay.pccredit.manager.model.DailyAccountManager;
+import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.service.DailyAccountService;
+import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.cardpay.pccredit.manager.web.DailyAccountManagerForm;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -35,6 +39,8 @@ public class JnpadDailyAccountManagerController {
 	@Autowired
 	private DailyAccountService dailyAccountService;
 	
+	@Autowired
+	private ManagerPerformmanceService managerPerformmanceService;
 	/**
 	 * 客户经理日报浏览页面
 	 * @param filter
@@ -97,6 +103,25 @@ public class JnpadDailyAccountManagerController {
 				return json.toString();
 	}
 
-	
-	
+	//根据指定日期和id查询业绩进度
+	@ResponseBody
+	@RequestMapping(value = "/ipad/dailyAccount/getpermanceByDateandId.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String getpermanceByDateandId( HttpServletRequest request) {
+		String loginId = request.getParameter("userId");
+		String ReportDate = request.getParameter("reportDate");
+		SimpleDateFormat sf= new SimpleDateFormat("yyyy-MM-dd");
+		Date date =null;
+		try {
+			date = sf.parse(ReportDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ManagerPerformmance managerPerformmance = managerPerformmanceService.finManagerPerformmanceByIdAndDate(loginId,date);		
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(managerPerformmance, jsonConfig);
+		return json.toString();
+	}
 }

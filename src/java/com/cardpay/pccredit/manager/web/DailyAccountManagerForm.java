@@ -27,8 +27,27 @@ public class DailyAccountManagerForm extends BaseForm {
 	private String modifiedBy;
 	private String todayplan;
 	private String tomorrowplan;
-
+	private Date reportDate;
+	private String managerId;
 	
+	
+	
+	public String getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(String managerId) {
+		this.managerId = managerId;
+	}
+
+	public Date getReportDate() {
+		return reportDate;
+	}
+
+	public void setReportDate(Date reportDate) {
+		this.reportDate = reportDate;
+	}
+
 	public String getTodayplan() {
 		return todayplan;
 	}

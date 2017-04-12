@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +29,7 @@ import com.cardpay.pccredit.customer.dao.CustomerInforDao;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.constant.ServerSideConstant;
 import com.cardpay.pccredit.intopieces.dao.LocalExcelDao;
 import com.cardpay.pccredit.intopieces.dao.LocalImageDao;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
@@ -121,10 +123,14 @@ public class JnpadAddIntoPiecesService {
 	//导入调查报告
 	public void importExcel(MultipartFile file,String productId, String customerId,String fileName_1) {
 		// TODO Auto-generated method stub
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
 		//本地测试
-		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
+		 map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
+		}else{
 		//指定服务器上传
-//		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		 map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalExcel localExcel = new LocalExcel();
@@ -140,10 +146,14 @@ public class JnpadAddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
+		String sheet[] = null;
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
 		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
+		sheet = readExcel.readExcelToHtml1(url, true);
+		}else{
 		//服务器
-//		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		sheet = SFTPUtil.readExcelToHtml(url, true);
+		}
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("001");
@@ -177,12 +187,20 @@ public class JnpadAddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[7]);
 		localExcel.setSheetYsyf(sheet[8]);
 		localExcel.setJyb(sheet[9]);
+		localExcel.setSheetddtjy(sheet[10]);
+		localExcel.setSheetddtxf(sheet[11]);
 		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		if(sheet[12].contains("元")){
+			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		    localExcel.setApproveValue(sheet[12]);
 		}
+		
+		//判断申请金额格式是否正确
+		if(!IsNum(localExcel.getApproveValue())){
+			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
+		}
+		
 		//删除旧模板
 		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
 		commonDao.queryBySql(LocalExcel.class, sql, null);
@@ -190,13 +208,27 @@ public class JnpadAddIntoPiecesService {
 		commonDao.insertObject(localExcel);
 	}
 	
+	//判断申请金额是否为整数
+    public Boolean IsNum(String value){
+    	java.util.regex.Pattern pattern = Pattern.compile("[0-9]*");
+    	java.util.regex.Matcher isNum = pattern.matcher(value.trim());
+    	if(!isNum.matches()){
+    		return false;
+    	}
+    	return true;
+	}
+	
 	//补充调查模板先删除原有的调查模板信息再新增
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
-		//本地
-		Map<String, String> map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
-		//指定服务器上传
-//		Map<String, String> map = SFTPUtil.uploadJn(file, customerId);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地
+			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		//删除
@@ -217,10 +249,14 @@ public class JnpadAddIntoPiecesService {
 		
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
-		//本地测试
-		String sheet[] = readExcel.readExcelToHtml1(url, true);
-		//服务器
-//		String sheet[] = SFTPUtil.readExcelToHtml(url, true);
+		String sheet[] = null;
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地测试
+			 sheet = readExcel.readExcelToHtml1(url, true);
+		}else{
+			//服务器
+			 sheet = SFTPUtil.readExcelToHtml(url, true);
+		}
 		for(String str : sheet){
 			if(StringUtils.isEmpty(str)){
 				throw new RuntimeException("导入失败，请检查excel文件与模板是否一致！");
@@ -236,12 +272,26 @@ public class JnpadAddIntoPiecesService {
 		localExcel.setSheetYfys(sheet[7]);
 		localExcel.setSheetYsyf(sheet[8]);
 		localExcel.setJyb(sheet[9]);
+		localExcel.setSheetddtjy(sheet[10]);
+		localExcel.setSheetddtxf(sheet[11]);
 		
-		if(sheet[10].contains("元")){
-			localExcel.setApproveValue(sheet[10].substring(0,sheet[10].indexOf("元")));
+		if(sheet[12].contains("元")){
+			localExcel.setApproveValue(sheet[12].substring(0,sheet[12].indexOf("元")));
 		}else{
-		    localExcel.setApproveValue(sheet[10]);
+		    localExcel.setApproveValue(sheet[12]);
 		}
+		
+		
+		//判断申请金额格式是否正确
+		if(!IsNum(localExcel.getApproveValue())){
+			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
+		}
+		
+		//修改申请金额
+		CustomerApplicationInfo info = new CustomerApplicationInfo();
+		info.setApplyQuota(localExcel.getApproveValue());
+		info.setId(appId);
+		commonDao.updateObject(info);
 		
 		//添加模板
 		commonDao.insertObject(localExcel);
@@ -277,10 +327,14 @@ public class JnpadAddIntoPiecesService {
 	
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId ,String fileName_1) {
-		//本地测试
-		Map<String, String> map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
-		//指定服务器上传
-//		Map<String, String> map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地测试
+			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+		}else{
+			//指定服务器上传
+			map = SFTPUtil.uploadJn(file, customerId);
+		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
 		LocalImage localImage = new LocalImage();
@@ -408,36 +462,45 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlById(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
-			String url = v.getUri();
-			if(url.contains("pccreditFile")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
 				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				String url = v.getUri();
+				if(url.contains("pccreditFile")){
+					UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
+				}else{
+					SFTPUtil.download(response, v.getUri(), v.getAttachment());
+				}
 			}else{
+				//服务器
 				SFTPUtil.download(response, v.getUri(), v.getAttachment());
 			}
-			//服务器
-//			SFTPUtil.download(response, v.getUri(), v.getAttachment());
 		}
 	}
 	
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFile(response,v);
-			//服务器
-//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地
+				this.downLoadFile(response,v);
+			}else{
+				//服务器
+				SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地
-			this.downLoadFileDh(response,v);
-			//服务器
-//			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地
+				this.downLoadFileDh(response,v);
+			}else{
+				//服务器
+				SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	
@@ -529,20 +592,26 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlJns(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-			//服务器
-//			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
+				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}else{
+				//服务器
+				SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	
 	public void downLoadYxzlDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			//本地测试
-			UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-			//服务器
-//			SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地测试
+				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}else{
+				//服务器
+				SFTPUtil.downloadDh(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
+			}
 		}
 	}
 	
@@ -860,10 +929,14 @@ public class JnpadAddIntoPiecesService {
 	}
 	//浏览文件并缓存到服务器目录
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
-		//本地
-		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-//		服务器
-//		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地
+			 map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		}else{
+			//服务器
+			 map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		}
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
@@ -878,10 +951,14 @@ public class JnpadAddIntoPiecesService {
 	
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
-		//本地
-		Map<String, String> map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-		//服务器
-//		Map<String, String> map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		Map<String, String> map  = new HashMap<String, String>();
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			//本地
+			map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
+		}else{
+			//服务器
+			map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
+		}
 		String newFileName = map.get("newFileName");
 		String url = map.get("url");
 		DhApplnAttachmentDetail detail = new DhApplnAttachmentDetail();
