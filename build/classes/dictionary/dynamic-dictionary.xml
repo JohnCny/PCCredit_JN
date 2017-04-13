@@ -260,8 +260,8 @@ WHERE
 		FROM
 			ACCOUNT_MANAGER_PARAMETER P
 	)
-AND A.USER_TYPE = '1'
 AND A.IS_DELETED = '0'
+AND A.USER_TYPE !='0'
 	</dictionary>
 	<dictionary name="ALLMANAGER" title="所有客户经理" timeout="10000">
 		SELECT
@@ -389,6 +389,37 @@ AND A.IS_DELETED = '0'
  		external_id || display_name AS title
 		FROM
  		sys_user WHERE external_id is not null and USER_TYPE in ('1','2')
+	</dictionary>
+	
+	
+	<dictionary name="MANAGERUSERS" title="客户经理" timeout="10000">
+		select '0' as NAME, '请选择' as title
+		  FROM sys_user
+		union
+		select s.id as NAME, s.external_id || s.display_name AS title
+		  from account_manager_parameter m, sys_user s
+		 where s.id = m.user_id
+	</dictionary>
+	
+	<dictionary name="XWTUDUUSERS" title="小微团队" timeout="10000">
+		select '0' as NAME, '请选择' as title
+      FROM sys_user t where user_type ='4'
+    union
+    select s.id as NAME, s.external_id || s.display_name AS title
+      from  sys_user s
+     where s.user_type ='4'
+	</dictionary>
+	
+	<dictionary name="CENTERMANAGERLEVEL" title="中心人员级别"
+		timeout="10000">
+		SELECT
+		A .TYPE_CODE AS NAME,
+		A .TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		Dict_Type = '中心人员级别'
+		ORDER BY  A .TYPE_CODE  ASC
 	</dictionary>
 	
 </dictionaries>

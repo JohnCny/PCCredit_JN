@@ -23,6 +23,9 @@
                  			   <option value=""></option>
                 			    #dict("ALLMANAGER","$!product.assureMeans")
                 			  </select></span></li></span></li>
+							<li><span>支行名称:&nbsp;<select id="orgId" name="orgId">
+									<option value=""></option> #dict("Organizations","$!orgId")
+							</select></span></li>
 							<li><span>开始日期:&nbsp;<input type="text" id="startDate" name="startDate" value='$!date.format("yyyy-MM-dd",$!filter.satrtDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30" /></span>
 							</li>
 							<li><span>结束日期:&nbsp;<input type="text" id="endDate" name="endDate" value='$!date.format("yyyy-MM-dd",$!filter.endDate)' onmouseover="_calendar()" readonly="readonly" maxlength="30" /></span>

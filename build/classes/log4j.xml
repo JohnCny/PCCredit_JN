@@ -3,7 +3,8 @@
 
 <log4j:configuration>
 	<appender name="DEFAULT" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${jboss.server.log.dir}/jrad/jrad.log" />
+		<!-- <param name="File" value="${jboss.server.log.dir}/jrad/jrad.log" /> -->
+		<param name="File" value="/home/jrad/jrad.log" />
 		<param name="Append" value="true" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss,SSS} %5p [%t] %20c{1} %x - %m%n" />
