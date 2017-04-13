@@ -44,6 +44,10 @@
 		<result property="modifiedBy" column="MODIFIED_BY" />
 	</resultMap>
 	
+	<resultMap id="managerChildIdMap" type="com.cardpay.pccredit.manager.web.ManagerBelongMapForm">
+		 <result property="childId" column="child_id" />
+	</resultMap>
+	
 	<select id="findManagerBelongMapByFilter" resultMap="ResultMap" 
 		parameterType="com.cardpay.pccredit.manager.filter.ManagerBelongMapFilter">
 		SELECT * FROM
@@ -175,4 +179,26 @@
          and c.org_id = d.id
          and a.id = #{userId}
 	</select>
+	
+	
+	
+	<select id="findChildId" resultMap="managerChildIdMap">
+		select  mbm.*
+  	    from manager_belong_map mbm
+ 		start with child_id =
+            (select amp.id
+               from manager_belong_map t
+               left join account_manager_parameter amp  on amp.id = t.child_id
+               left join sys_user su ON su.id = amp.user_id    
+              where amp.user_id = #{id}
+             ) 
+		connect by prior child_id = parent_id
+	</select>
+	
+	<select id="findAllManager" resultMap="AccountManagerParameterFormMap">
+		SELECT T.*, s.DISPLAY_NAME
+		FROM ACCOUNT_MANAGER_PARAMETER T
+		LEFT JOIN SYS_USER s ON s.id = T.USER_ID
+	</select>
+	
 </mapper>

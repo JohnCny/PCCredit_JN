@@ -198,12 +198,17 @@ public class CustomerFirsthendController extends BaseController{
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView iframe_4(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_4", request);
-		String customerNm = request.getParameter("id");
+		/*String customerNm = request.getParameter("id");
 		if (StringUtils.isNotEmpty(customerNm)) {
 			List<CIPERSONFAMILY> base = customerInforService.findFamilyByCustId(customerNm);
 			mv.addObject("result", base);
 			mv.addObject("customerNm", customerNm);
-		}
+		}*/
+		String customerNm = RequestHelper.getStringValue(request, ID);
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		List<CIPERSONFAMILY> base = customerInforService.findFamilyByCustId(info.getTyCustomerId());
+		mv.addObject("result", base);
+		mv.addObject("customerNm", customerNm);
 		return mv;
 	}
 	/**
@@ -337,12 +342,17 @@ public class CustomerFirsthendController extends BaseController{
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView showInfoJn(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_11", request);
-		String customerInforId = RequestHelper.getStringValue(request, ID);
+		/*String customerInforId = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(customerInforId)) {
 			CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(customerInforId);
 			mv.addObject("customerInfor", base);
 			mv.addObject("customerNm", base.getId());
-		}
+		}*/
+		String customerInforId = RequestHelper.getStringValue(request, ID);
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerInforId);
+	    CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerInforId);
 		return mv;
 	}
 	
@@ -357,12 +367,17 @@ public class CustomerFirsthendController extends BaseController{
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView iframe_11(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_11", request);
-		String customerNm = request.getParameter("id");
+		/*String customerNm = request.getParameter("id");
 		if (StringUtils.isNotEmpty(customerNm)) {
 			CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(customerNm);
 			mv.addObject("customerInfor", base);
 			mv.addObject("customerNm", base.getId());
-		}
+		}*/
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
 		return mv;
 	}
 	
@@ -437,5 +452,117 @@ public class CustomerFirsthendController extends BaseController{
 			}
 		}
 		return returnMap;
+	}
+	
+	
+	
+	//2017年3月31日 11:46:08 补充
+	/**
+	 * 入保信息
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_13.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_12(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_13", request);
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
+		return mv;
+	}
+	
+	/**
+	 * 工作履历
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_14.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_13(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_14", request);
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
+		return mv;
+	}
+	
+	/**
+	 * 工作履历
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_15.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_14(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_15", request);
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
+		return mv;
+	}
+	
+	/**
+	 * 生产经营状况
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_16.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_15(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_16", request);
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
+		return mv;
+	}
+	
+	
+	/**
+	 * 家庭财产
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_17.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_16(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_17", request);
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
+		return mv;
+	}
+	
+	/**
+	 * 社会关系成员
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_18.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_17(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_18", request);
+		String customerNm = request.getParameter("id");
+		CustomerInfor  info  = customerInforService.findBasicCustomerInformation(customerNm);
+		CIPERSONBASINFO base = customerInforService.findCIPERSONBASINFO(info.getTyCustomerId());
+		mv.addObject("customerInfor", base);
+		mv.addObject("customerNm", customerNm);
+		return mv;
 	}
 }

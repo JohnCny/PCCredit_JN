@@ -44,6 +44,15 @@
 		
 		
 	</resultMap>
+	<resultMap type="com.cardpay.pccredit.jnpad.model.DelayInfoForm" id="delayInfo">
+	    <result property="name" column="chinese_name" />
+	    <result property="cardId" column="card_id" />
+	    <result property="dlaymat" column="dlaymat" />
+		<result property="delayinterestdays" column="delayinterestdays" />
+		<result property="delayamtdays" column="delayamtdays" />
+		<result property="money" column="money" />
+	    
+	</resultMap>
 	<select id="findCountByFilter" resultType="int"
 		parameterType="com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter">
 		select
@@ -170,5 +179,39 @@
 		select  p.id as TypeCode,p.product_name as TypeName
 		from
 		product_attribute p
+	</select>
+	
+	<select id="getDelayInfoByCustomerId" resultMap="delayInfo">
+	    with circle as (
+	     SELECT *
+		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
+	    
+	    select nvl(sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0)),0) AS dlaymat,nvl(sum(a.DELAYINTERESTDAYS),0) AS DELAYINTERESTDAYS,
+		sum(a.money) as money,nvl(sum(a.DELAYAMTDAYS),0) AS DELAYAMTDAYS from circle a, basic_customer_information c
+          where a.custid = c.ty_customer_id
+          and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+         <if test="customerId != null and customerId != '' "> 
+           AND c.id=#{customerId}
+           </if>
+	</select>
+	<select id="getCustomerRiskInfo" resultMap="delayInfo">
+	    with circle as (
+	     SELECT *
+		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
+		          from t_mibusidata T)
+		 WHERE RN = 1
+	    )
+	    
+	    select c.id,c.CARD_ID,c.CHINESE_NAME,c.USER_ID, nvl(sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0)),0) AS dlaymat,nvl(sum(a.DELAYINTERESTDAYS),0) AS DELAYINTERESTDAYS,
+		sum(a.money) as money,nvl(sum(a.DELAYAMTDAYS),0) AS DELAYAMTDAYS from circle a, basic_customer_information c
+          where a.custid = c.ty_customer_id
+          and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+           GROUP BY c.id,c.CARD_ID,c.CHINESE_NAME,c.USER_ID
+           <if test="managerId != null and managerId != '' "> 
+           having c.USER_ID=#{managerId} 
+	   	   </if>
 	</select>
 	</mapper>

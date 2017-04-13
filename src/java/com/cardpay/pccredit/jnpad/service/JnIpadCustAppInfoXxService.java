@@ -25,6 +25,7 @@ import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
 import com.cardpay.pccredit.jnpad.model.JnpadCustomerBianGeng;
+import com.cardpay.pccredit.jnpad.model.NotificationmMessage;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.jnpad.model.RetrainingVo;
 import com.cardpay.pccredit.manager.dao.RetrainingDao;
@@ -121,8 +122,8 @@ public class JnIpadCustAppInfoXxService {
 		return jnIpadCustAppInfoDao.getRewardIncentiveInformation(year,month,id);
 	}
 	
-	public String getReturnPrepareAmountById(int year,int month,String id){
-		return jnIpadCustAppInfoDao.getReturnPrepareAmountById(year,month,id);
+	public String getReturnPrepareAmountById(String id){
+		return jnIpadCustAppInfoDao.getReturnPrepareAmountById(id);
 	}
 	
 	
@@ -232,5 +233,33 @@ public class JnIpadCustAppInfoXxService {
 
 	public void changeIsLook(String id, String cardId) {
 		jnIpadCustAppInfoDao.changeIsLook(id,cardId);
+	}
+
+
+	public void insertShendaiTongzhi(NotificationmMessage notificationmmessage) {
+		commonDao.insertObject(notificationmmessage);
+	}
+
+
+	public List<NotificationmMessage> selectshendaihuitz(String managerId) {
+		String sql="select nm.id, nm.NOTICE_TYPE,nm.NOTICE_CONTENT,nm.IS_CHECK,nm.NOTICE_TITLE,nm.CREATED_BY,nm.CREATED_TIME,nm.MODIFIED_USER,nm.MODIFIED_TIME,"
+				+ "su.display_name as user_id from  notification_message nm inner join sys_user su on su.id =nm.user_id  where notice_type='shendaihui'";
+		if(managerId!=null&&managerId!=""){
+			sql+="and user_id='"+managerId+"' and is_check='0'" ;
+		}
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(NotificationmMessage.class, sql, params);
+	}
+
+
+	public void changeSdhIsLook(String id,String status) {
+		// TODO Auto-generated method stub
+		jnIpadCustAppInfoDao.changeSdhIsLook(id,status);
+	}
+
+
+	public String getSumReturnPrepareAmountById(String userId) {
+		// TODO Auto-generated method stub
+		return jnIpadCustAppInfoDao.getSumReturnPrepareAmountById(userId);
 	}
 }

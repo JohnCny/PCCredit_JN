@@ -79,6 +79,8 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationOther;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationProcess;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationRecom;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetailVo;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.ipad.model.ProductAttribute;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
@@ -4492,5 +4494,39 @@ public class CustomerInforService {
 			customerInforDao.insertFk(filter);
 		}
 	    log.info("******************完成更新放款排名信息********************");
-	}	
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 根据appid 或者每个类型的随机一张图片展示
+	 */
+	public List<QzApplnAttachmentDetailVo> findAttachmentDetail(String appId){
+		/*String sql =    " SELECT  *																									  "+
+						"  FROM (                                                                                                     "+
+						"  select d.*,ROW_NUMBER()OVER(PARTITION BY d.batch_id order by id desc) RN from qz_appln_attachment_detail d "+
+						"         where batch_id in(select b.id from qz_appln_attachment_batch b,qz_appln_attachment_list l           "+
+						"                where l.id = b.att_id and l.application_id ='"+appId+"'               						  "+
+						"                and  b.is_upload ='1')																		  "+
+						"       )WHERE RN=1																							  ";
+		*/
+		String sql  =   " SELECT *                                                                  	  "+
+						"  FROM (select d.*,c.type,name,                                                  "+
+						"               ROW_NUMBER() OVER(PARTITION BY d.batch_id order by d.id desc) RN  "+
+						"          from qz_appln_attachment_detail d ,qz_appln_attachment_batch c         "+
+						"         where batch_id in                                                       "+
+						"               (select b.id                                                      "+
+						"                  from qz_appln_attachment_batch b,                              "+
+						"                       qz_appln_attachment_list  l                               "+
+						"                 where l.id = b.att_id                                           "+
+						"                   and l.application_id = '"+appId+"'     						  "+
+						"                   and b.is_upload = '1')                                        "+
+						"               and c.id = d.batch_id                                             "+
+						"        )                                                                        "+
+						" WHERE RN = 1                                                                    ";
+		List<QzApplnAttachmentDetailVo> list = commonDao.queryBySql(QzApplnAttachmentDetailVo.class, sql, null);
+		return list;
+	}
 }

@@ -77,7 +77,7 @@
 		WHERE C.ID=#{id})
 	</select>
 	<select id="getCustomerIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
-		select 
+		<!-- select 
 		t.id as TypeCode,t.chineseName as TypeName 
 		from 
 		(select b.id as id,b.chinese_name as chineseName
@@ -87,17 +87,30 @@
 		(select distinct(customer_id) as customerId 
 		from 
 		customer_overdue)c
-		on t.id=c.customerId
-	</select>
-	<select id="getProductIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
+		on t.id=c.customerId -->
 		select 
+    		t.id as TypeCode,t.chineseName as TypeName 
+    	from 
+	    (select b.id as id,b.chinese_name as chineseName,b.ty_customer_id as tCustomerId from 
+	    basic_customer_information b where b.user_id=#{userId})t
+	    inner join
+	    (select distinct(CUSTID) as customerId from t_mibusidata_view where (DELAYINTERESTDAYS <![CDATA[ >  ]]> 0 or DELAYAMTDAYS <![CDATA[ >  ]]> 0 ))c
+	    on t.tCustomerId = c.customerId
+	</select>
+	
+	<select id="getProductIdAndName" resultType="com.cardpay.pccredit.system.model.Dict">
+	<!-- 	select 
 		p.id as TypeCode,p.product_name as TypeName
 		from
 		customer_overdue c
 		left join
 		product_attribute p
 		on c.product_id=p.id
-		where c.customer_id=#{customerId}
+		where c.customer_id=#{customerId} -->
+		
+		select  p.id as TypeCode,p.product_name as TypeName
+		from
+		product_attribute p
 	</select>
 	<select id="checkCollectionPlan" resultType="int">
 		select count(*)

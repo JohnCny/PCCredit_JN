@@ -76,9 +76,14 @@
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">$!{tableContent}</div>
       </form>
       <ul class="slt">
-      	<li onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>房产</li>
+   <!-- <li onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>房产</li>
       	<li onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>银行流水</li>
-      	<li onclick="viewIntoYX()" onclick="viewIntoYX()"><img src="${uicasePath}/images/img_01.png"/>车产</li>
+      	<li onclick="viewIntoYX('NO')"><img src="${uicasePath}/images/img_01.png"/>车产</li> -->
+      	
+      	 #foreach($qz in $!QzApplnAttachmentDetailList)
+      		 <li onclick="viewIntoYX('$!qz.type')"><img src="${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJns.json?id=$!qz.id"/>$!qz.name</li>
+      	 #end
+      	 
       </ul>
      
       <div class="submit" style="padding:10px 0 0 10px;">
@@ -194,10 +199,10 @@
 			return str;
 		}
 	});
-	//查看图片
-	function viewIntoYX(){
-		var id = null;
-		var url = contextPath+"/intopieces/intopiecesquery/findPageView.page?id="+id;
+	
+	/*查看图片*/
+	function viewIntoYX(type){
+		var url = contextPath+"/intopieces/intopiecesquery/findPageView.page?id=$!appId"+"&type="+type;
 		Dialog.table(url, "查看图片", "get", null, 700,100);
 	}
   </script>

@@ -33,7 +33,7 @@ public interface JnIpadCustAppInfoXxDao {
 	public int findNotificationCountMessageByFilter(NotificationMessageFilter filter);
 	
 	public String getRewardIncentiveInformation(@Param("year") int year,@Param("month") int month,@Param("id") String id);
-	public String getReturnPrepareAmountById(@Param("year") int year,@Param("month") int month,@Param("id") String id);
+	public String getReturnPrepareAmountById(@Param("id") String id);
 	
 	public CustYunyinVo findYunyinstatus(@Param("userId") String userId);
 	
@@ -44,4 +44,10 @@ public interface JnIpadCustAppInfoXxDao {
 
 
 	public void changeIsLook(@Param("id")String id,@Param("cardId") String cardId);
+
+//改变审贷会通知状态
+	public void changeSdhIsLook(@Param("id")String id, @Param("status")String status);
+
+
+	public String getSumReturnPrepareAmountById(@Param("userId")String userId);
 }

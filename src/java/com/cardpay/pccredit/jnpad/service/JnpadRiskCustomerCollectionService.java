@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.jnpad.dao.JnpadRiskCustomerCollectionDao;
+import com.cardpay.pccredit.jnpad.model.DelayInfoForm;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -75,5 +76,17 @@ public class JnpadRiskCustomerCollectionService {
 	public List<Dict> getProductIdAndName(String customerId) {
 		// TODO Auto-generated method stub
 		 return riskCustomerCollectionDao.getProductIdAndName(customerId);
+	}
+
+//获取客户逾期信息
+	public DelayInfoForm getDelayInfoByCustomerId(String customerId) {
+		// TODO Auto-generated method stub
+		return riskCustomerCollectionDao.getDelayInfoByCustomerId(customerId);
+	}
+
+	//获取客户经理名下客户逾期信息
+	public List<DelayInfoForm> getCustomerRiskInfo(String managerId) {
+		// TODO Auto-generated method stub
+		return riskCustomerCollectionDao.getCustomerRiskInfo(managerId);
 	}
 }
