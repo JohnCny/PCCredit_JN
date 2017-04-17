@@ -1252,6 +1252,10 @@ public class IntoPiecesControl extends BaseController {
 			List<MibusidataForm> forms = intoPiecesService.findMibusidataForm(id);
 			mv.addObject("forms", forms);
 		}*/
+		String appId = request.getParameter("id");
+		String type = request.getParameter("type");
+		List<QzApplnAttachmentDetail> list = intoPiecesService.findAttachmentDetail(appId,type);
+		mv.addObject("QzApplnAttachmentDetail", list);
 		return mv;
 	}
 	

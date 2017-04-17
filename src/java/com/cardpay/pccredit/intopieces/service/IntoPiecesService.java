@@ -46,6 +46,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
 import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
@@ -977,5 +978,21 @@ public class IntoPiecesService {
 	
 	public void saveEvaResult(EvaResult result){
 		intoPiecesComdao.saveEvaResult(result);
+	}
+	
+	
+	public List<QzApplnAttachmentDetail> findAttachmentDetail(String appId,String type){
+		String sql  =   " select d.id                                                                 "+ 
+						"  from qz_appln_attachment_detail d                                          "+ 
+						" where batch_id in                                                           "+ 
+						"       (select b.id                                                          "+ 
+						"          from qz_appln_attachment_batch b, qz_appln_attachment_list l       "+ 
+						"         where l.id = b.att_id                                               "+ 
+						"           and l.application_id = '"+appId+"'         						  "+ 
+						"           and b.is_upload = '1'                                             "+ 
+						"           and b.type = '"+type+"')                                          ";
+
+		List<QzApplnAttachmentDetail> list = commonDao.queryBySql(QzApplnAttachmentDetail.class, sql, null);
+		return list;
 	}
 }

@@ -34,6 +34,8 @@ import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
+import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetailVo;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.intopieces.web.AddIntoPiecesForm;
@@ -172,6 +174,14 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 			}
 			mv.addObject("lock", lock);
 		}
+		
+		/**
+		 * 显示预览图片
+		 * 2017年4月13日 10:13:18
+		 */
+		List<QzApplnAttachmentDetailVo> list = customerInforService.findAttachmentDetail(appId);
+		mv.addObject("QzApplnAttachmentDetailList", list);
+		
 		return mv;
 	}
 	
