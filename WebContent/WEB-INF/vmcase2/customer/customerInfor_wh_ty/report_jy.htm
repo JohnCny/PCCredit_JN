@@ -81,7 +81,7 @@
       	<li onclick="viewIntoYX('NO')"><img src="${uicasePath}/images/img_01.png"/>车产</li> -->
       	
       	 #foreach($qz in $!QzApplnAttachmentDetailList)
-      		 <li onclick="viewIntoYX('$!qz.type')"><img src="${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJns.json?id=$!qz.id"/>$!qz.name</li>
+      		 <li onclick="viewIntoYX('$!qz.type')"><img src="${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJn.json?id=$!qz.id"/>$!qz.name</li>
       	 #end
       	 
       </ul>
@@ -202,7 +202,8 @@
 	/*查看图片*/
 	function viewIntoYX(type){
 		var url = contextPath+"/intopieces/intopiecesquery/findPageView.page?id=$!appId"+"&type="+type;
-		Dialog.table(url, "查看图片", "get", null, 700,140);
+		//Dialog.table(url, "查看图片", "get", null, 700,140);
+		window.open(url,"newwindow");
 	}
   </script>
    <script src="${contextPath}/js/customerInfor/customer_infor.js"></script>
