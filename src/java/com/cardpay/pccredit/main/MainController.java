@@ -216,6 +216,7 @@ public class MainController {
 		mv.addObject("daily_task_message",rightHomeData.get("daily_task_message"));
 		mv.addObject("repay_loan_remind_message",rightHomeData.get("repay_loan_remind_message"));
 		mv.addObject("yq_remind_message",rightHomeData.get("yq_remind_message"));
+		mv.addObject("dh_remind_message",rightHomeData.get("dh_remind_message"));
 		
 		/*奖励激励状况*/
 		mv.addObject("reward",rightHomeData.get("reward"));
@@ -297,6 +298,9 @@ public class MainController {
 		/*逾期通知*/
 		int yq_remind_message = customerApplicationInfoService.findYqLoanCount(userId);
 		
+		/*贷后通知*/
+		int dh_remind_message = customerApplicationInfoService.findDhLoanCount(userId);
+		
 		rightHomeData.put("UserApplicationInfo", application_info_size);
 		rightHomeData.put("UserApplicationSuccess", application_success_size);
 		rightHomeData.put("UserApplicationNopass", application_nopass_size);
@@ -307,6 +311,7 @@ public class MainController {
 		rightHomeData.put("daily_task_message", daily_task_message);
 		rightHomeData.put("repay_loan_remind_message", repay_loan_remind_message);
 		rightHomeData.put("yq_remind_message", yq_remind_message);
+		rightHomeData.put("dh_remind_message", dh_remind_message);
 		
 		/*奖励激励状况*/
 		Calendar c = Calendar.getInstance();

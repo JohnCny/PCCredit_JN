@@ -162,7 +162,7 @@
 			var url = "${modulePath}/removeRisk.json";
 			if ($(".checkbox :checked").length == 1) {
 				var id = $($(".checkbox :checked")[0]).attr("value");
-				Dialog.confirm("确定要处理吗？", "提示",
+				Dialog.confirm("确定要移出风险名单吗？", "提示",
 		     		function() {
 		     			$.ajax({
 		      				url : url,

@@ -59,6 +59,19 @@ public class WeeklyAccountManagerController extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String loginId = user.getId();
 		filter.setLoginId(loginId);
+		
+	    String startDate =null;
+	    String endDate =null;
+	    if(!StringUtils.isEmpty(filter.getActionTime())){
+	    	startDate = filter.getActionTime()+ " 00:00:00";
+	    }
+	    
+	    if(!StringUtils.isEmpty(filter.getActionTime())){
+	    	endDate = filter.getActionTime()+ " 23:59:59";
+	    }
+	    filter.setEndDate(endDate);
+	    filter.setStartDate(startDate);
+		
 		QueryResult<WeeklyAccountManagerForm> result = weeklyAccountService.findWeeklyAccountManagersByFilter(filter);
 		JRadPagedQueryResult<WeeklyAccountManagerForm> pagedResult = new JRadPagedQueryResult<WeeklyAccountManagerForm>(filter, result);
 		JRadModelAndView mv = new JRadModelAndView("/manager/weekreport/week_browse", request);

@@ -143,4 +143,11 @@ public class CustomerApplicationInfoService {
 	 public int findYqLoanCount(String userId){
 		 return customerApplicationInfoDao.findYqLoanCount(userId);
 	 }
+	 
+	 /**
+	  * 统计贷后通知
+	  */
+	 public int findDhLoanCount(String userId){
+		 return customerApplicationInfoDao.findDhLoanCount(userId);
+	 }
 }
