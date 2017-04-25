@@ -156,22 +156,22 @@ public class ManagerkhglController extends BaseController{
 				if(Integer.parseInt(score)<=55){
 				   message ="得分"+score+"分,不予授信";
 				   
-				}else if(Integer.parseInt(score)>56&&Integer.parseInt(score)<=60){
+				}else if(Integer.parseInt(score)>=56&&Integer.parseInt(score)<=60){
 				   message ="得分"+score+"分,拟授信额度上限5万";
 				   
-				}else if(Integer.parseInt(score)>61&&Integer.parseInt(score)<=65){
+				}else if(Integer.parseInt(score)>=61&&Integer.parseInt(score)<=65){
 				   message ="得分"+score+"分,拟授信额度上限8万";
 				   
-				}else if(Integer.parseInt(score)>66&&Integer.parseInt(score)<=70){
+				}else if(Integer.parseInt(score)>=66&&Integer.parseInt(score)<=70){
 				   message ="得分"+score+"分,拟授信额度上限13万";
 				   
-				}else if(Integer.parseInt(score)>71&&Integer.parseInt(score)<=75){
+				}else if(Integer.parseInt(score)>=71&&Integer.parseInt(score)<=75){
 				   message ="得分"+score+"分,拟授信额度上限16万";
 				   
-				}else if(Integer.parseInt(score)>76&&Integer.parseInt(score)<=80){
+				}else if(Integer.parseInt(score)>=76&&Integer.parseInt(score)<=80){
 				   message ="得分"+score+"分,拟授信额度上限20万";
 				   
-				}else if(Integer.parseInt(score)>81&&Integer.parseInt(score)<=85){
+				}else if(Integer.parseInt(score)>=81&&Integer.parseInt(score)<=85){
 				   message ="得分"+score+"分,拟授信额度上限25万";
 					   
 				}else if(Integer.parseInt(score)>85&&Integer.parseInt(score)<=90){
