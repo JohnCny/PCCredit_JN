@@ -392,7 +392,7 @@
 				if ($(".checkbox :checked").length == 1) {
 					var rowid = $("input[name='checkbox']:checked").val();
 					 if(rowid.split("@")[6]!='returnedToFirst'){
-						 Dialog.message("审核状态非退回至客户经理!");
+						 Dialog.message("审核状态非【退回至客户经理】!");
 						return; 
 					 }
 					Dialog.confirm("确定要处理吗？", "提示",

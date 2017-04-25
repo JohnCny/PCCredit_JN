@@ -71,6 +71,19 @@ public class WeeklyAccountManagerFuzerenController extends BaseController {
 		filter.setLoginId(loginId);
 		Organization org =  organizationService.findOrgByUserId(loginId);
 		String orgId =  org.getId();
+		
+		String startDate =null;
+        String endDate =null;
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	startDate = filter.getActionTime()+ " 00:00:00";
+        }
+        
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	endDate = filter.getActionTime()+ " 23:59:59";
+        }
+        filter.setEndDate(endDate);
+        filter.setStartDate(startDate);
+	        
 		List<User> users = accountManagerRetrainingService.findUserListByOrgId(orgId);
 		JRadModelAndView mv = new JRadModelAndView("/manager/weekreport/week_browse_fuzeren", request);
 		if(user.getUserType() ==2){

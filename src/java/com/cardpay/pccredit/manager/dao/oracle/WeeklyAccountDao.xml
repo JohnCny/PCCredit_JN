@@ -47,6 +47,13 @@
 		AND w.CUSTOMER_MANAGER_ID = s. ID
 		
 		AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		
+		<if test="startDate != null and startDate != '' ">
+			AND w.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND w.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
 
 		order by w.CREATED_TIME DESC
 		 <![CDATA[		
@@ -75,6 +82,12 @@
 		AND w.CUSTOMER_MANAGER_ID = s. ID
 		
 		AND w.CUSTOMER_MANAGER_ID = #{loginId}
+		<if test="startDate != null and startDate != '' ">
+			AND w.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND w.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
 		)
 	</select>
 	<!-- 点击下属客户经理周报 -->
@@ -103,6 +116,13 @@
 				     #{item}
 		    </foreach>
 		</if> -->
+		
+		<if test="startDate != null and startDate != '' ">
+			AND w.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND w.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
 		
 		<if test="customerManagerIds != null and customerManagerIds != '' ">  
 		  	AND s.id in  
@@ -162,6 +182,13 @@
 		    </foreach>
 		</if> -->
 		
+		<if test="startDate != null and startDate != '' ">
+			AND w.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND w.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
+		
 		<if test="customerManagerIds != null and customerManagerIds != '' ">  
 		  	AND s.id in  
 			<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
@@ -213,6 +240,12 @@ ORDER BY
  		<if test="displayName != null and displayName != '' ">
 			AND s.DISPLAY_NAME=#{displayName}
 		</if>
+		<if test="startDate != null and startDate != '' ">
+			AND w.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND w.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
 AND w.CUSTOMER_MANAGER_ID = s. ID
 		<!-- AND (
 		 w.CUSTOMER_MANAGER_ID IN (
@@ -262,6 +295,12 @@ ON   org.id= aa.orgId
  <if test="displayName != null and displayName != '' ">
 			AND s.DISPLAY_NAME=#{displayName}
 		</if>
+		<if test="startDate != null and startDate != '' ">
+			AND w.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>
+	    <if test="endDate != null and endDate != '' ">
+			AND w.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+		</if>   
 AND w.CUSTOMER_MANAGER_ID = s. ID
 		<!-- AND (
 		 w.CUSTOMER_MANAGER_ID IN (

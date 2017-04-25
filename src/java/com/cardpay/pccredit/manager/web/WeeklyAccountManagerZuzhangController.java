@@ -89,6 +89,18 @@ public class WeeklyAccountManagerZuzhangController extends BaseController {
 				
 		}*/
 		
+		String startDate =null;
+        String endDate =null;
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	startDate = filter.getActionTime()+ " 00:00:00";
+        }
+        
+        if(!StringUtils.isEmpty(filter.getActionTime())){
+        	endDate = filter.getActionTime()+ " 23:59:59";
+        }
+        filter.setEndDate(endDate);
+        filter.setStartDate(startDate);
+		
 		//查询客户经理
 		List<AccountManagerParameterForm> forms = maintenanceService.findSubListManagerByManagerId(user);
 		String customerManagerId = filter.getCustomerManagerId();

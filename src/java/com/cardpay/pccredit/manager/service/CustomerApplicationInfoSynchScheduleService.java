@@ -6,9 +6,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
@@ -277,6 +279,22 @@ public class CustomerApplicationInfoSynchScheduleService {
 		
 		//获得当月的还款日期
 		String repaydate = year_1+"-"+month_1+"-"+loanDate.substring(8, 10);
+		
+		/*2017年4月21日13:56:30 update*/
+		
+		//还款-1
+		Calendar calendar_1 = Calendar.getInstance();
+		calendar_1.set(Integer.parseInt(repaydate.substring(0, 4)),
+				     Integer.parseInt(repaydate.substring(5, 7))-1, 
+				     Integer.parseInt(repaydate.substring(8, 10))-1);
+	    String year = calendar_1.get(Calendar.YEAR)+"";
+		String month = calendar_1.get(Calendar.MONTH)+1+"";
+		String day = calendar_1.get(Calendar.DATE)+"";
+		
+		if(day.length()==1){day = "0"+day;}
+		if(month.length()==1){month = "0"+month;}
+		repaydate = year+"-"+month+"-"+day;
+		
 		return repaydate;
 	}
 	

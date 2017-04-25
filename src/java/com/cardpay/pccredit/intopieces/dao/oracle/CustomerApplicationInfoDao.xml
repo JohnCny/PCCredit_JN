@@ -298,4 +298,12 @@
    <select id="findYqLoanCount" resultType="int">
 	  select count(*) from yqdktjbb a where a.id = #{userId} 
    </select>
+   
+    <select id="findDhLoanCount" resultType="int">
+		  select count(*)
+	  from customer_application_info info, basic_customer_information basic
+	 where info.customer_id = basic.id
+	   and basic.user_id = #{userId}
+	   and info.status = 'end'
+   </select>
 </mapper>
