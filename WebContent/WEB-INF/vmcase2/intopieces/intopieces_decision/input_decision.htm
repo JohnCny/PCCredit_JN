@@ -60,8 +60,12 @@
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td>
               <td class="titlefc3">拟授信额度（万元）：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.money</span></td>
-              <td class="titlefc3">未评估项/总项：</td>
-              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td>
+              <!-- <td class="titlefc3">未评估项/总项：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td> -->
+              #if($!evaResult.result =='禁止')
+              <td class="titlefc3">拒绝原因：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.refuseReason</span></td>
+              #end
             </tr>
           </table>
 	     </div>	 

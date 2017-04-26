@@ -25,6 +25,15 @@ public class EvaResult extends BusinessModel {
 	 private String  money;
 	 private String  project;
 	 private String  liveScore;
+	 private String refuseReason;
+	 
+	 
+	public String getRefuseReason() {
+		return refuseReason;
+	}
+	public void setRefuseReason(String refuseReason) {
+		this.refuseReason = refuseReason;
+	}
 	public String getExcelId() {
 		return excelId;
 	}
