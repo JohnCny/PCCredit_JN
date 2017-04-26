@@ -152,55 +152,21 @@
 		
 		$("#id_next_button").click(function() {
 		     /*ApplicantInfoVo*/
+		     
 		     var cardNo =  $('#cardNo').val();
 			 if(cardNo == ''){
 				Dialog.message("请输入[身份证号]!");
 				$("#sfz").css({color:"red"})
 		        return; 
 			 }
+			 
    			 var cname =  $('#cname').val();
    			 if(cname == ''){
  				Dialog.message("请输入[姓名]!");	
 				$("#xm").css({color:"red"})
  		        return; 
  			 }
-   			 var sex   =  $('#sex').val();
-   			 if(sex == ''){
- 				Dialog.message("请输入[性别]!");	
-				$("#xb").css({color:"red"})
- 		        return; 
- 			 }
-   			 var domicileLocation =  $('#domicileLocation').val();
-   			 if(domicileLocation == ''){
- 				Dialog.message("请输入[户籍所在地]!");	
-				$("#hjsz").css({color:"red"})
- 		        return; 
- 			 }
-   			 var address =  $('#address').val();
-   			 if(address == ''){
-  				Dialog.message("请输入[详细地址]!");	
-				$("#xxdz").css({color:"red"})
-  		        return; 
-  			 }
-   			 var phoneNo =  $('#phoneNo').val();
-   			 if(phoneNo == ''){
-  				Dialog.message("请输入[电话]!");	
-				$("#dh").css({color:"red"})
-  		        return; 
-  			 }
-   		
-   			 var companyAddress  =  $('#companyAddress').val();
-   			 if(companyAddress == ''){
-  				Dialog.message("请输入[店铺/企业地址]!");	
-				$("#qydz").css({color:"red"})
-  		        return; 
-  			 }
-   			 var industry =  $('#industry').val();
-   			 if(industry == ''){
-  				Dialog.message("请输入[所属行业]!");	
-				$("#sshy").css({color:"red"})
-  		        return; 
-  			 }
+   			 
    			 /*ApplicantInfoVo*/
    			 
 			 
