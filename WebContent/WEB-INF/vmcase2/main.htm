@@ -4,82 +4,190 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="${uicasePath}/css/css.css" />
-<link rel="stylesheet" type="text/css" href="${uicasePath}/css/jquery-ui-1.10.3.custom.css" />
-<script type="text/javascript" src="${contextPath}/common/js/common/json2.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="${uicasePath}/css/jquery-ui-1.10.3.custom.css" />
+<script type="text/javascript"
+	src="${contextPath}/common/js/common/json2.js"></script>
 <script src='${contextPath}/common/js/common/jquery.min.js'></script>
-<script src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
+<script
+	src="${contextPath}/common/js/common/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="${contextPath}/common/js/common/common.js"></script>
 <script src="${contextPath}/common/js/common/dialog.js"></script>
 <script src='${contextPath}/common/js/common/lhgcalendar.js'></script>
-<script type="text/javascript" src="${uicasePath}/js/common/windowInfo.js"></script>
+<script type="text/javascript"
+	src="${uicasePath}/js/common/windowInfo.js"></script>
 <script type="text/javascript" src="${uicasePath}/js/common/menu.js"></script>
 <title>#i18n("window.title")</title>
+<style type="text/css">
+	#ltjl{background: #1c1c1c; width:300px; position: fixed; right:-300px; top:0px; bottom: 0px;}
+	#ltjl .pull-right{cursor:pointer;width:15px;height:75px;position:absolute;top:50%;margin-top:-37.5px;z-index:100;}
+	#ltjl .pull-right img{height:13px;margin-left:1px;margin-top:30px;}
+	#ltjl h1{color:#fff;font-size:16px;padding-top:10px;padding-left:30px;}
+	
+	/*.jlSearch{width:275px;height:40px;position:absolute;left:15px;right:10px;top:40px;background:#000;}
+	.jlSearch input{width:235px;height:40px;border:none;color:#fff;background:#4d4d4d;font-size:14px;line-height:40px;padding-left:5px;}
+	.jlSearch input:hover,.jlSearch input:focus{border:none;}
+	.jlSearch span{cursor:pointer;position:absolute;left:235px;width:40px;height:40px;background:#4d4d4d url(${uicasePath}/images/search.png) no-repeat right center;}*/
+	
+	
+	.spjl{background:#2e2e2e;width:275px;position:absolute;top:40px;left:15px;bottom:100px;right:10px;overflow:auto;}
+	.spjl div{width:90%;margin:0 auto;padding:5px;border-bottom:1px dashed #1c1c1c;}
+	.spjl p{color:#a9a9a9;}
+	.spjl .own p{text-align:right;color:#fff;}
+	.spjl p img{height:25px;width:25px;}
+	
+	
+	.fb{width:275px;height:80px;position:absolute;left:15px;right:10px;bottom:10px;}
+	.fb textarea{width:270px;resize:none;height:50px;border:none;color:#fff;font-family:"Microsoft YaHei";background:#626262;font-size:13px;padding-left:5px;}
+	.fb input:hover,.jlSearch input:focus{border:none;}
+	.fb span{cursor:pointer;position:absolute;right:0px;width:91px;height:30px;background:#e73c32;color:#e5e5e5;line-height:30px;text-align:center;}
+	/*a  upload */
+	.image {width:90px;height:30px;position: relative; margin-right:2px;cursor: pointer;background:#3a3a3a url(${uicasePath}/images/sctp.png) no-repeat center;overflow: hidden;display: inline-block;*display: inline;*zoom: 1}
+	.image:hover {background-image:url(${uicasePath}/images/sctp_h.png);}
+	.music{background-image:url(${uicasePath}/images/scyp.png);}
+	.music:hover{background-image:url(${uicasePath}/images/scyp_h.png);}
+	
+	#scDiv{position:absolute;right:10px;left:15px;bottom:90px;height:300px;background:#3a3a3a;padding:12px;display:none;}
+	#scDiv input{color:#939393;padding:10px;}
+	#scDiv .image {width:50px;height:50px;margin-bottom:5px;position: relative; margin-right:2px;cursor: pointer;background:#000 url(${uicasePath}/images/sctp.png) no-repeat center;overflow: hidden;display: inline-block;*display: inline;*zoom: 1}
+	#scDiv .image img{width:50px;height:50px;}
+	#scDiv .image input {position: absolute;font-size: 100px;right: 0;top: 0;opacity: 0;filter: alpha(opacity=0);cursor: pointer}
+	#scDiv #yp .image{background-image:url(${uicasePath}/images/scyp.png)}
+</style>
 </head>
 #parse ("common/main_header.htm")
 
 <div class="content" style="background-color: #f5f5f5;">
-  #set ($menuList = $session.getAttribute("menuList")) 
-  #set($num=0)
-  <div class="left_nav" id="leftNav" style="height: 500px;overflow:auto"> 
-    <div class="sidebar">
-      <ul class="sidelist">
-        #foreach($menu in $!menuList) 
-	        #if($menu.layer==2 && $menu.url && $menu.url != "" )
-	        #if($menu.id == "020000" )
-        <li class="category1 select">
-        <a href="${contextPath}$menu.url" target="backStageManagement" style="*padding-left: 0px; font-size: 14px;">
-          <span class=""><img src="${uicasePath}/$menu.img" />
-         $menu.title</span></a>
-        </li>
-           #else
-         <li class="category1">
-         <a href="${contextPath}$menu.url" target="backStageManagement" style="*padding-left: 0px; font-size: 14px;">
-          <span class=""><img src="${uicasePath}/$menu.img" />
-         $menu.title</span></a>
-        </li>
-          #end  
-	        #elseif($menu.layer==2) 
-		        #if($num==1)
-			      </ul>
-			      </li>
-			      #set($num=0) 
-		        #end
-		        <li class="category">
-		        <span class="list">$menu.title</span> 
-		        #if($num==0)
-		        <ul>
-		        <div>
-		          #set($num=1) 
-		          #end 
-	          #else
-		          <li class="sub">
-		            <a href="${contextPath}$menu.url" target="backStageManagement" title='$menu.title'>$menu.title</a>
-		          </li>
-	          #end 
-          #end 
-          
-         #if($num==1)
-         </div>
-	        </ul>
-	        #set($num=0) 
-        #end
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="content_main" style="background-color: #fff;">
-    <div class="contentinner_ifram">
-      <iframe id="backStageManagement" width="100%" height="556" frameborder="0" marginheight="0" marginwidth="0"
-        src="${contextPath}/home.page" name="backStageManagement" allowtransparency="true"
-        onload="this.height=this.contentWindow.document.body.scrollHeight"
-        style="height: 510px; width: 1146px; overflow: visible;"></iframe>
-    </div>
-  </div>
+	#set ($menuList = $session.getAttribute("menuList")) #set($num=0)
+	<div class="left_nav" id="leftNav"
+		style="height: 500px; overflow: auto;position:relative;">
+		<div class="sidebar">
+			<ul class="sidelist">
+				#foreach($menu in $!menuList) #if($menu.layer==2 && $menu.url &&
+				$menu.url != "" ) #if($menu.id == "020000" )
+				<li class="category1 select"><a href="${contextPath}$menu.url"
+					target="backStageManagement"
+					style="*padding-left: 0px; font-size: 14px;"> <span class=""><img
+							src="${uicasePath}/$menu.img" /> $menu.title</span></a></li> #else
+				<li class="category1"><a href="${contextPath}$menu.url"
+					target="backStageManagement"
+					style="*padding-left: 0px; font-size: 14px;"> <span class=""><img
+							src="${uicasePath}/$menu.img" /> $menu.title</span></a></li> #end
+				#elseif($menu.layer==2) #if($num==1)
+			</ul>
+			</li> #set($num=0) #end
+			<li class="category"><span class="list">$menu.title</span>
+				#if($num==0)
+				<ul>
+					<div>
+						#set($num=1) #end #else
+						<li class="sub"><a href="${contextPath}$menu.url"
+							target="backStageManagement" title='$menu.title'>$menu.title</a>
+						</li> #end #end #if($num==1)
+					</div>
+				</ul> #set($num=0) #end</li>
+			</ul>
+		</div>
+	</div>
+	<div class="content_main" style="background-color: #fff;position:relative;">
+		<div class="contentinner_ifram">
+			<iframe id="backStageManagement" width="90%" height="556"
+				frameborder="0" marginheight="0" marginwidth="0"
+				src="${contextPath}/home.page" name="backStageManagement"
+				allowtransparency="true"
+				onload="this.height=this.contentWindow.document.body.scrollHeight"
+				style="height: 510px; width: 1146px; overflow: visible;"></iframe>
+		</div>
+	</div>
+	<div id="ltjl">
+		<div class="pull-right" onclick="hideLtjl()"><img src="${uicasePath}/images/right.png"/></div>
+		<h1>在线审批记录</h1>
+		<!--  <div class="jlSearch">
+			<input type="text" style=""/>
+			<span></span>
+		</div>-->
+		<div class="spjl">
+			<div>
+				<p>李丽&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>
+			<div class="own">
+				<p>我自己&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>
+			<div>
+				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>
+			<div>
+				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>			
+			<div class="own">
+				<p>我自己&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>					
+			<div class="own">
+				<p>我自己&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p style="color:#71aaf7">上传图片</p>
+				<p>
+					<img src="${uicasePath}/images/img_01.png"/>
+					<img src="${uicasePath}/images/img_01.png"/>
+					<img src="${uicasePath}/images/img_01.png"/>
+					<img src="${uicasePath}/images/img_01.png"/>
+				</p>
+			</div>
+			<div>
+				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>				
+			<div>
+				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>			
+			<div>
+				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p>审批记录审批记录审批记录审批记录</p>
+			</div>			
+			<div>
+				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
+				<p style="color:#4dffba">上传语音</p>
+				<p><img src="${uicasePath}/images/music.png"/></p>
+			</div>	
+		</div>
+		<div class="fb">
+			<textarea placeholder="文字信息"></textarea>
+			<a href="javascript:;" class="image"></a><a href="javascript:;" class="image music"></a>
+			<span>上传</span>
+		</div>
+		
+		<div id="scDiv">
+			<!-- <div id="tp">
+				<a href="javascript:;" class="image"><input type="file" onchange="setImage(this)"/></a>
+			</div>
+			<div id="yp">
+				<a href="javascript:;" class="image"><input type="file" onchange="setMusic(this)"/></a>
+			</div> -->
+		</div>
+	</div>
 </div>
 
 #parse ("common/footer.htm")
 
 <script type="text/javascript">
+	function setImage(obj){
+		if($(obj).val()!=""){
+			$(obj).parent().html("<img src='${uicasePath}/images/img_01.png'/>")
+			$("#tp").append("&nbsp;<a href='javascript:;' class='image'><input type='file' onchange='setImage(this)'/></a>&nbsp;");
+		}
+	}
+	function setMusic(obj){
+		if($(obj).val()!=""){
+			$(obj).parent().html("<img src='${uicasePath}/images/img_01.png'/>")
+			$("#yp").append("&nbsp;<a href='javascript:;' class='image'><input type='file' onchange='setImage(this)'/></a>&nbsp;");
+		}
+		
+	}
 	var menu = new ULMenu("#leftNav");
 	var currentWindow = new WindowInfo(menu);
 	$(document).ready(function() {
@@ -90,8 +198,16 @@
 		document.getElementById("weekDayText").innerHTML = weekDayTextStr;
 
 		showDate();
-	
+
 	})
+	function hideLtjl(){//隐藏在线审批记录
+		$(".left_nav").animate({left:"0px"},200);
+		$(".content_main").animate({left:"0px"},200);
+		
+		$("#backStageManagement").contents().find(".content_main").css("width","97.5%")
+		$("#ltjl").animate({right:"-300px"},200);
+		
+	}
 </script>
 
 </body>
