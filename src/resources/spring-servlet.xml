@@ -96,6 +96,7 @@
 				<property name="exclude"> <!-- 不需要验证的Url -->
 					<list>
 						<value>/login.json</value>
+						<value>/ws.htm</value>
 					</list>
 				</property>
 				<property name="excludeContains">

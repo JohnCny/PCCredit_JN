@@ -61,4 +61,5 @@
 
 	<bean id="singleTableDynamicDao" class="com.wicresoft.jrad.framework.dynamic.singletable.SingleTableDynamicDao" />
 	<bean id="singleTableDynamicService" class="com.wicresoft.jrad.framework.dynamic.singletable.SingleTableDynamicService" />
+	
 </beans>
