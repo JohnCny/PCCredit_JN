@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.intopieces.dao.ChatMessageDao" >
+
+ 	<resultMap id="ChatMessageResultMap" type="com.cardpay.pccredit.intopieces.model.ChatMessage">
+		<result property="id" column="id" />
+		<result property="applicationId" column="application_id" />
+		<result property="msgType" column="msg_type" />
+		<result property="msgContent" column="msg_content" />
+		<result property="resourceUrl" column="resource_url" />
+		<result property="createdBy" column="createdBy" />
+		<result property="createdTime" column="created_time" />
+	</resultMap>
+	
+	<select id="findByApplicationId" resultMap="ChatMessageResultMap">
+					SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select * from CHAT_MESSAGE  t where t.application_id = #{applicationId}
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findCountByApplicationId" resultType="int">
+		  select count(*) from CHAT_MESSAGE t where t.application_id = #{applicationId}
+	</select>
+	
+</mapper>
