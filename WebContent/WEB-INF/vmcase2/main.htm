@@ -99,6 +99,7 @@
 				style="height: 510px; width: 1146px; overflow: visible;"></iframe>
 		</div>
 	</div>
+	
 	<div id="ltjl">
 		<div class="pull-right" onclick="hideLtjl()"><img src="${uicasePath}/images/right.png"/></div>
 		<h1>在线审批记录</h1>
@@ -106,8 +107,8 @@
 			<input type="text" style=""/>
 			<span></span>
 		</div>-->
-		<div class="spjl">
-			<div>
+		<div class="spjl" >
+			<!-- <div>
 				<p>李丽&nbsp;（2017-04-25&nbsp;10:00）</p>
 				<p>审批记录审批记录审批记录审批记录</p>
 			</div>
@@ -153,15 +154,20 @@
 				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
 				<p style="color:#4dffba">上传语音</p>
 				<p><img src="${uicasePath}/images/music.png"/></p>
-			</div>	
+			</div>	 -->
+			<textarea  id="responseText" style="width: 500px; height: 650px;"></textarea>
+			<canvas id="myCanvas" width="400px" height="500px">myCanvas</canvas>    
+			<canvas id="yourCanvas" width="400px" height="500px">yourCanvas</canvas>    
+			<div id="chatdiv" width="400px" height="500px">chatdiv</div>
 		</div>
 		<div class="fb">
-			<textarea placeholder="文字信息"></textarea>
-			<a href="javascript:;" class="image"></a><a href="javascript:;" class="image music"></a>
-			<span>上传</span>
+	        <textarea name="message" id ="message" placeholder="输入聊天内容"></textarea>
+	        <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a>
+			<span id ="send" >发送</span>
 		</div>
 		
 		<div id="scDiv">
+		    <input type="hidden" id="loginUserId" value="$!user.id"/>
 			<!-- <div id="tp">
 				<a href="javascript:;" class="image"><input type="file" onchange="setImage(this)"/></a>
 			</div>
@@ -170,6 +176,7 @@
 			</div> -->
 		</div>
 	</div>
+	
 </div>
 
 #parse ("common/footer.htm")
@@ -208,6 +215,55 @@
 		$("#ltjl").animate({right:"-300px"},200);
 		
 	}
+</script>
+
+<script type="text/javascript" src="${contextPath}/common/js/common/swfobject.js"></script>
+<script type="text/javascript" src="${contextPath}/common/js/common/web_socket.js"></script>
+<script type="text/javascript">
+		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
+		var ws;
+		
+		
+		$(document).ready(function() {
+			ws = new WebSocket("ws://192.168.3.252:10088/ws");
+			ws.onopen = function() {
+				var ta = document.getElementById('responseText');
+				ta.value = "连接开启!";
+			};
+			ws.onmessage = function(e) {
+				if(e.data instanceof ArrayBuffer){  
+					//图片
+	            }else{  
+	            	var ta = document.getElementById('responseText');
+					ta.value = ta.value + '\n' + e.data
+	            }  
+			};
+			ws.onclose = function() {
+				var ta = document.getElementById('responseText');
+				ta.value = "连接开启!";
+			};
+			ws.onerror = function() {
+				var ta = document.getElementById('responseText');
+				ta.value = ta.value + "连接被关闭";
+			};
+		});
+		
+
+		function onSend(message) {
+			message = $("#loginUserId").val() + message;
+			ws.send(message);
+		}
+		
+		
+		// span click send msg
+		document.getElementById('send').onclick=function(){
+			if($("#message").val()== ''){
+				window.top.Dialog.message("发送内容不能为空,请重新输入");
+				return;
+			}
+			onSend($("#message").val());
+			$("#message").val("");
+		}
 </script>
 
 </body>

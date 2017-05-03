@@ -43,6 +43,7 @@ import com.cardpay.pccredit.riskControl.dao.NplsInfomationDao;
 import com.cardpay.pccredit.riskControl.service.CustomerOverdueService;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.system.service.SystemUserService;
+import com.cardpay.pccredit.websocket.WebsocketChatServer;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.enviroment.GlobalSetting;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
@@ -150,6 +151,13 @@ public class MainController {
 	public AbstractModelAndView indexPage(HttpServletRequest request) {
 
 		//JRadModelAndView mv = new JRadModelAndView("home/home", request);
+		// run websocket chat
+		//		try {
+		//			new WebsocketChatServer(8089).run();
+		//		} catch (Exception e) {
+		//			e.printStackTrace();
+		//		}
+		//		
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 		String rolename = user.getRoles().get(0).getName();

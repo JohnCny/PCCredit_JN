@@ -15,9 +15,11 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.cardpay.pccredit.customer.model.TyCustomerMove;
 import com.cardpay.pccredit.manager.model.DailyAccountManager;
 import com.cardpay.pccredit.manager.model.WeeklyAccountManager;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.util.date.DateHelper;
 
@@ -226,5 +228,9 @@ public class DailyReportScheduleService {
 		String sql = "select * from dict where dict_type = '61.34.0.34' ";
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
 		return PARAM;
+	}
+	
+	public SystemUser  queryCustomer(String id) {
+		return commonDao.findObjectById(SystemUser.class,id);
 	}
 }
