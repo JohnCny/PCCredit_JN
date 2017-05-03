@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+Netty WebSocket 时间服务器
+</head>
+<br>
+<body>
+	<br>
+
+	<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+	<script type="text/javascript"
+		src="${contextPath}/common/js/common/swfobject.js"></script>
+	<script type="text/javascript"
+		src="${contextPath}/common/js/common/web_socket.js"></script>
+	<script type="text/javascript">
+		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
+		var ws;
+
+		function init() {
+			// Connect to Web Socket.
+			// Change host/port here to your own Web Socket server.
+			ws = new WebSocket("ws://192.168.3.12:10088/websocket");
+			// Set event handlers.
+			ws.onopen = function() {
+				alert(111);
+				output("onopen");
+			};
+			ws.onmessage = function(e) {
+				// e.data contains received string.
+				output("onmessage: " + e.data);
+			};
+			ws.onclose = function() {
+				output("onclose");
+			};
+			ws.onerror = function() {
+				output("onerror");
+			};
+		}
+
+		function onSend() {
+			var input = document.getElementById("input");
+			// You can send message to the Web Socket using ws.send.
+			ws.send(input.value);
+			output("send: " + input.value);
+			input.value = "";
+			input.focus();
+		}
+
+		function onCloseClick() {
+			ws.close();
+		}
+
+		function output(str) {
+			var log = document.getElementById("log");
+			var escaped = str.replace(/&/, "&amp;").replace(/</, "&lt;")
+					.replace(/>/, "&gt;").replace(/"/, "&quot;"); // "
+			log.innerHTML = escaped + "<br>" + log.innerHTML;
+		}
+	</script>
+</head>
+<body onload="init();">
+	<form>
+		<input type="text" id="input">
+		<input type="button" value="Send" onclick="onSend();">
+		<button onclick="onCloseClick(); return false;">close</button>
+	</form>
+	<div id="log"></div>
+</body>
+</html>
