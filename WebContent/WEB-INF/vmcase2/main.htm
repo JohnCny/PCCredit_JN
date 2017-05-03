@@ -217,78 +217,43 @@
 	}
 </script>
 
-
-
+<script type="text/javascript" src="${contextPath}/common/js/common/swfobject.js"></script>
+<script type="text/javascript" src="${contextPath}/common/js/common/web_socket.js"></script>
 <script type="text/javascript">
-		var myCanvas=document.getElementById("myCanvas");    
-		var context=myCanvas.getContext('2d');    
-		var imagewidth=myCanvas.width;  
-		var imageheight=myCanvas.height;  
-		var yourCanvas=document.getElementById("yourCanvas");    
-		var context2=yourCanvas.getContext('2d');
+		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
+		var ws;
 		
-		var image = new Image();    
-		image.src = "${uicasePath}/images/sc.png";    
-		image.onload = function(){    
-		    context.drawImage(image,0,0);    
-		    var imgData=context.getImageData(50,50,200,200);    
-		    context2.putImageData(imgData,10,260);    
-		};    
 		
-		var socket;
-		if (!window.WebSocket) {
-			window.WebSocket = window.MozWebSocket;
-		}
-		if (window.WebSocket) {
-			socket = new WebSocket("ws://192.168.3.252:8089/ws");
-			socket.onmessage = function(event) {
-				if(event.data instanceof ArrayBuffer){  //图片
-	                var bytearray = new Uint8Array(event.data);  
-	                var tempcanvas = yourCanvas;  
-	                tempcanvas.height = imageheight;  
-	                tempcanvas.width = imagewidth;  
-	                var tempcontext = tempcanvas.getContext('2d');  
-	                var imgdata = tempcontext.getImageData(0,0,imagewidth,imageheight);  
-	                var imgdatalen = imgdata.data.length;  
-	                for(var i=8;i<imgdatalen;i++){  
-	                    imgdata.data[i] = bytearray[i];  
-	                }  
-	                tempcontext.putImageData(imgdata,0,0);  
-	                var img = document.createElement('img');  
-	                    img.height = imageheight;  
-	                    img.width = imagewidth;  
-	                    img.src = tempcanvas.toDataURL();  
-	                var chatdiv=document.getElementById("chatdiv");  
-	                chatdiv.appendChild(img);  
-	                chatdiv.innerHTML = chatdiv.innerHTML + "<br />";  
-	            }else{  
-	            	var ta = document.getElementById('responseText');
-					ta.value = ta.value + '\n' + event.data
-	            }  
-			};
-			socket.onopen = function(event) {
+		$(document).ready(function() {
+			ws = new WebSocket("ws://192.168.3.252:10088/ws");
+			ws.onopen = function() {
 				var ta = document.getElementById('responseText');
 				ta.value = "连接开启!";
 			};
-			socket.onclose = function(event) {
+			ws.onmessage = function(e) {
+				if(e.data instanceof ArrayBuffer){  
+					//图片
+	            }else{  
+	            	var ta = document.getElementById('responseText');
+					ta.value = ta.value + '\n' + e.data
+	            }  
+			};
+			ws.onclose = function() {
+				var ta = document.getElementById('responseText');
+				ta.value = "连接开启!";
+			};
+			ws.onerror = function() {
 				var ta = document.getElementById('responseText');
 				ta.value = ta.value + "连接被关闭";
 			};
-		} else {
-			window.top.Dialog.message("你的浏览器不支持 WebSocket！");
-		}
+		});
+		
 
-		function send(message) {
-			if (!window.WebSocket) {
-				return;
-			}
-			if (socket.readyState == WebSocket.OPEN) {
-				message = $("#loginUserId").val() + message;
-				socket.send(message);
-			} else {
-				window.top.Dialog.message("连接没有开启.");
-			}
+		function onSend(message) {
+			message = $("#loginUserId").val() + message;
+			ws.send(message);
 		}
+		
 		
 		// span click send msg
 		document.getElementById('send').onclick=function(){
@@ -296,52 +261,9 @@
 				window.top.Dialog.message("发送内容不能为空,请重新输入");
 				return;
 			}
-			send($("#message").val());
+			onSend($("#message").val());
 			$("#message").val("");
 		}
-		
-		// keyup
-		/* $('#send').bind('keydown', function(event) {
-		if (event.keyCode == "13") {
-			//回车执行查询
-			if($("#message").val()== ''){
-				Dialog.message("发送内容不能为空,请重新输入");
-				return;
-			}
-			send($("#message").val());
-			$("#message").val("");
-		}
-		}); */
-		
-	    
-		function sendphoto(){
-			window.top.Dialog.message("发送照片");
-			/* var myCanvas=document.getElementById("myCanvas");    
-			var context=myCanvas.getContext('2d');    
-			var imagewidth=myCanvas.width;  
-			var imageheight=myCanvas.height;  
-			var yourCanvas=document.getElementById("yourCanvas");    
-			var context2=yourCanvas.getContext('2d');
-			var image = new Image();    
-			image.src = "${uicasePath}/images/img_01.png";   
-			image.onload = function(){    
-			    context.drawImage(image,0,0);    
-			    var imgData=context.getImageData(50,50,200,200);    
-			    context2.putImageData(imgData,10,260);
-		    }; */ 
- 	        imagedata = context.getImageData(0, 0, imagewidth,imageheight);  
-	        var canvaspixelarray = imagedata.data;  
-	        var canvaspixellen = canvaspixelarray.length;  
-	        var bytearray = new Uint8Array(canvaspixellen);  
-	        for (var i=0;i<canvaspixellen;++i) {  
-	            bytearray[i] = canvaspixelarray[i];  
-	        }  
-	        socket.send(bytearray.buffer);  
-	        context.fillStyle = '#000000';  
-	        context.fillRect(0, 0, imagewidth,imageheight);  
-	    }  
-	
-
 </script>
 
 </body>

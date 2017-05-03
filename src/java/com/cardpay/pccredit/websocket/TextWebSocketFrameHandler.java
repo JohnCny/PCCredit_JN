@@ -8,19 +8,31 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.concurrent.GlobalEventExecutor;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
+import com.cardpay.pccredit.nio.Global;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.util.spring.Beans;
 
 /**
  * 处理TextWebSocketFrame
  */
+@Service
+@Scope("prototype")
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 	
-	public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	@Autowired
+	private Global global;
+	
+	//public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 	public  static String displayName ="";;
 	protected void channelRead0(ChannelHandlerContext ctx,TextWebSocketFrame msg) throws Exception { // (1)
 		 Channel incoming = ctx.channel();
@@ -41,7 +53,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		 // 获取当前聊天时间
 		 DateFormat format = new SimpleDateFormat("HH:mm:ss");
 	     String dateString = format.format(new Date());
-		for (Channel channel : channels) {
+		for (Channel channel : global.group) {
             if (channel != incoming){
             	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
             } else {
@@ -50,7 +62,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
 	}
 	
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {  // (2)
+   /* public void handlerAdded(ChannelHandlerContext ctx) throws Exception {  // (2)
          Channel incoming = ctx.channel();
          channels.writeAndFlush(new TextWebSocketFrame("[注意] " + incoming.remoteAddress() + " 加入群聊"));
         channels.add(incoming);
@@ -61,17 +73,19 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
          Channel incoming = ctx.channel();
          channels.writeAndFlush(new TextWebSocketFrame("[注意]  " + incoming.remoteAddress() + " 离开群聊"));
 		 System.out.println("Client:"+incoming.remoteAddress() +"离开");
-    }
+    }*/
 	    
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
         Channel incoming = ctx.channel();
+        global.group.add(incoming);
 		System.out.println("Client:"+incoming.remoteAddress()+"在线");
 	}
 	
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
         Channel incoming = ctx.channel();
+        global.group.remove(incoming);
 		System.out.println("Client:"+incoming.remoteAddress()+"掉线");
 	}
 	
