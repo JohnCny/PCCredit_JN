@@ -60,7 +60,7 @@ public class Constant {
 	public static String  UPLOAD_INTOPICES="upload";
 	
 	
-	
+	public static int WS_PORT = 10088;
 	
 	
 	/*联系人*/
