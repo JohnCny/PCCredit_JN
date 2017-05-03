@@ -99,6 +99,7 @@
 				style="height: 510px; width: 1146px; overflow: visible;"></iframe>
 		</div>
 	</div>
+	
 	<div id="ltjl">
 		<div class="pull-right" onclick="hideLtjl()"><img src="${uicasePath}/images/right.png"/></div>
 		<h1>在线审批记录</h1>
@@ -106,8 +107,8 @@
 			<input type="text" style=""/>
 			<span></span>
 		</div>-->
-		<div class="spjl">
-			<div>
+		<div class="spjl" >
+			<!-- <div>
 				<p>李丽&nbsp;（2017-04-25&nbsp;10:00）</p>
 				<p>审批记录审批记录审批记录审批记录</p>
 			</div>
@@ -153,15 +154,20 @@
 				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
 				<p style="color:#4dffba">上传语音</p>
 				<p><img src="${uicasePath}/images/music.png"/></p>
-			</div>	
+			</div>	 -->
+			<textarea  id="responseText" style="width: 500px; height: 650px;"></textarea>
+			<canvas id="myCanvas" width="400px" height="500px">myCanvas</canvas>    
+			<canvas id="yourCanvas" width="400px" height="500px">yourCanvas</canvas>    
+			<div id="chatdiv" width="400px" height="500px">chatdiv</div>
 		</div>
 		<div class="fb">
-			<textarea placeholder="文字信息"></textarea>
-			<a href="javascript:;" class="image"></a><a href="javascript:;" class="image music"></a>
-			<span>上传</span>
+	        <textarea name="message" id ="message" placeholder="输入聊天内容"></textarea>
+	        <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a>
+			<span id ="send" >发送</span>
 		</div>
 		
 		<div id="scDiv">
+		    <input type="hidden" id="loginUserId" value="$!user.id"/>
 			<!-- <div id="tp">
 				<a href="javascript:;" class="image"><input type="file" onchange="setImage(this)"/></a>
 			</div>
@@ -170,6 +176,7 @@
 			</div> -->
 		</div>
 	</div>
+	
 </div>
 
 #parse ("common/footer.htm")
@@ -208,6 +215,133 @@
 		$("#ltjl").animate({right:"-300px"},200);
 		
 	}
+</script>
+
+
+
+<script type="text/javascript">
+		var myCanvas=document.getElementById("myCanvas");    
+		var context=myCanvas.getContext('2d');    
+		var imagewidth=myCanvas.width;  
+		var imageheight=myCanvas.height;  
+		var yourCanvas=document.getElementById("yourCanvas");    
+		var context2=yourCanvas.getContext('2d');
+		
+		var image = new Image();    
+		image.src = "${uicasePath}/images/sc.png";    
+		image.onload = function(){    
+		    context.drawImage(image,0,0);    
+		    var imgData=context.getImageData(50,50,200,200);    
+		    context2.putImageData(imgData,10,260);    
+		};    
+		
+		var socket;
+		if (!window.WebSocket) {
+			window.WebSocket = window.MozWebSocket;
+		}
+		if (window.WebSocket) {
+			socket = new WebSocket("ws://192.168.3.252:8089/ws");
+			socket.onmessage = function(event) {
+				if(event.data instanceof ArrayBuffer){  //图片
+	                var bytearray = new Uint8Array(event.data);  
+	                var tempcanvas = yourCanvas;  
+	                tempcanvas.height = imageheight;  
+	                tempcanvas.width = imagewidth;  
+	                var tempcontext = tempcanvas.getContext('2d');  
+	                var imgdata = tempcontext.getImageData(0,0,imagewidth,imageheight);  
+	                var imgdatalen = imgdata.data.length;  
+	                for(var i=8;i<imgdatalen;i++){  
+	                    imgdata.data[i] = bytearray[i];  
+	                }  
+	                tempcontext.putImageData(imgdata,0,0);  
+	                var img = document.createElement('img');  
+	                    img.height = imageheight;  
+	                    img.width = imagewidth;  
+	                    img.src = tempcanvas.toDataURL();  
+	                var chatdiv=document.getElementById("chatdiv");  
+	                chatdiv.appendChild(img);  
+	                chatdiv.innerHTML = chatdiv.innerHTML + "<br />";  
+	            }else{  
+	            	var ta = document.getElementById('responseText');
+					ta.value = ta.value + '\n' + event.data
+	            }  
+			};
+			socket.onopen = function(event) {
+				var ta = document.getElementById('responseText');
+				ta.value = "连接开启!";
+			};
+			socket.onclose = function(event) {
+				var ta = document.getElementById('responseText');
+				ta.value = ta.value + "连接被关闭";
+			};
+		} else {
+			window.top.Dialog.message("你的浏览器不支持 WebSocket！");
+		}
+
+		function send(message) {
+			if (!window.WebSocket) {
+				return;
+			}
+			if (socket.readyState == WebSocket.OPEN) {
+				message = $("#loginUserId").val() + message;
+				socket.send(message);
+			} else {
+				window.top.Dialog.message("连接没有开启.");
+			}
+		}
+		
+		// span click send msg
+		document.getElementById('send').onclick=function(){
+			if($("#message").val()== ''){
+				window.top.Dialog.message("发送内容不能为空,请重新输入");
+				return;
+			}
+			send($("#message").val());
+			$("#message").val("");
+		}
+		
+		// keyup
+		/* $('#send').bind('keydown', function(event) {
+		if (event.keyCode == "13") {
+			//回车执行查询
+			if($("#message").val()== ''){
+				Dialog.message("发送内容不能为空,请重新输入");
+				return;
+			}
+			send($("#message").val());
+			$("#message").val("");
+		}
+		}); */
+		
+	    
+		function sendphoto(){
+			window.top.Dialog.message("发送照片");
+			/* var myCanvas=document.getElementById("myCanvas");    
+			var context=myCanvas.getContext('2d');    
+			var imagewidth=myCanvas.width;  
+			var imageheight=myCanvas.height;  
+			var yourCanvas=document.getElementById("yourCanvas");    
+			var context2=yourCanvas.getContext('2d');
+			var image = new Image();    
+			image.src = "${uicasePath}/images/img_01.png";   
+			image.onload = function(){    
+			    context.drawImage(image,0,0);    
+			    var imgData=context.getImageData(50,50,200,200);    
+			    context2.putImageData(imgData,10,260);
+		    }; */ 
+ 	        imagedata = context.getImageData(0, 0, imagewidth,imageheight);  
+	        var canvaspixelarray = imagedata.data;  
+	        var canvaspixellen = canvaspixelarray.length;  
+	        var bytearray = new Uint8Array(canvaspixellen);  
+	        for (var i=0;i<canvaspixellen;++i) {  
+	            bytearray[i] = canvaspixelarray[i];  
+	        }  
+	        socket.send(bytearray.buffer);  
+	        context.fillStyle = '#000000';  
+	        context.fillRect(0, 0, imagewidth,imageheight);  
+	    }  
+	
+
 </script>
 
 </body>
