@@ -152,12 +152,12 @@ public class MainController {
 
 		//JRadModelAndView mv = new JRadModelAndView("home/home", request);
 		// run websocket chat
-		try {
-			new WebsocketChatServer(8089).run();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+		//		try {
+		//			new WebsocketChatServer(8089).run();
+		//		} catch (Exception e) {
+		//			e.printStackTrace();
+		//		}
+		//		
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 		String rolename = user.getRoles().get(0).getName();
