@@ -25,7 +25,7 @@
 	</select>
 	
 	<select id="findCountByApplicationId" resultType="int">
-		  select count(*) from CHAT_MESSAGE t where t.application_id = #{applicationId}
+		  select count(*) from CHAT_MESSAGE t 
 	</select>
 	
 	
@@ -38,6 +38,19 @@
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
 					WHERE ROWNUM_ > #{limit}*#{page} order by created_time asc
+					]]>
+    </select>
+    
+    
+    <select id="findMsg1" resultMap="ChatMessageResultMap">
+    		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select * from CHAT_MESSAGE  t  order by created_time asc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page} 
 					]]>
     </select>
 	

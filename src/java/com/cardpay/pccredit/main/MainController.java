@@ -141,8 +141,12 @@ public class MainController {
 	public AbstractModelAndView mainPage(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/main", request);
 		// 查询前10条聊天记录
-		List<ChatMessage> msglist = chatMessageService.findMsg();
+		List<ChatMessage> msglist = chatMessageService.findMsg(0,10);
 		mv.addObject("msglist",msglist);
+		mv.addObject("count",chatMessageService.findCountByApplicationId(""));
+		mv.addObject("currentPage",chatMessageService.findCountByApplicationId("")/10 +1);
+		
+		
 		if (globalSetting.isSuperAdminMode(request)) {
 			mv.addObject("menuList", menuMgr.getAllUiMenus());
 		}

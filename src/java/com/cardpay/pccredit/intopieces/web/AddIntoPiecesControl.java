@@ -1,6 +1,8 @@
 package com.cardpay.pccredit.intopieces.web;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +44,7 @@ import com.cardpay.pccredit.customer.model.CustomerInforUpdateCrossExamination;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerInforUpdateService;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
 import com.cardpay.pccredit.intopieces.model.Dcbzlr;
 import com.cardpay.pccredit.intopieces.model.DcbzlrForm;
 import com.cardpay.pccredit.intopieces.model.Dcddpz;
@@ -62,7 +66,9 @@ import com.cardpay.pccredit.intopieces.model.DzjyztForm;
 import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -114,6 +120,9 @@ public class AddIntoPiecesControl extends BaseController {
 	
 	@Autowired
 	private CommonDao commonDao;
+	
+	@Autowired
+	private ChatMessageService chatMessageService;
 	
 	//选择产品
 	@ResponseBody
@@ -3234,5 +3243,35 @@ public class AddIntoPiecesControl extends BaseController {
 			filter.setRequest(request);
 			JRadModelAndView mv = new JRadModelAndView("/home/evaluateApp",request);
 			return mv;
+		}
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "browseChatMsg.json", method = { RequestMethod.GET })
+		public String browseChatMsg(HttpServletRequest request) {
+			
+			//分页参数
+			String currentPage=request.getParameter("currentPage");
+			
+			int page = 0; 
+			int limit = 10;//10条显示
+			if(StringUtils.isNotEmpty(currentPage)){
+				page = Integer.parseInt(currentPage);
+			}
+
+			// 查询聊天记录
+			List<ChatMessage> list = chatMessageService.findMsg1(page,limit);
+			int totalCount = chatMessageService.findCountByApplicationId("");
+			
+			Map<String,Object> result = new LinkedHashMap<String,Object>();
+			result.put("totalCount", totalCount);
+			result.put("rownum", page);
+			result.put("result", list);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
 		}
 }
