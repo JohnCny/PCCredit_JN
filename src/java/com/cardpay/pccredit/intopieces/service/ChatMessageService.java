@@ -52,6 +52,7 @@ import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
+import com.cardpay.pccredit.ipad.model.CustomerInforIpad;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
@@ -87,7 +88,32 @@ public class ChatMessageService {
 	
 	
 	// mod
-	public List<ChatMessage> findMsg(){
-		return chatMessageDao.findMsg(0, 10);
+	public List<ChatMessage> findMsg(int currentPage,int limit){
+		currentPage = currentPage - 1;
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return chatMessageDao.findMsg(currentPage, limit);
+	}
+	
+	public List<ChatMessage> findMsg1(int currentPage,int limit){
+		currentPage = currentPage - 1;
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return chatMessageDao.findMsg1(currentPage, limit);
+	}
+	
+	
+	/*public QueryResult<ChatMessage> findPageMsg(int currentPage,int limit) {
+		List<ChatMessage> msglist = chatMessageDao.findMsg(currentPage,limit);
+		int size = chatMessageDao.findCountByApplicationId("");
+		QueryResult<ChatMessage> queryResult = new QueryResult<ChatMessage>(size, msglist);
+		return queryResult;
+	}*/
+
+	
+	public int findCountByApplicationId(String appId){
+		return chatMessageDao.findCountByApplicationId(appId);
 	}
 }

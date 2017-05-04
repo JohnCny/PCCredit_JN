@@ -15,5 +15,7 @@ public interface ChatMessageDao {
 	
 	
 	public List<ChatMessage> findMsg(@Param("page") int currentPage,@Param("limit") int limit);
+	public List<ChatMessage> findMsg1(@Param("page") int currentPage,@Param("limit") int limit);
+	
 	
 }

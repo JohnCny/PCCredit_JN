@@ -23,7 +23,7 @@
 	#ltjl .pull-right{cursor:pointer;width:15px;height:75px;position:absolute;top:50%;margin-top:-37.5px;z-index:100;}
 	#ltjl .pull-right img{height:13px;margin-left:1px;margin-top:30px;}
 	#ltjl h1{color:#fff;font-size:16px;padding-top:10px;padding-left:30px;}
-	
+	#ltjl h1 .fanye{width:50px;height:20px;line-height:20px;font-family:"Microsoft YaHei";cursor:pointer;}
 	/*.jlSearch{width:275px;height:40px;position:absolute;left:15px;right:10px;top:40px;background:#000;}
 	.jlSearch input{width:235px;height:40px;border:none;color:#fff;background:#4d4d4d;font-size:14px;line-height:40px;padding-left:5px;}
 	.jlSearch input:hover,.jlSearch input:focus{border:none;}
@@ -102,7 +102,7 @@
 	
 	<div id="ltjl">
 		<div class="pull-right" onclick="hideLtjl()"><img src="${uicasePath}/images/right.png"/></div>
-		<h1>在线审批记录</h1>
+		<h1>在线审批记录 <input type="button" id="pre"  value="上一页" class="fanye"/> <input type="button" id="nex" value="下一页" class="fanye"/></h1>
 		<!--  <div class="jlSearch">
 			<input type="text" style=""/>
 			<span></span>
@@ -175,7 +175,9 @@
 		</div>
 		
 		<div id="scDiv">
-		    <input type="hidden" id="loginUserId" value="$!user.id"/>
+		     <input type="hidden"  id="loginUserId"  value="$!user.id"/>
+		     <input type="text"  id="totalCount"     value="$!count"/>    <!-- 总数 -->
+      		 <input type="text"  id="rowNum" 		 value="$!currentPage"/>    <!-- currentpage -->
 			<!-- <div id="tp">
 				<a href="javascript:;" class="image"><input type="file" onchange="setImage(this)"/></a>
 			</div>
@@ -227,6 +229,7 @@
 
 <script type="text/javascript" src="${contextPath}/common/js/common/swfobject.js"></script>
 <script type="text/javascript" src="${contextPath}/common/js/common/web_socket.js"></script>
+<script type="text/javascript" src="${contextPath}/common/js/common/jquery.json-2.3.js"></script>
 <script type="text/javascript">
 		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
 		var ws;
@@ -245,7 +248,7 @@
 	            	var ta = document.getElementById('responseText');
 	            	var arr = e.data.split(' ');
 	            	var name =arr[0];
-	            	var time =arr[1]+arr[2];
+	            	var time =arr[1]+" "+arr[2];
 	            	var content =arr[3];
 	            	$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
 					//ta.value = ta.value + '\n' + e.data
@@ -282,6 +285,63 @@
 			onSend($("#message").val());
 			$("#message").val("");
 		}
+		
+		
+		
+		
+		// 翻页
+		$("#pre").click(function() {
+			var currentPage = Number($("#rowNum").val()) - Number(1);
+			if(Number(currentPage)<=0){
+				window.top.Dialog.message("已经是第一页");
+			    return;
+			}
+			
+			var tmp="";
+			var url ="${contextPath}/intopieces/addIntopieces/browseChatMsg.json?currentPage="+currentPage;;
+			$.ajax({
+				url:url,
+				type: "GET",
+				dataType:'json',
+				success: function (json) {
+					obj = $.evalJSON(json);
+					$("#rowNum").val(obj.rownum);
+					$("#totalCount").val(obj.totalCount);
+					
+					for(var i = 0;i<obj.result.length;i++){
+						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+					}
+					$(".spjl").html(tmp);
+				}
+			})
+		});
+		
+		
+		$("#nex").click(function() {
+		    var currentPage = Number($("#rowNum").val()) + Number(1);
+		    if(Number(currentPage)>=Number($("#totalCount").val())/Number(10) +Number(1)){
+		    	window.top.Dialog.message("已经是最后一页");
+		    	return;
+		    } 
+		    
+		    var tmp="";
+			var url ="${contextPath}/intopieces/addIntopieces/browseChatMsg.json?currentPage="+currentPage;;
+			$.ajax({
+				url:url,
+				type: "GET",
+				dataType:'json',
+				success: function (json) {
+					obj = $.evalJSON(json);
+					$("#rowNum").val(obj.rownum);
+					$("#totalCount").val(obj.totalCount);
+					for(var i = 0;i<obj.result.length;i++){
+						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+					}
+					$(".spjl").html(tmp);
+				}
+			})
+		});
+		
 </script>
 
 </body>
