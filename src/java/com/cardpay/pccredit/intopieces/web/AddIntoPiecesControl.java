@@ -3253,6 +3253,7 @@ public class AddIntoPiecesControl extends BaseController {
 			
 			//分页参数
 			String currentPage=request.getParameter("currentPage");
+			String appId=request.getParameter("appId");
 			
 			int page = 0; 
 			int limit = 10;//10条显示
@@ -3261,13 +3262,33 @@ public class AddIntoPiecesControl extends BaseController {
 			}
 
 			// 查询聊天记录
-			List<ChatMessage> list = chatMessageService.findMsg1(page,limit);
-			int totalCount = chatMessageService.findCountByApplicationId("");
+			List<ChatMessage> list = chatMessageService.findMsg1(appId,page,limit);
+			int totalCount = chatMessageService.findCountByApplicationId(appId);
 			
 			Map<String,Object> result = new LinkedHashMap<String,Object>();
 			result.put("totalCount", totalCount);
 			result.put("rownum", page);
 			result.put("result", list);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
+		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "browseChatTopTenMsg.json", method = { RequestMethod.GET })
+		public String browseChatTopTenMsg(HttpServletRequest request) {
+			
+			String appId=request.getParameter("appId");
+			
+			List<ChatMessage> msglist = chatMessageService.findMsg(appId,0,10);
+			
+			Map<String,Object> result = new LinkedHashMap<String,Object>();
+			result.put("totalCount", chatMessageService.findCountByApplicationId(appId));
+			result.put("rownum", chatMessageService.findCountByApplicationId(appId)/10 + 1);
+			result.put("result", msglist);
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 			
