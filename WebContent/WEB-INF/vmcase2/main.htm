@@ -155,10 +155,18 @@
 				<p style="color:#4dffba">上传语音</p>
 				<p><img src="${uicasePath}/images/music.png"/></p>
 			</div>	 -->
-			<textarea  id="responseText" style="width: 500px; height: 650px;"></textarea>
-			<canvas id="myCanvas" width="400px" height="500px">myCanvas</canvas>    
+			#foreach($msg in $msglist)
+			<div>
+				<p>$!msg.createdBy&nbsp;&nbsp;$!date.format("yyyy-MM-dd HH:mm:ss",$!msg.createdTime)&nbsp;:</p>
+				<p>$!msg.msgContent</p>
+			</div>
+			#end
+			
+			<!-- <textarea  id="responseText" style="width: 500px; height: 650px;"></textarea> -->
+			
+	   <!-- <canvas id="myCanvas" width="400px" height="500px">myCanvas</canvas>    
 			<canvas id="yourCanvas" width="400px" height="500px">yourCanvas</canvas>    
-			<div id="chatdiv" width="400px" height="500px">chatdiv</div>
+			<div id="chatdiv" width="400px" height="500px">chatdiv</div> -->
 		</div>
 		<div class="fb">
 	        <textarea name="message" id ="message" placeholder="输入聊天内容"></textarea>
@@ -205,7 +213,7 @@
 		document.getElementById("weekDayText").innerHTML = weekDayTextStr;
 
 		showDate();
-
+		
 	})
 	function hideLtjl(){//隐藏在线审批记录
 		$(".left_nav").animate({left:"0px"},200);
@@ -228,30 +236,39 @@
 			ws = new WebSocket("ws://192.168.3.252:10088/ws");
 			ws.onopen = function() {
 				var ta = document.getElementById('responseText');
-				ta.value = "连接开启!";
+				//ta.value = "连接开启!";
 			};
 			ws.onmessage = function(e) {
-				if(e.data instanceof ArrayBuffer){  
+				//if(e.data instanceof ArrayBuffer){  
 					//图片
-	            }else{  
+	            //}else{  
 	            	var ta = document.getElementById('responseText');
-					ta.value = ta.value + '\n' + e.data
-	            }  
+	            	var arr = e.data.split(' ');
+	            	var name =arr[0];
+	            	var time =arr[1]+arr[2];
+	            	var content =arr[3];
+	            	$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
+					//ta.value = ta.value + '\n' + e.data
+	            //}  
 			};
 			ws.onclose = function() {
 				var ta = document.getElementById('responseText');
-				ta.value = "连接开启!";
+				//ta.value = "连接开启!";
 			};
 			ws.onerror = function() {
 				var ta = document.getElementById('responseText');
-				ta.value = ta.value + "连接被关闭";
+				//ta.value = ta.value + "连接被关闭";
 			};
 		});
 		
 
 		function onSend(message) {
-			message = $("#loginUserId").val() + message;
-			ws.send(message);
+			if (ws.readyState == WebSocket.OPEN) {
+				message = $("#loginUserId").val() + message;
+				ws.send(message);
+			} else {
+				window.top.Dialog.message("连接关闭");
+			}
 		}
 		
 		
@@ -261,6 +278,7 @@
 				window.top.Dialog.message("发送内容不能为空,请重新输入");
 				return;
 			}
+			// send
 			onSend($("#message").val());
 			$("#message").val("");
 		}

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONArray;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,8 @@ import com.cardpay.pccredit.customer.service.CustomerMarketingService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
+import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.manager.dao.StatisticsManagerDao;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
@@ -130,11 +133,16 @@ public class MainController {
 	@Autowired
 	private StatisticalCommonService statisticalCommonService;
 	
+	@Autowired
+	private ChatMessageService chatMessageService;
+	
 	@ResponseBody
 	@RequestMapping(value = "/main.page", method = { RequestMethod.GET })
 	public AbstractModelAndView mainPage(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/main", request);
-
+		// 查询前10条聊天记录
+		List<ChatMessage> msglist = chatMessageService.findMsg();
+		mv.addObject("msglist",msglist);
 		if (globalSetting.isSuperAdminMode(request)) {
 			mv.addObject("menuList", menuMgr.getAllUiMenus());
 		}
@@ -149,15 +157,7 @@ public class MainController {
 
 	@RequestMapping(value = "/home.page", method = { RequestMethod.GET })
 	public AbstractModelAndView indexPage(HttpServletRequest request) {
-
-		//JRadModelAndView mv = new JRadModelAndView("home/home", request);
-		// run websocket chat
-		//		try {
-		//			new WebsocketChatServer(8089).run();
-		//		} catch (Exception e) {
-		//			e.printStackTrace();
-		//		}
-		//		
+		
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 		String rolename = user.getRoles().get(0).getName();
@@ -191,6 +191,7 @@ public class MainController {
 		HashMap<String,Integer> homeData = mainService.getHomeData(userId,0);
 		HashMap<String,Object> rightHomeData = getRightHomeData(userId);
 		String organizationname = organization.getName();
+		
 		mv.addObject("accountManagerParameter",accountManagerParameter);
 		mv.addObject("rolename",rolename);
 		mv.addObject("organizationname",organizationname);

@@ -12,4 +12,8 @@ public interface ChatMessageDao {
 	public List<ChatMessage> findByApplicationId(@Param("applicationId")String applicationId);
 	public int findCountByApplicationId(@Param("applicationId")String applicationId);
 	
+	
+	
+	public List<ChatMessage> findMsg(@Param("page") int currentPage,@Param("limit") int limit);
+	
 }
