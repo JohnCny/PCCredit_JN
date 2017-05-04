@@ -16,7 +16,10 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select * from CHAT_MESSAGE  t where t.application_id = #{applicationId}
+				select * from CHAT_MESSAGE  t where 1=1
+				<if test="applicationId != null and applicationId != '' ">
+					and t.application_id = #{applicationId}
+				</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -25,7 +28,10 @@
 	</select>
 	
 	<select id="findCountByApplicationId" resultType="int">
-		  select count(*) from CHAT_MESSAGE t 
+		  select count(*) from CHAT_MESSAGE t where 1=1
+		  <if test="applicationId != null and applicationId != '' ">
+			and t.application_id = #{applicationId}
+		  </if>
 	</select>
 	
 	
@@ -33,7 +39,11 @@
     		SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select * from CHAT_MESSAGE  t  order by created_time desc
+				select * from CHAT_MESSAGE  t  where 1=1
+				<if test="applicationId != null and applicationId != '' ">
+					and t.application_id = #{applicationId}
+				</if>
+				order by created_time desc
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -46,7 +56,11 @@
     		SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select * from CHAT_MESSAGE  t  order by created_time asc
+				select * from CHAT_MESSAGE  t  where 1=1
+				<if test="applicationId != null and applicationId != '' ">
+					and t.application_id = #{applicationId}
+				</if>
+				order by created_time asc
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

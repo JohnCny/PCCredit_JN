@@ -88,20 +88,20 @@ public class ChatMessageService {
 	
 	
 	// mod
-	public List<ChatMessage> findMsg(int currentPage,int limit){
+	public List<ChatMessage> findMsg(String appId,int currentPage,int limit){
 		currentPage = currentPage - 1;
 		if(currentPage<0){
 			currentPage = 0;
 		}
-		return chatMessageDao.findMsg(currentPage, limit);
+		return chatMessageDao.findMsg(appId,currentPage, limit);
 	}
 	
-	public List<ChatMessage> findMsg1(int currentPage,int limit){
+	public List<ChatMessage> findMsg1(String appId,int currentPage,int limit){
 		currentPage = currentPage - 1;
 		if(currentPage<0){
 			currentPage = 0;
 		}
-		return chatMessageDao.findMsg1(currentPage, limit);
+		return chatMessageDao.findMsg1(appId,currentPage, limit);
 	}
 	
 	

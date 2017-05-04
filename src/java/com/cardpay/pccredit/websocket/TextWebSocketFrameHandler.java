@@ -44,12 +44,15 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		 // 获取当前登陆聊天用户
 		 String userId;
 		 String message;
+		 String appId;
 		 if("000001".equals(msg.text().substring(0, 6))){
 		    userId = msg.text().substring(0,6);
-		    message = msg.text().substring(6, msg.text().length());
+		    appId  = msg.text().substring(6, 38);
+		    message = msg.text().substring(38, msg.text().length());
 		 }else{
 			userId = msg.text().substring(0, 32);
-			message = msg.text().substring(32, msg.text().length());
+			appId  = msg.text().substring(32, 64);
+			message = msg.text().substring(64, msg.text().length());
 		 }
 	     DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
 		 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
@@ -61,7 +64,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		for (Channel channel : global.group) {
 			
 			// 存聊天记录
-			this.saveChatMessage("",displayName,"0",message.replaceAll(" ", ""),"");
+			this.saveChatMessage(appId,displayName,"0",message.replaceAll(" ", ""),"");
 			
             if (channel != incoming){
             	//channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));

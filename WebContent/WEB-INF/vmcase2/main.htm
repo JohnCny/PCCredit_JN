@@ -155,12 +155,7 @@
 				<p style="color:#4dffba">上传语音</p>
 				<p><img src="${uicasePath}/images/music.png"/></p>
 			</div>	 -->
-			#foreach($msg in $msglist)
-			<div>
-				<p>$!msg.createdBy&nbsp;&nbsp;$!date.format("yyyy-MM-dd HH:mm:ss",$!msg.createdTime)&nbsp;:</p>
-				<p>$!msg.msgContent</p>
-			</div>
-			#end
+			
 			
 			<!-- <textarea  id="responseText" style="width: 500px; height: 650px;"></textarea> -->
 			
@@ -176,8 +171,9 @@
 		
 		<div id="scDiv">
 		     <input type="hidden"  id="loginUserId"  value="$!user.id"/>
-		     <input type="text"  id="totalCount"     value="$!count"/>    <!-- 总数 -->
-      		 <input type="text"  id="rowNum" 		 value="$!currentPage"/>    <!-- currentpage -->
+		     <input type="text"    id="totalCount"   value="$!count"/>    <!-- 总数 -->
+      		 <input type="text"    id="rowNum" 		 value="$!currentPage"/>    <!-- currentpage -->
+      		 <input type="text"    id="appId" 		 value=""/>
 			<!-- <div id="tp">
 				<a href="javascript:;" class="image"><input type="file" onchange="setImage(this)"/></a>
 			</div>
@@ -262,12 +258,14 @@
 				var ta = document.getElementById('responseText');
 				//ta.value = ta.value + "连接被关闭";
 			};
+			
+			
 		});
 		
 
 		function onSend(message) {
 			if (ws.readyState == WebSocket.OPEN) {
-				message = $("#loginUserId").val() + message;
+				message = $("#loginUserId").val()+$("#appId").val()+ message;
 				ws.send(message);
 			} else {
 				window.top.Dialog.message("连接关闭");
@@ -293,12 +291,14 @@
 		$("#pre").click(function() {
 			var currentPage = Number($("#rowNum").val()) - Number(1);
 			if(Number(currentPage)<=0){
-				window.top.Dialog.message("已经是第一页");
+				//window.top.Dialog.message("已经是第一页");
+				$("#pre").hide();
+				$("#nex").show();
 			    return;
 			}
-			
+			var appId = $("#appId").val();
 			var tmp="";
-			var url ="${contextPath}/intopieces/addIntopieces/browseChatMsg.json?currentPage="+currentPage;;
+			var url ="${contextPath}/intopieces/addIntopieces/browseChatMsg.json?currentPage="+currentPage+"&appId="+appId;
 			$.ajax({
 				url:url,
 				type: "GET",
@@ -319,13 +319,16 @@
 		
 		$("#nex").click(function() {
 		    var currentPage = Number($("#rowNum").val()) + Number(1);
-		    if(Number(currentPage)>=Number($("#totalCount").val())/Number(10) +Number(1)){
-		    	window.top.Dialog.message("已经是最后一页");
+		    if(Number(currentPage)>=Number($("#totalCount").val())/Number(10) + Number(1)){
+		    	//window.top.Dialog.message("已经是最后一页");
+		    	$("#nex").hide();
+		    	$("#pre").show();
 		    	return;
 		    } 
 		    
+		    var appId = $("#appId").val();
 		    var tmp="";
-			var url ="${contextPath}/intopieces/addIntopieces/browseChatMsg.json?currentPage="+currentPage;;
+		    var url ="${contextPath}/intopieces/addIntopieces/browseChatMsg.json?currentPage="+currentPage+"&appId="+appId;
 			$.ajax({
 				url:url,
 				type: "GET",
