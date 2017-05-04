@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,5 +83,11 @@ public class ChatMessageService {
 		int size = chatMessageDao.findCountByApplicationId(applicationId);
 		QueryResult<ChatMessage> queryResult = new QueryResult<ChatMessage>(size, msglist);
 		return queryResult;
+	}
+	
+	
+	// mod
+	public List<ChatMessage> findMsg(){
+		return chatMessageDao.findMsg(0, 10);
 	}
 }

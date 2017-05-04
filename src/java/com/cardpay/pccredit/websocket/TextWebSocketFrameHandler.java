@@ -17,9 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.nio.Global;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.util.spring.Beans;
 
 /**
@@ -32,7 +34,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	@Autowired
 	private Global global;
 	
-	//public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+	
+	@Autowired
+	private CommonDao commonDao;
+	
 	public  static String displayName ="";;
 	protected void channelRead0(ChannelHandlerContext ctx,TextWebSocketFrame msg) throws Exception { // (1)
 		 Channel incoming = ctx.channel();
@@ -51,13 +56,19 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		 displayName = loginUser.getDisplayName();
 		 
 		 // 获取当前聊天时间
-		 DateFormat format = new SimpleDateFormat("HH:mm:ss");
+		 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	     String dateString = format.format(new Date());
 		for (Channel channel : global.group) {
+			
+			// 存聊天记录
+			this.saveChatMessage("",displayName,"0",message.replaceAll(" ", ""),"");
+			
             if (channel != incoming){
-            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
+            	//channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
+            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")));
             } else {
-            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
+            	//channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
+            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")));
             }
         }
 	}
@@ -97,6 +108,21 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         // 当出现异常就关闭连接
         cause.printStackTrace();
         ctx.close();
+	}
+	
+	
+	// 保存 聊天记录
+	public void saveChatMessage(String appId,String userId,String type,String content,String url){
+		ChatMessage chatMessage = new ChatMessage();
+		
+		chatMessage.setApplicationId(appId);
+		chatMessage.setCreatedBy(userId);
+		chatMessage.setCreatedTime(new Date());
+		chatMessage.setMsgType(type);
+		chatMessage.setMsgContent(content);
+		chatMessage.setResourceUrl(url);
+		
+		commonDao.insertObject(chatMessage);
 	}
 
 }

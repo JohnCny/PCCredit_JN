@@ -2,6 +2,7 @@ package com.cardpay.pccredit.nio;
 
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.websocket.HttpRequestHandler;
 import com.cardpay.pccredit.websocket.TextWebSocketFrameHandler;
 import com.wicresoft.util.spring.Beans;
 
@@ -12,6 +13,7 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -35,7 +37,8 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
 		pipeline.addLast("http-codec",new HttpServerCodec());
         pipeline.addLast("aggregator",new HttpObjectAggregator(65536));
         pipeline.addLast("http-chunked",new ChunkedWriteHandler());
-       //pipeline.addLast("handler",Beans.get(TcpServerHandler.class));TextWebSocketFrameHandler
+        pipeline.addLast(new HttpRequestHandler("/ws"));
+		pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
        pipeline.addLast("handler",Beans.get(TextWebSocketFrameHandler.class));
 
 	}

@@ -8,7 +8,7 @@
 		<result property="msgType" column="msg_type" />
 		<result property="msgContent" column="msg_content" />
 		<result property="resourceUrl" column="resource_url" />
-		<result property="createdBy" column="createdBy" />
+		<result property="createdBy" column="created_By" />
 		<result property="createdTime" column="created_time" />
 	</resultMap>
 	
@@ -27,5 +27,18 @@
 	<select id="findCountByApplicationId" resultType="int">
 		  select count(*) from CHAT_MESSAGE t where t.application_id = #{applicationId}
 	</select>
+	
+	
+	 <select id="findMsg" resultMap="ChatMessageResultMap">
+    		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select * from CHAT_MESSAGE  t  order by created_time desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page} order by created_time asc
+					]]>
+    </select>
 	
 </mapper>
