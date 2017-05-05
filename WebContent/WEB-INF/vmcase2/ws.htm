@@ -17,14 +17,18 @@ Netty WebSocket 时间服务器
 	<script type="text/javascript">
 		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
 		var ws;
-
+		var textarea;
+		var base64swf;
+		var imgview;
+		var img;
+	    var base64Data = "", base64Type = "";
+	    
 		function init() {
 			// Connect to Web Socket.
 			// Change host/port here to your own Web Socket server.
 			ws = new WebSocket("ws://192.168.3.12:10088/websocket");
 			// Set event handlers.
 			ws.onopen = function() {
-				alert(111);
 				output("onopen");
 			};
 			ws.onmessage = function(e) {
@@ -37,6 +41,15 @@ Netty WebSocket 时间服务器
 			ws.onerror = function() {
 				output("onerror");
 			};
+			
+			textarea = $("#base64-textarea");
+			base64swf = $("#base64-swf").get(0);
+			imgview = $("#base64-imgview");
+			img = $("#base64-img");
+			
+		   	base64Data = "";
+		   	base64Type = "";
+		    
 		}
 
 		function onSend() {
@@ -59,19 +72,36 @@ Netty WebSocket 时间服务器
 			log.innerHTML = escaped + "<br>" + log.innerHTML;
 		}
 	    
-
-	   
+		window.__onbase64 = function(type, data){
+			base64Type = type.slice(1);
+			base64Data = data;
+			textarea.val(data);	
+			img.attr("src", "data:image/" + type + ";base64," + data);
+			imgview.show(1000);
+		};
+		
+		window.showBase64 = function(type,data){
+			base64Type = type;
+			base64Data = data;
+			textarea.val(data);	
+			img.attr("src", "data:image/" + type + ";base64," + data);
+			imgview.show(1000);
+		};
+		window.onFlashError = function(error){
+			alert(error);
+		};
 	    
 	</script>
+
 </head>
 <body onload="init();">
+	
 	<form>
 		<input type="text" id="input"> <input type="button"
 			value="Send" onclick="onSend();">
-		<object id="base64-swf" width="104" height="30"
-			type="application/x-shockwave-flash" data="${contextPath}/common/js/common/base64.swf">
-			<param name="movie" value="${contextPath}/common/js/common/base64.swf" />
-			<a href="http://www.adobe.com/go/getflash">需要安装Flash后才能使用</a>
+		<object id="base64-swf" width="24" height="24"
+			type="application/x-shockwave-flash" data="${contextPath}/common/js/common/Mybutton.swf">
+			<param name="movie" value="${contextPath}/common/js/common/Mybutton.swf" />
 		</object>
 		<button onclick="onCloseClick(); return false;">close</button>
 	</form>
@@ -85,23 +115,6 @@ Netty WebSocket 时间服务器
     	<p>你选择的图片：</p>
         <img id="base64-img" />
     </div>
-</body>
-<script type="text/javascript">
-$(function(){
-	var textarea = $("#base64-textarea");
-	var base64swf = $("#base64-swf").get(0);
-	var imgview = $("#base64-imgview");
-	var img = $("#base64-img");
-	
-    var base64Data = "", base64Type = "";
     
-	window.__onbase64 = function(type, data){
-		base64Type = type.slice(1);
-		base64Data = data;
-		textarea.val(data);	
-		img.attr("src", "data:image/" + type + ";base64," + data);
-		imgview.show(1000);
-	};
-});
-</script>
+</body>
 </html>
