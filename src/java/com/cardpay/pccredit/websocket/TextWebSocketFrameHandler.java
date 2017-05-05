@@ -36,52 +36,75 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	public  static String displayName ="";;
 	protected void channelRead0(ChannelHandlerContext ctx,TextWebSocketFrame msg) throws Exception { // (1)
 		 Channel incoming = ctx.channel();
+		 // 获取当前聊天时间
+		 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	     String dateString = format.format(new Date());
+	     
 		 // 获取当前登陆聊天用户
 		 String userId;
 		 String message;
 		 String appId;
-		 if("000001".equals(msg.text().substring(0, 6))){
-		    userId = msg.text().substring(0,6);
-		    appId  = msg.text().substring(6, 38);
-		    message = msg.text().substring(38, msg.text().length());
-		 }else{
-			userId = msg.text().substring(0, 32);
-			appId  = msg.text().substring(32, 64);
-			message = msg.text().substring(64, msg.text().length());
-		 }
-	     DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-		 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
-		 displayName = loginUser.getDisplayName();
+		 String ptype;
 		 
-		 // 获取当前聊天时间
-		 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	     String dateString = format.format(new Date());
-	     // 存聊天记录
-	  	 this.saveChatMessage(appId,displayName,"0",message.replaceAll(" ", ""),"");
-	  	 
-		 for (Channel channel : global.group) {
-            if (channel != incoming){
-            	//channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
-            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")));
-            } else {
-            	//channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+":\n" + message));
-            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")));
-            }
-         }
+		 // get bean
+		 DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+		 
+		//文本
+		 if(msg.text().indexOf("base64")==-1){
+			 	if("000001".equals(msg.text().substring(0, 6))){
+				    userId = msg.text().substring(0,6);
+				    appId  = msg.text().substring(6, 38);
+				    message = msg.text().substring(38, msg.text().length());
+				 }else{
+					userId = msg.text().substring(0, 32);
+					appId  = msg.text().substring(32, 64);
+					message = msg.text().substring(64, msg.text().length());
+				 }
+				 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
+				 displayName = loginUser.getDisplayName();
+				 
+			     // 存聊天记录
+			  	 this.saveChatMessage(appId,displayName,"0",message.replaceAll(" ", ""),"","","");
+			  	 
+				 for (Channel channel : global.group) {
+		            if (channel != incoming){
+		            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")+" "+0+" "+"text"));
+		            } else {
+		            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")+" "+0+" "+"text"));
+		            }
+		         }
+		 }else{//图片
+			 System.out.println(msg.text());
+			 if("000001".equals(msg.text().substring(0, 6))){
+				    userId = msg.text().substring(0,6);
+				    appId  = msg.text().substring(6, 38);
+				    ptype  = msg.text().substring(44, 48);
+				    message = msg.text().substring(48, msg.text().length());
+				 }else{
+					userId = msg.text().substring(0, 32);
+					appId  = msg.text().substring(32, 64);
+					ptype  = msg.text().substring(70, 74);
+					message = msg.text().substring(74, msg.text().length());
+				 }
+			    
+				 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
+				 displayName = loginUser.getDisplayName();
+				 
+			     // 存聊天记录
+			  	 this.saveChatMessage(appId,displayName,"0","","",ptype,message);
+			  	 
+				 for (Channel channel : global.group) {
+		            if (channel != incoming){
+		            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype));
+		            } else {
+		            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype));
+		            }
+		         }
+		 }
+		
 	}
 	
-   /* public void handlerAdded(ChannelHandlerContext ctx) throws Exception {  // (2)
-         Channel incoming = ctx.channel();
-         channels.writeAndFlush(new TextWebSocketFrame("[注意] " + incoming.remoteAddress() + " 加入群聊"));
-        channels.add(incoming);
-		System.out.println("Client:"+incoming.remoteAddress() +"加入");
-    }
-
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {  // (3)
-         Channel incoming = ctx.channel();
-         channels.writeAndFlush(new TextWebSocketFrame("[注意]  " + incoming.remoteAddress() + " 离开群聊"));
-		 System.out.println("Client:"+incoming.remoteAddress() +"离开");
-    }*/
+   
 	    
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
@@ -109,7 +132,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 	
 	
 	// 保存 聊天记录
-	public void saveChatMessage(String appId,String userId,String type,String content,String url){
+	public void saveChatMessage(String appId,String userId,String type,String content,String url,String photoType,String photoBase){
 		ChatMessage chatMessage = new ChatMessage();
 		
 		chatMessage.setApplicationId(appId);
@@ -118,6 +141,9 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 		chatMessage.setMsgType(type);
 		chatMessage.setMsgContent(content);
 		chatMessage.setResourceUrl(url);
+		
+		chatMessage.setPhotoBase(photoBase);
+		chatMessage.setPhotoType(photoType);
 		
 		commonDao.insertObject(chatMessage);
 	}
