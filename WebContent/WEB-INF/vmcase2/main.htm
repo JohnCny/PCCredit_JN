@@ -53,6 +53,10 @@
 	#scDiv .image img{width:50px;height:50px;}
 	#scDiv .image input {position: absolute;font-size: 100px;right: 0;top: 0;opacity: 0;filter: alpha(opacity=0);cursor: pointer}
 	#scDiv #yp .image{background-image:url(${uicasePath}/images/scyp.png)}
+	
+	.mydialog{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);text-align:center;display:none;}
+	.mydialog img{margin-top:5%;height:75%;}
+	.mydialog .close{width:80px;height:30px;line-height:30px;font-family:"Microsoft YaHei";cursor:pointer;}
 </style>
 </head>
 #parse ("common/main_header.htm")
@@ -156,38 +160,47 @@
 				<p><img src="${uicasePath}/images/music.png"/></p>
 			</div>	 -->
 			
-			
-			<!-- <textarea  id="responseText" style="width: 500px; height: 650px;"></textarea> -->
-			
-	   <!-- <canvas id="myCanvas" width="400px" height="500px">myCanvas</canvas>    
-			<canvas id="yourCanvas" width="400px" height="500px">yourCanvas</canvas>    
-			<div id="chatdiv" width="400px" height="500px">chatdiv</div> -->
+			<!-- <div id="base64-imgview">
+	    		<p>你选择的图片：</p>
+	        	<p><img id="base64-img" src ="${uicasePath}/images/img_01.png"/></p>
+    		</div>  -->
+    		
 		</div>
 		<div class="fb">
 	        <textarea name="message" id ="message" placeholder="输入聊天内容"></textarea>
-	        <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a>
+	       <!--  <input type="text"  id="base64-textarea" /> -->
+	        <object id="base64-swf" width="24" height="24"
+				type="application/x-shockwave-flash" data="${contextPath}/common/js/common/Mybutton2.swf">
+				<param name="movie" value="${contextPath}/common/js/common/Mybutton2.swf" />
+			</object>
+	       <!--  <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a> -->
 			<span id ="send" >发送</span>
 		</div>
+		
+		
 		
 		<div id="scDiv">
 		     <input type="hidden"  id="loginUserId"  value="$!user.id"/>
 		     <input type="text"    id="totalCount"   value="$!count"/>    <!-- 总数 -->
       		 <input type="text"    id="rowNum" 		 value="$!currentPage"/>    <!-- currentpage -->
       		 <input type="text"    id="appId" 		 value=""/>
-			<!-- <div id="tp">
-				<a href="javascript:;" class="image"><input type="file" onchange="setImage(this)"/></a>
-			</div>
-			<div id="yp">
-				<a href="javascript:;" class="image"><input type="file" onchange="setMusic(this)"/></a>
-			</div> -->
 		</div>
 	</div>
 	
 </div>
 
+<div class="mydialog">
+	<img id="bigImg" />	<br/>
+	<input type="button" value="返回" class="close" onclick="$('.mydialog').hide();"/>
+</div>
+
 #parse ("common/footer.htm")
 
 <script type="text/javascript">
+	function showBig(obj){
+		$(".mydialog").show();
+		$("#bigImg").attr("src",$(obj).attr("src"))
+	}
 	function setImage(obj){
 		if($(obj).val()!=""){
 			$(obj).parent().html("<img src='${uicasePath}/images/img_01.png'/>")
@@ -229,7 +242,11 @@
 <script type="text/javascript">
 		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
 		var ws;
-		
+		var textarea;
+		var base64swf;
+		var imgview;
+		var img;
+	    var base64Data = "", base64Type = "";
 		
 		$(document).ready(function() {
 			ws = new WebSocket("ws://192.168.3.252:10088/ws");
@@ -259,7 +276,13 @@
 				//ta.value = ta.value + "连接被关闭";
 			};
 			
+			textarea = $("#base64-textarea");
+			base64swf = $("#base64-swf").get(0);
+			imgview = $("#base64-imgview");
+			img = $("#base64-img");
 			
+		   	base64Data = "";
+		   	base64Type = "";
 		});
 		
 
@@ -284,7 +307,21 @@
 			$("#message").val("");
 		}
 		
+		window.showBase64 = function(type,data){
+			base64Type = type;
+			base64Data = data;
+			textarea.val(data);	
+			var img1 = "data:image/" + type + ";base64," + data;
+			$(".spjl").append("<div id='base64-imgview'><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+img1+"'/></p></div>");
+			//img.attr("src", "data:image/" + type + ";base64," + data);
+			//imgview.show(1000);
+			//send 图片流
+			onSend("base64"+data);
+		};
 		
+		window.onFlashError = function(error){
+			alert(error);
+		};
 		
 		
 		// 翻页
