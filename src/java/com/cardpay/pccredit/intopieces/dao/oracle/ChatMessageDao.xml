@@ -8,7 +8,7 @@
 		<result property="msgType" column="msg_type" />
 		<result property="msgContent" column="msg_content" />
 		<result property="resourceUrl" column="resource_url" />
-		<result property="createdBy" column="createdBy" />
+		<result property="createdBy" column="created_By" />
 		<result property="createdTime" column="created_time" />
 	</resultMap>
 	
@@ -16,7 +16,10 @@
 					SELECT * FROM
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
-				select * from CHAT_MESSAGE  t where t.application_id = #{applicationId}
+				select * from CHAT_MESSAGE  t where 1=1
+				<if test="applicationId != null and applicationId != '' ">
+					and t.application_id = #{applicationId}
+				</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -25,7 +28,44 @@
 	</select>
 	
 	<select id="findCountByApplicationId" resultType="int">
-		  select count(*) from CHAT_MESSAGE t where t.application_id = #{applicationId}
+		  select count(*) from CHAT_MESSAGE t where 1=1
+		  <if test="applicationId != null and applicationId != '' ">
+			and t.application_id = #{applicationId}
+		  </if>
 	</select>
+	
+	
+	 <select id="findMsg" resultMap="ChatMessageResultMap">
+    		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select * from CHAT_MESSAGE  t  where 1=1
+				<if test="applicationId != null and applicationId != '' ">
+					and t.application_id = #{applicationId}
+				</if>
+				order by created_time desc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page} order by created_time asc
+					]]>
+    </select>
+    
+    
+    <select id="findMsg1" resultMap="ChatMessageResultMap">
+    		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+				select * from CHAT_MESSAGE  t  where 1=1
+				<if test="applicationId != null and applicationId != '' ">
+					and t.application_id = #{applicationId}
+				</if>
+				order by created_time asc
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page} 
+					]]>
+    </select>
 	
 </mapper>

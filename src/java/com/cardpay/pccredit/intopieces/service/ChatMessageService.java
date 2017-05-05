@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,7 @@ import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.VideoAccessories;
 import com.cardpay.pccredit.intopieces.web.ApproveHistoryForm;
+import com.cardpay.pccredit.ipad.model.CustomerInforIpad;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
 import com.cardpay.pccredit.manager.model.ManagerBelongMap;
 import com.cardpay.pccredit.postLoan.model.MibusidataForm;
@@ -82,5 +84,36 @@ public class ChatMessageService {
 		int size = chatMessageDao.findCountByApplicationId(applicationId);
 		QueryResult<ChatMessage> queryResult = new QueryResult<ChatMessage>(size, msglist);
 		return queryResult;
+	}
+	
+	
+	// mod
+	public List<ChatMessage> findMsg(String appId,int currentPage,int limit){
+		currentPage = currentPage - 1;
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return chatMessageDao.findMsg(appId,currentPage, limit);
+	}
+	
+	public List<ChatMessage> findMsg1(String appId,int currentPage,int limit){
+		currentPage = currentPage - 1;
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return chatMessageDao.findMsg1(appId,currentPage, limit);
+	}
+	
+	
+	/*public QueryResult<ChatMessage> findPageMsg(int currentPage,int limit) {
+		List<ChatMessage> msglist = chatMessageDao.findMsg(currentPage,limit);
+		int size = chatMessageDao.findCountByApplicationId("");
+		QueryResult<ChatMessage> queryResult = new QueryResult<ChatMessage>(size, msglist);
+		return queryResult;
+	}*/
+
+	
+	public int findCountByApplicationId(String appId){
+		return chatMessageDao.findCountByApplicationId(appId);
 	}
 }
