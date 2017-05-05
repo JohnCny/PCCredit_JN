@@ -20,6 +20,24 @@ public class ChatMessage extends BusinessModel{
 	private String msgContent;
 	private String resourceUrl;
 	
+	private String PhotoType;
+	private String PhotoBase;
+	
+	
+	
+	
+	public String getPhotoType() {
+		return PhotoType;
+	}
+	public void setPhotoType(String photoType) {
+		PhotoType = photoType;
+	}
+	public String getPhotoBase() {
+		return PhotoBase;
+	}
+	public void setPhotoBase(String photoBase) {
+		PhotoBase = photoBase;
+	}
 	public String getApplicationId() {
 		return applicationId;
 	}
