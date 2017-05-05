@@ -2931,7 +2931,9 @@ public class AddIntoPiecesControl extends BaseController {
 		if (returnMap.isSuccess()) {
 			try {
 				// 诚易贷model
-				JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
+				
+				//JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
+				com.pzw.qkjr.JNCreditBusinessModel jnCreditBusinessModel = new com.pzw.qkjr.JNCreditBusinessModel(
 									  Integer.parseInt(form.getBadHabit()),
 									  Integer.parseInt(form.getBadPublicRecord()),
 									  Integer.parseInt(form.getIndustryCategory()),
@@ -2966,7 +2968,8 @@ public class AddIntoPiecesControl extends BaseController {
 				
 			
 				//System.out.println(jnCreditBusinessModel.getResult());
-				Message msg = jnCreditBusinessModel.getResult();
+				//Message msg = jnCreditBusinessModel.getResult();
+				com.pzw.qkjr.Message msg = jnCreditBusinessModel.getResult();
 				
 				// 先delete by excelId
 				String excelId  = form.getExcelId();

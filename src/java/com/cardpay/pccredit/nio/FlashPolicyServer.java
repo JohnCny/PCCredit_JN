@@ -35,7 +35,7 @@ public class FlashPolicyServer implements InitializingBean,DisposableBean {
 
     public FlashPolicyServer() {
         this(843);
-        System.out.println(843);
+        //System.out.println(843);
     }
 
     public FlashPolicyServer(int port) {
