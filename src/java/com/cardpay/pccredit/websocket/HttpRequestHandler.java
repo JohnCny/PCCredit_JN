@@ -15,6 +15,8 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedNioFile;
 
@@ -29,6 +31,8 @@ import java.net.URL;
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> { //1
     private final String wsUri;
     private static final File INDEX;
+    
+    private WebSocketServerHandshaker handshaker;
 
     static {
         URL location = HttpRequestHandler.class.getProtectionDomain().getCodeSource().getLocation();
@@ -47,6 +51,14 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
+    	/*WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(getWebSocketLocation(request), null, true,65536000);
+    	handshaker = wsFactory.newHandshaker(request);
+        if (handshaker == null) {
+            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
+        } else {
+            handshaker.handshake(ctx.channel(),request);
+        }*/
+        
         if (wsUri.equalsIgnoreCase(request.getUri())) {
             ctx.fireChannelRead(request.retain());                  //2
         } else {
@@ -81,7 +93,13 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
         }
     }
 
-    private static void send100Continue(ChannelHandlerContext ctx) {
+
+	private String getWebSocketLocation(FullHttpRequest request) {
+		// TODO Auto-generated method stub
+		return "ws://192.168.3.252:10088/ws";
+	}
+
+	private static void send100Continue(ChannelHandlerContext ctx) {
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONTINUE);
         ctx.writeAndFlush(response);
     }
