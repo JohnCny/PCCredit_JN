@@ -159,21 +159,15 @@
 				<p style="color:#4dffba">上传语音</p>
 				<p><img src="${uicasePath}/images/music.png"/></p>
 			</div>	 -->
-			
-			<!-- <div id="base64-imgview">
-	    		<p>你选择的图片：</p>
-	        	<p><img id="base64-img" src ="${uicasePath}/images/img_01.png"/></p>
-    		</div>  -->
     		
 		</div>
 		<div class="fb">
 	        <textarea name="message" id ="message" placeholder="输入聊天内容"></textarea>
-	       <!--  <input type="text"  id="base64-textarea" /> -->
 	        <object id="base64-swf" width="24" height="24"
 				type="application/x-shockwave-flash" data="${contextPath}/common/js/common/Mybutton2.swf">
 				<param name="movie" value="${contextPath}/common/js/common/Mybutton2.swf" />
 			</object>
-	       <!--  <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a> -->
+	        <!--  <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a> -->
 			<span id ="send" >发送</span>
 		</div>
 		
@@ -252,28 +246,27 @@
 			ws = new WebSocket("ws://192.168.3.252:10088/ws");
 			ws.onopen = function() {
 				var ta = document.getElementById('responseText');
-				//ta.value = "连接开启!";
 			};
 			ws.onmessage = function(e) {
-				//if(e.data instanceof ArrayBuffer){  
-					//图片
-	            //}else{  
 	            	var ta = document.getElementById('responseText');
 	            	var arr = e.data.split(' ');
 	            	var name =arr[0];
 	            	var time =arr[1]+" "+arr[2];
 	            	var content =arr[3];
-	            	$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
-					//ta.value = ta.value + '\n' + e.data
-	            //}  
+	            	var ptype =arr[4];
+	            	if(ptype == '2'){
+	            		var type =arr[5];
+	            		var img1 = "data:image/" + type + ";base64," + content;
+	        			$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+img1+"'/></p></div>");
+	            	}else{
+	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
+	            	}
 			};
 			ws.onclose = function() {
 				var ta = document.getElementById('responseText');
-				//ta.value = "连接开启!";
 			};
 			ws.onerror = function() {
 				var ta = document.getElementById('responseText');
-				//ta.value = ta.value + "连接被关闭";
 			};
 			
 			textarea = $("#base64-textarea");
@@ -296,7 +289,7 @@
 		}
 		
 		
-		// span click send msg
+		// send text 
 		document.getElementById('send').onclick=function(){
 			if($("#message").val()== ''){
 				window.top.Dialog.message("发送内容不能为空,请重新输入");
@@ -310,13 +303,8 @@
 		window.showBase64 = function(type,data){
 			base64Type = type;
 			base64Data = data;
-			textarea.val(data);	
-			var img1 = "data:image/" + type + ";base64," + data;
-			$(".spjl").append("<div id='base64-imgview'><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+img1+"'/></p></div>");
-			//img.attr("src", "data:image/" + type + ";base64," + data);
-			//imgview.show(1000);
 			//send 图片流
-			onSend("base64"+data);
+			onSend("base64"+type+data);
 		};
 		
 		window.onFlashError = function(error){
@@ -328,7 +316,6 @@
 		$("#pre").click(function() {
 			var currentPage = Number($("#rowNum").val()) - Number(1);
 			if(Number(currentPage)<=0){
-				//window.top.Dialog.message("已经是第一页");
 				$("#pre").hide();
 				$("#nex").show();
 			    return;
@@ -357,7 +344,6 @@
 		$("#nex").click(function() {
 		    var currentPage = Number($("#rowNum").val()) + Number(1);
 		    if(Number(currentPage)>=Number($("#totalCount").val())/Number(10) + Number(1)){
-		    	//window.top.Dialog.message("已经是最后一页");
 		    	$("#nex").hide();
 		    	$("#pre").show();
 		    	return;
