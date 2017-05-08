@@ -12,7 +12,17 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.jnpad.model.CustomerBank;
+import com.cardpay.pccredit.jnpad.model.CustomerCarInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerCompanyBusiness;
+import com.cardpay.pccredit.jnpad.model.CustomerCompanyInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerContact;
+import com.cardpay.pccredit.jnpad.model.CustomerFamilyInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerHouse;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerLiving;
+import com.cardpay.pccredit.jnpad.model.CustomerPersonal;
+import com.cardpay.pccredit.jnpad.model.CustomerStore;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -139,7 +149,223 @@ public class JnpadCustomerInfoInsertServ‎ice {
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(),sum);
 	}
-	
+
+
+
+	public void insertCustomerInfoGr(CustomerPersonal customerpersonal) {
+		String id = IDGenerator.generateID();
+		customerpersonal.setId(id);
+		customerpersonal.setCreatedate(new Date());;
+		commonDao.insertObject(customerpersonal);
+	}
+
+
+
+	public void updatetCustomerInfoGr(CustomerPersonal customerpersonal) {
+
+		commonDao.updateObject(customerpersonal);
+	}
+
+
+
+	public List<CustomerPersonal> selectCustomerInfoGr(String customerId) {
+		String sql="select * from customerinformation_gr where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerPersonal.class, sql, params);
+	}
+
+
+
+	public void insertCustomerInfoFc(CustomerHouse customerhouse) {
+		// TODO Auto-generated method stub
+		String id = IDGenerator.generateID();
+		customerhouse.setId(id);
+		commonDao.insertObject(customerhouse);
+	}
+
+
+
+	public List<CustomerHouse> selectCustomerInfoFc(String customerId) {
+		String sql="select * from customerinformation_fc where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerHouse.class, sql, params);
+	}
+
+
+
+	public List<CustomerFamilyInfo> selectCustomerInfoJt(String customerId) {
+		String sql="select * from customerinformation_jt where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerFamilyInfo.class, sql, params);
+	}
+
+
+
+	public void updatetCustomerInfoJt(CustomerFamilyInfo customerfamilyinfo) {
+		commonDao.updateObject(customerfamilyinfo);
+		
+	}
+
+
+
+	public void insertCustomerInfoJt(CustomerFamilyInfo customerfamilyinfo) {
+		String id = IDGenerator.generateID();
+		customerfamilyinfo.setId(id);
+		customerfamilyinfo.setCreateDate(new Date());;
+		commonDao.insertObject(customerfamilyinfo);
+		
+	}
+
+
+
+	public List<CustomerCarInfo> selectCustomerInfoCc(String customerId) {
+		String sql="select * from customerinformation_cc where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerCarInfo.class, sql, params);
+	}
+
+
+
+	public void insertCustomerInfoCc(CustomerCarInfo customercarinfo) {
+		String id = IDGenerator.generateID();
+		customercarinfo.setId(id);
+		customercarinfo.setCreateDate(new Date());;
+		commonDao.insertObject(customercarinfo);
+	}
+
+
+
+	public List<CustomerContact> selectCustomerInfoLxr(String customerId) {
+		String sql="select * from customerinformation_lxr where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerContact.class, sql, params);
+	}
+
+
+
+	public void insertCustomerInfoLxr(CustomerContact customercontact) {
+		String id = IDGenerator.generateID();
+		customercontact.setId(id);
+		customercontact.setCreateDate(new Date());;
+		commonDao.insertObject(customercontact);
+		
+	}
+
+
+
+	public List<CustomerLiving> selectCustomerInfoJz(String customerId) {
+		String sql="select * from customerinformation_jz where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerLiving.class, sql, params);
+	}
+
+
+
+	public void updatetCustomerInfoJz(CustomerLiving customerliving) {
+		
+		commonDao.updateObject(customerliving);
+	}
+
+
+
+	public void insertCustomerInfoJz(CustomerLiving customerliving) {
+		
+		String id = IDGenerator.generateID();
+		customerliving.setId(id);
+		customerliving.setCreateDate(new Date());;
+		commonDao.insertObject(customerliving);
+	}
+
+
+
+	public void updatetCustomerInfoQyxx(CustomerCompanyInfo customercompanyinfo) {
+		commonDao.updateObject(customercompanyinfo);
+		
+	}
+
+
+
+	public void insertCustomerInfoQyxx(CustomerCompanyInfo customercompanyinfo) {
+		String id = IDGenerator.generateID();
+		customercompanyinfo.setId(id);
+		customercompanyinfo.setCreateDate(new Date());;
+		commonDao.insertObject(customercompanyinfo);
+	}
+
+
+
+	public List<CustomerCompanyInfo> selectCustomerInfoQyxx(String customerId) {
+		String sql="select * from customerinformation_qyxx where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerCompanyInfo.class, sql, params);
+	}
+
+
+
+	public List<CustomerCompanyBusiness> selectCustomerInfoQyyw(String customerId) {
+		String sql="select * from customerinformation_qyyw where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerCompanyBusiness.class, sql, params);
+	}
+
+
+
+	public void updatetCustomerInfoQyyw(CustomerCompanyBusiness customercompanybusiness) {
+		commonDao.updateObject(customercompanybusiness);
+		
+	}
+
+
+
+	public void insertCustomerInfoQyyw(CustomerCompanyBusiness customercompanybusiness) {
+		String id = IDGenerator.generateID();
+		customercompanybusiness.setId(id);
+		customercompanybusiness.setCreateDate(new Date());;
+		commonDao.insertObject(customercompanybusiness);
+		
+	}
+
+
+
+	public List<CustomerStore> selectCustomerInfoQydp(String customerId) {
+		String sql="select * from customerinformation_qydp where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerStore.class, sql, params);
+	}
+
+
+
+	public void updatetCustomerInfoQydp(CustomerStore customerstore) {
+		commonDao.updateObject(customerstore);
+		
+	}
+
+
+
+	public void insertCustomerInfoQydp(CustomerStore customerstore) {
+		String id = IDGenerator.generateID();
+		customerstore.setId(id);
+		customerstore.setCreateDate(new Date());;
+		commonDao.insertObject(customerstore);
+		
+	}
+
+
+
+	public void insertCustomerInfoQykh(CustomerBank customerbank) {
+		String id = IDGenerator.generateID();
+		customerbank.setId(id);
+		customerbank.setCreateDate(new Date());;
+		commonDao.insertObject(customerbank);
+	}
+
+
+
+	public List<CustomerBank> selectCustomerInfoQykh(String customerId) {
+		String sql="select * from customerinformation_qykh where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerBank.class, sql, params);
+	}
 	}
 
 
