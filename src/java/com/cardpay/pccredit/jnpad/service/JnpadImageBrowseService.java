@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.common.SFTPUtil;
+import com.cardpay.pccredit.intopieces.constant.ServerSideConstant;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.web.LocalImageForm;
@@ -46,11 +47,16 @@ public class JnpadImageBrowseService {
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
 			//本地
 			this.downLoadFile(response,v);
+		}else{
 			//服务器
 //			SFTPUtil.downloadjn(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
-//			JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
+			JNPAD_SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
+		}
+		}else{
+			System.out.println("文件为空");
 		}
 	}
 	
