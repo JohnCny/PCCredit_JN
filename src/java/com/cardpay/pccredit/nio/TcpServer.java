@@ -47,11 +47,12 @@ public class TcpServer implements InitializingBean,DisposableBean{
 	}
 
 	public void initServer() throws Exception {
+		String runIpAddress = "192.168.3.252";
 		myServerBootstrap.group(bossGroup, workerGroup);
 		myServerBootstrap.channel(NioServerSocketChannel.class);
 		myServerBootstrap.childHandler(myChannelInitializer);
-		myServerBootstrap.bind(InetAddress.getLocalHost().getHostAddress(),10088).sync();
-		logger.info("TCP服务器已启动" + InetAddress.getLocalHost().getHostAddress());
+		myServerBootstrap.bind(runIpAddress,10088).sync();
+		logger.info("TCP服务器已启动：" + runIpAddress);
 		
 		//ch.closeFuture().sync();
 	}
