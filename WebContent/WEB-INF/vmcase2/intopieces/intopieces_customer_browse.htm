@@ -145,7 +145,8 @@
           <a id="id_return_button" class="btn_g" href="javascript:void(0);" title="退回重新调查提交进件">重新提交进件</a>
           <a class="btn_g" href="javascript:void(0);" title="查看用信信息" onclick="viewIntoYX('NO')">用信信息</a>
           <a id="id_download_button" class="btn_g" href="javascript:void(0);" title="调查报告下载">调查报告下载</a>
-          <a class="btn_g" href="javascript:void(0);" title="影像补扫" onclick="scan('NO')">影像补扫</a>  
+          <a class="btn_g" href="javascript:void(0);" title="影像补扫" onclick="scan('NO')">影像补扫</a> 
+          <a class="btn_g" href="javascript:void(0);" title="在线评审" onclick="zxlt()">在线评审</a> 
 		</div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -153,7 +154,58 @@
     </div>
   </div>
 </body>
+<script type="text/javascript" src="${contextPath}/common/js/common/jquery.json-2.3.js"></script>s
 <script language="javascript" type="text/javascript">
+	function zxlt(){//显示在线审批记录
+		
+		if ($(".checkbox :checked").length == 1) {
+			var rowid = $("input[name='checkbox']:checked").val();
+			$("#appId",window.parent.document).val(rowid.split("@")[2]);
+			
+			// 首次加载聊天室 提取最近10条聊天记录
+			var appId = $("#appId",window.parent.document).val();
+			var tmp="";
+			var url ="${contextPath}/intopieces/addIntopieces/browseChatTopTenMsg.json?appId="+appId;
+			$.ajax({
+				url:url,
+				type: "GET",
+				dataType:'json',
+				success: function (json) {
+					obj = $.evalJSON(json);
+					$("#rowNum",window.parent.document).val(obj.rownum);
+					$("#totalCount",window.parent.document).val(obj.totalCount);
+					
+					for(var i = 0;i<obj.result.length;i++){
+						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+					}
+					$(".spjl",window.parent.document).html(tmp);
+				}
+			})
+			
+			$(".left_nav",window.parent.document).animate({left:"-220px"},200);
+			$(".content_main",window.parent.document).animate({left:"-220px"},200);
+			
+			$(".content_main").css("width","90%")
+			$(".place").css("width","100%")
+			$(".inquiry").css("width","100%")
+			$("#topDiv").css("width","100%")
+			$("#downDiv").css("width","100%")
+			$("#ltjl",window.parent.document).animate({right:"0px"},200);
+		}else{
+			Dialog.message("请选择一行!");
+		} 
+	
+		/* $(".left_nav",window.parent.document).animate({left:"-220px"},200);
+		$(".content_main",window.parent.document).animate({left:"-220px"},200);
+		
+		$(".content_main").css("width","90%")
+		$(".place").css("width","100%")
+		$(".inquiry").css("width","100%")
+		$("#topDiv").css("width","100%")
+		$("#downDiv").css("width","100%")
+		$("#ltjl",window.parent.document).animate({right:"0px"},200); */
+		
+	}
 	var layout = new TableLayout(2);
 	window.top.currentWindow.setLayout(layout);
 	

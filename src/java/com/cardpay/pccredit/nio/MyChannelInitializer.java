@@ -40,11 +40,11 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
 		 */
 		//pipeline.addLast("framer",new DelimiterBasedFrameDecoder(1024*1024,Delimiters.lineDelimiter()));
 		pipeline.addLast("http-codec",new HttpServerCodec());
-        pipeline.addLast("aggregator",new HttpObjectAggregator(1024*1024));
+        pipeline.addLast("aggregator",new HttpObjectAggregator(65536));
         pipeline.addLast("http-chunked",new ChunkedWriteHandler());
-        pipeline.addLast(new HttpRequestHandler("/ws"));
-		pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
-        pipeline.addLast("handler",Beans.get(TextWebSocketFrameHandler.class));
+        //pipeline.addLast(new HttpRequestHandler("/ws"));
+		//pipeline.addLast(new WebSocketServerProtocolHandler("/ws"));
+        pipeline.addLast("handler",Beans.get(TcpServerHandler.class));
 
 	}
 
