@@ -320,6 +320,8 @@
 					 <if test="customerName != null and customerName != '' ">
 						AND cname =#{customerName}
 					 </if>
+					 
+					 order by OPERDATETIME desc
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

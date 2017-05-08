@@ -1,7 +1,8 @@
 package com.cardpay.pccredit.intopieces.web;
 
-import java.io.File;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.creditEval.JNCreditBusinessModel;
+import com.cardpay.pccredit.creditEval.Message;
+import com.cardpay.pccredit.creditEval.Model;
 import com.cardpay.pccredit.creditEvaluation.Applicant;
-import com.cardpay.pccredit.creditEvaluation.JsonParser;
 import com.cardpay.pccredit.creditEvaluation.vo.ApplicantInfoVo;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditConditionVo;
+import com.cardpay.pccredit.creditEvaluation.vo.CreditModelModifyForm;
 import com.cardpay.pccredit.creditEvaluation.vo.LivingConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.ModelForm;
+import com.cardpay.pccredit.creditEvaluation.vo.ModelModifyForm;
 import com.cardpay.pccredit.creditEvaluation.vo.OperateConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.RepayAbilitiesVo;
 import com.cardpay.pccredit.creditEvaluation.vo.TModelForm;
@@ -37,8 +43,8 @@ import com.cardpay.pccredit.customer.model.CustomerInforUpdateCashFlow;
 import com.cardpay.pccredit.customer.model.CustomerInforUpdateCrossExamination;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
 import com.cardpay.pccredit.customer.service.CustomerInforUpdateService;
-import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.AddIntoPiecesFilter;
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
 import com.cardpay.pccredit.intopieces.model.Dcbzlr;
 import com.cardpay.pccredit.intopieces.model.DcbzlrForm;
 import com.cardpay.pccredit.intopieces.model.Dcddpz;
@@ -60,7 +66,9 @@ import com.cardpay.pccredit.intopieces.model.DzjyztForm;
 import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
+import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
+import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
@@ -112,6 +120,9 @@ public class AddIntoPiecesControl extends BaseController {
 	
 	@Autowired
 	private CommonDao commonDao;
+	
+	@Autowired
+	private ChatMessageService chatMessageService;
 	
 	//选择产品
 	@ResponseBody
@@ -2837,6 +2848,156 @@ public class AddIntoPiecesControl extends BaseController {
 		return returnMap;
 	}
 	
+	
+	/**
+	 * 调用四维授信模型 生成评估结果
+	 * 2017年4月17日16:10:02
+	 */
+	@ResponseBody
+	@RequestMapping(value = "callModelModify.json")
+	public JRadReturnMap callModelModify(@ModelAttribute ModelModifyForm form,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		
+		if (returnMap.isSuccess()) {
+			try {
+				// 指定使用哪一种模型
+		        //int modelType = 1;
+		        int modelType = Integer.parseInt(form.getProdType());
+		        System.out.println("modelType:"+modelType);
+		        // 组装参数的HashMap
+		        Map<String, String> attributes = new HashMap<>();
+		        Model model = new Model();
+
+		        // 为参数赋值，并计算结果
+	            attributes.put("spouseIncomeAnnual", String.valueOf(form.getSpouseIncomeAnnual()));
+	            attributes.put("cashAndDepositsWithBanks", String.valueOf(form.getCashAndDepositsWithBanks()));
+	            attributes.put("accountsReceivable", String.valueOf(form.getAccountsReceivable()));
+	            attributes.put("prepaidAccounts", String.valueOf(form.getPrepaidAccounts()));
+	            attributes.put("inventory", String.valueOf(form.getInventory()));
+	            attributes.put("shortTermLiabilities", String.valueOf(form.getShortTermLiabilities()));
+	            attributes.put("longTermLiabilities", String.valueOf(form.getLongTermLiabilities()));
+	            attributes.put("otherLiabilities", String.valueOf(form.getOtherLiabilities()));
+	            attributes.put("contingentLiabilities", String.valueOf(form.getContingentLiabilities()));
+	            attributes.put("ownerEquity", String.valueOf(form.getOwnerEquity()));
+	            attributes.put("retainedProfitsMonthly", String.valueOf(form.getRetainedProfitsMonthly()));
+	            attributes.put("householdExpensesMonthly", String.valueOf(form.getHouseholdExpensesMonthly()));
+	            attributes.put("paymentInstalmentsMonthly", String.valueOf(form.getPaymentInstalmentsMonthly()));
+	            attributes.put("otherExpensesMonthly", String.valueOf(form.getOtherExpensesMonthly()));
+	            attributes.put("otherIncomeMonthly", String.valueOf(form.getOtherIncomeMonthly()));
+	            attributes.put("capitalAsset", String.valueOf(form.getCapitalAsset()));
+	            attributes.put("operatingYears", String.valueOf(form.getOperatingYears()));
+	            attributes.put("marriage", String.valueOf(form.getMarriage()));
+	            attributes.put("education", String.valueOf(form.getEducation()));
+	            	
+	            model.setModelType(modelType);
+	            model.setModelAttributes(attributes);
+	            //System.out.println(model.getValue());
+	            
+				//先delete by excelId
+				String excelId  = form.getExcelId();
+				intoPiecesService.deleteEvaResult(excelId);
+				
+				//save EVA_RESULT表
+				EvaResult re = new EvaResult();
+				re.setExcelId(excelId);
+				re.setCname(form.getCname());
+				re.setSex(form.getSex());
+				re.setCardNo(form.getCardNo());
+				re.setResult("允许");//评估结果
+				re.setMoney(String.valueOf(model.getValue()));
+				intoPiecesService.saveEvaResult(re);
+				
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
+	
+	/**
+	 * 诚易贷 四维授信评估模型
+	 * 2017年4月25日 13:34:17
+	 */
+	@ResponseBody
+	@RequestMapping(value = "callCreditModelModify.json")
+	public JRadReturnMap callCreditModelModify(@ModelAttribute CreditModelModifyForm form,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				// 诚易贷model
+				
+				//JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
+				com.pzw.qkjr.JNCreditBusinessModel jnCreditBusinessModel = new com.pzw.qkjr.JNCreditBusinessModel(
+									  Integer.parseInt(form.getBadHabit()),
+									  Integer.parseInt(form.getBadPublicRecord()),
+									  Integer.parseInt(form.getIndustryCategory()),
+									  Integer.parseInt(form.getViolationLaw()),
+									  form.getCreditCardOverdueTime(),
+									  form.getCreditCardOverdueCount(),
+									  form.getLoanOverdueTime(),
+									  form.getLoanOverdueCount(),
+									  Integer.parseInt(form.getCredit()),
+									  Integer.parseInt(form.getCreditQueryCount()),
+									  //form.getApplyAmoun(), int ??
+									  (new Double(form.getApplyAmoun())).intValue(),
+									  form.getAnnualDisposableCapital(),
+									  form.getAnnualIncome(),
+									  form.getOwnersEquity(),
+									  form.getReceivableRatio(),
+									  form.getQuickRatio(),
+									  form.getBusinessYears(),
+									  form.getCooperationYears(),
+									  Integer.parseInt(form.getStoreSituation()),
+									  Integer.parseInt(form.getMortgageRemaining()),
+									  form.getAge(),
+									  Integer.parseInt(form.getSex()),
+									  Integer.parseInt(form.getEducation()),
+									  Integer.parseInt(form.getResidence()),
+									  Integer.parseInt(form.getMarriage()),
+									  Integer.parseInt(form.getChildren()),
+									  Integer.parseInt(form.getSpouse()),
+									  Integer.parseInt(form.getOwnedPropertyQuantity()),
+									  Integer.parseInt(form.getMortgagePropertyQuantity()),
+									  Integer.parseInt(form.getOwnedCarsQuantity()));
+				
+			
+				//System.out.println(jnCreditBusinessModel.getResult());
+				//Message msg = jnCreditBusinessModel.getResult();
+				com.pzw.qkjr.Message msg = jnCreditBusinessModel.getResult();
+				
+				// 先delete by excelId
+				String excelId  = form.getExcelId();
+				intoPiecesService.deleteEvaResult(excelId);
+				
+				// save EVA_RESULT表
+				EvaResult re = new EvaResult();
+				re.setExcelId(excelId);
+				re.setCname(form.getCname());
+				re.setSex(form.getSex().equals("0")?"男":"女");
+				re.setCardNo(form.getCardNo());
+				re.setResult(msg.getFlag()==0?"允许":"禁止");
+				re.setMoney(msg.getBottom()+"-"+msg.getTop());
+				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				intoPiecesService.saveEvaResult(re);
+				
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	
 	//========================================================================================================================
 		public  ApplicantInfoVo returnVo(){
 			/*"身份证号": "62010219860718003x",
@@ -3005,15 +3166,69 @@ public class AddIntoPiecesControl extends BaseController {
 			filter.setRequest(request);
 			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
 			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
-			JRadModelAndView mv = new JRadModelAndView("/home/evaluateAppReq",request);
-			mv.addObject(PAGED_RESULT, pagedResult);
-			//查询 t_Model_form 最新的一条
-			TModelForm form;
-			String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
-			List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
-			if(list!=null&&!list.isEmpty()){
-				 form =  list.get(0);
-				 mv.addObject("form", form);
+			
+			/*// 0-第一套模型  1-第二套模型  2-诚意贷
+			String PARAM = (String) commonDao.queryBySql("select * from dict where dict_type = 'CREDIT_MODEL_TYPE' ", null).get(0).get("TYPE_CODE");
+			JRadModelAndView mv = null;
+			if("0".equals(PARAM)){
+				mv = new JRadModelAndView("/home/evaluateAppReq",request);
+				mv.addObject(PAGED_RESULT, pagedResult);
+				//查询 t_Model_form 最新的一条
+				TModelForm form;
+				String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
+				List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
+				if(list!=null&&!list.isEmpty()){
+					 form =  list.get(0);
+					 mv.addObject("form", form);
+				}
+			}else if("1".equals(PARAM)){
+				mv = new JRadModelAndView("/home/evaluateModifyAppReq",request);
+				//查询 贷款类型  信用-LNM00000000003   担保-LNM00000000004  抵押-LNM00000000001
+				String prodsql = "select p.* from local_excel l,product_attribute p where l.product_id =p.id and l.id ='"+filter.getExcelId()+"'";
+				List<ProductAttribute> prod = commonDao.queryBySql(ProductAttribute.class,prodsql, null);
+				if(prod!=null&&!prod.isEmpty()){
+					if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
+						//0为信用类贷款
+						mv.addObject("prodType","0");
+					}else{
+					    mv.addObject("prodType", "1");
+					}
+				}
+				mv.addObject(PAGED_RESULT, pagedResult);
+				//查询 t_Model_form 最新的一条
+				TModelForm form;
+				String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
+				List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
+				if(list!=null&&!list.isEmpty()){
+					 form =  list.get(0);
+					 mv.addObject("form", form);
+				}
+			}else{
+				mv = new JRadModelAndView("/home/evaluateCreditModifyApp",request);
+				mv.addObject(PAGED_RESULT, pagedResult);
+			}*/
+			
+			
+			
+			/* 贷款类型  【信用-LNM00000000003】   【担保-LNM00000000004 】 【抵押-LNM00000000001】 */
+			String prodsql = "select p.* from local_excel l,product_attribute p where l.product_id =p.id and l.id ='"+filter.getExcelId()+"'";
+			List<ProductAttribute> prod = commonDao.queryBySql(ProductAttribute.class,prodsql, null);
+			JRadModelAndView mv = null;
+			if(prod!=null&&!prod.isEmpty()){
+				if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
+					// 0为信用类贷款
+					mv = new JRadModelAndView("/home/evaluateCreditModifyApp",request);
+					mv.addObject(PAGED_RESULT, pagedResult);
+				}else{
+					// 其他类型贷款
+					String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
+					List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
+					mv = new JRadModelAndView("/home/evaluateAppReq",request);
+					mv.addObject(PAGED_RESULT, pagedResult);
+					if(list!=null&&!list.isEmpty()){
+						 mv.addObject("form", list.get(0));
+					}
+				}
 			}
 			return mv;
 		}
@@ -3031,5 +3246,56 @@ public class AddIntoPiecesControl extends BaseController {
 			filter.setRequest(request);
 			JRadModelAndView mv = new JRadModelAndView("/home/evaluateApp",request);
 			return mv;
+		}
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "browseChatMsg.json", method = { RequestMethod.GET })
+		public String browseChatMsg(HttpServletRequest request) {
+			
+			//分页参数
+			String currentPage=request.getParameter("currentPage");
+			String appId=request.getParameter("appId");
+			
+			int page = 0; 
+			int limit = 10;//10条显示
+			if(StringUtils.isNotEmpty(currentPage)){
+				page = Integer.parseInt(currentPage);
+			}
+
+			// 查询聊天记录
+			List<ChatMessage> list = chatMessageService.findMsg1(appId,page,limit);
+			int totalCount = chatMessageService.findCountByApplicationId(appId);
+			
+			Map<String,Object> result = new LinkedHashMap<String,Object>();
+			result.put("totalCount", totalCount);
+			result.put("rownum", page);
+			result.put("result", list);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
+		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "browseChatTopTenMsg.json", method = { RequestMethod.GET })
+		public String browseChatTopTenMsg(HttpServletRequest request) {
+			
+			String appId=request.getParameter("appId");
+			
+			List<ChatMessage> msglist = chatMessageService.findMsg(appId,0,10);
+			
+			Map<String,Object> result = new LinkedHashMap<String,Object>();
+			result.put("totalCount", chatMessageService.findCountByApplicationId(appId));
+			result.put("rownum", chatMessageService.findCountByApplicationId(appId)/10 + 1);
+			result.put("result", msglist);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
 		}
 }

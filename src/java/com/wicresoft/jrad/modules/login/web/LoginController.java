@@ -136,4 +136,10 @@ public class LoginController implements JRadConstants {
 		return "redirect:login.html";
 
 	}
+	
+	@RequestMapping(value = { "/ws.html" })
+	public JRadModelAndView ws(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("ws", request);
+		return mv;
+	}
 }

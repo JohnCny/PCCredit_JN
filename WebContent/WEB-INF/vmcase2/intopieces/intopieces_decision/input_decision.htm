@@ -32,10 +32,10 @@
             <tr>
               <td  class="titlefc3">评估结果：</td>
               <td colspan="5" style="padding-left:5px;">
-           			#if($!evaResult.result =='允许')
-     				<span class="label" style="background: #5cb85c;color:#fff;padding:3px 10px;">允许</span>
-     				#else
+           			#if($!evaResult.result =='禁止')
      				<span class="label" style="background: #d9534f;color:#fff;padding:3px 10px;">禁止</span>
+     				#else
+     				<span class="label" style="background: #5cb85c;color:#fff;padding:3px 10px;">允许</span>
      				#end
 			  </td>
             </tr>
@@ -60,8 +60,12 @@
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td>
               <td class="titlefc3">拟授信额度（万元）：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.money</span></td>
-              <td class="titlefc3">未评估项/总项：</td>
-              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td>
+              <!-- <td class="titlefc3">未评估项/总项：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td> -->
+              #if($!evaResult.result =='禁止')
+              <td class="titlefc3">拒绝原因：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.refuseReason</span></td>
+              #end
             </tr>
           </table>
 	     </div>	 

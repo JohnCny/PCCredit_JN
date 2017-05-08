@@ -28,6 +28,37 @@ public class WeeklyAccountManagerFilter extends BaseQueryFilter {
 	private List<String> subManagerIds;
 	
 	
+	
+	private String actionTime;
+	private String startDate;
+	private String endDate;
+	
+	
+	
+	public String getActionTime() {
+		return actionTime;
+	}
+
+	public void setActionTime(String actionTime) {
+		this.actionTime = actionTime;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	private String customerManagerId;
 	private List<AccountManagerParameterForm> customerManagerIds;
 	

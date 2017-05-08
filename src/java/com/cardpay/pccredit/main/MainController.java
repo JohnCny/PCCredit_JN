@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.JSONArray;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,8 @@ import com.cardpay.pccredit.customer.service.CustomerMarketingService;
 import com.cardpay.pccredit.customer.service.MaintenanceService;
 import com.cardpay.pccredit.divisional.service.DivisionalService;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
+import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.CustomerApplicationInfoService;
 import com.cardpay.pccredit.manager.dao.StatisticsManagerDao;
 import com.cardpay.pccredit.manager.service.AccountManagerParameterService;
@@ -43,6 +46,7 @@ import com.cardpay.pccredit.riskControl.dao.NplsInfomationDao;
 import com.cardpay.pccredit.riskControl.service.CustomerOverdueService;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.system.service.SystemUserService;
+import com.cardpay.pccredit.websocket.WebsocketChatServer;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.enviroment.GlobalSetting;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
@@ -129,11 +133,20 @@ public class MainController {
 	@Autowired
 	private StatisticalCommonService statisticalCommonService;
 	
+	@Autowired
+	private ChatMessageService chatMessageService;
+	
 	@ResponseBody
 	@RequestMapping(value = "/main.page", method = { RequestMethod.GET })
 	public AbstractModelAndView mainPage(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/main", request);
-
+		// 查询前10条聊天记录
+		/*List<ChatMessage> msglist = chatMessageService.findMsg("",0,10);
+		mv.addObject("msglist",msglist);
+		mv.addObject("count",chatMessageService.findCountByApplicationId(""));
+		mv.addObject("currentPage",chatMessageService.findCountByApplicationId("")/10 + 1);*/
+		
+		
 		if (globalSetting.isSuperAdminMode(request)) {
 			mv.addObject("menuList", menuMgr.getAllUiMenus());
 		}
@@ -148,8 +161,7 @@ public class MainController {
 
 	@RequestMapping(value = "/home.page", method = { RequestMethod.GET })
 	public AbstractModelAndView indexPage(HttpServletRequest request) {
-
-		//JRadModelAndView mv = new JRadModelAndView("home/home", request);
+		
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = user.getId();
 		String rolename = user.getRoles().get(0).getName();
@@ -183,6 +195,7 @@ public class MainController {
 		HashMap<String,Integer> homeData = mainService.getHomeData(userId,0);
 		HashMap<String,Object> rightHomeData = getRightHomeData(userId);
 		String organizationname = organization.getName();
+		
 		mv.addObject("accountManagerParameter",accountManagerParameter);
 		mv.addObject("rolename",rolename);
 		mv.addObject("organizationname",organizationname);
@@ -216,6 +229,7 @@ public class MainController {
 		mv.addObject("daily_task_message",rightHomeData.get("daily_task_message"));
 		mv.addObject("repay_loan_remind_message",rightHomeData.get("repay_loan_remind_message"));
 		mv.addObject("yq_remind_message",rightHomeData.get("yq_remind_message"));
+		mv.addObject("dh_remind_message",rightHomeData.get("dh_remind_message"));
 		
 		/*奖励激励状况*/
 		mv.addObject("reward",rightHomeData.get("reward"));
@@ -297,6 +311,9 @@ public class MainController {
 		/*逾期通知*/
 		int yq_remind_message = customerApplicationInfoService.findYqLoanCount(userId);
 		
+		/*贷后通知*/
+		int dh_remind_message = customerApplicationInfoService.findDhLoanCount(userId);
+		
 		rightHomeData.put("UserApplicationInfo", application_info_size);
 		rightHomeData.put("UserApplicationSuccess", application_success_size);
 		rightHomeData.put("UserApplicationNopass", application_nopass_size);
@@ -307,6 +324,7 @@ public class MainController {
 		rightHomeData.put("daily_task_message", daily_task_message);
 		rightHomeData.put("repay_loan_remind_message", repay_loan_remind_message);
 		rightHomeData.put("yq_remind_message", yq_remind_message);
+		rightHomeData.put("dh_remind_message", dh_remind_message);
 		
 		/*奖励激励状况*/
 		Calendar c = Calendar.getInstance();

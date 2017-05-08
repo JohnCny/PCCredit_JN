@@ -1,0 +1,447 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+<STYLE id=survey_style type=text/css>
+.forms table tr td{line-height:25px;height:25px;}
+.forms table tr td input[type=text]{height:20px;line-height:20px;}
+.forms table tr td.titlefc3{text-align:center;}
+</STYLE>
+</head>
+<body>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">四维授信评估模型</div>
+      </div>
+	  <form id="id_module_form" >
+	    <input type="hidden" name="excelId"  id="excelId" value="$!result.filter.excelId" />
+	    <input type="hidden" name="prodType" id="prodType" value="$!prodType" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>基本信息</caption>
+            <!--  applicantInfo   开始-->
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
+			<tr>
+              <td class="titlefc3" id='xm'>姓名</td>
+              <td><input type="text" name="cname" id ="cname" value="$!form.cname" onblur="if(value!=''){$('#xm').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='xb'>性别</td>
+              <td><input type="text" name="sex"   id ="sex" value="$!form.sex" onblur="if(value!=''){$('#xb').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='sfz'>身份证号</td>
+              <td><input type="text" name="cardNo" id ="cardNo" value="$!form.cardNo" onblur="if(value!=''){$('#sfz').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id="hjsz">户籍所在地</td>
+              <td><input type="text" name="domicileLocation" id ="domicileLocation" value="$!form.domicileLocation" onblur="if(value!=''){$('#hjsz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="xxdz">详细地址</td>
+              <td><input type="text" name="address" id ="address" value="$!form.address" onblur="if(value!=''){$('#xxdz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="dh">电话</td>
+              <td><input type="text" name="phoneNo" id ="phoneNo" value="$!form.phoneNo" onblur="if(value!=''){$('#dh').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id="posfz">配偶身份证号</td>
+              <td><input type="text" name="spouseIdNo" id ="spouseIdNo" value="$!form.spouseIdNo" onblur="if(value!=''){$('#posfz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="qydz">店铺/企业地址</td>
+              <td><input type="text" name="companyAddress" id ="companyAddress" value="$!form.companyAddress" onblur="if(value!=''){$('#qydz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="sshy">所属行业</td>
+              <td><input type="text" name="industry" id ="industry" value="$!form.industry" onblur="if(value!=''){$('#sshy').css({color:'black'})}"/></td>
+			</tr>
+			<!--  applicantInfo   结束-->
+			</table>
+			
+			<table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>评估信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
+			<tr>
+              <td class="titlefc3" id='sia'>配偶年收入(元)</td>
+              <td><input type="text"  class="rinpsty" name="spouseIncomeAnnual" id ="spouseIncomeAnnual" value="$!form.spouseIncomeAnnual" onblur="if(value!=''){$('#sia').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='cad'>现金及银行存款(元)</td>
+              <td><input type="text" class="rinpsty" name="cashAndDepositsWithBanks"   id ="cashAndDepositsWithBanks" value="$!form.cashAndDepositsWithBanks" onblur="if(value!=''){$('#cad').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='acr'>应收账款(元)</td>
+              <td><input type="text" class="rinpsty" name="accountsReceivable" id ="accountsReceivable" value="$!form.accountsReceivable" onblur="if(value!=''){$('#acr').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id='pre'>预付账款(元)</td>
+              <td><input type="text" class="rinpsty" name="prepaidAccounts" id ="prepaidAccounts" value="$!form.prepaidAccounts" onblur="if(value!=''){$('#pre').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='inv'>存货(元)</td>
+              <td><input type="text"  class="rinpsty" name="inventory"   id ="inventory" value="$!form.inventory" onblur="if(value!=''){$('#inv').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='stl'>短期负债(元)</td>
+              <td><input type="text"  class="rinpsty" name="shortTermLiabilities" id ="shortTermLiabilities" value="$!form.shortTermLiabilities" onblur="if(value!=''){$('#stl').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id='ltl'>长期负债(元)</td>
+              <td><input type="text" class="rinpsty" name="longTermLiabilities" id ="longTermLiabilities" value="$!form.longTermLiabilities" onblur="if(value!=''){$('#ltl').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='ol'>其他负债(元)</td>
+              <td><input type="text" class="rinpsty" name="otherLiabilities"   id ="otherLiabilities" value="$!form.otherLiabilities" onblur="if(value!=''){$('#ol').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='cl'>或有负债(元)</td>
+              <td><input type="text" class="rinpsty" name="contingentLiabilities" id ="contingentLiabilities" value="$!form.contingentLiabilities" onblur="if(value!=''){$('#cl').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id='oe'>所有者权益(元)</td>
+              <td><input type="text" class="rinpsty" name="ownerEquity" id ="ownerEquity" value="$!form.ownerEquity" onblur="if(value!=''){$('#oe').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='rm'>月平均净利润(元)</td>
+              <td><input type="text" class="rinpsty" name="retainedProfitsMonthly"   id ="retainedProfitsMonthly" value="$!form.retainedProfitsMonthly" onblur="if(value!=''){$('#rm').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='hem'>月平均家庭开支(元)</td>
+              <td><input type="text" class="rinpsty" name="householdExpensesMonthly" id ="householdExpensesMonthly" value="$!form.householdExpensesMonthly" onblur="if(value!=''){$('#hem').css({color:'black'})}"/></td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id='pm'>月平均分期付款(元)</td>
+              <td><input type="text" class="rinpsty" name="paymentInstalmentsMonthly" id ="paymentInstalmentsMonthly" value="$!form.paymentInstalmentsMonthly" onblur="if(value!=''){$('#pm').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='om'>月平均其他开支(元)</td>
+              <td><input type="text" class="rinpsty" name="otherExpensesMonthly"   id ="otherExpensesMonthly" value="$!form.otherExpensesMonthly" onblur="if(value!=''){$('#om').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='oim'>月平均其他收入(元)</td>
+              <td><input type="text" class="rinpsty" name="otherIncomeMonthly" id ="otherIncomeMonthly" value="$!form.otherIncomeMonthly" onblur="if(value!=''){$('#oim').css({color:'black'})}"/></td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id='hp'>房屋购买价格(元)</td>
+              <td><input type="text" class="rinpsty" name="housePrice" id ="housePrice" value="$!form.housePrice" onblur="if(value!=''){$('#hp').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='cap'>固定资产(元)</td>
+              <td><input type="text" class="rinpsty" name="capitalAsset"   id ="capitalAsset" value="$!form.capitalAsset" onblur="if(value!=''){$('#cap').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='opr'>经营年限</td>
+              <td><input type="text" name="operatingYears" id ="operatingYears" value="$!form.operatingYears" onblur="if(value!=''){$('#opr').css({color:'black'})}"/></td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id='ma'>婚姻</td>
+              <td>
+				<label><INPUT name="radio1" type=radio  value="0">未婚或离婚</label>
+				<label><INPUT name="radio1" type=radio  value="1">已婚</label>
+				<input type="hidden" name="marriage" id="marriage" value="" />
+			  </td>
+              <td class="titlefc3" id='ed'>学历</td>
+              <td>
+				<label><INPUT name="radio2" type=radio  value="0">高中及以下</label>
+				<label><INPUT name="radio2" type=radio  value="1">大专及以上</label>
+				<input type="hidden" name="education" id="education" value="" />
+			  </td>
+		    <tr>
+         </table>
+		</div>
+	  </form>
+	  <div class="submit" style="margin-top:-20px;">
+	    <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+      </div>
+	</div>
+</div>
+</body>
+
+<script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+<script language="javascript" type="text/javascript">
+	#set ($formName = "'#id_module_form'")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+		$("#id_next_button").click(function() {
+		     /*ApplicantInfoVo*/
+		     
+		     var cardNo =  $('#cardNo').val();
+			 if(cardNo == ''){
+				Dialog.message("请输入[身份证号]!");
+				$("#sfz").css({color:"red"})
+		        return; 
+			 }
+			 
+   			 var cname =  $('#cname').val();
+   			 if(cname == ''){
+ 				Dialog.message("请输入[姓名]!");	
+				$("#xm").css({color:"red"})
+ 		        return; 
+ 			 }
+   			 
+   			 /*ApplicantInfoVo*/
+   			 
+			 
+			 
+			 // other
+			 var spouseIncomeAnnual =  $('#spouseIncomeAnnual').val();
+   			 if(spouseIncomeAnnual == ''){
+  				Dialog.message("请输入[配偶年收入]!");	
+				$("#sia").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var cashAndDepositsWithBanks =  $('#cashAndDepositsWithBanks').val();
+   			 if(cashAndDepositsWithBanks == ''){
+  				Dialog.message("请输入[现金及银行存款]!");	
+				$("#cad").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var accountsReceivable =  $('#accountsReceivable').val();
+   			 if(accountsReceivable == ''){
+  				Dialog.message("请输入[应收账款]!");	
+				$("#acr").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var prepaidAccounts =  $('#prepaidAccounts').val();
+   			 if(prepaidAccounts == ''){
+  				Dialog.message("请输入[预付账款]!");	
+				$("#pre").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var inventory =  $('#inventory').val();
+   			 if(inventory == ''){
+  				Dialog.message("请输入[存货]!");	
+				$("#inv").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var shortTermLiabilities =  $('#shortTermLiabilities').val();
+   			 if(shortTermLiabilities == ''){
+  				Dialog.message("请输入[短期负债]!");	
+				$("#stl").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var longTermLiabilities =  $('#longTermLiabilities').val();
+   			 if(longTermLiabilities == ''){
+  				Dialog.message("请输入[长期负债]!");	
+				$("#ltl").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var otherLiabilities =  $('#otherLiabilities').val();
+   			 if(otherLiabilities == ''){
+  				Dialog.message("请输入[其它负债]!");	
+				$("#ol").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var contingentLiabilities =  $('#contingentLiabilities').val();
+   			 if(contingentLiabilities == ''){
+  				Dialog.message("请输入[或有负债]!");	
+				$("#cl").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var ownerEquity =  $('#ownerEquity').val();
+   			 if(ownerEquity == ''){
+  				Dialog.message("请输入[所有者权益]!");	
+				$("#oe").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var retainedProfitsMonthly =  $('#retainedProfitsMonthly').val();
+   			 if(retainedProfitsMonthly == ''){
+  				Dialog.message("请输入[月平均净利润]!");	
+				$("#rm").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var householdExpensesMonthly =  $('#householdExpensesMonthly').val();
+   			 if(householdExpensesMonthly == ''){
+  				Dialog.message("请输入[月平均家庭开支]!");	
+				$("#hem").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var paymentInstalmentsMonthly =  $('#paymentInstalmentsMonthly').val();
+   			 if(paymentInstalmentsMonthly == ''){
+  				Dialog.message("请输入[月平均分期付款]!");	
+				$("#pm").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var otherExpensesMonthly =  $('#otherExpensesMonthly').val();
+   			 if(otherExpensesMonthly == ''){
+  				Dialog.message("请输入[月平均其他开支]!");	
+				$("#om").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var otherIncomeMonthly =  $('#otherIncomeMonthly').val();
+   			 if(otherIncomeMonthly == ''){
+  				Dialog.message("请输入[月平均其他收入]!");	
+				$("#oim").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var housePrice =  $('#housePrice').val();
+   			 if(housePrice == ''){
+  				Dialog.message("请输入[房屋购买价格]!");	
+				$("#hp").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 var capitalAsset =  $('#capitalAsset').val();
+   			 if(capitalAsset == ''){
+  				Dialog.message("请输入[固定资产]!");	
+				$("#cap").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 
+   			 var operatingYears  =  $('#operatingYears').val();
+   			 if(operatingYears == ''){
+  				Dialog.message("请输入[经营年限]!");	
+				$("#opr").css({color:"red"})
+  		        return; 
+  			 }
+   			 
+   			 // 正则验证
+   			 var Reg = /^[0-9]*$/;
+		     if(!Reg.test(operatingYears)){
+		    	 Dialog.message("经营年限必须是整数!");	
+		         return;
+		     }
+		     
+		     
+		     // 婚姻
+   			 var radio1= $('input[name="radio1"]:checked').val();
+			 if(typeof(radio1) == 'undefined'){
+	        	Dialog.message("请选择[婚姻状况]!");	
+			 	$('#ma').css({color:'red'})
+	        	return;
+		     }
+			 $('#marriage').val(radio1);
+			 $('#ma').css({color:'black'})
+			 
+			 // 学历
+			 var radio2= $('input[name="radio2"]:checked').val();
+			 if(typeof(radio2) == 'undefined'){
+	        	Dialog.message("请选择[学历情况]!");	
+			 	$('#ed').css({color:'red'})
+	        	return;
+		     }
+			 $('#education').val(radio2);
+			 $('#ed').css({color:'black'})
+			 
+			 
+			//验证是否是double类型
+		     var dob =/^[-\+]?\d+(\.\d+)?$/
+	    	 if(!dob.test(spouseIncomeAnnual)){
+		    	 Dialog.message("配偶年收入格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(cashAndDepositsWithBanks)){
+		    	 Dialog.message("现金及银行存款格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(accountsReceivable)){
+		    	 Dialog.message("应收账款格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(prepaidAccounts)){
+		    	 Dialog.message("预付账款格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(inventory)){
+		    	 Dialog.message("存货格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(shortTermLiabilities)){
+		    	 Dialog.message("短期负债格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(longTermLiabilities)){
+		    	 Dialog.message("长期负债格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(otherLiabilities)){
+		    	 Dialog.message("其他负债格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(contingentLiabilities)){
+		    	 Dialog.message("或有负债格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(ownerEquity)){
+		    	 Dialog.message("所有者权益格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(retainedProfitsMonthly)){
+		    	 Dialog.message("月平均净利润格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(householdExpensesMonthly)){
+		    	 Dialog.message("月平均家庭开支格式不正确!");	
+		         return;
+		     }
+			 
+			 
+			 if(!dob.test(paymentInstalmentsMonthly)){
+		    	 Dialog.message("月平均分期付款格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(otherExpensesMonthly)){
+		    	 Dialog.message("月平均其他开支格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(otherIncomeMonthly)){
+		    	 Dialog.message("月平均其他收入格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(housePrice)){
+		    	 Dialog.message("房屋购买价格格式不正确!");	
+		         return;
+		     }
+			 
+			 if(!dob.test(capitalAsset)){
+		    	 Dialog.message("固定资产格式不正确!");	
+		         return;
+		     }
+			 
+			 //获取form表单数局 提交
+			 var formjson = $($formName).serialize();
+			 //调用授信评估方法 返回数据 插表
+			 $.ajax({
+					url : "${contextPath}/intopieces/addIntopieces/callModelModify.json",
+					type : "get",
+					data : formjson,
+					success : function(data) { 
+						if (data.success) {
+							 //跳转导入影像资料页面
+				             var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+				             window.location.href = url;
+						}else{
+							window.top.Dialog.message("系统出现异常,请联系管理员");
+				    	}
+					}
+		    });
+        });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

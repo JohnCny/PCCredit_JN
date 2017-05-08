@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+Netty WebSocket 时间服务器
+</head>
+<br>
+<body>
+	<br>
+
+	<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+	<script type="text/javascript"
+		src="${contextPath}/common/js/common/swfobject.js"></script>
+	<script type="text/javascript"
+		src="${contextPath}/common/js/common/web_socket.js"></script>
+	<script type="text/javascript">
+		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
+		var ws;
+		var textarea;
+		var base64swf;
+		var imgview;
+		var img;
+	    var base64Data = "", base64Type = "";
+	    
+		function init() {
+			// Connect to Web Socket.
+			// Change host/port here to your own Web Socket server.
+			ws = new WebSocket("ws://192.168.3.12:10088/websocket");
+			// Set event handlers.
+			ws.onopen = function() {
+				output("onopen");
+			};
+			ws.onmessage = function(e) {
+				// e.data contains received string.
+				output("onmessage: " + e.data);
+			};
+			ws.onclose = function() {
+				output("onclose");
+			};
+			ws.onerror = function() {
+				output("onerror");
+			};
+			
+			textarea = $("#base64-textarea");
+			base64swf = $("#base64-swf").get(0);
+			imgview = $("#base64-imgview");
+			img = $("#base64-img");
+			
+		   	base64Data = "";
+		   	base64Type = "";
+		    
+		}
+
+		function onSend() {
+			var input = document.getElementById("input");
+			// You can send message to the Web Socket using ws.send.
+			ws.send(input.value);
+			output("send: " + input.value);
+			input.value = "";
+			input.focus();
+		}
+
+		function onCloseClick() {
+			ws.close();
+		}
+		
+	    function output(str) {
+			var log = document.getElementById("log");
+			var escaped = str.replace(/&/, "&amp;").replace(/</, "&lt;")
+					.replace(/>/, "&gt;").replace(/"/, "&quot;"); // "
+			log.innerHTML = escaped + "<br>" + log.innerHTML;
+		}
+	    
+		window.__onbase64 = function(type, data){
+			base64Type = type.slice(1);
+			base64Data = data;
+			textarea.val(data);	
+			img.attr("src", "data:image/" + type + ";base64," + data);
+			imgview.show(1000);
+		};
+		
+		window.showBase64 = function(type,data){
+			base64Type = type;
+			base64Data = data;
+			textarea.val(data);	
+			img.attr("src", "data:image/" + type + ";base64," + data);
+			imgview.show(1000);
+		};
+		window.onFlashError = function(error){
+			alert(error);
+		};
+	    
+	</script>
+
+</head>
+<body onload="init();">
+	
+	<form>
+		<input type="text" id="input"> <input type="button"
+			value="Send" onclick="onSend();">
+		<object id="base64-swf" width="24" height="24"
+			type="application/x-shockwave-flash" data="${contextPath}/common/js/common/Mybutton.swf">
+			<param name="movie" value="${contextPath}/common/js/common/Mybutton.swf" />
+		</object>
+		<button onclick="onCloseClick(); return false;">close</button>
+	</form>
+	<div id="log"></div>
+	
+	<div id="base64-textarea-container">
+    	<textarea id="base64-textarea"></textarea>
+    </div>
+    
+	<div id="base64-imgview">
+    	<p>你选择的图片：</p>
+        <img id="base64-img" />
+    </div>
+    
+</body>
+</html>

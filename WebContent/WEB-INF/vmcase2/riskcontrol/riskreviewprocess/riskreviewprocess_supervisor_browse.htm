@@ -142,9 +142,9 @@
 			success:function(msg){
 				Dialog.closeLoad();
 				if(msg.success == true){
-					Dialog.message(msg.message);
+					topWin.Dialog.message(msg.message);
 				}else{
-					Dialog.message(msg.message);
+					topWin.Dialog.message(msg.message);
 				}
 				window.location.href="${modulePath}/supervisorbrowse.page";
 			}
@@ -160,7 +160,7 @@
 		Dialog.form("#divRejectDialog", "拒绝", function(){
 			var description = $(window.top.$("table textarea")[0]).val();
 			if($.trim(description) == ""){
-				Dialog.message(msg.replace("{0}",""));
+				topWin.Dialog.message(msg.replace("{0}",""));
 				return false;
 			}
 			Dialog.load();
@@ -171,9 +171,9 @@
 				success:function(msg){
 					Dialog.closeLoad();
 					if(msg.success == true){
-						Dialog.message(msg.message);
+						topWin.Dialog.message(msg.message);
 					}else{
-						Dialog.message(msg.message);
+						topWin.Dialog.message(msg.message);
 					}
 					window.location.href="${modulePath}/supervisorbrowse.page";
 				}
