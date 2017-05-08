@@ -74,8 +74,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	            handleHttpRequest(ctx, (FullHttpRequest) msg);
 	        }
 	        // WebSocket接入
-	        else if (msg instanceof WebSocketFrame) {
-	            handleWebSocketFrame(ctx, (WebSocketFrame) msg);
+	        else if (msg instanceof TextWebSocketFrame) {
+	            handleWebSocketFrame(ctx, (TextWebSocketFrame) msg);
 	        }
 	    }
 
@@ -103,14 +103,15 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	        }
 	    }
 
-	    private void handleWebSocketFrame(ChannelHandlerContext ctx,
-	                                      WebSocketFrame frame) {
-
+	    private void handleWebSocketFrame(ChannelHandlerContext ctx,TextWebSocketFrame frame) {
+	    	// get bean
+			DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+			
 	        // 判断是否是关闭链路的指令
-	        if (frame instanceof CloseWebSocketFrame) {
+	        /*if (frame instanceof CloseWebSocketFrame) {
 	            handshaker.close(ctx.channel(),(CloseWebSocketFrame) frame.retain());
 	            return;
-	        }
+	        }*/
 	        // 判断是否是Ping消息
 	      /*  if (frame instanceof PingWebSocketFrame) {
 	            ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
@@ -130,8 +131,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	                        + " , 欢迎使用Netty WebSocket服务，现在时刻："
 	                        + new java.util.Date().toString()));*/
 	        
-	        TextWebSocketFrame msg = (TextWebSocketFrame) frame;
-	        Channel incoming = ctx.channel();
+	         TextWebSocketFrame msg = (TextWebSocketFrame) frame;
+	         Channel incoming = ctx.channel();
 			 // 获取当前聊天时间
 			 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		     String dateString = format.format(new Date());
@@ -141,9 +142,6 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			 String message;
 			 String appId;
 			 String ptype;
-			 
-			 // get bean
-			 DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
 			 
 			//文本
 			 if(msg.text().indexOf("base64")==-1){
@@ -169,7 +167,6 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			            }
 			         }
 			 }else{//图片
-				 System.out.println(msg.text());
 				 if("000001".equals(msg.text().substring(0, 6))){
 					    userId = msg.text().substring(0,6);
 					    appId  = msg.text().substring(6, 38);
