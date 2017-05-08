@@ -1,0 +1,107 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户原始信息>其他信息</div>
+      </div>
+        <div class="tabplace">
+            <ul class="com-tab" >
+	            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_11.page?id=${customerNm}">原始基本信息</a></li>
+	        <!--<li class="tab "><a href="${contextPath}/customer/firsthend/iframe_4.page?id=${customerNm}">家庭成员信息</a></li>
+	        	<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_2.page?id=${customerNm}">信用信息</a></li>
+	            <li class="tab " ><a href="${contextPath}/customer/firsthend/iframe_3.page?id=${customerNm}">其他信息</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_4.page?id=${customerNm}">家庭成员信息</a></li>
+	            <li class="tab "><a href="${contextPath}/customer/firsthend/iframe_5.page?id=${customerNm}">社会关系成员</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_6.page?id=${customerNm}">家庭财产信息</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_7.page?id=${customerNm}">生产经营状况</a></li>
+				<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_8.page?id=${customerNm}">学习履历情况</a></li>
+				<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_9.page?id=${customerNm}">工作履历</a></li>
+	            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_10.page?id=${customerNm}">入保信息</a></li> -->
+           		<li class="tab"><a href="${contextPath}/customer/firsthend/selectgr.page?id=${customerNm}">个人信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectfc.page?id=${customerNm}">房产信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectjt.page?id=${customerNm}">家庭信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectcc.page?id=${customerNm}">车产信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectlxr.page?id=${customerNm}">联系人信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectjz.page?id=${customerNm}">居住信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectqyxx.page?id=${customerNm}">企业基本信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectqyyw.page?id=${customerNm}">企业业务信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectqydp.page?id=${customerNm}">企业店铺信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectqykh.page?id=${customerNm}">企业开户信息</a></li>
+                <li class="tab activeTab"><a href="${contextPath}/customer/firsthend/selectqyqt.page?id=${customerNm}">其他信息</a></li>
+            </ul>
+         </div>
+<!-------------- 信息显示 ------------------------------------->        
+   <form id="id_module_form">
+         <div class="forms" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <input type="hidden" id="id" name="id" value="$!{customerId}" />
+            <table class="rule" border="1" bordercolor="#CCCCCC">
+					<caption>其他信息</caption>
+			            <colgroup>
+			              <col width="10%" />
+			              <col width="40%" />
+			              <col width="10%" />
+			              <col width="40%" />
+			            </colgroup>
+						<tr>
+						<td><textarea textarea rows="5" style="height:200px;width: 1200px" name="otherInfo">$!dianpu.otherInfo</textarea></td>
+						</tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit">
+        <!-- <input type="button" onclick="returnClick();" value="返回" /> -->
+          #if(!$!lock)
+        <input id="id_save_button" type="button" value="保存" class="current" />
+        #end
+        <input type="button" onclick="javascript:history.back();" value="返回" />
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+var layout = new FormsLayout("formsId");
+window.top.currentWindow.setLayout(layout);
+#set ($formName = "'#id_module_form'")
+#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+/* $(document).ready(function() {		
+$("input[type='text']").attr("disabled",true);
+$("input[type='radio']").attr("disabled",true);
+$("input[type='checkbox']").attr("disabled",true);
+$("select").attr("disabled",true);
+
+}); */
+$(document).ready(function() {		
+$("#id_save_button").click(function() {
+	if(submitFlag == 1){
+		alert("请勿重复提交!")
+		return;
+	}
+	submitFlag = 1;
+	if ($($formName).valid()) {
+		var formjson = $($formName).serialize();
+	        var url = "${modulePath}/insertqydp.json?id=${customerNm}";
+		$.ajax({
+			url : url,
+			type : "get",
+			data : formjson,
+			success : function(data) {
+				if (data.success) {
+					topWin.Dialog.message(data.message);
+					window.location.href= contextPath+"/customer/firsthend/selectqyqt.page?id=${customerNm}" ;
+				}
+				else{
+					topWin.Dialog.message(data.message);
+			    }
+				submitFlag = 0;
+			}
+		});
+			
+	}else{
+		submitFlag = 0;
+	}
+});
+});
+  </script>
+</body>
