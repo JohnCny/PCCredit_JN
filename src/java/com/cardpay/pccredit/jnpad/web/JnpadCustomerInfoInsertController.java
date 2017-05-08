@@ -2,7 +2,8 @@ package com.cardpay.pccredit.jnpad.web;
 
 
 import java.util.Date;
-
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,8 +22,18 @@ import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.model.CustomerBank;
+import com.cardpay.pccredit.jnpad.model.CustomerCarInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerCompanyBusiness;
+import com.cardpay.pccredit.jnpad.model.CustomerCompanyInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerContact;
+import com.cardpay.pccredit.jnpad.model.CustomerFamilyInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerHouse;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerInfoForm;
+import com.cardpay.pccredit.jnpad.model.CustomerLiving;
+import com.cardpay.pccredit.jnpad.model.CustomerPersonal;
+import com.cardpay.pccredit.jnpad.model.CustomerStore;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerInfoInsertServ‎ice;
 import com.cardpay.pccredit.jnpad.service.JnpadCustomerSelectService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -217,4 +228,591 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 		return json.toString();
 	}
 
+	
+	
+	/**
+	 * 客户资料录入---个人
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/insertgr.json", method = { RequestMethod.GET })
+	public String customer_gr( @ModelAttribute CustomerPersonal customerpersonal,HttpServletRequest request) {
+		String customerId=request.getParameter("customerId");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<CustomerPersonal> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGr(customerId);
+		try {
+		if(custp.size()!=0){
+			customerpersonal.setId(custp.get(0).getId());
+			customerpersonal.setUpdatedate(new Date());
+			JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoGr(customerpersonal);
+			result.put("mess", "更新客户个人信息成功");
+		}else{
+			JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoGr(customerpersonal);
+			result.put("mess", "添加客户个人信息成功");
+			
+		}
+		} catch (Exception e) {
+			result.put("mess", "操作失败");
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	//查询客户个人信息
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/selectgr.json", method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.BROWSE)
+	public String selectGr( HttpServletRequest request) {
+		String customerId=request.getParameter("customerId");
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		List<CustomerPersonal> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGr(customerId);
+		CustomerPersonal customerpersonal =new CustomerPersonal();
+		if(custp.size()!=0){
+			customerpersonal=custp.get(0);
+		}
+		result.put("custp",customerpersonal);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	/**
+	 * 客户资料录入---房产
+	 * 
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/customerIntopiece/insertfc.json", method = { RequestMethod.GET })
+	public String customer_fc( @ModelAttribute CustomerHouse customerhouse,HttpServletRequest request) {
+		HashMap<String, Object> result = new HashMap<String, Object>();
+		try {
+			customerhouse.setCreateDate(new Date());
+			JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoFc(customerhouse);
+			result.put("mess", "添加客户房产信息成功");
+		} catch (Exception e) {
+			result.put("mess", "操作失败");
+		}
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	//查询客户房产信息
+		@ResponseBody
+		@RequestMapping(value = "/ipad/customerIntopiece/selectfc.json", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public String selectFc( HttpServletRequest request) {
+			String customerId=request.getParameter("customerId");
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			List<CustomerHouse> customerhouse=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoFc(customerId);
+			result.put("customerhouse",customerhouse);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
+		}
+		
+
+		/**
+		 * 客户资料录入---家庭
+		 * 
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "/ipad/customerIntopiece/insertjt.json", method = { RequestMethod.GET })
+		public String customer_jt( @ModelAttribute CustomerFamilyInfo customerfamilyinfo,HttpServletRequest request) {
+			String customerId=request.getParameter("customerId");
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			List<CustomerFamilyInfo> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJt(customerId);
+			try {
+			if(custp.size()!=0){
+				customerfamilyinfo.setId(custp.get(0).getId());
+				customerfamilyinfo.setUpdateDate(new Date());
+				JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoJt(customerfamilyinfo);
+				result.put("mess", "更新客户家庭信息成功");
+			}else{
+				JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoJt(customerfamilyinfo);
+				result.put("mess", "添加客户家庭信息成功");
+				
+			}
+			} catch (Exception e) {
+				result.put("mess", e.getMessage());
+			}
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
+		}
+		
+		//查询客户家庭信息
+		@ResponseBody
+		@RequestMapping(value = "/ipad/customerIntopiece/selectjt.json", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public String selectJt( HttpServletRequest request) {
+			String customerId=request.getParameter("customerId");
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			List<CustomerFamilyInfo> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJt(customerId);
+			CustomerFamilyInfo customerfamilyinfo =new CustomerFamilyInfo();
+			if(custp.size()!=0){
+				customerfamilyinfo=custp.get(0);
+			}
+			result.put("cusf",customerfamilyinfo);
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
+		}
+		
+		/**
+		 * 客户资料录入---车产
+		 * 
+		 * @param filter
+		 * @param request
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "/ipad/customerIntopiece/insertcc.json", method = { RequestMethod.GET })
+		public String customer_cc( @ModelAttribute CustomerCarInfo customercarinfo,HttpServletRequest request) {
+			HashMap<String, Object> result = new HashMap<String, Object>();
+			try {
+				customercarinfo.setCreateDate(new Date());
+				JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoCc(customercarinfo);
+				result.put("mess", "添加客户车产信息成功");
+			} catch (Exception e) {
+				result.put("mess", "操作失败");
+			}
+			JsonConfig jsonConfig = new JsonConfig();
+			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			return json.toString();
+		}
+		
+		//查询客户车产信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectcc.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectcc( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerCarInfo> customercarinfo=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoCc(customerId);
+				result.put("customercar",customercarinfo);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 客户资料录入---联系人
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertlxr.json", method = { RequestMethod.GET })
+			public String customer_lxr( @ModelAttribute CustomerContact customercontact,HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				try {
+					customercontact.setCreateDate(new Date());
+					JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoLxr(customercontact);
+					result.put("mess", "添加客户联系人信息成功");
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户联系人信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectlxr.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectlxr( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerContact> customercarinfo=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoLxr(customerId);
+				result.put("customercontact",customercarinfo);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 客户资料录入---居住
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertjz.json", method = { RequestMethod.GET })
+			public String customer_jz( @ModelAttribute CustomerLiving customerliving,HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerLiving> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJz(customerId);
+				try {
+				if(custp.size()!=0){
+					customerliving.setId(custp.get(0).getId());
+					customerliving.setUpdateDate(new Date());
+					JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoJz(customerliving);
+					result.put("mess", "更新客居住信息成功");
+				}else{
+					JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoJz(customerliving);
+					result.put("mess", "添加客户居住信息成功");
+					
+				}
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户居住信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectjz.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectJz( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerLiving> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJz(customerId);
+				CustomerLiving customerliving =new CustomerLiving();
+				if(custp.size()!=0){
+					customerliving=custp.get(0);
+				}
+				result.put("living",customerliving);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 客户资料录入---企业信息
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertqyxx.json", method = { RequestMethod.GET })
+			public String customer_qyxx( @ModelAttribute CustomerCompanyInfo customercompanyinfo,HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerCompanyInfo> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyxx(customerId);
+				try {
+					if(custp.size()!=0){
+						customercompanyinfo.setId(custp.get(0).getId());
+						customercompanyinfo.setUpdateDate(new Date());
+						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoQyxx(customercompanyinfo);
+						result.put("mess", "更新客企业基本信息成功");
+					}else{
+						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQyxx(customercompanyinfo);
+						result.put("mess", "添加客户企业基本信息成功");
+						
+					}
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户企业信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectqyxx.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectqyxx( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerCompanyInfo> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyxx(customerId);
+				CustomerCompanyInfo customercompanyinfo =new CustomerCompanyInfo();
+				if(custp.size()!=0){
+					customercompanyinfo=custp.get(0);
+				}
+				result.put("company",customercompanyinfo);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 客户资料录入---企业业务信息
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertqyyw.json", method = { RequestMethod.GET })
+			public String customer_qyyw( @ModelAttribute CustomerCompanyBusiness customercompanybusiness,HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerCompanyBusiness> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyyw(customerId);
+				try {
+					if(custp.size()!=0){
+						customercompanybusiness.setId(custp.get(0).getId());
+						customercompanybusiness.setUpdateDate(new Date());
+						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoQyyw(customercompanybusiness);
+						result.put("mess", "更新客企业业务信息成功");
+					}else{
+						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQyyw(customercompanybusiness);
+						result.put("mess", "添加客户企业业务信息成功");
+						
+					}
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户企业业务信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectqyyw.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectqyyw( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerCompanyBusiness> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyyw(customerId);
+				CustomerCompanyBusiness customercompanybusiness =new CustomerCompanyBusiness();
+				if(custp.size()!=0){
+					customercompanybusiness=custp.get(0);
+				}
+				result.put("business",customercompanybusiness);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 客户资料录入---企业店铺信息
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertqydp.json", method = { RequestMethod.GET })
+			public String customer_qydp( @ModelAttribute CustomerStore customerstore,HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerStore> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQydp(customerId);
+				try {
+					if(custp.size()!=0){
+						customerstore.setId(custp.get(0).getId());
+						customerstore.setUpdateDate(new Date());
+						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoQydp(customerstore);
+						result.put("mess", "更新客企业店铺或其他信息成功");
+					}else{
+						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQydp(customerstore);
+						result.put("mess", "添加客户企业店铺或其他信息成功");
+						
+					}
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户企业店铺信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectqydp.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectqydp( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerStore> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQydp(customerId);
+				CustomerStore customerstore =new CustomerStore();
+				if(custp.size()!=0){
+					customerstore=custp.get(0);
+				}
+				result.put("dianpu",customerstore);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 客户资料录入---企业开户信息
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertqykh.json", method = { RequestMethod.GET })
+			public String customer_qykh( @ModelAttribute CustomerBank customerbank,HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				try {
+					customerbank.setCreateDate(new Date());
+					JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQykh(customerbank);
+					result.put("mess", "添加客户企业开户信息成功");
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户企业开户信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectqykh.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectqykh( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerBank> customerbank=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQykh(customerId);
+				result.put("kaihu",customerbank);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			//查询客户所有信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectAll.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectAll( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				
+				List<CustomerBank> customerbank=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQykh(customerId);
+				if(customerbank.size()!=0){
+					result.put("kaihu","success");
+					result.put("kaihu2","已录入");
+					
+				}else{
+					result.put("kaihu","important");
+					result.put("kaihu2","未录入");
+				}
+				result.put("kaihu3",customerbank);
+				List<CustomerPersonal> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGr(customerId);
+				if(custp.size()!=0){
+					result.put("geren","success");
+					result.put("geren2","已录入");
+					result.put("geren3",custp.get(0));
+				}else{
+					result.put("geren","important");
+					result.put("geren2","未录入");
+					result.put("geren3",new CustomerPersonal());
+				}
+				List<CustomerHouse> customerhouse=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoFc(customerId);
+				if(customerhouse.size()!=0){
+					result.put("fangchan","success");
+					result.put("fangchan2","已录入");
+				}else{
+					result.put("fangchan","important");
+					result.put("fangchan2","未录入");
+				}
+				result.put("fangchan3",customerhouse);
+				List<CustomerFamilyInfo> custf=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJt(customerId);
+				if(custf.size()!=0){
+					result.put("jiating","success");
+					result.put("jiating2","已录入");
+					result.put("jiating3",custf.get(0));
+				}else{
+					result.put("jiating","important");
+					result.put("jiating2","未录入");
+					result.put("jiating2","未录入");
+					result.put("jiating3",new CustomerFamilyInfo());
+				}
+				List<CustomerCarInfo> customercarinfo=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoCc(customerId);
+				if(customercarinfo.size()!=0){
+					result.put("chechan","success");
+					result.put("chechan2","已录入");
+				}else{
+					result.put("chechan","important");
+					result.put("chechan2","未录入");
+				}
+				result.put("chechan3",customercarinfo);
+				List<CustomerContact> lianxiren=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoLxr(customerId);
+				if(lianxiren.size()!=0){
+					result.put("lianxiren","success");
+					result.put("lianxiren2","已录入");
+				}else{
+					result.put("lianxiren","important");
+					result.put("lianxiren2","未录入");
+				}
+				result.put("lianxiren3",lianxiren);
+				List<CustomerLiving> custjz=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJz(customerId);
+				if(custjz.size()!=0){
+					result.put("juzhu","success");
+					result.put("juzhu2","已录入");
+					result.put("juzhu3",custjz.get(0));
+				}else{
+					result.put("juzhu","important");
+					result.put("juzhu2","未录入");
+					result.put("juzhu3",new CustomerLiving());
+				}
+				List<CustomerCompanyInfo> custqyxx=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyxx(customerId);
+				if(custqyxx.size()!=0){
+					result.put("qyxx","success");
+					result.put("qyxx2","已录入");
+					result.put("qyxx3",custqyxx.get(0));
+				}else{
+					result.put("qyxx","important");
+					result.put("qyxx2","未录入");
+					result.put("qyxx3",new CustomerCompanyInfo());
+				}
+				List<CustomerCompanyBusiness> custqyyw=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyyw(customerId);
+				if(custqyyw.size()!=0){
+					result.put("qyyw","success");
+					result.put("qyyw2","已录入");
+					result.put("qyyw3",custqyyw.get(0));
+				}else{
+					result.put("qyyw","important");
+					result.put("qyyw2","未录入");
+					result.put("qyyw3",new CustomerCompanyBusiness());
+				}
+				List<CustomerStore> custpqydp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQydp(customerId);
+				if(custpqydp.size()!=0){
+					result.put("qydp","success");
+					result.put("qydp2","已录入");
+					result.put("qydp3",custpqydp.get(0));
+					if(custpqydp.get(0).getOtherInfo()!=""||custpqydp.get(0).getOtherInfo()!=null){
+						result.put("qyqt","success");
+						result.put("qyqt2","已录入");
+					}else{
+						result.put("qyqt","important");
+						result.put("qyqt2","未录入");
+					}
+				}else{
+					result.put("qydp","important");
+					result.put("qydp2","未录入");
+					result.put("qyqt","important");
+					result.put("qyqt2","未录入");
+					result.put("qydp3",new CustomerStore());
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			
 }

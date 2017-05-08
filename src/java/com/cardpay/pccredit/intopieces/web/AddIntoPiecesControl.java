@@ -2865,7 +2865,7 @@ public class AddIntoPiecesControl extends BaseController {
 		        int modelType = Integer.parseInt(form.getProdType());
 		        System.out.println("modelType:"+modelType);
 		        // 组装参数的HashMap
-		        Map<String, String> attributes = new HashMap<>();
+		        Map<String, String> attributes = new HashMap<String, String>();
 		        Model model = new Model();
 
 		        // 为参数赋值，并计算结果
