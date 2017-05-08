@@ -261,6 +261,9 @@
 	            	}else{
 	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
 	            	}
+	            	// 焦点始终在最后一行
+	            	var hei=$(".spjl").height(); 
+	            	$(".spjl").scrollTop(hei); 
 			};
 			ws.onclose = function() {
 				var ta = document.getElementById('responseText');
@@ -300,7 +303,7 @@
 			$("#message").val("");
 		}
 		
-		window.showBase64 = function(type,data){
+		window.showBase64 = function(name,type,data){
 			base64Type = type;
 			base64Data = data;
 			//send 图片流
@@ -308,7 +311,7 @@
 		};
 		
 		window.onFlashError = function(error){
-			alert(error);
+			window.top.Dialog.message(error);
 		};
 		
 		

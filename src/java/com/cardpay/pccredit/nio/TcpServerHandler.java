@@ -1,14 +1,10 @@
 package com.cardpay.pccredit.nio;
 
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
-import com.cardpay.pccredit.intopieces.constant.Constant;
-
+import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
+import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -26,17 +22,30 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.CharsetUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.BAD_REQUEST;
-import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
+
+import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
+import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.util.spring.Beans;
 
 @Service
 @Scope("prototype")
 public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
-
-		private static final Logger logger = Logger
-				.getLogger(TcpServerHandler.class);
-
+		private static final Logger logger = Logger.getLogger(TcpServerHandler.class);
+		
+		@Autowired
+		private CommonDao commonDao;
+		
 		private WebSocketServerHandshaker handshaker;
 
 		@Autowired
@@ -65,8 +74,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	            handleHttpRequest(ctx, (FullHttpRequest) msg);
 	        }
 	        // WebSocket接入
-	        else if (msg instanceof WebSocketFrame) {
-	            handleWebSocketFrame(ctx, (WebSocketFrame) msg);
+	        else if (msg instanceof TextWebSocketFrame) {
+	            handleWebSocketFrame(ctx, (TextWebSocketFrame) msg);
 	        }
 	    }
 
@@ -79,62 +88,117 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	                                   FullHttpRequest req) throws Exception {
 
 	        // 如果HTTP解码失败，返回HHTP异常
-	        if (!req.decoderResult().isSuccess()
-	                || (!"websocket".equals(req.headers().get("Upgrade")))) {
-	            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1,
-	                    BAD_REQUEST));
+	        if (!req.decoderResult().isSuccess()|| (!"websocket".equals(req.headers().get("Upgrade")))) {
+	            sendHttpResponse(ctx, req, new DefaultFullHttpResponse(HTTP_1_1,BAD_REQUEST));
 	            return;
 	        }
 
-	        // 构造握手响应返回，本机测试
-	        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-	                "ws://localhost:"+Constant.WS_PORT+"/websocket", null, false);
+	        // 构造握手响应返回,本机测试
+	        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://192.168.3.252:"+Constant.WS_PORT+"/ws", null, true,1389101);
 	        handshaker = wsFactory.newHandshaker(req);
 	        if (handshaker == null) {
-	            WebSocketServerHandshakerFactory
-	                    .sendUnsupportedVersionResponse(ctx.channel());
+	            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
 	        } else {
 	            handshaker.handshake(ctx.channel(), req);
 	        }
 	    }
 
-	    private void handleWebSocketFrame(ChannelHandlerContext ctx,
-	                                      WebSocketFrame frame) {
-
+	    private void handleWebSocketFrame(ChannelHandlerContext ctx,TextWebSocketFrame frame) {
+	    	// get bean
+			DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+			
 	        // 判断是否是关闭链路的指令
-	        if (frame instanceof CloseWebSocketFrame) {
-	            handshaker.close(ctx.channel(),
-	                    (CloseWebSocketFrame) frame.retain());
+	        /*if (frame instanceof CloseWebSocketFrame) {
+	            handshaker.close(ctx.channel(),(CloseWebSocketFrame) frame.retain());
 	            return;
-	        }
+	        }*/
 	        // 判断是否是Ping消息
-	        if (frame instanceof PingWebSocketFrame) {
-	            ctx.channel().write(
-	                    new PongWebSocketFrame(frame.content().retain()));
+	      /*  if (frame instanceof PingWebSocketFrame) {
+	            ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
 	            return;
-	        }
+	        }*/
 	        // 本例程仅支持文本消息，不支持二进制消息
-	        if (!(frame instanceof TextWebSocketFrame)) {
-	            throw new UnsupportedOperationException(String.format(
-	                    "%s frame types not supported", frame.getClass().getName()));
-	        }
+	       /* if (!(frame instanceof TextWebSocketFrame)) {
+	            throw new UnsupportedOperationException(String.format("%s frame types not supported", frame.getClass().getName()));
+	        }*/
 
 	        // 返回应答消息
-	        String request = ((TextWebSocketFrame) frame).text();
+	        /*String request = ((TextWebSocketFrame) frame).text();
 
             logger.info(String.format("%s received %s", ctx.channel(), request));
 	        ctx.channel().write(
 	                new TextWebSocketFrame(request
 	                        + " , 欢迎使用Netty WebSocket服务，现在时刻："
-	                        + new java.util.Date().toString()));
+	                        + new java.util.Date().toString()));*/
+	        
+	         TextWebSocketFrame msg = (TextWebSocketFrame) frame;
+	         Channel incoming = ctx.channel();
+			 // 获取当前聊天时间
+			 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		     String dateString = format.format(new Date());
+		     
+			 // 获取当前登陆聊天用户
+			 String userId;
+			 String message;
+			 String appId;
+			 String ptype;
+			 
+			//文本
+			 if(msg.text().indexOf("base64")==-1){
+				 	if("000001".equals(msg.text().substring(0, 6))){
+					    userId = msg.text().substring(0,6);
+					    appId  = msg.text().substring(6, 38);
+					    message = msg.text().substring(38, msg.text().length());
+					 }else{
+						userId = msg.text().substring(0, 32);
+						appId  = msg.text().substring(32, 64);
+						message = msg.text().substring(64, msg.text().length());
+					 }
+					 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
+					 
+				     // 存聊天记录
+				  	 this.saveChatMessage(appId,loginUser.getDisplayName(),"0",message.replaceAll(" ", ""),"","","");
+				  	 
+					 for (Channel channel : global.group) {
+			            if (channel != incoming){
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")+" "+0+" "+"text"));
+			            } else {
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message.replaceAll(" ", "")+" "+0+" "+"text"));
+			            }
+			         }
+			 }else{//图片
+				 if("000001".equals(msg.text().substring(0, 6))){
+					    userId = msg.text().substring(0,6);
+					    appId  = msg.text().substring(6, 38);
+					    ptype  = msg.text().substring(44, 48);
+					    message = msg.text().substring(48, msg.text().length());
+					 }else{
+						userId = msg.text().substring(0, 32);
+						appId  = msg.text().substring(32, 64);
+						ptype  = msg.text().substring(70, 74);
+						message = msg.text().substring(74, msg.text().length());
+					 }
+				    
+					 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
+					 
+				     // 存聊天记录
+				  	 this.saveChatMessage(appId,loginUser.getDisplayName(),"0","","",ptype,message);
+				  	 
+					 for (Channel channel : global.group) {
+			            if (channel != incoming){
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype));
+			            } else {
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype));
+			            }
+			         }
+			 }
 	    }
 
 	    private static void sendHttpResponse(ChannelHandlerContext ctx,
 	                                         FullHttpRequest req, FullHttpResponse res) {
 	        // 返回应答给客户端
 	        if (res.getStatus().code() != 200) {
-	            ByteBuf buf = Unpooled.copiedBuffer(res.getStatus().toString(),
-	                    CharsetUtil.UTF_8);
+	            ByteBuf buf = Unpooled.copiedBuffer(res.getStatus().toString(),CharsetUtil.UTF_8);
 	            res.content().writeBytes(buf);
 	            buf.release();
 	            HttpUtil.setContentLength(res, res.content().readableBytes());
@@ -148,9 +212,23 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	    }
 
 	    @Override
-	    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-	            throws Exception {
+	    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)throws Exception {
 	        cause.printStackTrace();
 	        ctx.close();
 	    }
+	    
+	    
+	 // 保存 聊天记录
+		public void saveChatMessage(String appId,String userId,String type,String content,String url,String photoType,String photoBase){
+			ChatMessage chatMessage = new ChatMessage();
+			chatMessage.setApplicationId(appId);
+			chatMessage.setCreatedBy(userId);
+			chatMessage.setCreatedTime(new Date());
+			chatMessage.setMsgType(type);
+			chatMessage.setMsgContent(content);
+			chatMessage.setResourceUrl(url);
+			chatMessage.setPhotoBase(photoBase);
+			chatMessage.setPhotoType(photoType);
+			commonDao.insertObject(chatMessage);
+		}
 	}

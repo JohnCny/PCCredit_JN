@@ -314,7 +314,7 @@ public class Model {
         // 指定使用哪一种模型
         int modelType = 1;
         // 组装参数的HashMap
-        Map<String, String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<String, String>();
         Model model = new Model();
 
         // 为参数赋值，并计算结果
