@@ -530,6 +530,29 @@ public class CustomerDetailedInfoController extends BaseController{
 				returnMap.put("customerNm", customerId);
 				return returnMap;
 			}
+			/**
+			 * 客户资料删除
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "deleteinfo.json", method = { RequestMethod.GET })
+			public JRadReturnMap customer_delete(HttpServletRequest request) {
+				JRadReturnMap returnMap = new JRadReturnMap();
+				String id=request.getParameter("id");
+				String customerId=request.getParameter("customerId");
+				String tables=request.getParameter("tables");
+				try {
+						JnpadCustomerInfoInsertServ‎ice.deleteinfo(id,tables);
+						returnMap.put("message","删除信息成功");
+				} catch (Exception e) {
+					return WebRequestHelper.processException(e);
+				}
+				returnMap.put("customerNm", customerId);
+				return returnMap;
+			}
 			
 			//查询客户企业店铺信息
 			@ResponseBody
