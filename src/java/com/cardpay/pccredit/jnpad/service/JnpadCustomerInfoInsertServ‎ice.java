@@ -12,6 +12,7 @@ import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.dao.comdao.IntoPiecesComdao;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.jnpad.dao.JnpadCustomerInfoInsertDao;
 import com.cardpay.pccredit.jnpad.model.CustomerBank;
 import com.cardpay.pccredit.jnpad.model.CustomerCarInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerCompanyBusiness;
@@ -34,6 +35,8 @@ public class JnpadCustomerInfoInsertServ‎ice {
 	
 	@Autowired
 	private IntoPiecesComdao intoPiecesComdao;
+	@Autowired
+	private JnpadCustomerInfoInsertDao jnpadcustomerinfoinsertdao;
 	
 //插入客户信息
 	public String customerInforInsert(CustomerInfo customerinfor) {
@@ -365,6 +368,12 @@ public class JnpadCustomerInfoInsertServ‎ice {
 		String sql="select * from customerinformation_qykh where customer_Id='"+customerId+"'";
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		return commonDao.queryBySql(CustomerBank.class, sql, params);
+	}
+
+
+
+	public void deleteinfo(String id, String tables) {
+		jnpadcustomerinfoinsertdao.deleteinfo(id,tables);
 	}
 	}
 

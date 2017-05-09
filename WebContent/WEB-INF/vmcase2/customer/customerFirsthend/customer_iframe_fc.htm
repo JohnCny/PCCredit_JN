@@ -73,7 +73,7 @@
             </colgroup>
             #foreach ($customer in $customerhouse)
             <tr>
-            <td class="checkbox"><input type="radio" name="checkbox" value=""/></td>
+            <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"/></td>
               <td nowrap="nowrap">$!customer.houseAddress</td>
               <td nowrap="nowrap">$!customer.houseArea</td>
               <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!customer.monetaryDate)</td>
@@ -90,6 +90,7 @@
         <div class="submit">
   		 #if(!$!lock)
          <input id="id_save_button" type="button" onclick="addLxr();" value="新增" class="current" />
+         <input id="id_delete_button" type="button" value="删除" class="current" />
          #end       
           <input type="button" onclick="javascript:history.back();" value="返回" />
         </div>
@@ -104,5 +105,25 @@
 	function addLxr(){
 		 window.location.href= contextPath+"/customer/firsthend/insertfc_browse.page?id=${customerNm}" ;
 	}
+	$("#id_delete_button").click(function() {
+        if ($(".checkbox :checked").length == 1) {
+        	var value = $("input[name='checkbox']:checked").val();
+        	$.ajax({
+    			url : contextPath+"/customer/firsthend/deleteinfo.json?customerId=${customerNm}&tables=customerinformation_fc&id="+value,
+    			type : "get",
+    			success : function(data) {
+    				if (data.success) {
+    					topWin.Dialog.message(data.message);
+    					window.location.reload() ;
+    				}
+    				else{
+    					topWin.Dialog.message(data.message);
+    		    	}
+    			}
+    		});
+        } else {
+            Dialog.message("请选择一行");
+        }
+    });
   </script>
 </body>

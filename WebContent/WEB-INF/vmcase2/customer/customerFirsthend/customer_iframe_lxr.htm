@@ -61,7 +61,7 @@
             </colgroup>
             #foreach ($customer in $customercontact)
             <tr>
-          	  <td class="checkbox"><input type="radio" name="checkbox" value=""/></td>
+          	  <td class="checkbox"><input type="radio" name="checkbox" value="$!customer.id"/></td>
               <td nowrap="nowrap">$!customer.contactName</td>
               <td nowrap="nowrap">$!customer.contactTel</td>
               <td nowrap="nowrap">$!customer.relation</td>
@@ -74,6 +74,7 @@
         <div class="submit">
    #if(!$!lock)
          <input id="id_save_button" type="button" onclick="addLxr();" value="新增" class="current" />
+         <input id="id_delete_button" type="button" value="删除" class="current" />
          #end
         <input type="button" onclick="javascript:history.back();" value="返回" />
         </div>
@@ -88,5 +89,25 @@
 	function addLxr(){
 		 window.location.href= contextPath+"/customer/firsthend/insertlxr_browse.page?id=${customerNm}" ;
 	}
+	$("#id_delete_button").click(function() {
+        if ($(".checkbox :checked").length == 1) {
+        	var value = $("input[name='checkbox']:checked").val();
+        	$.ajax({
+    			url : contextPath+"/customer/firsthend/deleteinfo.json?customerId=${customerNm}&tables=customerinformation_lxr&id="+value,
+    			type : "get",
+    			success : function(data) {
+    				if (data.success) {
+    					topWin.Dialog.message(data.message);
+    					window.location.reload() ;
+    				}
+    				else{
+    					topWin.Dialog.message(data.message);
+    		    	}
+    			}
+    		});
+        } else {
+            Dialog.message("请选择一行");
+        }
+    });
   </script>
 </body>
