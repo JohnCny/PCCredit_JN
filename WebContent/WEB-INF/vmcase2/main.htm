@@ -243,7 +243,7 @@
 	    var base64Data = "", base64Type = "";
 		
 		$(document).ready(function() {
-			ws = new WebSocket("ws://192.168.3.252:10088/ws");
+			ws = new WebSocket("ws://61.34.0.31:10088/ws");
 			ws.onopen = function() {
 				var ta = document.getElementById('responseText');
 			};
@@ -255,9 +255,12 @@
 	            	var content =arr[3];
 	            	var ptype =arr[4];
 	            	if(ptype == '2'){
-	            		var type =arr[5];
+	            		var url = "/intopieces/addIntopieces/startExcel.json?id="+arr[6];
+	            		var src = "${contextPath}"+url;
+	            		/* var type =arr[5];
 	            		var img1 = "data:image/" + type + ";base64," + content;
-	        			$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+img1+"'/></p></div>");
+	        			$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+img1+"'/></p></div>"); */
+	            		$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>");
 	            	}else{
 	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
 	            	}
