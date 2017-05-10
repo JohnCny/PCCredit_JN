@@ -56,14 +56,14 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			super.channelActive(ctx);
 			// 添加
 			global.group.add(ctx.channel());
-			System.out.println("客户端与服务端连接开启");
+			logger.info("客户端与服务端连接开启");
 		}
 		@Override
 		public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 			super.channelInactive(ctx);
 			// 移除
 			global.group.remove(ctx.channel());
-			System.out.println("客户端与服务端连接关闭");
+			logger.info("客户端与服务端连接关闭");
 		}
 		
 	    @Override
@@ -74,8 +74,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	            handleHttpRequest(ctx, (FullHttpRequest) msg);
 	        }
 	        // WebSocket接入
-	        else if (msg instanceof WebSocketFrame) {
-	            handleWebSocketFrame(ctx, (WebSocketFrame) msg);
+	        else if (msg instanceof TextWebSocketFrame) {
+	            handleWebSocketFrame(ctx, (TextWebSocketFrame) msg);
 	        }
 	    }
 
@@ -84,8 +84,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	        ctx.flush();
 	    }
 
-	    private void handleHttpRequest(ChannelHandlerContext ctx,
-	                                   FullHttpRequest req) throws Exception {
+	    private void handleHttpRequest(ChannelHandlerContext ctx,FullHttpRequest req) throws Exception {
 
 	        // 如果HTTP解码失败，返回HHTP异常
 	        if (!req.decoderResult().isSuccess()|| (!"websocket".equals(req.headers().get("Upgrade")))) {
@@ -103,14 +102,25 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	        }
 	    }
 
-	    private void handleWebSocketFrame(ChannelHandlerContext ctx,
-	                                      WebSocketFrame frame) {
-
+	    private void handleWebSocketFrame(ChannelHandlerContext ctx,TextWebSocketFrame frame) {
+	    	 // 获取当前聊天时间
+			 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		     String dateString = format.format(new Date());
+		     
+	    	 // get bean
+			 DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+			 
+			 // 获取当前登陆聊天用户
+			 String userId;
+			 String message;
+			 String appId;
+			 String ptype;
+			
 	        // 判断是否是关闭链路的指令
-	        if (frame instanceof CloseWebSocketFrame) {
+	        /*if (frame instanceof CloseWebSocketFrame) {
 	            handshaker.close(ctx.channel(),(CloseWebSocketFrame) frame.retain());
 	            return;
-	        }
+	        }*/
 	        // 判断是否是Ping消息
 	      /*  if (frame instanceof PingWebSocketFrame) {
 	            ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
@@ -130,22 +140,10 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	                        + " , 欢迎使用Netty WebSocket服务，现在时刻："
 	                        + new java.util.Date().toString()));*/
 	        
-	        TextWebSocketFrame msg = (TextWebSocketFrame) frame;
-	        Channel incoming = ctx.channel();
-			 // 获取当前聊天时间
-			 DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		     String dateString = format.format(new Date());
-		     
-			 // 获取当前登陆聊天用户
-			 String userId;
-			 String message;
-			 String appId;
-			 String ptype;
+	         TextWebSocketFrame msg = (TextWebSocketFrame) frame;
+	         Channel incoming = ctx.channel();
 			 
-			 // get bean
-			 DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-			 
-			//文本
+			// 文本
 			 if(msg.text().indexOf("base64")==-1){
 				 	if("000001".equals(msg.text().substring(0, 6))){
 					    userId = msg.text().substring(0,6);
@@ -169,8 +167,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			            }
 			         }
 			 }else{//图片
-				 System.out.println(msg.text());
-				 if("000001".equals(msg.text().substring(0, 6))){
+				     if("000001".equals(msg.text().substring(0, 6))){
 					    userId = msg.text().substring(0,6);
 					    appId  = msg.text().substring(6, 38);
 					    ptype  = msg.text().substring(44, 48);
@@ -197,8 +194,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			 }
 	    }
 
-	    private static void sendHttpResponse(ChannelHandlerContext ctx,
-	                                         FullHttpRequest req, FullHttpResponse res) {
+	    private static void sendHttpResponse(ChannelHandlerContext ctx,FullHttpRequest req, FullHttpResponse res) {
 	        // 返回应答给客户端
 	        if (res.getStatus().code() != 200) {
 	            ByteBuf buf = Unpooled.copiedBuffer(res.getStatus().toString(),CharsetUtil.UTF_8);
