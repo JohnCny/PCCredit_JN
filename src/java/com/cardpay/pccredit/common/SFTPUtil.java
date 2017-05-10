@@ -68,7 +68,7 @@ import com.wicresoft.util.spring.Beans;
  */
 public class SFTPUtil {
 	
-    private static String host = "61.98.0.32";//生产
+    private static String host = "61.34.0.32";//生产
   //private static String host = "192.168.23.128";//测试
     private static String username="root";  
     private static String password="1";  

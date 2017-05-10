@@ -22,20 +22,34 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.CharsetUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import sun.misc.BASE64Decoder;
+
+import com.cardpay.pccredit.customer.model.CustomerManagerTarget;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.ChatMessage;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
+import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.util.spring.Beans;
 
 @Service
@@ -45,6 +59,9 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 		
 		@Autowired
 		private CommonDao commonDao;
+		
+		@Autowired
+		private JdbcTemplate jdbcTemplate;
 		
 		private WebSocketServerHandshaker handshaker;
 
@@ -93,7 +110,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	        }
 
 	        // 构造握手响应返回,本机测试
-	        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://192.168.3.252:"+Constant.WS_PORT+"/ws", null, true,1389101);
+	        WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory("ws://61.34.0.31:"+Constant.WS_PORT+"/ws", null, true,1389101);
 	        handshaker = wsFactory.newHandshaker(req);
 	        if (handshaker == null) {
 	            WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
@@ -157,7 +174,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 					 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
 					 
 				     // 存聊天记录
-				  	 this.saveChatMessage(appId,loginUser.getDisplayName(),"0",message.replaceAll(" ", ""),"","","");
+					 //String id = IDGenerator.generateID();
+				  	 String id = this.saveChatMessage(appId,loginUser.getDisplayName(),"0",message.replaceAll(" ", ""),"","","");
 				  	 
 					 for (Channel channel : global.group) {
 			            if (channel != incoming){
@@ -167,6 +185,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			            }
 			         }
 			 }else{//图片
+				 //System.out.println(msg.text());
 				     if("000001".equals(msg.text().substring(0, 6))){
 					    userId = msg.text().substring(0,6);
 					    appId  = msg.text().substring(6, 38);
@@ -181,14 +200,19 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 				    
 					 SystemUser loginUser=  dailyReportScheduleService.queryCustomer(userId);
 					 
+					 //解码后图片存放路径
+					 String path = GenerateImage(message,ptype);
+					 //String id = IDGenerator.generateID();
 				     // 存聊天记录
-				  	 this.saveChatMessage(appId,loginUser.getDisplayName(),"0","","",ptype,message);
+				  	 String id = this.saveChatMessage(appId,loginUser.getDisplayName(),"1","",path,ptype,message);
+				  	 
+				  	
 				  	 
 					 for (Channel channel : global.group) {
 			            if (channel != incoming){
-			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype));
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype+" "+id));
 			            } else {
-			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype));
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype+" "+id));
 			            }
 			         }
 			 }
@@ -218,7 +242,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	    
 	    
 	 // 保存 聊天记录
-		public void saveChatMessage(String appId,String userId,String type,String content,String url,String photoType,String photoBase){
+		public String saveChatMessage(String appId,String userId,String type,String content,String url,String photoType,String photoBase){
 			ChatMessage chatMessage = new ChatMessage();
 			chatMessage.setApplicationId(appId);
 			chatMessage.setCreatedBy(userId);
@@ -229,5 +253,39 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			chatMessage.setPhotoBase(photoBase);
 			chatMessage.setPhotoType(photoType);
 			commonDao.insertObject(chatMessage);
+			//System.out.println(chatMessage.getId());
+			return chatMessage.getId();
 		}
+		
+		
+		
+		 //base64字符串转化成图片  
+	    public  String GenerateImage(String imgStr,String imageType)  
+	    {   //对字节数组字符串进行Base64解码并生成图片  
+	        BASE64Decoder decoder = new BASE64Decoder();  
+	        try   
+	        {  
+	            //Base64解码  
+	            byte[] b = decoder.decodeBuffer(imgStr);  
+	            for(int i=0;i<b.length;++i)  
+	            {  
+	                if(b[i]<0)  
+	                {//调整异常数据  
+	                    b[i]+=256;  
+	                }  
+	            }  
+	            //生成jpeg图片 
+		    	String newFileName = IDGenerator.generateID()+imageType;
+		    	String imgFilePath = Constant.FILE_PATH_CHAT + File.separator + newFileName;
+	            OutputStream out = new FileOutputStream(imgFilePath);      
+	            out.write(b);  
+	            out.flush();  
+	            out.close();  
+	            return imgFilePath;  
+	        }   
+	        catch (Exception e)   
+	        {  
+	            return null;  
+	        }  
+	    } 
 	}
