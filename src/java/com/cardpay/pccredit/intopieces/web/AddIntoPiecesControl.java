@@ -1,5 +1,9 @@
 package com.cardpay.pccredit.intopieces.web;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -2932,8 +2936,8 @@ public class AddIntoPiecesControl extends BaseController {
 			try {
 				// 诚易贷model
 				
-				//JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
-				com.pzw.qkjr.JNCreditBusinessModel jnCreditBusinessModel = new com.pzw.qkjr.JNCreditBusinessModel(
+				JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
+				//com.pzw.qkjr.JNCreditBusinessModel jnCreditBusinessModel = new com.pzw.qkjr.JNCreditBusinessModel(
 									  Integer.parseInt(form.getBadHabit()),
 									  Integer.parseInt(form.getBadPublicRecord()),
 									  Integer.parseInt(form.getIndustryCategory()),
@@ -2968,8 +2972,8 @@ public class AddIntoPiecesControl extends BaseController {
 				
 			
 				//System.out.println(jnCreditBusinessModel.getResult());
-				//Message msg = jnCreditBusinessModel.getResult();
-				com.pzw.qkjr.Message msg = jnCreditBusinessModel.getResult();
+				Message msg = jnCreditBusinessModel.getResult();
+				//com.pzw.qkjr.Message msg = jnCreditBusinessModel.getResult();
 				
 				// 先delete by excelId
 				String excelId  = form.getExcelId();
@@ -3223,7 +3227,15 @@ public class AddIntoPiecesControl extends BaseController {
 					// 其他类型贷款
 					String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
 					List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
-					mv = new JRadModelAndView("/home/evaluateAppReq",request);
+					mv = new JRadModelAndView("/home/evaluateModifyAppReq",request);
+					if(prod!=null&&!prod.isEmpty()){
+						if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
+							//0为信用类贷款
+							mv.addObject("prodType","0");
+						}else{
+						    mv.addObject("prodType", "1");
+						}
+					}
 					mv.addObject(PAGED_RESULT, pagedResult);
 					if(list!=null&&!list.isEmpty()){
 						 mv.addObject("form", list.get(0));
@@ -3297,5 +3309,40 @@ public class AddIntoPiecesControl extends BaseController {
 			
 			JSONObject json = JSONObject.fromObject(result, jsonConfig);
 			return json.toString();
+		}
+		
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "startExcel.json")
+		public AbstractModelAndView startExcel(HttpServletRequest request,HttpServletResponse response) throws Exception {
+			String id = request.getParameter("id");
+			//System.out.println("id:"+id);
+			String sql = "SELECT t.resource_url from CHAT_MESSAGE t WHERE id= '"+id+"'";
+			Map<String, Object> params = new HashMap<String, Object>();
+			List<ChatMessage> list = commonDao.queryBySql(ChatMessage.class,sql, params);
+			String path = list.get(0).getResourceUrl();
+			File file = new File(path);
+			if(file.exists()){
+				byte[] buff = new byte[2048]; 
+				int bytesRead;
+				/*response.setHeader("Content-Disposition", "attachment; filename=" + java.net.URLEncoder.encode(localExcel.getAttachment(), "UTF-8"));
+				response.setHeader("Connection", "close");
+				response.setHeader("Content-Type", "application/vnd.ms-excel");*/
+				response.setContentType("application/octet-stream;charset=UTF-8");
+				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(path));
+				BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+				while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+					bos.write(buff, 0, bytesRead);
+				}
+				bos.flush();
+				if (bis != null) {
+					bis.close();
+				}
+				if (bos != null) {
+					bos.close();
+				}
+			}
+			return null;
 		}
 }
