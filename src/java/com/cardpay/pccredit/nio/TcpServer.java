@@ -47,7 +47,7 @@ public class TcpServer implements InitializingBean,DisposableBean{
 	}
 
 	public void initServer() throws Exception {
-		String runIpAddress = "192.168.3.252";
+		String runIpAddress = "61.34.0.31";
 		myServerBootstrap.group(bossGroup, workerGroup);
 		myServerBootstrap.channel(NioServerSocketChannel.class);
 		myServerBootstrap.childHandler(myChannelInitializer);
