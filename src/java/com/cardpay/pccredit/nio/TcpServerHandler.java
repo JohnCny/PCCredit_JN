@@ -210,9 +210,9 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 				  	 
 					 for (Channel channel : global.group) {
 			            if (channel != incoming){
-			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype+" "+id));
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" "+null+" "+2+" "+ptype+" "+id));
 			            } else {
-			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" " + message+" "+2+" "+ptype+" "+id));
+			            	channel.writeAndFlush(new TextWebSocketFrame(loginUser.getDisplayName()+" "+dateString+" "+null+" "+2+" "+ptype+" "+id));
 			            }
 			         }
 			 }
@@ -250,7 +250,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			chatMessage.setMsgType(type);
 			chatMessage.setMsgContent(content);
 			chatMessage.setResourceUrl(url);
-			chatMessage.setPhotoBase(photoBase);
+			//chatMessage.setPhotoBase(photoBase);
 			chatMessage.setPhotoType(photoType);
 			commonDao.insertObject(chatMessage);
 			//System.out.println(chatMessage.getId());

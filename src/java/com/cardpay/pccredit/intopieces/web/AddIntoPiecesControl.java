@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -2936,8 +2937,8 @@ public class AddIntoPiecesControl extends BaseController {
 			try {
 				// 诚易贷model
 				
-				JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
-				//com.pzw.qkjr.JNCreditBusinessModel jnCreditBusinessModel = new com.pzw.qkjr.JNCreditBusinessModel(
+				//JNCreditBusinessModel jnCreditBusinessModel = new JNCreditBusinessModel(
+				com.pzw.qkjr.JNCreditBusinessModel jnCreditBusinessModel = new com.pzw.qkjr.JNCreditBusinessModel(
 									  Integer.parseInt(form.getBadHabit()),
 									  Integer.parseInt(form.getBadPublicRecord()),
 									  Integer.parseInt(form.getIndustryCategory()),
@@ -2972,21 +2973,25 @@ public class AddIntoPiecesControl extends BaseController {
 				
 			
 				//System.out.println(jnCreditBusinessModel.getResult());
-				Message msg = jnCreditBusinessModel.getResult();
-				//com.pzw.qkjr.Message msg = jnCreditBusinessModel.getResult();
+				//Message msg = jnCreditBusinessModel.getResult();
+				com.pzw.qkjr.Message msg = jnCreditBusinessModel.getResult();
 				
 				// 先delete by excelId
 				String excelId  = form.getExcelId();
 				intoPiecesService.deleteEvaResult(excelId);
 				
+				// 格式化
+				DecimalFormat decimalFormat = new DecimalFormat(".#");
+				
 				// save EVA_RESULT表
 				EvaResult re = new EvaResult();
 				re.setExcelId(excelId);
-				re.setCname(form.getCname());
+				re.setCname(form.getCname()); 
 				re.setSex(form.getSex().equals("0")?"男":"女");
 				re.setCardNo(form.getCardNo());
 				re.setResult(msg.getFlag()==0?"允许":"禁止");
-				re.setMoney(msg.getBottom()+"-"+msg.getTop());
+				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
+				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
 				intoPiecesService.saveEvaResult(re);
 				
