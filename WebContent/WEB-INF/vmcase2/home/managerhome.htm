@@ -63,7 +63,7 @@ $(document).ready(function() {
       type: 'column'
    };
    var title = {
-      text: '<b>各支行已申请和通过的进件数量</b>',
+      text: '<b>各支行审批中和通过的进件数量</b>',
       style:{
           color:"#304568",
           fontFamily:"微软雅黑"
@@ -107,7 +107,12 @@ $(document).ready(function() {
    
    var series= [
         {
-        	name: '已申请进件数量',
+            name: '进件总数',
+            data: $!organApplicationNumJson,
+            color:'#b6a2de'
+        }, 
+        {
+        	name: '审批中进件数量',
             data: $!organApplicationAuditNumJson,
             color:'#51b3d5'
         }, 

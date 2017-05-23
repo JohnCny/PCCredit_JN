@@ -39,7 +39,8 @@ public interface StatisticalCommonDao {
      */
 	public List<NameValueRecord> statisticalCardStatus();
 	
-	
+	//统计各行 进件数量
+	public List<NameValueRecord> statisticalStatus();
 	//统计各行 已申请进件数量
 	public List<NameValueRecord> statisticalAuditStatus();
 	//统计各行 通过进件数量

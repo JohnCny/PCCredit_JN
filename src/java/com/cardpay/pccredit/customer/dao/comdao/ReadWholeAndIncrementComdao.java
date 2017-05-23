@@ -3457,5 +3457,209 @@ public class ReadWholeAndIncrementComdao {
 	}
 	
 	
+	/**
+	 * Cc授信申请额度方案信息主表（结果表）
+	 * t_CCLMTAPPLYPRJINFO
+	 * 2017年5月22日16:56:28
+	 */
+	public void insertCCLMTAPPLYPRJINFO(List<Map<String, Object>> list){
+		   final List<Map<String, Object>> shopsList = list;
+		   String  sql  ="insert into t_CCLMTAPPLYPRJINFO(PROCESSID,													"+							
+				   "																APPCODE,                            "+   
+				   "																LMTCODE,                            "+   
+				   "																LMTLEVEL,                           "+   
+				   "																LMTTYPE,                            "+   
+				   "																CUSTID,                             "+   
+				   "																UPLEVEL,                            "+   
+				   "																UPLEVELCODE,                        "+   
+				   "																BUSITYPE,                           "+   
+				   "																SUBBUSICODETYPE,                    "+   
+				   "																REQLMT,                             "+   
+				   "																CURRENCY,                           "+   
+				   "																LIMIT,                              "+   
+				   "																LMTPERIODREMARK,                    "+   
+				   "																STARTDATE,                          "+   
+				   "																ENDDATE,                            "+   
+				   "																USECURRENCY,                        "+   
+				   "																USELMT,                             "+   
+				   "																USEMODE,                            "+   
+				   "																MAINASSURE,                         "+   
+				   "																INTEREST,                           "+   
+				   "																INTERESTUNIT,                       "+   
+				   "																RATETYPE,                           "+   
+				   "																BASERATETYPE,                       "+   
+				   "																BASERATE,                           "+   
+				   "																BASERATECODE,                       "+   
+				   "																FLOATRATE,                          "+   
+				   "																FLOATTYPE,                          "+   
+				   "																LOWRISKFLAG,                        "+   
+				   "																ASSURERATE,                         "+   
+				   "																RATEADJUSTPERIOD,                   "+   
+				   "																LOANPURPOSE,                        "+   
+				   "																REPAYTYPE,                          "+   
+				   "																ITEMTOTALINVEST,                    "+   
+				   "																PROJECTSEQNO,                       "+  
+				   "																REMARK,                             "+   
+				   "																LMTSTATE,                           "+   
+				   "																BUSISTATE,                          "+   
+				   "																APPDATE,                            "+   
+				   "																AUDITDAY,                           "+   
+				   "																BUSIMANAGER,                        "+   
+				   "																ASSISTBUSIMANAGER,                  "+   
+				   "																ASSUREOPEN,                         "+   
+				   "																DEPTCODE,                           "+   
+				   "																INSTCODE,                           "+   
+				   "																INSTCITYCODE,                       "+   
+				   "																OPERATOR,                           "+   
+				   "																OPERDATETIME,                       "+   
+				   "																VERSION,                            "+   
+				   "																LOANCARDFLAG,                       "+   
+				   "																ACCANTDEPT,                         "+   
+				   "																IFSPECIALFLOATRATE,                 "+   
+				   "																IFFNONGCARD,                        "+   
+				   "																FINALDAY,                           "+   
+				   "																GRACEPERIOD,                        "+   
+				   "																SINGLEPERIOD,                       "+   
+				   "																IFSINGLE,                           "+   
+				   "																IFCORPLOAN,                         "+   
+				   "																CREDITMODEL,                        "+   
+				   "																LIMITFLAG,                          "+   
+				   "																BUSICARRIER)                        "+
+				   "values(?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?,                                                          "+
+				   "       ?)                                                          ";
+
+
+		      jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){
+		        public void setValues(PreparedStatement ps,int i)throws SQLException
+		           {
+		        	ps.setString(1, ((Map<String, Object>)shopsList.get(i)).get("processid").toString());														
+		        	ps.setString(2, ((Map<String, Object>)shopsList.get(i)).get("appcode").toString());           
+		        	ps.setString(3, ((Map<String, Object>)shopsList.get(i)).get("lmtcode").toString());           
+		        	ps.setString(4, ((Map<String, Object>)shopsList.get(i)).get("lmtlevel").toString());           
+		        	ps.setString(5, ((Map<String, Object>)shopsList.get(i)).get("lmttype").toString());           
+		        	ps.setString(6, ((Map<String, Object>)shopsList.get(i)).get("custid").toString());           
+		        	ps.setString(7, ((Map<String, Object>)shopsList.get(i)).get("uplevel").toString());           
+		        	ps.setString(8, ((Map<String, Object>)shopsList.get(i)).get("uplevelcode").toString());           
+		        	ps.setString(9, ((Map<String, Object>)shopsList.get(i)).get("busitype").toString());           
+		        	ps.setString(10, ((Map<String, Object>)shopsList.get(i)).get("subbusicodetype").toString());            
+		        	ps.setString(11, ((Map<String, Object>)shopsList.get(i)).get("reqlmt").toString());            
+		        	ps.setString(12, ((Map<String, Object>)shopsList.get(i)).get("currency").toString());            
+		        	ps.setString(13, ((Map<String, Object>)shopsList.get(i)).get("limit").toString());            
+		        	ps.setString(14, ((Map<String, Object>)shopsList.get(i)).get("lmtperiodremark").toString());            
+		        	ps.setString(15, ((Map<String, Object>)shopsList.get(i)).get("startdate").toString());            
+		        	ps.setString(16, ((Map<String, Object>)shopsList.get(i)).get("enddate").toString());            
+		        	ps.setString(17, ((Map<String, Object>)shopsList.get(i)).get("usecurrency").toString());            
+		        	ps.setString(18, ((Map<String, Object>)shopsList.get(i)).get("uselmt").toString());            
+		        	ps.setString(19, ((Map<String, Object>)shopsList.get(i)).get("usemode").toString());            
+		        	ps.setString(20, ((Map<String, Object>)shopsList.get(i)).get("mainassure").toString());            
+		        	ps.setString(21, ((Map<String, Object>)shopsList.get(i)).get("interest").toString());            
+		        	ps.setString(22, ((Map<String, Object>)shopsList.get(i)).get("interestunit").toString());            
+		        	ps.setString(23, ((Map<String, Object>)shopsList.get(i)).get("ratetype").toString());            
+		        	ps.setString(24, ((Map<String, Object>)shopsList.get(i)).get("baseratetype").toString());            
+		        	ps.setString(25, ((Map<String, Object>)shopsList.get(i)).get("baserate").toString());            
+		        	ps.setString(26, ((Map<String, Object>)shopsList.get(i)).get("baseratecode").toString());            
+		        	ps.setString(27, ((Map<String, Object>)shopsList.get(i)).get("floatrate").toString());            
+		        	ps.setString(28, ((Map<String, Object>)shopsList.get(i)).get("floattype").toString());            
+		        	ps.setString(29, ((Map<String, Object>)shopsList.get(i)).get("lowriskflag").toString());            
+		        	ps.setString(30, ((Map<String, Object>)shopsList.get(i)).get("assurerate").toString());            
+		        	ps.setString(31, ((Map<String, Object>)shopsList.get(i)).get("rateadjustperiod").toString());            
+		        	ps.setString(32, ((Map<String, Object>)shopsList.get(i)).get("loanpurpose").toString());            
+		        	ps.setString(33, ((Map<String, Object>)shopsList.get(i)).get("repaytype").toString());            
+		        	ps.setString(34, ((Map<String, Object>)shopsList.get(i)).get("itemtotalinvest").toString());            
+		        	ps.setString(35, ((Map<String, Object>)shopsList.get(i)).get("projectseqno").toString());            
+		        	ps.setString(36, ((Map<String, Object>)shopsList.get(i)).get("remark").toString());            
+		        	ps.setString(37, ((Map<String, Object>)shopsList.get(i)).get("lmtstate").toString());            
+		        	ps.setString(38, ((Map<String, Object>)shopsList.get(i)).get("busistate").toString());            
+		        	ps.setString(39, ((Map<String, Object>)shopsList.get(i)).get("appdate").toString());            
+		        	ps.setString(40, ((Map<String, Object>)shopsList.get(i)).get("auditday").toString());            
+		        	ps.setString(41, ((Map<String, Object>)shopsList.get(i)).get("busimanager").toString());            
+		        	ps.setString(42, ((Map<String, Object>)shopsList.get(i)).get("assistbusimanager").toString());            
+		        	ps.setString(43, ((Map<String, Object>)shopsList.get(i)).get("assureopen").toString());            
+		        	ps.setString(44, ((Map<String, Object>)shopsList.get(i)).get("deptcode").toString());            
+		        	ps.setString(45, ((Map<String, Object>)shopsList.get(i)).get("instcode").toString());            
+		        	ps.setString(46, ((Map<String, Object>)shopsList.get(i)).get("instcitycode").toString());            
+		        	ps.setString(47, ((Map<String, Object>)shopsList.get(i)).get("operator").toString());            
+		        	ps.setString(48, ((Map<String, Object>)shopsList.get(i)).get("operdatetime").toString());            
+		        	ps.setString(49, ((Map<String, Object>)shopsList.get(i)).get("version").toString());            
+		        	ps.setString(50, ((Map<String, Object>)shopsList.get(i)).get("loancardflag").toString());            
+		        	ps.setString(51, ((Map<String, Object>)shopsList.get(i)).get("accantdept").toString());            
+		        	ps.setString(52, ((Map<String, Object>)shopsList.get(i)).get("ifspecialfloatrate").toString());            
+		        	ps.setString(53, ((Map<String, Object>)shopsList.get(i)).get("iffnongcard").toString());            
+		        	ps.setString(54, ((Map<String, Object>)shopsList.get(i)).get("finalday").toString());            
+		        	ps.setString(55, ((Map<String, Object>)shopsList.get(i)).get("graceperiod").toString());            
+		        	ps.setString(56, ((Map<String, Object>)shopsList.get(i)).get("singleperiod").toString());            
+		        	ps.setString(57, ((Map<String, Object>)shopsList.get(i)).get("ifsingle").toString());            
+		        	ps.setString(58, ((Map<String, Object>)shopsList.get(i)).get("ifcorploan").toString());            
+		        	ps.setString(59, ((Map<String, Object>)shopsList.get(i)).get("creditmodel").toString());            
+		        	ps.setString(60, ((Map<String, Object>)shopsList.get(i)).get("limitflag").toString());            
+		        	ps.setString(61, ((Map<String, Object>)shopsList.get(i)).get("busicarrier").toString());
+		           }
+
+		           public int getBatchSize()
+		           {
+		            return shopsList.size();
+		           }
+		     });
+		}
+	
 
 }
