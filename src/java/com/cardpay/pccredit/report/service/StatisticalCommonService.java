@@ -150,6 +150,19 @@ public class StatisticalCommonService {
 	}
 	
 	
+	public String getOrganApplicationNumJson(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalStatus();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
+	
 	
 	public String getOrganApplicationAuditNumJson(){
 		List<Double> list = new ArrayList<Double>();

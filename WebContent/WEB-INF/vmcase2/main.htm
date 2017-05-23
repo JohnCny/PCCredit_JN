@@ -234,6 +234,12 @@
 <script type="text/javascript" src="${contextPath}/common/js/common/web_socket.js"></script>
 <script type="text/javascript" src="${contextPath}/common/js/common/jquery.json-2.3.js"></script>
 <script type="text/javascript">
+		$(document).keydown(function(event){
+			if(event.keyCode==13){
+			$("#send").click();
+			}
+	    });
+
 		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
 		var ws;
 		var textarea;

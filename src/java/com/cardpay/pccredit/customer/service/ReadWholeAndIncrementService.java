@@ -1042,4 +1042,23 @@ public class ReadWholeAndIncrementService {
 		datas=null;
 	}
 	
+	
+	
+	/**
+	 * Cc授信申请额度方案信息主表（结果表）
+	 * t_CCLMTAPPLYPRJINFO
+	 * 2017年5月22日16:56:28
+	 */
+	public void saveCCLMTAPPLYPRJINFODataFile(String fileName,String date) throws Exception {
+		ImportBankDataFileTools tools = new ImportBankDataFileTools();
+		// 解析数据文件配置
+		List<DataFileConf> confList = tools.parseDataFileConf("/mapping/T_CCLMTAPPLYPRJINFO.xml");
+		// 解析”流水号“数据文件
+		List<Map<String, Object>> datas = tools.parseDataFile(fileName, confList,date);
+		// 批量插入
+		andIncrementComdao.insertCCLMTAPPLYPRJINFO(datas);
+		// 释放空间
+		datas=null;
+	}
+	
 }

@@ -34,9 +34,9 @@
 	       t.id,
 	       (case
 	         when t.id = 'return' then
-	          t.value
+	          nvl(t.value,0)
 	         else
-	          count_num.value
+	          nvl(count_num.value,0)
 	       end) value
 	
 	  from (select app_status.name, app_status.id, return_num.value
@@ -105,6 +105,86 @@
 		 where t.year = to_char(sysdate, 'yyyy')
 		   and t.month = to_char(sysdate, 'MM')
 		   and t.activation_status = 1
+	</select>
+	
+	
+	<select id="statisticalStatus" resultMap="ResultMap" >
+	  select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id 
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='高新支行') ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id 
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='天桥支行')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id 
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='长清支行')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='历城支行')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='历下支行')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id 
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='润丰支行')ttt
+union all
+ 		select nvl(sum(ttt.value),0) as value from (select tt.value,
+        tt.instcode
+		from (select count(*) as value, 
+		(select org.name   from sys_organization org where id in(select t.org_id from sys_department t where t.id in (select tt.dept_id from sys_dept_user tt where tt.user_id = b.user_id))) as instcode
+		from customer_application_info a,
+		     basic_customer_information b,
+		     sys_user u
+		where  a.customer_id = b.id 
+		  and u.id = b.user_id
+		group by  b.user_id)tt where tt.instcode ='槐荫支行')ttt
 	</select>
 	
 	
