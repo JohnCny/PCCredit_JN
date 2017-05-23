@@ -47,17 +47,17 @@
               <td class="titlefc3">性别：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.sex</span></td>
             </tr>
-            <tr>
+           <!--  <tr>
 			  <td class="titlefc3">经营状况得分：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.busScore</span></td>
               <td class="titlefc3">道德品质得分：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.habScore</span></td>
               <td class="titlefc3">生存状况得分：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.liveScore</span></td>
-            </tr>
+            </tr> -->
             <tr>
-			  <td class="titlefc3">还款能力（万元）：</td>
-              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td>
+			  <!-- <td class="titlefc3">还款能力（万元）：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td> -->
               <td class="titlefc3">拟授信额度（万元）：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.money</span></td>
                <!-- <td class="titlefc3">未评估项/总项：</td>
@@ -391,8 +391,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(23)").show();
-				$("tr:eq(25)").hide();
+				$("tr:eq(22)").show();
+				$("tr:eq(24)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -402,16 +402,16 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(23)").hide();
-				$("tr:eq(25)").show();
+				$("tr:eq(22)").hide();
+				$("tr:eq(24)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(23)").hide();
-				$("tr:eq(25)").show();
+				$("tr:eq(22)").hide();
+				$("tr:eq(24)").show();
 			}
 			
  			if(status =='RETURNAPPROVE'){

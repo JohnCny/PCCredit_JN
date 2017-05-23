@@ -256,6 +256,7 @@ public class MainController {
 		    mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
 		    
 		    // 2.统计各行已申请和通过进件数量  济南 sj 20160809
+		    mv.addObject("organApplicationNumJson",statisticalCommonService.getOrganApplicationNumJson());
 		    mv.addObject("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson());
 		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
 		    
