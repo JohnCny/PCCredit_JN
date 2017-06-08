@@ -140,7 +140,11 @@ public class StatisticalCommonService {
 			}
 			
 			//q-金额
-			pieJsonData.setQ(Double.valueOf(map.get(nameValueRecord.getId())+""));
+			if(map.get(nameValueRecord.getId())!=null&&map.get(nameValueRecord.getId())!=""){
+				pieJsonData.setQ(Double.valueOf(map.get(nameValueRecord.getId())+""));
+			}else{
+				pieJsonData.setQ(0);
+			}
 			
 			pieJsonData.setSliced(false);
 			pieJsonData.setSelected(false);
