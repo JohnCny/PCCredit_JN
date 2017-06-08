@@ -42,6 +42,10 @@ public class SPTxt {
 			for (int i = 0; i < flist.size(); i++) {
 				flist.get(i).close();
 			}
+			
+			if(br != null){
+				 br.close();
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
