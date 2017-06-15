@@ -57,6 +57,26 @@
 	.mydialog{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);text-align:center;display:none;}
 	.mydialog img{margin-top:5%;height:75%;}
 	.mydialog .close{width:80px;height:30px;line-height:30px;font-family:"Microsoft YaHei";cursor:pointer;}
+	
+	
+	.dialog{width:100%;height:100%;position:fixed;top:0;z-index:1000000;display:none;}
+	.dialog .background{position:absolute;width:100%;height:100%;background:rgba(0, 0, 0, 0.5)!important;filter:Alpha(opacity=50); background:#000;}
+	.dialog .dialog-box{position:relative;width:30em;background:#ffffff;margin:0 auto;margin-top:7%;}
+	.dialog-box .dialog-content{padding:15px;line-height:35px;text-align:center;margin-bottom:20px;}
+	
+	.dialog-box h5{background: #0a55c8;border-bottom: 1px dotted #c0c0c0;border-bottom:1px dotted rgba(0, 0, 0, 0.2);padding: 15px;text-transform: uppercase;color: #fff;font-size: 16px;font-weight:normal;}
+	.dialog-box .closebtn{display:inline-block;margin:10px;width:25px;height:25px;cursor:pointer;float:right;margin-top:-38px;background:url(${uicasePath}/images/close.png) no-repeat;}
+	.dialog-box .closebtn:hover{background:url(${uicasePath}/images/close_a.png) no-repeat;}
+	.dialog-box h5 img{vertical-align:middle;}
+	.dialog-box .report{width:100%;float:none;overflow:auto;}	
+	.dialog-box .button{margin-bottom:20px;}
+	.dialog-box input[type=text]{border:1px solid #65cea7;box-shadow:0px 0px 5px #65cea7;border-radius:5px;outline:none;box-shadow:none;height: 20px;padding: 4px 6px;font-size: 14px;line-height: 20px;color: #555555;vertical-align: middle;}
+	/*滚动条样式*/
+	.dialog-box .report::-webkit-scrollbar{width:3px;height:10px;}/*滚动条尺寸*/
+	.dialog-box .report::-webkit-scrollbar-button{display:none;}
+	.dialog-box .report::-webkit-scrollbar-track{background:#424f63;}/*滚动条背景*/
+	.dialog-box .report::-webkit-scrollbar-thumb{background:#65cea7;}/*滚动条*/
+	
 </style>
 </head>
 #parse ("common/main_header.htm")
@@ -183,16 +203,24 @@
 	
 </div>
 
-<div class="mydialog">
-	<img id="bigImg" />	<br/>
-	<input type="button" value="返回" class="close" onclick="$('.mydialog').hide();"/>
+<div class="dialog" >
+		<div class="background">			
+			<form class="dialog-box" style="width: 50%; margin-top: 2%;">
+			<h5>查看大图</h5>
+			<span class="closebtn" onclick='$(".dialog").hide();'></span>
+			<div class="dialog-content">
+			<img id="bigImg" style="width: 100%;height: 480px;/>
+			</div>
+			<p class="button"></p>
+			</form>
+		</div>
 </div>
 
 #parse ("common/footer.htm")
 
 <script type="text/javascript">
 	function showBig(obj){
-		$(".mydialog").show();
+		$(".dialog").show();
 		$("#bigImg").attr("src",$(obj).attr("src"))
 	}
 	function setImage(obj){
