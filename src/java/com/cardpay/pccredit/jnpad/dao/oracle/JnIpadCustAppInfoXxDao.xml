@@ -296,4 +296,10 @@
 	<update id="changeSdhIsLook">
 	    UPDATE notification_message SET is_check=#{status} WHERE id=#{id} 
 	</update>
+	<select id="selectcustomerList" resultType="String">
+	    SELECT b.CHINESE_NAME FROM customer_application_info t,customer_application_process p,Node_audit d ,BASIC_CUSTOMER_INFORMATION b
+	where p.next_node_id = d.id and p.APPLICATION_ID =t.id AND d. node_name ='审贷决议' AND t.customer_id = b.id 
+	AND b.user_id =#{managerId}
+	    
+	</select>
 </mapper> 

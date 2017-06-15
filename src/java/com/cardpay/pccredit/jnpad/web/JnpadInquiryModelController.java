@@ -48,6 +48,8 @@ public class JnpadInquiryModelController {
 			String tableContentyfysb = getFromBASE64(localExcel.getSheetYfys()).replaceAll("\n", "<br>").replace("><br><", "><");
 			String tableContentysyfb = getFromBASE64(localExcel.getSheetYsyf()).replaceAll("\n", "<br>").replace("><br><", "><");
 			String tableContentjueyb = getFromBASE64(localExcel.getJyb()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentddtjy = getFromBASE64(localExcel.getSheetddtjy()).replaceAll("\n", "<br>").replace("><br><", "><");
+			String tableContentddtxf= getFromBASE64(localExcel.getSheetddtxf()).replaceAll("\n", "<br>").replace("><br><", "><");
 			
 			map.put("tableContentjyb", tableContentjyb);
 			map.put("tableContentjbzkb", tableContentjbzkb);
@@ -59,6 +61,8 @@ public class JnpadInquiryModelController {
 			map.put("tableContentyfysb", tableContentyfysb);
 			map.put("tableContentysyfb", tableContentysyfb);
 			map.put("tableContentjueyb", tableContentjueyb);
+			map.put("tableContentddtjy", tableContentddtjy);
+			map.put("tableContentddtxf", tableContentddtxf);
 			} catch (Exception e) {
 				map.put("mess", e.getMessage());
 			}

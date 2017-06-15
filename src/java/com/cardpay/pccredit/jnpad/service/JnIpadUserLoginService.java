@@ -131,4 +131,9 @@ public class JnIpadUserLoginService {
 				String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
 				return PARAM;
 			}
+	public String findLocationLimit(){
+		String sql = "select * from dict where dict_type = 'LocationOnHourLimit' ";
+		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
+		return PARAM;
+	}
 }

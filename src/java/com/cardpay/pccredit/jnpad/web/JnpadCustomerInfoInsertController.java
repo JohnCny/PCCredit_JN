@@ -47,6 +47,7 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadPagedQueryResult;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
+import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
@@ -814,5 +815,28 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 				return json.toString();
 			}
 			
-			
+			/**
+			 * 客户资删除
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/deleteInfo.json", method = { RequestMethod.GET })
+			public String deleteinfo( HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				String id=request.getParameter("id");
+				String tables=request.getParameter("tables");
+				try {
+						JnpadCustomerInfoInsertServ‎ice.deleteinfo(id,tables);
+						result.put("mess","删除信息成功");
+				} catch (Exception e) {
+					result.put("mess","删除失败："+WebRequestHelper.processException(e));
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
 }
