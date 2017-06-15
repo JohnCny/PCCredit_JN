@@ -33,7 +33,7 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="zjlx">购买日期:</label></td>
-              <td><input class="rinpsty"  type="text" id="monetaryDatex" name="monetaryDate" value=""
+              <td><input class="rinpsty"  type="text" id="monetaryDateString" name="monetaryDateString" value=""
 						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
               <td class="titlefc3"><label for="zjhm">购置方式:</label></td>
               <td><input class="rinpsty"  type="text" id="getWay" name="getWay" value="" /></td>
@@ -74,7 +74,8 @@
 			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
-	   	        var url = "${modulePath}/insertcc.json?id=${customerNm}";
+				var monetaryDateString = $("#monetaryDateString").val();
+	   	        var url = "${modulePath}/insertcc.json?id=${customerNm}&monetaryDateString="+monetaryDateString;
 				$.ajax({
 					url : url,
 					type : "get",
