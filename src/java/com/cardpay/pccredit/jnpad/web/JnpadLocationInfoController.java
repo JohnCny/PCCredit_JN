@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.jnpad.model.LocationInfoForm;
 import com.cardpay.pccredit.jnpad.model.ManagerInfoForm;
+import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
+import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.jnpad.service.JnpadLocationInfoService;
 import com.wicresoft.util.format.DateFormat;
 
@@ -35,7 +37,8 @@ public class JnpadLocationInfoController {
 	@Autowired
 	private JnpadLocationInfoService jnpadLocationInfoService;
 
-
+	@Autowired
+	private JnIpadUserLoginService userService;
 	/**
 	 * 
 	 * 更新客户经理位置信息
@@ -70,7 +73,8 @@ public class JnpadLocationInfoController {
 		//查询表中是否有该客户经理的信息
 		try {
 			int num = jnpadLocationInfoService.managerCount(managerId);
-
+			String limit =userService.findLocationLimit();
+			if(limit.equals("true")){
 			if(num!=0){
 				LocationInfoForm lastLocationInfoForm = jnpadLocationInfoService.selectlastManagerLocationById(managerId);
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -88,6 +92,7 @@ public class JnpadLocationInfoController {
 					return json.toString();
 				}
 				}
+			}
 			if(num<=10){
 				//如果位置信息表中没客户经理信息  插入
 

@@ -205,6 +205,7 @@ public class JnpadAddIntoPiecesController {
 				userLogService.addUserLog(ol);
 				returnMap.addGlobalMessage("system.change.success");
 				map.put("mess", "提交进件成功");
+				map.put("result", "success");
 			} catch (Exception e) {
 				//日志记录
 				OperationLog ol = new OperationLog();
@@ -216,6 +217,7 @@ public class JnpadAddIntoPiecesController {
 			    ol.setIp_address(request.getRemoteAddr());
 				userLogService.addUserLog(ol);
 				map.put("mess", e.getMessage());
+				map.put("result", "fail");
 			}
 
 			JsonConfig jsonConfig = new JsonConfig();
