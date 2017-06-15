@@ -66,7 +66,7 @@
             </tr>
              <tr>
               <td class="titlefc3"><label for="qfjg">经营起始时间:</label></td>
-             　<td><input class="rinpsty"  type="text" id="beginDate" name="beginDate" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!company.beginDate)" 
+             　<td><input class="rinpsty"  type="text" id="beginDateString" name="beginDateString" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!company.beginDate)" 
              onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
               <td class="titlefc3"><label for="sfcq">经营年限:</label></td>
             　<td><input class="rinpsty"  type="text" id="plantingYear" name="plantingYear" value="$!company.plantingYear" /></td>
@@ -111,7 +111,8 @@
 			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
-	   	        var url = "${modulePath}/insertqyxx.json?id=${customerNm}";
+				var beginDateString = $("#beginDateString").val();
+	   	        var url = "${modulePath}/insertqyxx.json?id=${customerNm}&beginDateString="+beginDateString;
 				$.ajax({
 					url : url,
 					type : "get",

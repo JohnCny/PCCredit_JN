@@ -60,7 +60,7 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="zjlx">居住起始年月:</label></td>
-              <td><input class="rinpsty"  type="text" id="beginDate" name="beginDate" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!living.beginDate)"
+              <td><input class="rinpsty"  type="text" id="beginDateString" name="beginDateString" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!living.beginDate)"
 						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
               <td class="titlefc3"><label for="zjhm">是否按揭:</label></td>
               <td><input class="rinpsty"  type="text" id="wetherMortgage" name="wetherMortgage" value="$!living.wetherMortgage" /></td>
@@ -102,7 +102,8 @@
 			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
-	   	        var url = "${modulePath}/insertjz.json?id=${customerNm}";
+				var beginDateString = $("#beginDateString").val();
+	   	        var url = "${modulePath}/insertjz.json?id=${customerNm}&beginDateString="+beginDateString;
 				$.ajax({
 					url : url,
 					type : "get",

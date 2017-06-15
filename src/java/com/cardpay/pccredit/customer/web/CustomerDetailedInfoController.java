@@ -34,6 +34,7 @@ import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.jrad.base.web.result.JRadReturnMap;
 import com.wicresoft.jrad.base.web.security.LoginManager;
 import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
+import com.wicresoft.util.date.DateHelper;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
 
@@ -122,9 +123,11 @@ public class CustomerDetailedInfoController extends BaseController{
 	public JRadReturnMap customer_fc( @ModelAttribute CustomerHouse customerhouse,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		String customerId=request.getParameter("id");
+		String monetaryDateString=request.getParameter("monetaryDateString");
 		try {
 			customerhouse.setCreateDate(new Date());
 			customerhouse.setCustomerId(customerId);
+			customerhouse.setMonetaryDate(DateHelper.getDateFormat(monetaryDateString, "yyyy-MM-dd HH:mm:ss"));
 			JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoFc(customerhouse);
 			returnMap.put("message","添加客户房产信息成功");
 		} catch (Exception e) {
@@ -235,9 +238,12 @@ public class CustomerDetailedInfoController extends BaseController{
 		public JRadReturnMap customer_cc( @ModelAttribute CustomerCarInfo customercarinfo,HttpServletRequest request) {
 			JRadReturnMap returnMap = new JRadReturnMap();
 			String customerId=request.getParameter("id");
+			String monetaryDateString=request.getParameter("monetaryDateString");
+			
 			try {
 				customercarinfo.setCreateDate(new Date());
 				customercarinfo.setCustomerId(customerId);
+				customercarinfo.setMonetaryDate(DateHelper.getDateFormat(monetaryDateString, "yyyy-MM-dd HH:mm:ss"));
 				JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoCc(customercarinfo);
 				returnMap.put("message","添加客户车产信息成功");
 			} catch (Exception e) {
@@ -344,6 +350,8 @@ public class CustomerDetailedInfoController extends BaseController{
 				String customerId=request.getParameter("id");
 				customerliving.setCustomerId(customerId);
 				JRadReturnMap returnMap = new JRadReturnMap();
+				String beginDateString=request.getParameter("beginDateString");
+				customerliving.setBeginDate(DateHelper.getDateFormat(beginDateString, "yyyy-MM-dd HH:mm:ss"));
 				List<CustomerLiving> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoJz(customerId);
 				try {
 				if(custp.size()!=0){
@@ -400,6 +408,8 @@ public class CustomerDetailedInfoController extends BaseController{
 				String customerId=request.getParameter("id");
 				customercompanyinfo.setCustomerId(customerId);
 				JRadReturnMap returnMap = new JRadReturnMap();
+				String beginDateString=request.getParameter("beginDateString");
+				customercompanyinfo.setBeginDate(DateHelper.getDateFormat(beginDateString, "yyyy-MM-dd HH:mm:ss"));
 				List<CustomerCompanyInfo> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQyxx(customerId);
 				try {
 					if(custp.size()!=0){
@@ -512,6 +522,8 @@ public class CustomerDetailedInfoController extends BaseController{
 				String customerId=request.getParameter("id");
 				customerstore.setCustomerId(customerId);
 				JRadReturnMap returnMap = new JRadReturnMap();
+				String beginDateString=request.getParameter("beginDateString");
+				customerstore.setBeginDate(DateHelper.getDateFormat(beginDateString, "yyyy-MM-dd HH:mm:ss"));
 				List<CustomerStore> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQydp(customerId);
 				try {
 					if(custp.size()!=0){

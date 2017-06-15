@@ -92,6 +92,7 @@
 		opsObj.formObj = $("#submitForm");
 		opsObj.createUrl = "${modulePath}/filter.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
+		prepareOperations(opsObj);
 		if (opsObj.createUrl) {
 			  $("#id_change_button").click(function() {
 		            if ($(".checkbox :checked").length == 1) {
