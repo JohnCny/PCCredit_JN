@@ -535,8 +535,10 @@ public class JnIpadCustAppInfoXxController {
 			appInfoXxService.insertShendaiTongzhi(notificationmmessage);
 			
 			result.put("mess","操作成功");
+			result.put("success",true);
 		} catch (Exception e) {
 			result.put("mess","操作失败");
+			result.put("success",false);
 		}
 		
 		JsonConfig jsonConfig = new JsonConfig();
@@ -552,6 +554,20 @@ public class JnIpadCustAppInfoXxController {
 		String managerId=request.getParameter("managerId");
 		List<NotificationmMessage> notificationmmessage =appInfoXxService.selectshendaihuitz(managerId) ;
 		result.put("result", notificationmmessage);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		return json.toString();
+	}
+	
+	//查询指定客户经理审贷会客户
+	@ResponseBody
+	@RequestMapping(value = "/ipad/custAppInfo/cxshendaihuikh.json", method = { RequestMethod.GET })
+	public String cxshendaihuikh(HttpServletRequest request) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		String managerId=request.getParameter("managerId");
+		List<String> customerList =appInfoXxService.selectcustomerList(managerId) ;
+		result.put("customerList", customerList);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);

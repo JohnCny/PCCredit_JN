@@ -206,7 +206,7 @@ public class ClassifiedStatisiticController {
 		if(className!=""&&className!=null){
 			fileName=className+"类贷款信息统计报表";
         }
-		if(filter.getStartDate()!=""&&filter.getEndDate()!=""){
+		if(filter.getStartDate()!=""&&filter.getEndDate()!=""&&filter.getStartDate()!=null&&filter.getEndDate()!=null){
 			fileName = filter.getStartDate()+"至"+filter.getEndDate()+fileName;
 			}
 		try{
