@@ -18,6 +18,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
 
 import org.apache.commons.lang.StringUtils;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cardpay.pccredit.creditEval.CreditBusinessModel;
 import com.cardpay.pccredit.creditEval.JNCreditBusinessModel;
 import com.cardpay.pccredit.creditEval.Message;
 import com.cardpay.pccredit.creditEval.Model;
@@ -35,10 +37,8 @@ import com.cardpay.pccredit.creditEvaluation.vo.ApplicantInfoVo;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditModelModifyForm;
 import com.cardpay.pccredit.creditEvaluation.vo.LivingConditionVo;
-import com.cardpay.pccredit.creditEvaluation.vo.McalculateModelForm;
 import com.cardpay.pccredit.creditEvaluation.vo.ModelForm;
 import com.cardpay.pccredit.creditEvaluation.vo.ModelModifyForm;
-import com.cardpay.pccredit.creditEvaluation.vo.MrtgageModelForm;
 import com.cardpay.pccredit.creditEvaluation.vo.OperateConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.RepayAbilitiesVo;
 import com.cardpay.pccredit.creditEvaluation.vo.TModelForm;
@@ -2972,7 +2972,8 @@ public class AddIntoPiecesControl extends BaseController {
 									  Integer.parseInt(form.getOwnedPropertyQuantity()),
 									  Integer.parseInt(form.getMortgagePropertyQuantity()),
 									  Integer.parseInt(form.getOwnedCarsQuantity()));
-				
+				//保存模型参数
+				saveModelParam(form);
 			
 				//System.out.println(jnCreditBusinessModel.getResult());
 				//Message msg = jnCreditBusinessModel.getResult();
@@ -3058,6 +3059,8 @@ public class AddIntoPiecesControl extends BaseController {
 								form.getCollateralValuation(),
 								form.getCollateralCoefficient()
 								);
+				//保存模型参数
+				saveModelParam(form);
 				
 				com.qkjr.mortgage.model.Message msg = jnCreditBusinessModel.getResult();
 				
@@ -3140,6 +3143,8 @@ public class AddIntoPiecesControl extends BaseController {
 						form.getContingentLiabilities()
 						);
 				
+				//保存模型参数
+				saveModelParam(form);
 				
 				com.qkjr.mcalculate.model.Message msg = jnCreditBusinessModel.getResult();
 				
@@ -3515,5 +3520,73 @@ public class AddIntoPiecesControl extends BaseController {
 				}
 			}
 			return null;
+		}
+		
+		
+		
+		
+		
+		
+		
+		/**
+		 * 保存记录四维授信模型 页面填充参数
+		 * @param form
+		 */
+		public void saveModelParam(CreditModelModifyForm form){
+			try{
+			  CreditBusinessModel model = new CreditBusinessModel();
+			  model.setCardId(form.getCardNo());
+			  model.setCustomerName(form.getCname());
+			  model.setBadHabit(form.getBadHabit());
+			  model.setBadPublicRecord(form.getBadPublicRecord());
+			  model.setIndustryCategory(form.getIndustryCategory());
+			  model.setViolationLaw(form.getViolationLaw());
+			  model.setCreditCardOverdueTime(form.getCreditCardOverdueTime()+"");
+			  model.setCreditCardOverdueCount(form.getCreditCardOverdueCount()+"");
+			  model.setLoanOverdueTime(form.getLoanOverdueTime()+"");
+			  model.setLoanOverdueCount(form.getLoanOverdueCount()+"");
+			  model.setCredit(form.getCredit());
+			  model.setCreditQueryCount(form.getCreditQueryCount());
+			  model.setApplyAmount(form.getApplyAmoun()+"");
+			  model.setAnnualDisposableCapital(form.getAnnualDisposableCapital()+"");
+			  model.setAnnualIncome(form.getAnnualIncome()+"");
+			  model.setOwnersEquity(form.getOwnersEquity()+"");
+			  model.setReceivableRatio(form.getReceivableRatio()+"");
+			  model.setQuickRatio(form.getQuickRatio()+"");
+			  model.setBusinessYears(form.getBusinessYears()+"");
+			  model.setCooperationYears(form.getCooperationYears()+"");
+			  model.setStoreSituation(form.getStoreSituation());
+			  model.setMortgageRemaining(form.getMortgageRemaining());
+			  model.setAge(form.getAge()+"");
+			  model.setSex(form.getSex());
+			  model.setEducation(form.getEducation());
+			  model.setResidence(form.getResidence());
+			  model.setMarriage(form.getMarriage());
+			  model.setChildren(form.getChildren());
+			  model.setSpouse(form.getSpouse());
+			  model.setOwnedPropertyQuantity(form.getOwnedPropertyQuantity());
+			  model.setMortgagePropertyQuantity(form.getMortgagePropertyQuantity());
+			  model.setOwnedCarsQuantity(form.getOwnedCarsQuantity());
+			  
+			  //担保
+			  model.setFixedAssets(form.getFixedAssets()+""); 			
+			  model.setLiquidAssets(form.getLiquidAssets()+""); 			
+			  model.setHouseholdIncome(form.getHouseholdIncome()+""); 		
+			  model.setContingentLiabilities(form.getContingentLiabilities()+"");
+			  
+			  //抵押
+			  model.setAssetLiabilityRatio(form.getAssetLiabilityRatio()+"");	
+			  model.setOtherIncome(form.getOtherIncome()+"");		    
+			  model.setSpouseIncome(form.getSpouseIncome()+"");			
+			  model.setLoanBalance(form.getLoanBalance()+"");			
+			  model.setCollateralValuation(form.getCollateralValuation()+"");	
+			  model.setCollateralCoefficient(form.getCollateralCoefficient()+"");
+			  
+			  model.setCreatedTime(new Date());
+			  commonDao.insertObject(model);
+		  }catch(Exception e){
+			  e.printStackTrace();
+			  Log.error("保存四维授信模型参数错误!");
+		  }
 		}
 }
