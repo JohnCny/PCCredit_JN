@@ -35,8 +35,10 @@ import com.cardpay.pccredit.creditEvaluation.vo.ApplicantInfoVo;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditModelModifyForm;
 import com.cardpay.pccredit.creditEvaluation.vo.LivingConditionVo;
+import com.cardpay.pccredit.creditEvaluation.vo.McalculateModelForm;
 import com.cardpay.pccredit.creditEvaluation.vo.ModelForm;
 import com.cardpay.pccredit.creditEvaluation.vo.ModelModifyForm;
+import com.cardpay.pccredit.creditEvaluation.vo.MrtgageModelForm;
 import com.cardpay.pccredit.creditEvaluation.vo.OperateConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.RepayAbilitiesVo;
 import com.cardpay.pccredit.creditEvaluation.vo.TModelForm;
@@ -2676,65 +2678,65 @@ public class AddIntoPiecesControl extends BaseController {
 		
 		/*LivingConditionVo*/
 		LivingConditionVo livingConditionVo  = new LivingConditionVo();
-		livingConditionVo.setDwellingType(form.getDwellingType());																										                                 	
-		livingConditionVo.setDecorationSituation(form.getDecorationSituation());                                              
-		livingConditionVo.setHousingArea(form.getHousingArea());                                                     					
-		livingConditionVo.setOwnedPropertyQuantity(form.getOwnedPropertyQuantity());                                          
-		livingConditionVo.setNumberOfMortgage(form.getNumberOfMortgage());                                                			
-		livingConditionVo.setHousePrice(form.getHousePrice());                                                      						
-		livingConditionVo.setTotalPropertyArea(form.getTotalPropertyArea());                                               		
-		livingConditionVo.setNumberOfPrivateVehicles(form.getNumberOfPrivateVehicles());                                      
-		livingConditionVo.setNumberOfLoans(form.getNumberOfLoans());                                                   				
-		livingConditionVo.setVehiclePrice(form.getVehiclePrice());                                                   					
-		livingConditionVo.setOthers(form.getOthers());                                                          								
-		livingConditionVo.setPersonalBankAccountBalance(form.getPersonalBankAccountBalance());                                
-		livingConditionVo.setBusinessAccountBalance(form.getBusinessAccountBalance());                                        
-		livingConditionVo.setTotalCreditCardCredit(form.getTotalCreditCardCredit());                                          
-		livingConditionVo.setAverageMonthlyRepaymentAmountOfIncome(form.getAverageMonthlyRepaymentAmountOfIncome());          
-		livingConditionVo.setGuaranteeForOthers(form.getGuaranteeForOthers());                                             		
-		livingConditionVo.setTheProportionOfTheAmountOfTheSecuredAssets(form.getTheProportionOfTheAmountOfTheSecuredAssets());
-		livingConditionVo.setSecuredUse(form.getSecuredUse());                                                      						
-		livingConditionVo.setGuaranteePeriod(form.getGuaranteePeriod());                                                 			
+		livingConditionVo.setDwellingType(form.getDwellingType()==""?null:form.getDwellingType());																										                                 	
+		livingConditionVo.setDecorationSituation(form.getDecorationSituation()==""?null:form.getDecorationSituation());                                              
+		livingConditionVo.setHousingArea(form.getHousingArea()==""?null:form.getHousingArea());                                                     					
+		livingConditionVo.setOwnedPropertyQuantity(form.getOwnedPropertyQuantity()==""?null:form.getOwnedPropertyQuantity());                                          
+		livingConditionVo.setNumberOfMortgage(form.getNumberOfMortgage()==""?null:form.getNumberOfMortgage());                                                			
+		livingConditionVo.setHousePrice(form.getHousePrice()==""?null:form.getHousePrice());                                                      						
+		livingConditionVo.setTotalPropertyArea(form.getTotalPropertyArea()==""?null:form.getTotalPropertyArea());                                               		
+		livingConditionVo.setNumberOfPrivateVehicles(form.getNumberOfPrivateVehicles()==""?null:form.getNumberOfPrivateVehicles());                                      
+		livingConditionVo.setNumberOfLoans(form.getNumberOfLoans()==""?null:form.getNumberOfLoans());                                                   				
+		livingConditionVo.setVehiclePrice(form.getVehiclePrice()==""?null:form.getVehiclePrice());                                                   					
+		livingConditionVo.setOthers(form.getOthers()==""?null:form.getOthers());                                                          								
+		livingConditionVo.setPersonalBankAccountBalance(form.getPersonalBankAccountBalance()==""?null:form.getPersonalBankAccountBalance());                                
+		livingConditionVo.setBusinessAccountBalance(form.getBusinessAccountBalance()==""?null:form.getBusinessAccountBalance());                                        
+		livingConditionVo.setTotalCreditCardCredit(form.getTotalCreditCardCredit()==""?null:form.getTotalCreditCardCredit());                                          
+		livingConditionVo.setAverageMonthlyRepaymentAmountOfIncome(form.getAverageMonthlyRepaymentAmountOfIncome()==""?null:form.getAverageMonthlyRepaymentAmountOfIncome());          
+		livingConditionVo.setGuaranteeForOthers(form.getGuaranteeForOthers()==""?null:form.getGuaranteeForOthers());                                             		
+		livingConditionVo.setTheProportionOfTheAmountOfTheSecuredAssets(form.getTheProportionOfTheAmountOfTheSecuredAssets()==""?null:form.getTheProportionOfTheAmountOfTheSecuredAssets());
+		livingConditionVo.setSecuredUse(form.getSecuredUse()==""?null:form.getSecuredUse());                                                      						
+		livingConditionVo.setGuaranteePeriod(form.getGuaranteePeriod()==""?null:form.getGuaranteePeriod());                                                 			
 		/*operateCondition*/
 		OperateConditionVo operateConditionVo = new OperateConditionVo();
-	    operateConditionVo.setOrganizationType(form.getOrganizationType());									            
-		operateConditionVo.setOperatingArea(form.getOperatingArea());                    	           
-		operateConditionVo.setProportionofShareholders(form.getProportionofShareholders());         	
-		operateConditionVo.setEmployees(form.getEmployees());                        	               
-		operateConditionVo.setBusinessLicense(form.getBusinessLicense());                  	         
-		operateConditionVo.setStoreType(form.getStoreType());                        	               
-		operateConditionVo.setShopDecoration(form.getShopDecoration());                   	          
+	    operateConditionVo.setOrganizationType(form.getOrganizationType()==""?null:form.getOrganizationType());									            
+		operateConditionVo.setOperatingArea(form.getOperatingArea()==""?null:form.getOperatingArea());                    	           
+		operateConditionVo.setProportionofShareholders(form.getProportionofShareholders()==""?null:form.getProportionofShareholders());         	
+		operateConditionVo.setEmployees(form.getEmployees()==""?null:form.getEmployees());                        	               
+		operateConditionVo.setBusinessLicense(form.getBusinessLicense()==""?null:form.getBusinessLicense());                  	         
+		operateConditionVo.setStoreType(form.getStoreType()==""?null:form.getStoreType());                        	               
+		operateConditionVo.setShopDecoration(form.getShopDecoration()==""?null:form.getShopDecoration());                   	          
 		/*repayAbilities*/
 		RepayAbilitiesVo repayAbilitiesVo  = new RepayAbilitiesVo();
-		repayAbilitiesVo.setOwnFunds(form.getOwnFunds());																         
-		repayAbilitiesVo.setSpouseIncome(form.getSpouseIncome());                            	   
-		repayAbilitiesVo.setTotalNonOperatingAssets(form.getTotalNonOperatingAssets());          
-		repayAbilitiesVo.setMonthlyProfit(form.getMonthlyProfit());                          	   
-	    repayAbilitiesVo.setApplicationPeriod(form.getApplicationPeriod());                      
-		repayAbilitiesVo.setNonPperatingTotalLiabilities(form.getNonPperatingTotalLiabilities());
+		repayAbilitiesVo.setOwnFunds( String.valueOf(form.getOwnFunds())==""?null:form.getOwnFunds());																         
+		repayAbilitiesVo.setSpouseIncome(String.valueOf(form.getSpouseIncome())==""?null:form.getSpouseIncome());                            	   
+		repayAbilitiesVo.setTotalNonOperatingAssets(String.valueOf(form.getTotalNonOperatingAssets())==""?null:form.getTotalNonOperatingAssets());          
+		repayAbilitiesVo.setMonthlyProfit(String.valueOf(form.getMonthlyProfit())==""?null:form.getMonthlyProfit());                          	   
+	    repayAbilitiesVo.setApplicationPeriod(String.valueOf(form.getApplicationPeriod())==""?null:form.getApplicationPeriod());                      
+		repayAbilitiesVo.setNonPperatingTotalLiabilities(String.valueOf(form.getNonPperatingTotalLiabilities())==""?null:form.getNonPperatingTotalLiabilities());
 		
 		/*creditCondition*/
 		CreditConditionVo creditConditionVo  = new CreditConditionVo();
-		creditConditionVo.setMaritalStatus(form.getMaritalStatus());																		  			
-		creditConditionVo.setHighestDegree(form.getHighestDegree());                                   					
-		creditConditionVo.setFamilyEvaluationOfApplicants(form.getFamilyEvaluationOfApplicants());              
-		creditConditionVo.setNeighborEvaluation(form.getNeighborEvaluation());                              		
-		creditConditionVo.setEvaluationOfImportantContactPerson(form.getEvaluationOfImportantContactPerson());  
-		creditConditionVo.setEvaluationOfBusinessAssociates(form.getEvaluationOfBusinessAssociates());          
-		creditConditionVo.setSocialWelfareSituation(form.getSocialWelfareSituation());                          
-		creditConditionVo.setViolationOfLaw(form.getViolationOfLaw());                                  				
-		creditConditionVo.setFamilyHarmony(form.getFamilyHarmony());                                   					
-		creditConditionVo.setEconomicDependence(form.getEconomicDependence());                              		
-		creditConditionVo.setBadHabits(form.getBadHabits());                                       							
-		creditConditionVo.setBadPublicRecords(form.getBadPublicRecords());                                			
-		creditConditionVo.setPoliticalSituation(form.getPoliticalSituation());                              															
-		creditConditionVo.setCommercialInsurance(form.getCommercialInsurance());                             		
-		creditConditionVo.setSocialRelations(form.getSocialRelations());                                 				
-		creditConditionVo.setParentalSupport(form.getParentalSupport());                                 				
-		creditConditionVo.setDfamilyHarmony(form.getDfamilyHarmony());                                  				
-		creditConditionVo.setCreditStatus(form.getCreditStatus());                                    					
-		creditConditionVo.setCreditCardOverdue(form.getCreditCardOverdue());                               			
-		creditConditionVo.setCreditCardTotalNum(form.getCreditCardTotalNum());                              		
+		creditConditionVo.setMaritalStatus(form.getMaritalStatus()==""?null:form.getMaritalStatus());																		  			
+		creditConditionVo.setHighestDegree(form.getHighestDegree()==""?null:form.getHighestDegree());                                   					
+		creditConditionVo.setFamilyEvaluationOfApplicants(form.getFamilyEvaluationOfApplicants()==""?null:form.getFamilyEvaluationOfApplicants());              
+		creditConditionVo.setNeighborEvaluation(form.getNeighborEvaluation()==""?null:form.getNeighborEvaluation());                              		
+		creditConditionVo.setEvaluationOfImportantContactPerson(form.getEvaluationOfImportantContactPerson()==""?null:form.getEvaluationOfImportantContactPerson());  
+		creditConditionVo.setEvaluationOfBusinessAssociates(form.getEvaluationOfBusinessAssociates()==""?null:form.getEvaluationOfBusinessAssociates());          
+		creditConditionVo.setSocialWelfareSituation(form.getSocialWelfareSituation()==""?null:form.getSocialWelfareSituation());                          
+		creditConditionVo.setViolationOfLaw(form.getViolationOfLaw()==""?null:form.getViolationOfLaw());                                  				
+		creditConditionVo.setFamilyHarmony(form.getFamilyHarmony()==""?null:form.getFamilyHarmony());                                   					
+		creditConditionVo.setEconomicDependence(form.getEconomicDependence()==""?null:form.getEconomicDependence());                              		
+		creditConditionVo.setBadHabits(form.getBadHabits()==""?null:form.getBadHabits());                                       							
+		creditConditionVo.setBadPublicRecords(form.getBadPublicRecords()==""?null:form.getBadPublicRecords());                                			
+		creditConditionVo.setPoliticalSituation(form.getPoliticalSituation()==""?null:form.getPoliticalSituation());                              															
+		creditConditionVo.setCommercialInsurance(form.getCommercialInsurance()==""?null:form.getCommercialInsurance());                             		
+		creditConditionVo.setSocialRelations(form.getSocialRelations()==""?null:form.getSocialRelations());                                 				
+		creditConditionVo.setParentalSupport(form.getParentalSupport()==""?null:form.getParentalSupport());                                 				
+		creditConditionVo.setDfamilyHarmony(form.getDfamilyHarmony()==""?null:form.getDfamilyHarmony());                                  				
+		creditConditionVo.setCreditStatus(form.getCreditStatus()==""?null:form.getCreditStatus());                                    					
+		creditConditionVo.setCreditCardOverdue(form.getCreditCardOverdue()==""?null:form.getCreditCardOverdue());                               			
+		creditConditionVo.setCreditCardTotalNum(form.getCreditCardTotalNum()==""?null:form.getCreditCardTotalNum());                              		
 		
 		if (returnMap.isSuccess()) {
 			try {
@@ -2768,7 +2770,7 @@ public class AddIntoPiecesControl extends BaseController {
 					
 					//先delete by excelId
 					String excelId  = form.getExcelId();
-					intoPiecesService.deleteEvaResult(excelId);
+//					intoPiecesService.deleteEvaResult(excelId);
 					
 					//save EVA_RESULT表
 					EvaResult re = new EvaResult();
@@ -3006,6 +3008,170 @@ public class AddIntoPiecesControl extends BaseController {
 		}
 		return returnMap;
 	}
+	/**
+	 * 抵押类 四维授信评估模型
+	 * 2017年6月15日
+	 */
+	@ResponseBody
+	@RequestMapping(value = "callMrtgageModel.json")
+	public JRadReturnMap callMrtgageModel(@ModelAttribute CreditModelModifyForm form,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				// 抵押类model
+				
+				com.qkjr.mortgage.model.JNCreditBusinessModel jnCreditBusinessModel = new com.qkjr.mortgage.model.JNCreditBusinessModel(
+						Integer.parseInt(form.getBadHabit()),
+						  Integer.parseInt(form.getBadPublicRecord()),
+						  Integer.parseInt(form.getIndustryCategory()),
+						  Integer.parseInt(form.getViolationLaw()),
+						  form.getCreditCardOverdueTime(),
+						  form.getCreditCardOverdueCount(),
+						  form.getLoanOverdueTime(),
+						  form.getLoanOverdueCount(),
+						  Integer.parseInt(form.getCredit()),
+						  Integer.parseInt(form.getCreditQueryCount()),
+						  (new Double(form.getApplyAmoun())).intValue(),
+						  form.getAnnualDisposableCapital(),
+						  form.getAnnualIncome(),
+						  form.getOwnersEquity(),
+						  form.getReceivableRatio(),
+						  form.getQuickRatio(),
+						  form.getBusinessYears(),
+						  form.getCooperationYears(),
+						  Integer.parseInt(form.getStoreSituation()),
+						  Integer.parseInt(form.getMortgageRemaining()),
+						  form.getAge(),
+						  Integer.parseInt(form.getSex()),
+						  Integer.parseInt(form.getEducation()),
+						  Integer.parseInt(form.getResidence()),
+						  Integer.parseInt(form.getMarriage()),
+						  Integer.parseInt(form.getChildren()),
+						  Integer.parseInt(form.getSpouse()),
+						  Integer.parseInt(form.getOwnedPropertyQuantity()),
+						  Integer.parseInt(form.getMortgagePropertyQuantity()),
+						  Integer.parseInt(form.getOwnedCarsQuantity()),
+								form.getAssetLiabilityRatio(),
+								form.getOtherIncome(),
+								form.getSpouseIncome(),
+								form.getLoanBalance(),
+								form.getCollateralValuation(),
+								form.getCollateralCoefficient()
+								);
+				
+				com.qkjr.mortgage.model.Message msg = jnCreditBusinessModel.getResult();
+				
+				// 先delete by excelId
+				String excelId  = form.getExcelId();
+				intoPiecesService.deleteEvaResult(excelId);
+				
+				// 格式化
+				DecimalFormat decimalFormat = new DecimalFormat(".#");
+				
+				// save EVA_RESULT表
+				EvaResult re = new EvaResult();
+				re.setExcelId(excelId);
+				re.setCname(form.getCname()); 
+				re.setSex(form.getSex().equals("0")?"男":"女");
+				re.setCardNo(form.getCardNo());
+				re.setResult(msg.getRefuse()==0?"允许":"禁止");
+				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
+				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
+				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				intoPiecesService.saveEvaResult(re);
+				
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
+	/**
+	 * 担保类 四维授信评估模型
+	 * 2017年6月15日
+	 */
+	@ResponseBody
+	@RequestMapping(value = "callMcalculateModel.json")
+	public JRadReturnMap callMcalculateModel(@ModelAttribute CreditModelModifyForm form,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				// 担保类model
+				
+				com.qkjr.mcalculate.model.JNCreditBusinessModel jnCreditBusinessModel = new com.qkjr.mcalculate.model.JNCreditBusinessModel(
+						Integer.parseInt(form.getBadHabit()),
+						  Integer.parseInt(form.getBadPublicRecord()),
+						  Integer.parseInt(form.getIndustryCategory()),
+						  Integer.parseInt(form.getViolationLaw()),
+						  form.getCreditCardOverdueTime(),
+						  form.getCreditCardOverdueCount(),
+						  form.getLoanOverdueTime(),
+						  form.getLoanOverdueCount(),
+						  Integer.parseInt(form.getCredit()),
+						  Integer.parseInt(form.getCreditQueryCount()),
+						  (new Double(form.getApplyAmoun())).intValue(),
+						  form.getAnnualDisposableCapital(),
+						  form.getAnnualIncome(),
+						  form.getOwnersEquity(),
+						  form.getReceivableRatio(),
+						  form.getQuickRatio(),
+						  form.getBusinessYears(),
+						  form.getCooperationYears(),
+						  Integer.parseInt(form.getStoreSituation()),
+						  Integer.parseInt(form.getMortgageRemaining()),
+						  form.getAge(),
+						  Integer.parseInt(form.getSex()),
+						  Integer.parseInt(form.getEducation()),
+						  Integer.parseInt(form.getResidence()),
+						  Integer.parseInt(form.getMarriage()),
+						  Integer.parseInt(form.getChildren()),
+						  Integer.parseInt(form.getSpouse()),
+						  Integer.parseInt(form.getOwnedPropertyQuantity()),
+						  Integer.parseInt(form.getMortgagePropertyQuantity()),
+						  Integer.parseInt(form.getOwnedCarsQuantity()),
+						form.getFixedAssets(),
+						form.getLiquidAssets(),
+						form.getHouseholdIncome(),
+						form.getContingentLiabilities()
+						);
+				
+				
+				com.qkjr.mcalculate.model.Message msg = jnCreditBusinessModel.getResult();
+				
+				// 先delete by excelId
+				String excelId  = form.getExcelId();
+				intoPiecesService.deleteEvaResult(excelId);
+				
+				// 格式化
+				DecimalFormat decimalFormat = new DecimalFormat(".#");
+				
+				// save EVA_RESULT表
+				EvaResult re = new EvaResult();
+				re.setExcelId(excelId);
+				re.setCname(form.getCname()); 
+				re.setSex(form.getSex().equals("0")?"男":"女");
+				re.setCardNo(form.getCardNo());
+				re.setResult(msg.getRefuse()==0?"允许":"禁止");
+				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
+				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
+				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				intoPiecesService.saveEvaResult(re);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
+	}
 	
 	//========================================================================================================================
 		public  ApplicantInfoVo returnVo(){
@@ -3228,19 +3394,19 @@ public class AddIntoPiecesControl extends BaseController {
 					// 0为信用类贷款
 					mv = new JRadModelAndView("/home/evaluateCreditModifyApp",request);
 					mv.addObject(PAGED_RESULT, pagedResult);
+					mv.addObject("prodType","0");
+				}else if("LNM00000000001".equals(prod.get(0).getAssureMeans())){
+					// 1为抵押类贷款
+					mv = new JRadModelAndView("/home/new_evaluate_mortgage",request);
+					mv.addObject(PAGED_RESULT, pagedResult);
+					//1为抵押类贷款
+					mv.addObject("prodType","1");
 				}else{
 					// 其他类型贷款
 					String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
 					List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
-					mv = new JRadModelAndView("/home/evaluateModifyAppReq",request);
-					if(prod!=null&&!prod.isEmpty()){
-						if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
-							//0为信用类贷款
-							mv.addObject("prodType","0");
-						}else{
-						    mv.addObject("prodType", "1");
-						}
-					}
+					mv = new JRadModelAndView("/home/new_evaluate_mcalculate",request);
+					mv.addObject("prodType", "2");
 					mv.addObject(PAGED_RESULT, pagedResult);
 					if(list!=null&&!list.isEmpty()){
 						 mv.addObject("form", list.get(0));
