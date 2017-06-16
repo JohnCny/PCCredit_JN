@@ -1,0 +1,690 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+<script src='${contextPath}/common/js/common/jquery.min.js'></script>
+
+<STYLE id=survey_style type=text/css>
+.forms table tr td{line-height:25px;height:25px;}
+.forms table tr td input[type=text]{height:20px;line-height:20px;}
+.forms table tr td.titlefc3{text-align:center;}
+</STYLE>
+</head>
+<body>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">四维授信评估模型</div>
+      </div>
+	  <form id="id_module_form" >
+	    <input type="hidden" name="excelId"  id="excelId" value="$!result.filter.excelId" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>基本信息</caption>
+            <!--  applicantInfo   开始-->
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
+			<tr>
+              <td class="titlefc3" id='xm'>姓名</td>
+              <td><input type="text" name="cname" id ="cname" value="$!form.cname" onblur="if(value!=''){$('#xm').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='sfz'>身份证号</td>
+              <td><input type="text" name="cardNo" id ="cardNo" value="$!form.cardNo" onblur="if(value!=''){$('#sfz').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id="hjsz">户籍所在地</td>
+              <td><input type="text" name="domicileLocation" id ="domicileLocation" value="$!form.domicileLocation" onblur="if(value!=''){$('#hjsz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="xxdz">详细地址</td>
+              <td><input type="text" name="address" id ="address" value="$!form.address" onblur="if(value!=''){$('#xxdz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="dh">电话</td>
+              <td><input type="text" name="phoneNo" id ="phoneNo" value="$!form.phoneNo" onblur="if(value!=''){$('#dh').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id="posfz">配偶身份证号</td>
+              <td><input type="text" name="spouseIdNo" id ="spouseIdNo" value="$!form.spouseIdNo" onblur="if(value!=''){$('#posfz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="qydz">店铺/企业地址</td>
+              <td><input type="text" name="companyAddress" id ="companyAddress" value="$!form.companyAddress" onblur="if(value!=''){$('#qydz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id="sshy">所属行业</td>
+              <td><input type="text" name="industry" id ="industry" value="$!form.industry" onblur="if(value!=''){$('#sshy').css({color:'black'})}"/></td>
+			</tr> 
+			<!--  applicantInfo   结束-->
+			</table>
+			
+			<table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>评估信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
+            
+			<tr>
+              <td class="titlefc3" id='aa'>申请金额(元)</td>
+              <td><input type="text"  class="rinpsty" name="applyAmoun" id ="applyAmoun" value="" onblur="if(value!=''){$('#aa').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='adc'>年可支配资金(元)</td>
+              <td><input type="text" class="rinpsty" name="annualDisposableCapital"   id ="" value="" onblur="if(value!=''){$('#adc').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='ai'>年主营业务收入(元)</td>
+              <td><input type="text" class="rinpsty" name="annualIncome" id ="annualIncome" value="" onblur="if(value!=''){$('#ai').css({color:'black'})}"/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" id='oe'>所有者权益(元)</td>
+              <td><input type="text"  class="rinpsty" name="ownersEquity" id ="ownersEquity" value="" onblur="if(value!=''){$('#oe').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='rr'>应收账款比率</td>
+              <td><input type="text" class="rinpsty" name="receivableRatio"   id ="receivableRatio" value="" onblur="if(value!=''){$('#rr').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='qr'>速动比率</td>
+              <td><input type="text" class="rinpsty" name="quickRatio" id ="quickRatio" value="" onblur="if(value!=''){$('#qr').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id='zcfz'>资产负债率</td>
+              <td><input type="text"  class="rinpsty" name="assetLiabilityRatio" id ="assetLiabilityRatio" value="" onblur="if(value!=''){$('#zcfz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='qtsr'>其他工作年收入(元)</td>
+              <td><input type="text" class="rinpsty" name="otherIncome"   id ="otherIncome" value="" onblur="if(value!=''){$('#qtsr').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='posr'>配偶年收入(元)</td>
+              <td><input type="text" class="rinpsty" name="spouseIncome" id ="spouseIncome" value="" onblur="if(value!=''){$('#posr').css({color:'black'})}"/></td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id='dkye'>贷款余额(元)</td>
+              <td><input type="text"  class="rinpsty" name="loanBalance" id ="loanBalance" value="" onblur="if(value!=''){$('#dkye').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='dygz'>抵押物估值(元)</td>
+              <td><input type="text" class="rinpsty" name="collateralValuation"   id ="collateralValuation" value="" onblur="if(value!=''){$('#dygz').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='dyxs'>抵押物系数</td>
+              <td><input type="text" class="rinpsty" name="collateralCoefficient" id ="collateralCoefficient" value="" onblur="if(value!=''){$('#dyxs').css({color:'black'})}"/></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id='by'>业务经营年数</td>
+              <td><input type="text"  class="" name="businessYears" id ="businessYears" value="" onblur="if(value!=''){$('#by').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='cy'>与上下游合作年限</td>
+              <td><input type="text" class="" name="cooperationYears"   id ="cooperationYears" value="" onblur="if(value!=''){$('#cy').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='ag'>年龄</td>
+              <td><input type="text" class="" name="age" id ="age" value="" onblur="if(value!=''){$('#ag').css({color:'black'})}"/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" id='coc'>信用卡逾期次数</td>
+              <td><input type="text"  class="" name="creditCardOverdueCount" id ="creditCardOverdueCount" value="" onblur="if(value!=''){$('#coc').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='cot'>信用卡逾期最大天数</td>
+              <td><input type="text" class="" name="creditCardOverdueTime"   id ="creditCardOverdueTime" value="" onblur="if(value!=''){$('#cot').css({color:'black'})}"/></td>
+              <td class="titlefc3" id='loc'>贷款逾期次数</td>
+              <td><input type="text" class="" name="loanOverdueCount" id ="loanOverdueCount" value="" onblur="if(value!=''){$('#loc').css({color:'black'})}"/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" id='lot'>贷款逾期最大天数</td>
+              <td><input type="text"  class="" name="loanOverdueTime" id ="loanOverdueTime" value="" onblur="if(value!=''){$('#lot').css({color:'black'})}"/></td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id="bh">不良嗜好</td>
+              <td>
+				<label><INPUT name="radio1" type=radio  value="0">没有</label>
+				<label><INPUT name="radio1" type=radio  value="1">有</label>
+				<input type="hidden" name="badHabit" id="badHabit" value="" />
+			  </td>
+              <td class="titlefc3" id="bpr">不良公共记录</td>
+              <td>
+				<label><INPUT name="radio2" type=radio  value="0">没有</label>
+				<label><INPUT name="radio2" type=radio  value="1">有</label>
+				<input type="hidden" name="badPublicRecord" id="badPublicRecord" value="" />
+			  </td>
+			  <td class="titlefc3" id="ic">行业分类</td>
+              <td>
+				<label><INPUT name="radio3" type=radio  value="0">慎入</label>
+				<label><INPUT name="radio3" type=radio  value="1">准入</label>
+				<label><INPUT name="radio3" type=radio  value="2">优先</label>
+				<input type="hidden" name="industryCategory" id="industryCategory" value="" />
+			  </td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id="vio">违法违纪情况</td>
+              <td>
+				<label><INPUT name="radio4" type=radio  value="0">无</label>
+				<label><INPUT name="radio4" type=radio  value="1">有</label>
+				<input type="hidden" name="violationLaw" id="violationLaw" value="" />
+			  </td>
+              <td class="titlefc3" id="cre">信用状况</td>
+              <td>
+				<label><INPUT name="radio5" type=radio  value="0">正常</label>
+				<label><INPUT name="radio5" type=radio  value="1">不正常</label>
+				<label><INPUT name="radio5" type=radio  value="2">无记录</label>
+				<input type="hidden" name="credit" id="credit" value="" />
+			  </td>
+			  <td class="titlefc3" id="cqc">近半年征信查询次数</td>
+              <td>
+				<label><INPUT name="radio6" type=radio  value="0">无</label>
+				<label><INPUT name="radio6" type=radio  value="1">1-5次</label>
+				<label><INPUT name="radio6" type=radio  value="2">5次以上</label>
+				<input type="hidden" name="creditQueryCount" id="creditQueryCount" value="" />
+			  </td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" id="ss">店铺情况</td>
+              <td>
+				<label><INPUT name="radio7" type=radio  value="0">自有产权</label>
+				<label><INPUT name="radio7" type=radio  value="1">按揭商铺</label>
+				<label><INPUT name="radio7" type=radio  value="2">租用</label>
+				<label><INPUT name="radio7" type=radio  value="3">其他</label>
+				<input type="hidden" name="storeSituation" id="storeSituation" value="" />
+			  </td>
+              <td class="titlefc3" id="mr">担保余额</td>
+              <td>
+				<label><INPUT name="radio8" type=radio  value="0">无</label>
+				<label><INPUT name="radio8" type=radio  value="1">有额度但未实际担保</label>
+				<label><INPUT name="radio8" type=radio  value="2">有贷款担保</label>
+				<input type="hidden" name="mortgageRemaining" id="mortgageRemaining" value="" />
+			  </td>
+			  <td class="titlefc3" id="se">性别</td>
+              <td>
+				<label><INPUT name="radio9" type=radio  value="0">男</label>
+				<label><INPUT name="radio9" type=radio  value="1">女</label>
+				<input type="hidden" name="sex" id="sex" value="" />
+			  </td>
+			</tr>
+			
+			<tr>
+              <td class="titlefc3" id="edu">最高学位学历</td>
+              <td>
+				<label><INPUT name="radio10" type=radio  value="0">初中及以下</label>
+				<label><INPUT name="radio10" type=radio  value="1">高中及技校</label>
+				<label><INPUT name="radio10" type=radio  value="2">大学及以上</label>
+				<input type="hidden" name="education" id="education" value="" />
+			  </td>
+              <td class="titlefc3" id="res">户籍情况</td>
+              <td>
+				<label><INPUT name="radio11" type=radio  value="0">本地</label>
+				<label><INPUT name="radio11" type=radio  value="1">本省外地</label>
+				<label><INPUT name="radio11" type=radio  value="2">省外</label>
+				<input type="hidden" name="residence" id="residence" value="" />
+			  </td>
+			  <td class="titlefc3" id="ma">婚姻状况</td>
+              <td>
+				<label><INPUT name="radio12" type=radio  value="0">已婚</label>
+				<label><INPUT name="radio12" type=radio  value="1">未婚</label>
+				<label><INPUT name="radio12" type=radio  value="2">离婚</label>
+				<input type="hidden" name="marriage" id="marriage" value="" />
+			  </td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" id="chd">家庭子女情况</td>
+              <td>
+				<label><INPUT name="radio13" type=radio  value="0">无</label>
+				<label><INPUT name="radio13" type=radio  value="1">上学</label>
+				<label><INPUT name="radio13" type=radio  value="2">工作</label>
+				<label><INPUT name="radio13" type=radio  value="3">学龄前</label>
+				<input type="hidden" name="children" id="children" value="" />
+			  </td>
+              <td class="titlefc3" id="spo">配偶情况</td>
+              <td>
+				<label><INPUT name="radio14" type=radio  value="0">共同经营</label>
+				<label><INPUT name="radio14" type=radio  value="1">无业</label>
+				<label><INPUT name="radio14" type=radio  value="2">其他职业</label>
+				<label><INPUT name="radio14" type=radio  value="3">无配偶</label>
+				<input type="hidden" name="spouse" id="spouse" value="" />
+			  </td>
+			  <td class="titlefc3" id="opq">自有房产数量</td>
+              <td>
+				<label><INPUT name="radio15" type=radio  value="0">没有</label>
+				<label><INPUT name="radio15" type=radio  value="1">1套自有房</label>
+				<label><INPUT name="radio15" type=radio  value="2">超过一套</label>
+				<input type="hidden" name="ownedPropertyQuantity" id="ownedPropertyQuantity" value="" />
+			  </td>
+			</tr>
+			
+			
+			<tr>
+			  <td class="titlefc3" id="mpq">按揭房产数量</td>
+              <td>
+				<label><INPUT name="radio16" type=radio  value="0">没有</label>
+				<label><INPUT name="radio16" type=radio  value="1">1套</label>
+				<label><INPUT name="radio16" type=radio  value="2">超过1套</label>
+				<input type="hidden" name="mortgagePropertyQuantity" id="mortgagePropertyQuantity" value="" />
+			  </td>
+			  <td class="titlefc3" id="ocq">自有车辆数量</td>
+              <td>
+				<label><INPUT name="radio17" type=radio  value="0">没有</label>
+				<label><INPUT name="radio17" type=radio  value="1">1辆</label>
+				<label><INPUT name="radio17" type=radio  value="2">超过1辆</label>
+				<input type="hidden" name="ownedCarsQuantity" id="ownedCarsQuantity" value="" />
+			  </td>
+			</tr>
+			
+         </table>
+		</div>
+	  </form>
+	  <div class="submit" style="margin-top:-20px;">
+	    <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+      </div>
+	</div>
+</div>
+</body>
+
+<script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+<script language="javascript" type="text/javascript">
+	#set ($formName = "'#id_module_form'")
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+		$("#id_next_button").click(function() {
+		     /*ApplicantInfoVo*/
+		     
+		     var cardNo =  $('#cardNo').val();
+			 if(cardNo == ''){
+				Dialog.message("请输入[身份证号]!");
+				$("#sfz").css({color:"red"})
+		        return; 
+			 }
+			 
+   			 var cname =  $('#cname').val();
+   			 if(cname == ''){
+ 				Dialog.message("请输入[姓名]!");	
+				$("#xm").css({color:"red"})
+ 		        return; 
+ 			 }
+   			
+   			 /*ApplicantInfoVo*/
+   			 
+			 
+			 
+			 /*other*/
+   			 //空验证
+			 var applyAmoun  =$('#applyAmoun').val();
+			 if(applyAmoun == ''){
+	  			Dialog.message("请输入[申请金额]!");	
+	  			$("#aa").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var annualDisposableCapital  =$('#annualDisposableCapital').val();
+			 if(annualDisposableCapital == ''){
+	  			Dialog.message("请输入[年可支配资金]!");	
+	  			$("#adc").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var annualIncome  =$('#annualIncome').val();
+			 if(annualIncome == ''){
+	  			Dialog.message("请输入[年主营业务收入]!");
+	  			$("#ai").css({color:"red"})
+	  		    return; 
+	  	     }
+			 var assetLiabilityRatio  =$('#assetLiabilityRatio').val();
+			 if(assetLiabilityRatio == ''){
+	  			Dialog.message("请输入[资产负债率]!");	
+	  			$("#zcfz").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var otherIncome  =$('#otherIncome').val();
+			 if(otherIncome == ''){
+	  			Dialog.message("请输入[其他工作年收入]!");	
+	  			$("#qtsr").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var spouseIncome  =$('#spouseIncome').val();
+			 if(spouseIncome == ''){
+	  			Dialog.message("请输入[配偶年收入]!");
+	  			$("#posr").css({color:"red"})
+	  		    return; 
+	  	     }
+			 var collateralValuation  =$('#collateralValuation').val();
+			 if(collateralValuation == ''){
+	  			Dialog.message("请输入[抵押物估值]!");	
+	  			$("#dygz").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var collateralCoefficient  =$('#collateralCoefficient').val();
+			 if(collateralCoefficient == ''){
+	  			Dialog.message("请输入[抵押物系数]!");	
+	  			$("#dyxs").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var loanBalance  =$('#loanBalance').val();
+			 if(loanBalance == ''){
+	  			Dialog.message("请输入[贷款余额]!");
+	  			$("#dkye").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 
+			 var ownersEquity  =$('#ownersEquity').val();
+			 if(ownersEquity == ''){
+	  			Dialog.message("请输入[所有者权益]!");
+	  			$("#oe").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var receivableRatio  =$('#receivableRatio').val();
+			 if(receivableRatio == ''){
+	  			Dialog.message("请输入[应收账款比率]!");
+	  			$("#rr").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var quickRatio  =$('#quickRatio').val();
+			 if(quickRatio == ''){
+	  			Dialog.message("请输入[速动比率]!");
+	  			$("#qr").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 
+			 var businessYears  =$('#businessYears').val();
+			 if(businessYears == ''){
+	  			Dialog.message("请输入[业务经营年数]!");
+	  			$("#by").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var cooperationYears  =$('#cooperationYears').val();
+			 if(cooperationYears == ''){
+	  			Dialog.message("请输入[与上下游合作年限]!");
+	  			$("#cy").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var age  =$('#age').val();
+			 if(age == ''){
+	  			Dialog.message("请输入[年龄]!");
+	  			$("#ag").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 
+			 var creditCardOverdueCount  =$('#creditCardOverdueCount').val();
+			 if(creditCardOverdueCount == ''){
+	  			Dialog.message("请输入[信用卡逾期次数]!");
+	  			$("#coc").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var creditCardOverdueTime  =$('#creditCardOverdueTime').val();
+			 if(creditCardOverdueTime == ''){
+	  			Dialog.message("请输入[信用卡逾期最大天数]!");
+	  			$("#cot").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var loanOverdueCount  =$('#loanOverdueCount').val();
+			 if(loanOverdueCount == ''){
+	  			Dialog.message("请输入[贷款逾期次数]!");
+	  			$("#loc").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 var loanOverdueTime  =$('#loanOverdueTime').val();
+			 if(loanOverdueTime == ''){
+	  			Dialog.message("请输入[贷款逾期最大天数]!");
+	  			$("#lot").css({color:"red"})
+	  		    return; 
+	  	     }
+			 
+			 
+			 
+			 //空验证
+   			 var radio1= $('input[name="radio1"]:checked').val();
+			 if(typeof(radio1) == 'undefined'){
+	        	Dialog.message("请选择[不良嗜好]!");
+	        	$("#bh").css({color:"red"})
+	        	return;
+		     }
+			 $('#bh').css({color:'black'})
+			 $('#badHabit').val(Number(radio1));
+			 
+			 
+			 var radio2= $('input[name="radio2"]:checked').val();
+			 if(typeof(radio2) == 'undefined'){
+	        	Dialog.message("请选择[不良公共记录]!");
+	        	$("#bpr").css({color:"red"})
+	        	return;
+		     }
+			 $('#bpr').css({color:'black'})
+			 $('#badPublicRecord').val(Number(radio2));
+			 
+			 
+			 var radio3= $('input[name="radio3"]:checked').val();
+			 if(typeof(radio3) == 'undefined'){
+	        	Dialog.message("请选择[行业分类]!");
+	        	$('#ic').css({color:'red'})
+	        	return;
+		     }
+			 $('#ic').css({color:'black'})
+			 $('#industryCategory').val(Number(radio3));
+			 
+			 
+			 
+			 var radio4= $('input[name="radio4"]:checked').val();
+			 if(typeof(radio4) == 'undefined'){
+	        	Dialog.message("请选择[违法违纪情况]!");
+	        	$('#vio').css({color:'red'})
+	        	return;
+		     }
+			 $('#vio').css({color:'black'})
+			 $('#violationLaw').val(Number(radio4));
+			 
+			 
+			 var radio5= $('input[name="radio5"]:checked').val();
+			 if(typeof(radio5) == 'undefined'){
+	        	Dialog.message("请选择[信用状况]!");
+	        	$('#cre').css({color:'red'})
+	        	return;
+		     }
+			 $('#cre').css({color:'black'})
+			 $('#credit').val(Number(radio5));
+			 
+			 
+			 var radio6= $('input[name="radio6"]:checked').val();
+			 if(typeof(radio6) == 'undefined'){
+	        	Dialog.message("请选择[近半年征信查询次数]!");
+	        	$('#cqc').css({color:'red'})
+	        	return;
+		     }
+			 $('#cqc').css({color:'black'})
+			 $('#creditQueryCount').val(Number(radio6));
+			 
+			 
+			 
+			 var radio7= $('input[name="radio7"]:checked').val();
+			 if(typeof(radio7) == 'undefined'){
+	        	Dialog.message("请选择[店铺情况]!");
+	        	$('#ss').css({color:'red'})
+	        	return;
+		     }
+			 $('#ss').css({color:'black'})
+			 $('#storeSituation').val(Number(radio7));
+			 
+			 
+			 
+			 var radio8= $('input[name="radio8"]:checked').val();
+			 if(typeof(radio8) == 'undefined'){
+	        	Dialog.message("请选择[担保余额]!");
+	        	$('#mr').css({color:'red'})
+	        	return;
+		     }
+			 $('#mr').css({color:'black'})
+			 $('#mortgageRemaining').val(Number(radio8));
+			 
+			 
+			 
+			 var radio9= $('input[name="radio9"]:checked').val();
+			 if(typeof(radio9) == 'undefined'){
+	        	Dialog.message("请选择[性别]!");
+	        	$('#se').css({color:'red'})
+	        	return;
+		     }
+			 $('#se').css({color:'black'})
+			 $('#sex').val(Number(radio9));
+			 
+			 
+			 
+			 var radio10= $('input[name="radio10"]:checked').val();
+			 if(typeof(radio10) == 'undefined'){
+	        	Dialog.message("请选择[最高学位学历]!");
+	        	$('#edu').css({color:'red'})
+	        	return;
+		     }
+			 $('#edu').css({color:'black'})
+			 $('#education').val(Number(radio10));
+			 
+			 
+			 var radio11= $('input[name="radio11"]:checked').val();
+			 if(typeof(radio11) == 'undefined'){
+	        	Dialog.message("请选择[户籍情况]!");	
+	        	$('#res').css({color:'red'})
+	        	return;
+		     }
+			 $('#res').css({color:'black'})
+			 $('#residence').val(Number(radio11));
+			 
+			 
+			 var radio12= $('input[name="radio12"]:checked').val();
+			 if(typeof(radio12) == 'undefined'){
+	        	Dialog.message("请选择[婚姻状况]!");	
+	        	$('#ma').css({color:'red'})
+	        	return;
+		     }
+			 $('#ma').css({color:'black'})
+			 $('#marriage').val(Number(radio12));
+			 
+			 
+			 
+			 var radio13= $('input[name="radio13"]:checked').val();
+			 if(typeof(radio13) == 'undefined'){
+	        	Dialog.message("请选择[家庭子女情况]!");
+	        	$('#chd').css({color:'red'})
+	        	return;
+		     }
+			 $('#chd').css({color:'black'})
+			 $('#children').val(Number(radio13));
+			 
+			 
+			 var radio14= $('input[name="radio14"]:checked').val();
+			 if(typeof(radio14) == 'undefined'){
+	        	Dialog.message("请选择[配偶情况]!");
+	        	$('#spo').css({color:'red'})
+	        	return;
+		     }
+			 $('#spo').css({color:'black'})
+			 $('#spouse').val(Number(radio14));
+			 
+			 
+			 var radio15= $('input[name="radio15"]:checked').val();
+			 if(typeof(radio15) == 'undefined'){
+	        	Dialog.message("请选择[自有房产数量]!");
+	        	$('#opq').css({color:'red'})
+	        	return;
+		     }
+			 $('#opq').css({color:'black'})
+			 $('#ownedPropertyQuantity').val(Number(radio15));
+			 
+			 
+			 var radio16= $('input[name="radio16"]:checked').val();
+			 if(typeof(radio16) == 'undefined'){
+	        	Dialog.message("请选择[按揭房产数量]!");
+	        	$('#mpq').css({color:'red'})
+	        	return;
+		     }
+			 $('#mpq').css({color:'black'})
+			 $('#mortgagePropertyQuantity').val(Number(radio16));
+			 
+			 
+			 var radio17= $('input[name="radio17"]:checked').val();
+			 if(typeof(radio17) == 'undefined'){
+	        	Dialog.message("请选择[自有车辆数量]!");
+	        	$('#ocq').css({color:'red'})
+	        	return;
+		     }
+			 $('#ocq').css({color:'black'})
+			 $('#ownedCarsQuantity').val(Number(radio17));
+			 
+			 
+			 
+			 
+			 //格式验证 
+			 var dob=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(businessYears)){
+		    	 Dialog.message("[业务经营年数]应为自然数!");	
+		         return;
+		     }
+			 
+			 var reg=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(cooperationYears)){
+		    	 Dialog.message("[与上下游合作年限]应为自然数!");	
+		         return;
+		     }
+			 
+			 var reg=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(age)){
+		    	 Dialog.message("[年龄]应为自然数!");	
+		         return;
+		     }
+			 
+			 var reg=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(creditCardOverdueCount)){
+		    	 Dialog.message("[信用卡逾期次数]应为自然数!");	
+		         return;
+		     }
+			 
+			 
+			 var reg=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(creditCardOverdueTime)){
+		    	 Dialog.message("[信用卡逾期最大天数]应为自然数!");	
+		         return;
+		     }
+			 
+			 var reg=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(loanOverdueCount)){
+		    	 Dialog.message("[贷款逾期次数]应为自然数!");	
+		         return;
+		     }
+			 
+			 var reg=/0|(^[1-9]+\d*$)/;
+			 if(!dob.test(loanOverdueTime)){
+		    	 Dialog.message("[贷款逾期最大天数]应为自然数!");	
+		         return;
+		     }
+			 
+			 
+			 
+			 //获取form表单数局 提交
+			 var formjson = $($formName).serialize();
+			 //alert(formjson);
+			 //调用授信评估方法 返回数据 插表
+			 $.ajax({
+					url : "${contextPath}/intopieces/addIntopieces/callMrtgageModel.json",
+					type : "get",
+					data : formjson,
+					success : function(data) { 
+						if (data.success) {
+							 //跳转导入影像资料页面
+				             var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+				             window.location.href = url;
+						}else{
+							window.top.Dialog.message("系统出现异常,请联系管理员");
+				    	}
+					}
+		    });
+        });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")

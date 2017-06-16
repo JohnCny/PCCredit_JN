@@ -53,6 +53,88 @@ public class CreditModelModifyForm extends BaseForm{
 	private String mortgagePropertyQuantity;
 	private String ownedCarsQuantity;
 	
+	 // 资产负债率
+    private double assetLiabilityRatio;			//非负浮点数
+  //  其他工作年收入
+    private double otherIncome;				//非负浮点数
+  //  配偶年收入
+    private double spouseIncome;			//非负浮点数
+  //  贷款余额
+    private double loanBalance;				//非负浮点数
+   // 抵押物估值
+    private double collateralValuation;		//非负浮点数
+   // 抵押物系数
+    private double collateralCoefficient;	//0~1之间，按银行规定取值。一般情况下，房产取0.7    商铺取0.6
+    //固定资产
+    private Double fixedAssets;         // 浮点数，单位：元
+   // 流动资产
+    private Double liquidAssets;       // 浮点数，单位：元
+   // 家庭年收入
+    private Double householdIncome;        // 浮点数，单位：元
+    //或有负债
+    private Double contingentLiabilities;    //  浮点数，单位：元
+    
+    
+	public double getAssetLiabilityRatio() {
+		return assetLiabilityRatio;
+	}
+	public void setAssetLiabilityRatio(double assetLiabilityRatio) {
+		this.assetLiabilityRatio = assetLiabilityRatio;
+	}
+	public double getOtherIncome() {
+		return otherIncome;
+	}
+	public void setOtherIncome(double otherIncome) {
+		this.otherIncome = otherIncome;
+	}
+	public double getSpouseIncome() {
+		return spouseIncome;
+	}
+	public void setSpouseIncome(double spouseIncome) {
+		this.spouseIncome = spouseIncome;
+	}
+	public double getLoanBalance() {
+		return loanBalance;
+	}
+	public void setLoanBalance(double loanBalance) {
+		this.loanBalance = loanBalance;
+	}
+	public double getCollateralValuation() {
+		return collateralValuation;
+	}
+	public void setCollateralValuation(double collateralValuation) {
+		this.collateralValuation = collateralValuation;
+	}
+	public double getCollateralCoefficient() {
+		return collateralCoefficient;
+	}
+	public void setCollateralCoefficient(double collateralCoefficient) {
+		this.collateralCoefficient = collateralCoefficient;
+	}
+	public Double getFixedAssets() {
+		return fixedAssets;
+	}
+	public void setFixedAssets(Double fixedAssets) {
+		this.fixedAssets = fixedAssets;
+	}
+	public Double getLiquidAssets() {
+		return liquidAssets;
+	}
+	public void setLiquidAssets(Double liquidAssets) {
+		this.liquidAssets = liquidAssets;
+	}
+	public Double getHouseholdIncome() {
+		return householdIncome;
+	}
+	public void setHouseholdIncome(Double householdIncome) {
+		this.householdIncome = householdIncome;
+	}
+	public Double getContingentLiabilities() {
+		return contingentLiabilities;
+	}
+	public void setContingentLiabilities(Double contingentLiabilities) {
+		this.contingentLiabilities = contingentLiabilities;
+	}
 	public String getExcelId() {
 		return excelId;
 	}
