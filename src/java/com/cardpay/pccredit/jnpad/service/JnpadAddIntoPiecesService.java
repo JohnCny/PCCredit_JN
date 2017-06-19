@@ -124,7 +124,7 @@ public class JnpadAddIntoPiecesService {
 	public void importExcel(MultipartFile file,String productId, String customerId,String fileName_1) {
 		// TODO Auto-generated method stub
 		Map<String, String> map  = new HashMap<String, String>();
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 		//本地测试
 		 map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
 		}else{
@@ -147,7 +147,7 @@ public class JnpadAddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		String sheet[] = null;
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 		//本地测试
 		sheet = readExcel.readExcelToHtml1(url, true);
 		}else{
@@ -222,7 +222,7 @@ public class JnpadAddIntoPiecesService {
 	public void importExcelSupple(MultipartFile file,String productId, String customerId,String appId) {
 		// TODO Auto-generated method stub
 		Map<String, String> map  = new HashMap<String, String>();
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地
 			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		}else{
@@ -250,7 +250,7 @@ public class JnpadAddIntoPiecesService {
 		//读取excel内容
 		JXLReadExcel readExcel = new JXLReadExcel();
 		String sheet[] = null;
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地测试
 			 sheet = readExcel.readExcelToHtml1(url, true);
 		}else{
@@ -328,7 +328,7 @@ public class JnpadAddIntoPiecesService {
 	public void importImage(MultipartFile file, String productId,
 			String customerId,String applicationId ,String fileName_1) {
 		Map<String, String> map  = new HashMap<String, String>();
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地测试
 			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
 		}else{
@@ -462,7 +462,7 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlById(HttpServletResponse response,String id) throws Exception{
 		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
 		if(v!=null){
-			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 				//本地测试
 				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
 				String url = v.getUri();
@@ -481,7 +481,7 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlJn(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 				//本地
 				this.downLoadFile(response,v);
 			}else{
@@ -494,7 +494,7 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 				//本地
 				this.downLoadFileDh(response,v);
 			}else{
@@ -592,7 +592,7 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlJns(HttpServletResponse response,String id) throws Exception{
 		QzApplnAttachmentDetail v = commonDao.findObjectById(QzApplnAttachmentDetail.class, id);
 		if(v!=null){
-			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 				//本地测试
 				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			}else{
@@ -605,7 +605,7 @@ public class JnpadAddIntoPiecesService {
 	public void downLoadYxzlDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
 		if(v!=null){
-			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 				//本地测试
 				UploadFileTool.downLoadFile(response,v.getUrl(), v.getFileName()==null?v.getOriginalName():v.getFileName());
 			}else{
@@ -930,7 +930,7 @@ public class JnpadAddIntoPiecesService {
 	//浏览文件并缓存到服务器目录
 	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
 		Map<String, String> map  = new HashMap<String, String>();
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地
 			 map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
 		}else{
@@ -952,7 +952,7 @@ public class JnpadAddIntoPiecesService {
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
 		Map<String, String> map  = new HashMap<String, String>();
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地
 			map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
 		}else{
