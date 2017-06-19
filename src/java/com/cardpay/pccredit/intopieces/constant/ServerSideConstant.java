@@ -8,4 +8,5 @@ package com.cardpay.pccredit.intopieces.constant;
  */
 public class ServerSideConstant {
 	public static String IS_SERVER_SIDE_TRUE = "1";// 0-本地 ；其他-服务器端
+	public static String IS_SERVER_SIDE_TRUE_PAD = "0";// 0-本地 ；其他-服务器端
 }
