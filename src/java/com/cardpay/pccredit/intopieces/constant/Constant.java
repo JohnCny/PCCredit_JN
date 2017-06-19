@@ -23,12 +23,12 @@ public class Constant {
 	public static String RESULT_LIST2 = "resultList2";
 	
 	/* 影像资料上传路径 */
-//	public static String FILE_PATH = "/usr/pccreditFile/";
-	public static String FILE_PATH = "/home/sealy/TFile/";
+	public static String FILE_PATH = "/usr/pccreditFile/";
+//	public static String FILE_PATH = "/home/sealy/TFile/";
 	
 	/* 影像资料补扫上传路径 */
-//	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
-	public static String FILE_PATH_BS = "/home/sealy/TFilebs/";
+	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
+//	public static String FILE_PATH_BS = "/home/sealy/TFilebs/";
 	
 	public static String FILE_PATH_CHAT = "/usr/chat/";
 	
