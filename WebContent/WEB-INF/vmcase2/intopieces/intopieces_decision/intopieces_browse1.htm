@@ -122,7 +122,12 @@
 					$("#totalCount",window.parent.document).val(obj.totalCount);
 					
 					for(var i = 0;i<obj.result.length;i++){
-						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						if(obj.result[i].msgType == '0'){
+							tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						}else{
+		            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+obj.result[i].id;
+		            		tmp=tmp+"<div id='base64-imgview'><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>";
+						}
 					}
 					$(".spjl",window.parent.document).html(tmp);
 				}
