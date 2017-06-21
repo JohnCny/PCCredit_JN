@@ -929,9 +929,9 @@ public class SFTPUtil {
         			CellStyle style = cell.getCellStyle();  
         			DecimalFormat format = new DecimalFormat();  
         			String temp = style.getDataFormatString();  
-        			// 单元格设置成常规  
+        			// 单元格设置成常规  #.###
         			if (temp.equals("General")) {  
-        				format.applyPattern("#");  
+        				//format.applyPattern("#");  
         			}  
         			result = format.format(value);  
         		}  

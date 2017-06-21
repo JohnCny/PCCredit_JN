@@ -289,11 +289,7 @@
 	            	var content =arr[3];
 	            	var ptype =arr[4];
 	            	if(ptype == '2'){
-	            		var url = "/intopieces/addIntopieces/startExcel.json?id="+arr[6];
-	            		var src = "${contextPath}"+url;
-	            		/* var type =arr[5];
-	            		var img1 = "data:image/" + type + ";base64," + content;
-	        			$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+img1+"'/></p></div>"); */
+	            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[6];
 	            		$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>");
 	            	}else{
 	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
@@ -331,12 +327,12 @@
 		
 		// send text 
 		document.getElementById('send').onclick=function(){
-			if($("#message").val()== ''){
+			if($("#message").val().trim()== ''){
 				window.top.Dialog.message("发送内容不能为空,请重新输入");
 				return;
 			}
 			// send
-			onSend($("#message").val());
+			onSend($("#message").val().trim());
 			$("#message").val("");
 		}
 		
@@ -373,7 +369,12 @@
 					$("#totalCount").val(obj.totalCount);
 					
 					for(var i = 0;i<obj.result.length;i++){
-						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						if(obj.result[i].msgType == '0'){
+							tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						}else{
+							var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+obj.result[i].id;
+		            		tmp=tmp+"<div id='base64-imgview'><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>";
+						}
 					}
 					$(".spjl").html(tmp);
 				}
@@ -401,7 +402,12 @@
 					$("#rowNum").val(obj.rownum);
 					$("#totalCount").val(obj.totalCount);
 					for(var i = 0;i<obj.result.length;i++){
-						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						if(obj.result[i].msgType == '0'){
+							tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						}else{
+							var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+obj.result[i].id;
+		            		tmp=tmp+"<div id='base64-imgview'><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>";
+						}
 					}
 					$(".spjl").html(tmp);
 				}

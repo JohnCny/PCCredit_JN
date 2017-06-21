@@ -2996,6 +2996,8 @@ public class AddIntoPiecesControl extends BaseController {
 				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
 				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				
+				re.setCreatedTime(new Date());
 				intoPiecesService.saveEvaResult(re);
 				
 			}catch (Exception e) {
@@ -3081,6 +3083,8 @@ public class AddIntoPiecesControl extends BaseController {
 				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
 				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				
+				re.setCreatedTime(new Date());
 				intoPiecesService.saveEvaResult(re);
 				
 			}catch (Exception e) {
@@ -3165,6 +3169,8 @@ public class AddIntoPiecesControl extends BaseController {
 				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
 				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				
+				re.setCreatedTime(new Date());
 				intoPiecesService.saveEvaResult(re);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE,"系统异常");
@@ -3396,23 +3402,35 @@ public class AddIntoPiecesControl extends BaseController {
 			JRadModelAndView mv = null;
 			if(prod!=null&&!prod.isEmpty()){
 				if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
-					// 0为信用类贷款
 					mv = new JRadModelAndView("/home/evaluateCreditModifyApp",request);
 					mv.addObject(PAGED_RESULT, pagedResult);
-					mv.addObject("prodType","0");
-				}else if("LNM00000000001".equals(prod.get(0).getAssureMeans())){
-					// 1为抵押类贷款
-					mv = new JRadModelAndView("/home/new_evaluate_mortgage",request);
-					mv.addObject(PAGED_RESULT, pagedResult);
-					//1为抵押类贷款
-					mv.addObject("prodType","1");
-				}else{
-					// 其他类型贷款
+					mv.addObject("prodType","0");// 0为信用类贷款
+					
+					// 查询调查模板参数
 					String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
 					List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
+					if(list!=null&&!list.isEmpty()){
+						 mv.addObject("form", list.get(0));
+					}
+				}else if("LNM00000000001".equals(prod.get(0).getAssureMeans())){
+					mv = new JRadModelAndView("/home/new_evaluate_mortgage",request);
+					mv.addObject(PAGED_RESULT, pagedResult);
+					mv.addObject("prodType","1");//1为抵押类贷款
+					
+					// 查询调查模板参数
+					String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
+					List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
+					if(list!=null&&!list.isEmpty()){
+						 mv.addObject("form", list.get(0));
+					}
+				}else{
+					// 其他类型贷款
 					mv = new JRadModelAndView("/home/new_evaluate_mcalculate",request);
 					mv.addObject("prodType", "2");
 					mv.addObject(PAGED_RESULT, pagedResult);
+					// 查询调查模板参数
+					String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
+					List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
 					if(list!=null&&!list.isEmpty()){
 						 mv.addObject("form", list.get(0));
 					}

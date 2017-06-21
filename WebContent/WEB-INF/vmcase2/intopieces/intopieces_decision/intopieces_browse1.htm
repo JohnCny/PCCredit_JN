@@ -90,7 +90,7 @@
         <div class="controlbtn">
         	<a id="id_sy_button" class="btn_g" href="javascript:void(0);" title=初审结论">初审结论</a>
         	<a id="id_report_button" class="btn_g" href="javascript:void(0);" title="调查报告">调查报告</a>
-        	<a id="id_image_button" class="btn_g" href="javascript:void(0);" title="影像资料">影像资料</a>
+        	<a id="id_image_button" class="btn_g" href="javascript:void(0);" title="征信报告">征信报告</a>
         	<a class="btn_g" href="javascript:void(0);" title="在线浏览" onclick="scan('NO')">在线浏览</a>
         	<a class="btn_g" href="javascript:void(0);" title="在线评审" onclick="zxlt()">在线评审</a>
         </div>
@@ -122,7 +122,12 @@
 					$("#totalCount",window.parent.document).val(obj.totalCount);
 					
 					for(var i = 0;i<obj.result.length;i++){
-						tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						if(obj.result[i].msgType == '0'){
+							tmp=tmp+"<div><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p>"+obj.result[i].msgContent+"</p></div>";
+						}else{
+		            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+obj.result[i].id;
+		            		tmp=tmp+"<div id='base64-imgview'><p>"+obj.result[i].createdBy+"&nbsp;&nbsp;"+obj.result[i].createdTime+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>";
+						}
 					}
 					$(".spjl",window.parent.document).html(tmp);
 				}

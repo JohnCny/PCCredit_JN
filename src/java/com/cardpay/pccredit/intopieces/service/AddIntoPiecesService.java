@@ -955,6 +955,10 @@ public class AddIntoPiecesService {
 		detail.setPicSize(file.getSize() + "");
 		detail.setUrl(url);
 		commonDao.insertObject(detail);
+		
+		//将is_upload 置为1
+		String sql = "update QZ_APPLN_ATTACHMENT_BATCH set is_upload = '1' where id='"+batch_id+"'";
+		commonDao.queryBySql(sql, null);
 	}
 	
 	
@@ -977,6 +981,10 @@ public class AddIntoPiecesService {
 		detail.setPicSize(file.getSize() + "");
 		detail.setUrl(url);
 		commonDao.insertObject(detail);
+		
+		//将is_upload 置为0
+		String sql = "update DH_APPLN_ATTACHMENT_BATCH set is_upload = '1' where id='"+batch_id+"'";
+		commonDao.queryBySql(sql, null);
 	}
 	
 	public void browse_folder_complete(String batch_id,HttpServletRequest request){
