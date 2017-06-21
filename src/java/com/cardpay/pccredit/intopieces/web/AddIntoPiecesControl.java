@@ -2996,6 +2996,8 @@ public class AddIntoPiecesControl extends BaseController {
 				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
 				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				
+				re.setCreatedTime(new Date());
 				intoPiecesService.saveEvaResult(re);
 				
 			}catch (Exception e) {
@@ -3081,6 +3083,8 @@ public class AddIntoPiecesControl extends BaseController {
 				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
 				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				
+				re.setCreatedTime(new Date());
 				intoPiecesService.saveEvaResult(re);
 				
 			}catch (Exception e) {
@@ -3165,6 +3169,8 @@ public class AddIntoPiecesControl extends BaseController {
 				//re.setMoney(msg.getBottom()+"-"+msg.getTop());
 				re.setMoney(Double.parseDouble(decimalFormat.format(msg.getBottom()))+"-"+Double.parseDouble(decimalFormat.format(msg.getTop())));
 				re.setRefuseReason(msg.getRefuseReason()==null?"":msg.getRefuseReason());
+				
+				re.setCreatedTime(new Date());
 				intoPiecesService.saveEvaResult(re);
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE,"系统异常");

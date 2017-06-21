@@ -1731,8 +1731,11 @@ public class IntoPiecesControl extends BaseController {
 			
 			JRadModelAndView mv = null;
 			mv = new JRadModelAndView("/intopieces/sunds_display_server_page", request);
-	
-			mv.addObject("Id",detaillist.get(0).getId());
+			
+	        if(detaillist!=null&&detaillist.size()!=0){
+	        	mv.addObject("Id",detaillist.get(0).getId());
+		    }
+	        
 			mv.addObject("rowNum", page);
 			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);

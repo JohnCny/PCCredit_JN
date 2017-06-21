@@ -329,8 +329,9 @@ public class Loan_TY_JJB_Controller extends BaseController {
 			
 			JRadModelAndView mv = null;
 			mv = new JRadModelAndView("/intopieces/sunds_display_server_page1", request);
-	
-			mv.addObject("Id",detaillist.get(0).getId());
+			if(detaillist!=null&&detaillist.size()!=0){
+				mv.addObject("Id",detaillist.get(0).getId());
+			}
 			mv.addObject("rowNum", page);
 			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);

@@ -6,7 +6,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">进件新增>上传影像资料</div>
+        <div class="title">进件新增>上传征信报告</div>
       </div>
  <div class="inquiry">
         <div class="search_tag">#i18n("label.browse.filter")</div>
@@ -15,7 +15,7 @@
           	action="${contextPath}/intopieces/addIntopieces/imageImport.json?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId">
             <ul>
               <li>
-                <span><b>选择影像文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
+                <span><b>选择文件:</b>&nbsp;&nbsp;<input type="file" id="file" name="file"/></span>
               </li>
               <li id="uploadTip" style="display:none;color:red">
                 <span><b>上传中，请稍后... ...</b></span>
@@ -115,7 +115,7 @@
 				return;
 			}
 			if($result.totalCount==0){
-				topWin.Dialog.message("请先上传影像资料！");
+				topWin.Dialog.message("请先上传征信报告！");
 				return;
 			}
 			
