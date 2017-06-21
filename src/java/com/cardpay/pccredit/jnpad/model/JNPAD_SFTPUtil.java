@@ -44,6 +44,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.cardpay.pccredit.common.SFTPUtil;
 import com.cardpay.pccredit.intopieces.constant.Constant;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.tools.ImportParameter;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
@@ -54,14 +55,15 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.util.spring.Beans;
 
 import sun.misc.BASE64Encoder;
 
 public class JNPAD_SFTPUtil {
-//	private static String host = "61.34.0.32";//生产
-	private static String host = "192.168.1.113";//测试
+	private static String host = "61.34.0.32";//生产
+//	private static String host = "192.168.1.113";//测试
     private static String username="root";  
-    private static String password="123.com";  
+    private static String password="JNnsyh0525";  
     private static int port = 22;  
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  
@@ -78,8 +80,8 @@ public class JNPAD_SFTPUtil {
             jsch.getSession(username, host, port);  
             Session sshSession = jsch.getSession(username, host, port);  
             System.out.println("Session created.");
-//            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-//            password = dailyReportScheduleService.findServer2();
+            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+            password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  

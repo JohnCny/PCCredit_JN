@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.jnpad.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -179,8 +181,15 @@ public class JnIpadUserLoginController {
 		String LastLogin =userService.findLastLogin(loginId);
 		//response
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date;
+		try {
+			date =sf.parse(LastLogin);
+			result.put("LastLogin", date);
+		} catch (ParseException e) {
+			result.put("LastLogin", "获取失败");
+		}
 		result.put("result", customerManagerVo);
-		result.put("LastLogin", LastLogin);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);

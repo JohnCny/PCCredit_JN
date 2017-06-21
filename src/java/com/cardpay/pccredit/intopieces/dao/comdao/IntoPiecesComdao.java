@@ -634,7 +634,7 @@ public class IntoPiecesComdao {
 					 "                  and b.ty_customer_id = d.CUSTID           "+ 
 					 "                  and a.status = 'end'                      "+ 
 				   //"                  and c.SQUARESTATE ='1'                    "+
-				     "                  and c.KEYEFFECTEDSTATE in('2','3','4')    "+ 
+				     "                  and c.KEYEFFECTEDSTATE in('2','3','4','5')"+ 
 					 "                  group by a.id                             ";
 		List<IntoPieces> list = commonDao.queryBySql(IntoPieces.class,sql,null);
 		return list;

@@ -140,7 +140,11 @@ public class StatisticalCommonService {
 			}
 			
 			//q-金额
-			pieJsonData.setQ(Double.valueOf(map.get(nameValueRecord.getId())+""));
+			if(map.get(nameValueRecord.getId())!=null&&map.get(nameValueRecord.getId())!=""){
+				pieJsonData.setQ(Double.valueOf(map.get(nameValueRecord.getId())+""));
+			}else{
+				pieJsonData.setQ(0);
+			}
 			
 			pieJsonData.setSliced(false);
 			pieJsonData.setSelected(false);
@@ -149,6 +153,19 @@ public class StatisticalCommonService {
 		return pList;
 	}
 	
+	
+	public String getOrganApplicationNumJson(){
+		List<Double> list = new ArrayList<Double>();
+		List<NameValueRecord> records = statisticalCommonDao.statisticalStatus();
+		for(NameValueRecord nameValueRecord : records){
+			if(StringUtils.isNotEmpty(nameValueRecord.getValue())){
+				list.add(Double.valueOf(nameValueRecord.getValue()));
+			}else{
+				list.add(0d);
+			}
+		}
+		return JSONArray.fromObject(list).toString();
+	}
 	
 	
 	public String getOrganApplicationAuditNumJson(){

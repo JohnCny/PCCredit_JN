@@ -243,9 +243,9 @@ public class JnIpadCustAppInfoXxService {
 
 	public List<NotificationmMessage> selectshendaihuitz(String managerId) {
 		String sql="select nm.id, nm.NOTICE_TYPE,nm.NOTICE_CONTENT,nm.IS_CHECK,nm.NOTICE_TITLE,nm.CREATED_BY,nm.CREATED_TIME,nm.MODIFIED_USER,nm.MODIFIED_TIME,"
-				+ "su.display_name as user_id from  notification_message nm inner join sys_user su on su.id =nm.user_id  where notice_type='shendaihui'";
+				+ "su.display_name as user_id from  notification_message nm inner join sys_user su on su.id =nm.user_id  where notice_type='shendaihui' and is_check='0'";
 		if(managerId!=null&&managerId!=""){
-			sql+="and user_id='"+managerId+"' and is_check='0'" ;
+			sql+="and user_id='"+managerId+"'" ;
 		}
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		return commonDao.queryBySql(NotificationmMessage.class, sql, params);
@@ -261,5 +261,11 @@ public class JnIpadCustAppInfoXxService {
 	public String getSumReturnPrepareAmountById(String userId) {
 		// TODO Auto-generated method stub
 		return jnIpadCustAppInfoDao.getSumReturnPrepareAmountById(userId);
+	}
+
+
+	public List<String> selectcustomerList(String managerId) {
+		// TODO Auto-generated method stub
+		return jnIpadCustAppInfoDao.selectcustomerList(managerId);
 	}
 }

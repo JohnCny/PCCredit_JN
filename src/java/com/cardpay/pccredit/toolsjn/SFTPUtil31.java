@@ -111,8 +111,12 @@ public class SFTPUtil31 {
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)oldFile;
 	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
 	           File file = fi.getStoreLocation();
-	    	   csftp.put(new FileInputStream(file), newFileName);
+	           FileInputStream fis = new FileInputStream(file);
+	    	   csftp.put(fis, newFileName);
 	    	   System.out.println("上传成功！");
+	    	   if (fis != null) {
+	    			  fis.close();
+	    	   }
 	    	   disconnect();  
 	           
 	           map.put("fileName", oldFile.getOriginalFilename());
@@ -124,7 +128,10 @@ public class SFTPUtil31 {
         } catch (SftpException e) {  
             // TODO Auto-generated catch block  
             e.printStackTrace();  
-        }  
+        } catch (Exception e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        } 
           return map;
     }
 

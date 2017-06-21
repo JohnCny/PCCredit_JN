@@ -147,8 +147,12 @@ public class SFTPUtil {
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)oldFile;
 	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
 	           File file = fi.getStoreLocation();
-	    	   sftp.put(new FileInputStream(file), newFileName);
+	           FileInputStream fis = new FileInputStream(file);
+	    	   sftp.put(fis, newFileName);
 	    	   System.out.println("上传成功！");
+	    	   if (fis != null) {
+	    		   fis.close();
+	    	   }
 	    	   disconnect();  
 	           
 	           map.put("fileName", oldFile.getOriginalFilename());
@@ -160,7 +164,10 @@ public class SFTPUtil {
         } catch (SftpException e) {  
             // TODO Auto-generated catch block  
             e.printStackTrace();  
-        }  
+        } catch (Exception e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }   
           return map;
     }
 
@@ -195,8 +202,12 @@ public class SFTPUtil {
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)oldFile;
 	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
 	           File file = fi.getStoreLocation();
-	    	   sftp.put(new FileInputStream(file), newFileName);
+	           FileInputStream fis = new FileInputStream(file);
+	    	   sftp.put(fis, newFileName);
 	    	   System.out.println("上传成功！");
+	    	   if (fis != null) {
+	    		   fis.close();
+	    	   }
 	    	   disconnect();  
 	           
 	    	   map.put("fileName", fileName);
@@ -207,6 +218,9 @@ public class SFTPUtil {
             // TODO Auto-generated catch block  
             e.printStackTrace();  
         } catch (SftpException e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        } catch (Exception e) {  
             // TODO Auto-generated catch block  
             e.printStackTrace();  
         }  
@@ -299,8 +313,12 @@ public class SFTPUtil {
 	    	   CommonsMultipartFile cf= (CommonsMultipartFile)file;
 	    	   DiskFileItem fi = (DiskFileItem)cf.getFileItem(); 
 	           File newfile = fi.getStoreLocation();
-	    	   sftp.put(new FileInputStream(newfile), newFileName);
+	           FileInputStream fis = new FileInputStream(newfile);
+	    	   sftp.put(fis, newFileName);
 	    	   System.out.println("上传成功！");
+	    	   if (fis != null) {
+	    		   fis.close();
+	    	   }
 	    	   disconnect();  
 	           
 	    	   map.put("fileName", fileName);
@@ -313,7 +331,10 @@ public class SFTPUtil {
         } catch (SftpException e) {  
             // TODO Auto-generated catch block  
             e.printStackTrace();  
-        }  
+        } catch (Exception e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }   
           return map;
 	}
     

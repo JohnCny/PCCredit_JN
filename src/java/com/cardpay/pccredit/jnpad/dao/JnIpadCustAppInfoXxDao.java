@@ -8,6 +8,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.jnpad.filter.CustomerApprovedFilter;
 import com.cardpay.pccredit.jnpad.filter.NotificationMessageFilter;
 import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
+import com.cardpay.pccredit.jnpad.model.NotificationmMessage;
 import com.cardpay.pccredit.jnpad.model.RetrainUserVo;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
 import com.wicresoft.util.annotation.Mapper;
@@ -50,4 +51,7 @@ public interface JnIpadCustAppInfoXxDao {
 
 
 	public String getSumReturnPrepareAmountById(@Param("userId")String userId);
+
+//查询审贷决议状态客户
+	public List<String> selectcustomerList(@Param("managerId")String managerId);
 }

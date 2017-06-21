@@ -1,0 +1,90 @@
+#parse ("common/iframe_page_header.htm")
+ <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">登记上会结果</div>
+			</div>
+			<form id="id_module_form"
+				action="${contextPath}/manager/meeting/update.json?id=$!result.id" />
+			
+				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
+					bordercolor="#cccccc" style="width: 97%;margin-top:20px;margin-left:1.5%;">
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">登记上会结果</td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="visitcount">客户经理:</label></td>
+						<td><input class="rinpsty" type="text" id=managerName
+							name="managerName" value="$!result.managerName" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="visitcount">上会客户:</label></td>
+						<td><input class="rinpsty" type="text" id="customerName"
+							name="customerName" value="$!result.customerName" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="applycount">内审日期:</label></td>
+						<td><input class="rinpsty" type="text" id="internalAuditDate"
+							name="internalAuditDate" value="$!date.format('yyyy-MM-dd',$!result.internalAuditDate)" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="applycount">内审人员:</label></td>
+						<td><input class="rinpsty" type="text" id="internalAuditMember"
+							name="internalAuditMember" value="$!result.internalAuditMember" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="creditcount">上会日期:</label></td>
+						<td><input class="rinpsty" type="text" id="registerMeetingDate"
+							name="registerMeetingDate" value="$!date.format('yyyy-MM-dd',$!result.registerMeetingDate)" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="creditrefuse">一次/二次:</label></td>
+					<td><input class="rinpsty" type="text" id="numberOfTimes"
+							name="numberOfTimes" value="$!result.numberOfTimes" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="creditrefuse">登记结果(状态):</label></td>
+						<td><input class="rinpsty" type="text" id="status"
+							name="status" value="请在此处输入上会结果" onFocus="if(value==defaultValue){value='';this.style.color='#000'}" onBlur="if(!value){value=defaultValue;this.style.color='#999'}" style="color:#999999" /></td>
+					</tr>
+				</table>
+			</form>
+			<div class="submit" style="text-align: left;">
+				<input id="id_save_button" type="button"
+					value="#i18n('button.save')" class="current" />
+					<input type="button" onclick="javascript:history.back();" value="返回" />
+			</div>
+		</div>
+	</div>
+</body>
+ <script type="text/javascript">
+ $(document).ready(function() {	
+	 #set ($formName = "'#id_module_form'");
+	 $("#id_save_button").click(function (){
+	  var formjson = $($formName).serialize();
+   	  var url = $($formName).attr("action");
+   	  Dialog.confirm("确定要处理吗？", "提示",
+	     		function() {
+					 $.ajax({
+							url : url,
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message(data.mess);
+				   	            	window.location.href="${contextPath}/manager/meeting/select.page";
+								}else{
+									topWin.Dialog.message(data.mess);
+							    }
+							}
+						});
+   			    });
+   	  
+	  });
+ })
+ 
+ 
+ </script>
+#parse ("common/iframe_page_footer.htm")

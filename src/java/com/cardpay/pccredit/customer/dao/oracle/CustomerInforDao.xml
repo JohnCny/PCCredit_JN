@@ -661,7 +661,7 @@
 		  where 1=1
 		   			and  u.id = t1.user_id
 				<if test="chineseName != null and chineseName != '' ">
-					AND T1.chinese_name=#{chineseName}
+					<![CDATA[ and T1.chinese_name like '%'||#{chineseName}||'%']]>
 				</if>
 				<if test="cardType != null and cardType != '' ">
 					AND T1.card_type=#{cardType}
@@ -691,7 +691,7 @@
 		from BASIC_CUSTOMER_INFORMATION T1 
 		where 1 = 1
 		<if test="chineseName != null and chineseName != '' ">
-			AND chinese_name=#{chineseName}
+			<![CDATA[ and chinese_name like '%'||#{chineseName}||'%']]>
 		</if>
 		<if test="cardType != null and cardType != '' ">
 			AND card_type=#{cardType}
