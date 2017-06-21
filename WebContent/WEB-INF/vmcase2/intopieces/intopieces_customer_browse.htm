@@ -138,7 +138,7 @@
       <div class="pagebar">
         <div class="controlbtn">
  		  <a id="id_report_button" class="btn_g" href="javascript:void(0);" title="调查报告">调查报告</a>
-          <a id="id_image_button" class="btn_g" href="javascript:void(0);" title="影像资料">影像资料</a>
+          <a id="id_image_button" class="btn_g" href="javascript:void(0);" title="征信报告">征信报告</a>
           <a class="btn_g" href="javascript:void(0);" title="查看审批记录" onclick="viewIntoPicesApproveHistory('NO')">审批记录</a>
           <a class="btn_g" href="javascript:void(0);" title="审议结论" onclick="viewIntoPicesApproveHistory2('NO')">审议结论</a>
           <a id="id_bc_button"  class="btn_g" href="javascript:void(0);" title="补充调查">补充调查</a>
@@ -302,7 +302,7 @@
 		$("#id_report_button").click(function() {
 			if ($(".checkbox :checked").length == 1) {
 				var rowid = $("input[name='checkbox']:checked").val();
-				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("@")[0];
+				var url = "${contextPath}/customer/customerInfor_wh_ty/report_jy.page?appId=" + rowid.split("@")[0]+"&urlType=1";
 				if (opsObj.formObj) {
 	                // 回调URL
 	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
