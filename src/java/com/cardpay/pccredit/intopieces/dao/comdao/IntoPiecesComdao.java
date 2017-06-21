@@ -595,8 +595,8 @@ public class IntoPiecesComdao {
 					 "              sum(c.money) as amt              "+
 					 "         from customer_application_info  a,    "+
 					 "              basic_customer_information b,    "+
-					 "              t_gccontractmain           c,    "+
-					 "              t_gccontractmulticlient    d     "+
+					 "              t_gccontractmain_view      c,    "+
+					 "              t_gccontractmulticlient_view  d   "+
 					 "        where a.customer_id = b.id             "+
 					 "        and trim(c.KEYCODE) = d.KEYCODE        "+
 					 "        and b.ty_customer_id = d.CUSTID        "+
@@ -627,8 +627,8 @@ public class IntoPiecesComdao {
 					 "                        sum(c.money)                        "+ 
 					 "                   from customer_application_info  a,       "+ 
 					 "                        basic_customer_information b,       "+ 
-					 "                        t_gccontractmain           c,       "+ 
-					 "                        t_gccontractmulticlient    d        "+ 
+					 "                        t_gccontractmain_view           c,  "+ 
+					 "                        t_gccontractmulticlient_view    d   "+ 
 					 "                  where a.customer_id = b.id                "+ 
 					 "                  and trim(c.KEYCODE) = d.KEYCODE           "+ 
 					 "                  and b.ty_customer_id = d.CUSTID           "+ 
