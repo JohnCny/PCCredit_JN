@@ -79,6 +79,9 @@ public class ReadWholeAndIncrementService {
 									 "GCCONTRACTMULTICLIENT.txt",
 									 "GCCREDITTYPEINFORMATION.txt"};
 	
+	//增量
+	private String[] fileTxtSx = {"cclmtapplyprjinfo.txt"};
+	
 	
 	
 	/**
@@ -1059,6 +1062,65 @@ public class ReadWholeAndIncrementService {
 		andIncrementComdao.insertCCLMTAPPLYPRJINFO(datas);
 		// 释放空间
 		datas=null;
+	}
+	
+	
+	
+	/**
+	 * 自动读取
+	 */
+	
+	/**
+	 * 解析授信表数据
+	 * @throws Exception
+	 * 手动 by date
+	 */
+	public void doReadFileSxByDate(String dateString) {
+		//指定日期
+		log.info(dateString+"******************开始手动读取Cc授信申请额度方案信息主表（结果表）********************");  
+	        String gzFile = FtpUtils.bank_ftp_down_path+dateString;
+	        for(int i=0;i<fileTxtSx.length;i++){
+				String url = gzFile+File.separator+fileTxtSx[i];
+				File f = new File(url);
+				if(f.exists()){
+						List<String> spFile = new ArrayList<String>();
+						String fileN = "";
+						//判断文件大小，超过50M的先分割
+						if (f.exists() && f.isFile()){
+							if(f.length()>20000000){
+								int spCount = (int) (f.length()/20000000);
+								SPTxt.splitTxt(url,spCount);
+								int to = fileTxtSx[i].lastIndexOf('.');
+						    	fileN = fileTxtSx[i].substring(0, to);
+								for(int j=0;j<spCount;j++){
+									spFile.add(fileN+"_"+j+".txt");
+								}
+							}else{
+								int to = fileTxtSx[i].lastIndexOf('.');
+						    	fileN = fileTxtSx[i].substring(0, to);
+								spFile.add(fileN+".txt");
+							}
+						}
+						for(String fn : spFile){
+							try{
+								if(fn.contains(fileN)) {
+									if(fn.startsWith("cclmtapplyprjinfo")){
+										log.info("*****************Cc授信申请额度方案信息主表（结果表）********************");
+										this.saveCCLMTAPPLYPRJINFODataFile(gzFile+File.separator+fn,dateString);
+									} 
+								}
+							}catch(Exception e){
+								e.printStackTrace();
+								this.updBtachtask("001","sx",dateString);
+								throw new RuntimeException(e);
+							}
+						}
+						f.delete();
+						accountManagerParameterService.updBatchTaskFlow("100","sx",dateString);
+				}
+	        }
+	        log.info(dateString+"******************完成手动读取Cc授信申请额度方案信息主表（结果表）********************");
+
 	}
 	
 }

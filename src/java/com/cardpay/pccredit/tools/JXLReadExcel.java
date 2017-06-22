@@ -424,7 +424,8 @@ public class JXLReadExcel {
      * @return
      */
     private String getCellValue(Cell cell) {
-	        String result = new String();  
+	        try{
+	        String result = new String();
 	        switch (cell.getCellType()) {  
 	        case Cell.CELL_TYPE_NUMERIC:// 数字类型  
 	        case Cell.CELL_TYPE_FORMULA:
@@ -471,7 +472,12 @@ public class JXLReadExcel {
 	            result = "";  
 	            break;  
 	        }  
-	        return result;  
+	        return result;
+	    } catch (Exception e) {
+	        throw new RuntimeException("错误单元格："+ cell.getSheet().getSheetName() 
+    				+"第"+(cell.getRowIndex()+1)+"行"+(cell.getColumnIndex()+1)+"列");
+
+	    }
     }
     
     /**
