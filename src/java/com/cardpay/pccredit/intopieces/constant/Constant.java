@@ -28,7 +28,7 @@ public class Constant {
 	/* 影像资料补扫上传路径 */
 	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
 	
-	public static String FILE_PATH_CHAT = "/usr/chat/";
+	public static String FILE_PATH_CHAT = "D:/chat/";
 	
 	/* 保存进件*/
 	public static String SAVE_INTOPICES = "save";
@@ -62,8 +62,14 @@ public class Constant {
 	public static String  UPLOAD_INTOPICES="upload";
 	
 	
-	public static int WS_PORT = 10088;
+	public static final int WS_PORT = 10088;
 	
+	//netty 协议格式
+	public static final int Max_Frame_Length = 1024*1024; //解码时，处理每个帧数据的最大长度 
+	public static final int Length_Field_Length = 4; //该帧数据中，存放该帧数据的长度的数据的起始位置 
+	public static final int Length_Field_Offset = 4; //记录该帧数据长度的字段本身的长度 
+	public static final int Length_Adjustment = 4; //修改帧数据长度字段中定义的值，可以为负数 
+	public static final int Initial_Bytes_To_Strip  = 4; //解析的时候需要跳过的字节数 
 	
 	/*联系人*/
 	public static String CONTACTID = "contactId";

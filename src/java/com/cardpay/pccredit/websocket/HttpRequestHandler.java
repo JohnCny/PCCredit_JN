@@ -96,7 +96,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
 	private String getWebSocketLocation(FullHttpRequest request) {
 		// TODO Auto-generated method stub
-		return "ws://192.168.3.252:10088/ws";
+		return "ws://192.168.3.12:10088/ws";
 	}
 
 	private static void send100Continue(ChannelHandlerContext ctx) {
