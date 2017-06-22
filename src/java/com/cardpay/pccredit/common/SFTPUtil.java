@@ -900,6 +900,7 @@ public class SFTPUtil {
      * @return
      */
     private static String getCellValue(Cell cell) {
+    	 try{
 	        String result = new String();  
 	        switch (cell.getCellType()) {  
 	        case Cell.CELL_TYPE_NUMERIC:// 数字类型  
@@ -947,7 +948,11 @@ public class SFTPUtil {
 	            result = "";  
 	            break;  
 	        }  
-	        return result;  
+	        return result; 
+    	 } catch (Exception e) {
+ 	        throw new RuntimeException("错误单元格："+ cell.getSheet().getSheetName() 
+     				+"第"+(cell.getRowIndex()+1)+"行"+(cell.getColumnIndex()+1)+"列");
+ 	    }
     }
     
     /**
