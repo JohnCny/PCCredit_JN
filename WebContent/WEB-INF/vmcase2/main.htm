@@ -38,7 +38,7 @@
 	
 	
 	.fb{width:275px;height:80px;position:absolute;left:15px;right:10px;bottom:10px;}
-	.fb textarea{width:270px;resize:none;height:50px;border:none;color:#fff;font-family:"Microsoft YaHei";background:#626262;font-size:13px;padding-left:5px;}
+	.fb .message{width:270px;resize:none;height:50px;border:none;color:#fff;font-family:"Microsoft YaHei";background:#626262;font-size:13px;padding-left:5px;}
 	.fb input:hover,.jlSearch input:focus{border:none;}
 	.fb span{cursor:pointer;position:absolute;right:0px;width:91px;height:30px;background:#e73c32;color:#e5e5e5;line-height:30px;text-align:center;}
 	/*a  upload */
@@ -140,9 +140,7 @@
     		
 		</div>
 		<div class="fb">
-	        <textarea name="message" id ="message" placeholder="输入聊天内容" style="display: block"></textarea>
-	        <div id="localImag" style="display: none">
-　　　　　　　　　<img id="preview" src="" width="150" height="50" style="display: none; width: 150px; height: 50px;">
+	        <div contentEditable="true" name="message" id ="message" class="message" placeholder="输入聊天内容">
 　　　　　　 </div>
 	        <!--  <object id="base64-swf" width="24" height="24"
 				type="application/x-shockwave-flash" data="${contextPath}/common/js/common/Mybutton2.swf">
@@ -224,45 +222,42 @@
 	}
 	
 	function previewPic(){
-			$("#message").css('display','none'); 	
-			$("#localImag").css('display','block'); 
-			$("#preview").css('display','block'); 
+			//$("#preview").css('display','block'); 
 			
 		　　var docObj=document.getElementById("fileField");
-		 
-		　　var imgObjPreview=document.getElementById("preview");
+		var oImg=document.createElement("IMG");
 		　　if(docObj.files &&docObj.files[0])
 		　　{
-		　　　　//火狐下，直接设img属性
-		　　　　imgObjPreview.style.display = 'block';
-		　　　　imgObjPreview.style.width = '150px';
-		　　　　imgObjPreview.style.height = '50px'; 
-		 
-		　　　　//火狐7以上版本不能用上面的getAsDataURL()方式获取，需要一下方式
-		　　　　imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+		　　　　//火狐下
+		 		//oImg.style.display = 'block';
+ 				oImg.style.width="150px"; 
+ 				oImg.style.height="50px"; 
+				oImg.src=window.URL.createObjectURL(docObj.files[0]);
+				message.appendChild(oImg);
 		　　}
 		　　else
 		　　{
 		　　　　//IE下，使用滤镜
 		　　　　docObj.select();
 		　　　　var imgSrc = document.selection.createRange().text;
-		　　　　var localImagId = document.getElementById("localImag");
-		　　　　//必须设置初始大小
-		　　　　localImagId.style.width = "150px";
-		　　　　localImagId.style.height = "50px";
-		　　　　//图片异常的捕捉，防止用户修改后缀来伪造图片
-		　　　　try{
-		　　　　　　localImagId.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
-		　　　　　　localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
-		　　　　}
-		　　　　catch(e)
-		　　　　{
-		　　　　　　alert("您上传的图片格式不正确，请重新选择!");
-		　　　　　　return false;
-		　　　　}
-		　　　　imgObjPreview.style.display = 'none';
+				//oImg.src=imgSrc;
+ 				oImg.style.width="150px"; 
+ 				oImg.style.height="50px"; 
+				message.appendChild(oImg);
+				//图片异常的捕捉，防止用户修改后缀来伪造图片
+			　　　　try{
+			　　　　　　message.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+			　　　　　　message.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
+			　　　　}
+			　　　　catch(e)
+			　　　　{
+			　　　　　　alert("您上传的图片格式不正确，请重新选择!");
+			　　　　　　return false;
+			　　　　}
 		　　　　document.selection.empty();
 		　　}
+		
+			
 		　　return true;
 		}
 </script>
@@ -337,7 +332,9 @@
 		// send text 
 		document.getElementById('send').onclick=function(){
 			//发送图片
-			
+			if(true){
+				
+			}
 			//发送文字
 			else{
 				
