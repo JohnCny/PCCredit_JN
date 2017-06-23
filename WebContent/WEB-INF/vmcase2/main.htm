@@ -38,7 +38,7 @@
 	
 	
 	.fb{width:275px;height:80px;position:absolute;left:15px;right:10px;bottom:10px;}
-	.fb .message{width:270px;resize:none;height:50px;border:none;color:#fff;font-family:"Microsoft YaHei";background:#626262;font-size:13px;padding-left:5px;}
+	.fb textarea{width:270px;resize:none;height:50px;border:none;color:#fff;font-family:"Microsoft YaHei";background:#626262;font-size:13px;padding-left:5px;}
 	.fb input:hover,.jlSearch input:focus{border:none;}
 	.fb span{cursor:pointer;position:absolute;right:0px;width:91px;height:30px;background:#e73c32;color:#e5e5e5;line-height:30px;text-align:center;}
 	/*a  upload */
@@ -76,11 +76,6 @@
 	.dialog-box .report::-webkit-scrollbar-button{display:none;}
 	.dialog-box .report::-webkit-scrollbar-track{background:#424f63;}/*滚动条背景*/
 	.dialog-box .report::-webkit-scrollbar-thumb{background:#65cea7;}/*滚动条*/
-	
-	
-	.file-box{ position:relative;width:70px}
-	.btn{ background-color:#FFF; border:1px solid #CDCDCD;height:24px; width:70px;} 
-	.file{ position:absolute; top:0; right:0px; height:24px; filter:alpha(opacity:0);opacity: 0;width:70px } 
 	
 </style>
 </head>
@@ -140,18 +135,12 @@
     		
 		</div>
 		<div class="fb">
-	        <div contentEditable="true" name="message" id ="message" class="message" placeholder="输入聊天内容">
-　　　　　　 </div>
-	        <!--  <object id="base64-swf" width="24" height="24"
+	        <textarea name="message" id ="message" placeholder="输入聊天内容"></textarea>
+	        <object id="base64-swf" width="24" height="24"
 				type="application/x-shockwave-flash" data="${contextPath}/common/js/common/Mybutton2.swf">
 				<param name="movie" value="${contextPath}/common/js/common/Mybutton2.swf" />
-			</object>-->
-	        <!-- <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a> -->
-	        <div class="file-box">
-		        <input type='button' class='btn' value='选择图片' /> 
-				<input type="file" name="fileField" class="file" id="fileField" size="28" 
-					onchange="previewPic();" /> 
-			</div>
+			</object>
+	        <!--  <a href="javascript:;" class="image" onclick="sendphoto()"></a><a href="javascript:;" class="image music"></a> -->
 			<span id ="send" >发送</span>
 		</div>
 		
@@ -220,46 +209,6 @@
 		$("#ltjl").animate({right:"-300px"},200);
 		
 	}
-	
-	function previewPic(){
-			//$("#preview").css('display','block'); 
-			
-		　　var docObj=document.getElementById("fileField");
-		var oImg=document.createElement("IMG");
-		　　if(docObj.files &&docObj.files[0])
-		　　{
-		　　　　//火狐下
-		 		//oImg.style.display = 'block';
- 				oImg.style.width="150px"; 
- 				oImg.style.height="50px"; 
-				oImg.src=window.URL.createObjectURL(docObj.files[0]);
-				message.appendChild(oImg);
-		　　}
-		　　else
-		　　{
-		　　　　//IE下，使用滤镜
-		　　　　docObj.select();
-		　　　　var imgSrc = document.selection.createRange().text;
-				//oImg.src=imgSrc;
- 				oImg.style.width="150px"; 
- 				oImg.style.height="50px"; 
-				message.appendChild(oImg);
-				//图片异常的捕捉，防止用户修改后缀来伪造图片
-			　　　　try{
-			　　　　　　message.style.filter="progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
-			　　　　　　message.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
-			　　　　}
-			　　　　catch(e)
-			　　　　{
-			　　　　　　alert("您上传的图片格式不正确，请重新选择!");
-			　　　　　　return false;
-			　　　　}
-		　　　　document.selection.empty();
-		　　}
-		
-			
-		　　return true;
-		}
 </script>
 
 <script type="text/javascript" src="${contextPath}/common/js/common/swfobject.js"></script>
@@ -272,7 +221,7 @@
 			}
 	    });
 
-		var WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
+		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
 		var ws;
 		var textarea;
 		var base64swf;
@@ -280,7 +229,14 @@
 		var img;
 	    var base64Data = "", base64Type = "";
 		
-		function initWsClient(appId){
+		function initWsClient(appId) {
+			//document.getElementById("base64-swf").SetVariable("appId",appId);
+			//document.getElementById("base64-swf").SetVariable("userId","$!user.id");
+			//设置参数
+			document.getElementById("base64-swf").setAppId(appId);
+			document.getElementById("base64-swf").setUserId("$!user.id");
+			document.getElementById("base64-swf").setUrl("http://192.168.3.26:8081/PCCredit/test/startexcel/flashPicUpload.json");
+			
 			var url = "ws://192.168.3.26:10088/ws/?appId="+appId+"&userId=$!user.id";
 			ws = new WebSocket(url);
 			ws.onopen = function() {
@@ -294,7 +250,7 @@
 	            	var content =arr[3];
 	            	var ptype =arr[4];
 	            	if(ptype == '2'){
-	            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[6];
+	            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[5];
 	            		$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>");
 	            	}else{
 	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
@@ -329,16 +285,9 @@
 			}
 		}
 		
+		
 		// send text 
 		document.getElementById('send').onclick=function(){
-			//发送图片
-			if(true){
-				
-			}
-			//发送文字
-			else{
-				
-			}
 			if($.trim($("#message").val())== ''){
 				window.top.Dialog.message("发送内容不能为空,请重新输入");
 				return;
@@ -348,11 +297,10 @@
 			$("#message").val("");
 		}
 		
-		window.showBase64 = function(name,type,data){
+		window.showBase64 = function(name,type,id){
 			base64Type = type;
-			base64Data = data;
 			//send 图片流
-			onSend("base64"+type+data);
+			onSend("image:"+id);
 		};
 		
 		window.onFlashError = function(error){

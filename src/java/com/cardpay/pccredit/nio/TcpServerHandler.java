@@ -51,6 +51,7 @@ import sun.misc.BASE64Decoder;
 import com.cardpay.pccredit.customer.model.CustomerManagerTarget;
 import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.model.ChatMessage;
+import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
@@ -66,6 +67,9 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	@Autowired
 	private CommonDao commonDao;
 
+	@Autowired
+	private IntoPiecesService intoPiecesService;
+	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -163,7 +167,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 		
 		// 构造握手响应返回,本机测试
 		WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-				"ws://61.34.0.31:" + Constant.WS_PORT + "/ws", null, true,
+				"ws://192.168.3.26:" + Constant.WS_PORT + "/ws", null, true,
 				1389101);
 		handshaker = wsFactory.newHandshaker(req);
 		if (handshaker == null) {
@@ -177,8 +181,9 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	private void handleWebSocketFrame(ChannelHandlerContext ctx,
 			TextWebSocketFrame frame) {
 		// 获取当前聊天时间
+		Date now = new Date();
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String dateString = format.format(new Date());
+		String dateString = format.format(now);
 
 		// get bean
 		DailyReportScheduleService dailyReportScheduleService = Beans
@@ -192,15 +197,14 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 
 		//appId = global.loginClientMap.get(incoming.id().asShortText());
 		// 文本
-		if (msg.text().indexOf("base64") == -1) {
+		if (msg.text().indexOf("image:") == -1) {
 			message = msg.text();
 			SystemUser loginUser = dailyReportScheduleService
 					.queryCustomer(userId);
 
 			// 存聊天记录
-			// String id = IDGenerator.generateID();
-			String id = this.saveChatMessage(appId, loginUser.getDisplayName(),
-					"0", message.replaceAll(" ", ""), "", "", "");
+			String id = IDGenerator.generateID();
+			intoPiecesService.saveChatMessage(appId, id,userId,now,"0", message.replaceAll(" ", ""), "", "", "");
 
 			// 查询客户对应appid
 			if (!global.loginClientMap.containsKey(incoming.id().asShortText())) {
@@ -240,13 +244,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			SystemUser loginUser = dailyReportScheduleService
 					.queryCustomer(userId);
 			
-			// 解码后图片存放路径
-			String path = GenerateImage(message, pType);
-			// String id = IDGenerator.generateID();
-			// 存聊天记录
-			String id = this.saveChatMessage(appId, loginUser.getDisplayName(),
-					"1", "", path, pType, message);
-
+			String id = message.substring(6);
 			if (global.channelGroupMap.containsKey(appId)) {
 				ChannelGroup group = global.channelGroupMap.get(appId);
 				for (Channel channel : group) {
@@ -257,7 +255,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 								+ dateString
 								+ " "
 								+ null
-								+ " " + 2 + " " + pType + " " + id));
+								+ " " + 2 + " " + id));
 					} else {
 						channel.writeAndFlush(new TextWebSocketFrame(loginUser
 								.getDisplayName()
@@ -265,7 +263,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 								+ dateString
 								+ " "
 								+ null
-								+ " " + 2 + " " + pType + " " + id));
+								+ " " + 2 + " " + id));
 					}
 				}
 			}
@@ -295,47 +293,5 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			throws Exception {
 		cause.printStackTrace();
 		ctx.close();
-	}
-
-	// 保存 聊天记录
-	public String saveChatMessage(String appId, String userId, String type,
-			String content, String url, String photoType, String photoBase) {
-		ChatMessage chatMessage = new ChatMessage();
-		chatMessage.setApplicationId(appId);
-		chatMessage.setCreatedBy(userId);
-		chatMessage.setCreatedTime(new Date());
-		chatMessage.setMsgType(type);
-		chatMessage.setMsgContent(content);
-		chatMessage.setResourceUrl(url);
-		// chatMessage.setPhotoBase(photoBase);
-		chatMessage.setPhotoType(photoType);
-		commonDao.insertObject(chatMessage);
-		// System.out.println(chatMessage.getId());
-		return chatMessage.getId();
-	}
-
-	// base64字符串转化成图片
-	public String GenerateImage(String imgStr, String imageType) { // 对字节数组字符串进行Base64解码并生成图片
-		BASE64Decoder decoder = new BASE64Decoder();
-		try {
-			// Base64解码
-			byte[] b = decoder.decodeBuffer(imgStr);
-			for (int i = 0; i < b.length; ++i) {
-				if (b[i] < 0) {// 调整异常数据
-					b[i] += 256;
-				}
-			}
-			// 生成jpeg图片
-			String newFileName = IDGenerator.generateID() + imageType;
-			String imgFilePath = Constant.FILE_PATH_CHAT + File.separator
-					+ newFileName;
-			OutputStream out = new FileOutputStream(imgFilePath);
-			out.write(b);
-			out.flush();
-			out.close();
-			return imgFilePath;
-		} catch (Exception e) {
-			return null;
-		}
 	}
 }

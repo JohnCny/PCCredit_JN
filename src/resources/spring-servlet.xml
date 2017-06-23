@@ -98,6 +98,7 @@
 						<value>/login.json</value>
 						<value>/ws.htm</value>
 						<value>/startExcel.json</value>
+						<value>/flashPicUpload.json</value>
 					</list>
 				</property>
 				<property name="excludeContains">
