@@ -1201,8 +1201,9 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		try {
 			String prodId = request.getParameter("prodId");//产品id
 			String custId = request.getParameter("custId");//客户id
+			String appId = request.getParameter("appId");//进件id
 			//下载调查模板
-			addIntoPiecesService.downLoadDcmb(response,custId,prodId);
+			addIntoPiecesService.downLoadDcmb(response,custId,prodId,appId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
