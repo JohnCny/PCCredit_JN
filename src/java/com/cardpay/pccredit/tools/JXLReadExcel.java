@@ -724,7 +724,7 @@ public class JXLReadExcel {
                         Row row = st.getRow(2);
                         Cell cell = row.getCell(4);
                         approveValue = getCellValue(cell);
-                        //get excel msg save model data
+                        // get excel msg save model data
                         saveModelForm(wb);
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }else if(wb instanceof HSSFWorkbook){
@@ -734,6 +734,8 @@ public class JXLReadExcel {
                         Row row = st.getRow(2);
                         Cell cell = row.getCell(4);
                         approveValue = getCellValue(cell);
+                        // get excel msg save model data
+                        saveModelForm(wb);
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
@@ -985,10 +987,6 @@ public class JXLReadExcel {
         return sheet;
     }
   
-  /**
-   * @author songchen
-   * @time   2017年3月2日 11:37:09
-   */
   public void  saveModelForm(Workbook wb){
 	    /*start */
 	    try{

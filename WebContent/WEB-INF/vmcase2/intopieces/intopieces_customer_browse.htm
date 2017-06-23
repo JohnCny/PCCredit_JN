@@ -500,9 +500,10 @@
 	$("#id_download_button").click(function() {
 		if ($(".checkbox :checked").length == 1) {
 			var rowid = $("input[name='checkbox']:checked").val();
-			custId = rowid.split("@")[1];
-			prodId = rowid.split("@")[7];
-			var url = "${contextPath}/customer/customerInfor_wh_ty/downLoadDcmb.json?prodId=" + prodId+"&custId="+custId;
+			var appId = rowid.split("@")[0];
+			var custId = rowid.split("@")[1];
+			var prodId = rowid.split("@")[7];
+			var url = "${contextPath}/customer/customerInfor_wh_ty/downLoadDcmb.json?prodId=" + prodId+"&custId="+custId+"&appId="+appId;
 			self.location.href=url;
 		}else{
 			Dialog.message("请选择一行!");

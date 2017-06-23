@@ -111,7 +111,7 @@ public class AddIntoPiecesService {
 	
 	/* 查询调查报告信息 */
 	public QueryResult<LocalExcelForm> findLocalExcelByProductAndCustomer(AddIntoPiecesFilter filter) {
-		List<LocalExcelForm> ls = localExcelDao.findByProductAndCustomer(filter);
+		List<LocalExcelForm> ls = localExcelDao.findByProductAndCustomer1(filter);
 		int size = localExcelDao.findCountByProductAndCustomer(filter);
 		QueryResult<LocalExcelForm> qr = new QueryResult<LocalExcelForm>(size,ls);
 		return qr;
@@ -205,9 +205,9 @@ public class AddIntoPiecesService {
 			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
 		}
 		
-		//删除旧模板
-		String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
-		commonDao.queryBySql(LocalExcel.class, sql, null);
+		//删除旧模板  update2017年6月23日09:01:50 解决续贷转贷问题
+		/*String sql = "delete from local_excel where customer_id='"+customerId+"' and product_id='"+productId+"'";
+		commonDao.queryBySql(LocalExcel.class, sql, null);*/
 		//添加模板
 		commonDao.insertObject(localExcel);
 	}
@@ -235,8 +235,9 @@ public class AddIntoPiecesService {
 		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");
-		//删除
-		localImageDao.deleteByProductIdAndCustomerId(productId,customerId);
+		//删除  update 2017年6月23日09:17:32 
+		//localImageDao.deleteByProductIdAndCustomerId(productId,customerId);
+		localImageDao.deleteByAppId(appId);
 		
 		LocalExcel localExcel = new LocalExcel();
 		localExcel.setProductId(productId);
@@ -1153,8 +1154,9 @@ public class AddIntoPiecesService {
 	
 	
 	//调查模板下载
-	public void downLoadDcmb(HttpServletResponse response,String custId,String prodId) throws Exception{
-		String sql = "select URI,ATTACHMENT from local_excel where CUSTOMER_ID = '"+custId+"'" +" and PRODUCT_ID= '"+prodId+"'";
+	public void downLoadDcmb(HttpServletResponse response,String custId,String prodId,String appId) throws Exception{
+		//String sql = "select URI,ATTACHMENT from local_excel where CUSTOMER_ID = '"+custId+"'" +" and PRODUCT_ID= '"+prodId+"'";
+		String sql = "select URI,ATTACHMENT from local_excel where APPLICATION_ID = '"+appId+"'";
 		LocalExcel v = commonDao.queryBySql(LocalExcel.class, sql, null).get(0);
 		if(v!=null){
 			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
