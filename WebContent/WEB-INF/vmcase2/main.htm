@@ -132,53 +132,6 @@
 			<span></span>
 		</div>-->
 		<div class="spjl" >
-			<!-- <div>
-				<p>李丽&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>
-			<div class="own">
-				<p>我自己&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>
-			<div>
-				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>
-			<div>
-				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>			
-			<div class="own">
-				<p>我自己&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>					
-			<div class="own">
-				<p>我自己&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p style="color:#71aaf7">上传图片</p>
-				<p>
-					<img src="${uicasePath}/images/img_01.png"/>
-					<img src="${uicasePath}/images/img_01.png"/>
-					<img src="${uicasePath}/images/img_01.png"/>
-					<img src="${uicasePath}/images/img_01.png"/>
-				</p>
-			</div>
-			<div>
-				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>				
-			<div>
-				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>			
-			<div>
-				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p>审批记录审批记录审批记录审批记录</p>
-			</div>			
-			<div>
-				<p>王丽君&nbsp;（2017-04-25&nbsp;10:00）</p>
-				<p style="color:#4dffba">上传语音</p>
-				<p><img src="${uicasePath}/images/music.png"/></p>
-			</div>	 -->
     		
 		</div>
 		<div class="fb">
@@ -276,8 +229,16 @@
 		var img;
 	    var base64Data = "", base64Type = "";
 		
-		$(document).ready(function() {
-			ws = new WebSocket("ws://61.34.0.31:10088/ws");
+		function initWsClient(appId) {
+			//document.getElementById("base64-swf").SetVariable("appId",appId);
+			//document.getElementById("base64-swf").SetVariable("userId","$!user.id");
+			//设置参数
+			document.getElementById("base64-swf").setAppId(appId);
+			document.getElementById("base64-swf").setUserId("$!user.id");
+			document.getElementById("base64-swf").setUrl("http://192.168.3.26:8081/PCCredit/test/startexcel/flashPicUpload.json");
+			
+			var url = "ws://192.168.3.26:10088/ws/?appId="+appId+"&userId=$!user.id";
+			ws = new WebSocket(url);
 			ws.onopen = function() {
 				var ta = document.getElementById('responseText');
 			};
@@ -289,7 +250,7 @@
 	            	var content =arr[3];
 	            	var ptype =arr[4];
 	            	if(ptype == '2'){
-	            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[6];
+	            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[5];
 	            		$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>");
 	            	}else{
 	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
@@ -312,12 +273,12 @@
 			
 		   	base64Data = "";
 		   	base64Type = "";
-		});
+		}
 		
 
 		function onSend(message) {
 			if (ws.readyState == WebSocket.OPEN) {
-				message = $("#loginUserId").val()+$("#appId").val()+ message;
+				//message = $("#loginUserId").val()+$("#appId").val()+ message;
 				ws.send(message);
 			} else {
 				window.top.Dialog.message("连接关闭");
@@ -327,20 +288,19 @@
 		
 		// send text 
 		document.getElementById('send').onclick=function(){
-			if($("#message").val().trim()== ''){
+			if($.trim($("#message").val())== ''){
 				window.top.Dialog.message("发送内容不能为空,请重新输入");
 				return;
 			}
 			// send
-			onSend($("#message").val().trim());
+			onSend($.trim($("#message").val()));
 			$("#message").val("");
 		}
 		
-		window.showBase64 = function(name,type,data){
+		window.showBase64 = function(name,type,id){
 			base64Type = type;
-			base64Data = data;
 			//send 图片流
-			onSend("base64"+type+data);
+			onSend("image:"+id);
 		};
 		
 		window.onFlashError = function(error){
