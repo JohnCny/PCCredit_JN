@@ -4,8 +4,6 @@ import java.nio.charset.Charset;
 
 import org.springframework.stereotype.Service;
 
-import com.cardpay.pccredit.websocket.HttpRequestHandler;
-import com.cardpay.pccredit.websocket.TextWebSocketFrameHandler;
 import com.wicresoft.util.spring.Beans;
 
 import io.netty.channel.ChannelInitializer;
@@ -38,7 +36,6 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
 		// pipeline.addLast("ping", new IdleStateHandler(20, 18, 10));
 		// //心跳监测 读超时为10s，写超时为10s 全部空闲时间100s
 		 */
-		//pipeline.addLast("framer",new DelimiterBasedFrameDecoder(1024*1024,Delimiters.lineDelimiter()));
 		pipeline.addLast("http-codec",new HttpServerCodec());
         pipeline.addLast("aggregator",new HttpObjectAggregator(65536));
         pipeline.addLast("http-chunked",new ChunkedWriteHandler());

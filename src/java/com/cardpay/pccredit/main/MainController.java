@@ -46,7 +46,6 @@ import com.cardpay.pccredit.riskControl.dao.NplsInfomationDao;
 import com.cardpay.pccredit.riskControl.service.CustomerOverdueService;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.system.service.SystemUserService;
-import com.cardpay.pccredit.websocket.WebsocketChatServer;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.enviroment.GlobalSetting;
 import com.wicresoft.jrad.base.web.JRadModelAndView;

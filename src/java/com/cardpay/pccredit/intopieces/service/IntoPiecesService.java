@@ -32,6 +32,7 @@ import com.cardpay.pccredit.intopieces.model.AppManagerAuditLog;
 import com.cardpay.pccredit.intopieces.model.AppManagerAuditLogForm;
 import com.cardpay.pccredit.intopieces.model.ApplicationDataImport;
 import com.cardpay.pccredit.intopieces.model.BasicCustomerInformationS;
+import com.cardpay.pccredit.intopieces.model.ChatMessage;
 import com.cardpay.pccredit.intopieces.model.CustomerAccountData;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationCom;
 import com.cardpay.pccredit.intopieces.model.CustomerApplicationContact;
@@ -994,5 +995,23 @@ public class IntoPiecesService {
 
 		List<QzApplnAttachmentDetail> list = commonDao.queryBySql(QzApplnAttachmentDetail.class, sql, null);
 		return list;
+	}
+	
+	// 保存 聊天记录
+	public String saveChatMessage(String appId, String id,String userId,Date date, String type,
+			String content, String url, String photoType, String photoBase) {
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setId(id);
+		chatMessage.setApplicationId(appId);
+		chatMessage.setCreatedBy(userId);
+		chatMessage.setCreatedTime(date);
+		chatMessage.setMsgType(type);
+		chatMessage.setMsgContent(content);
+		chatMessage.setResourceUrl(url);
+		// chatMessage.setPhotoBase(photoBase);
+		chatMessage.setPhotoType(photoType);
+		commonDao.insertObject(chatMessage);
+		// System.out.println(chatMessage.getId());
+		return chatMessage.getId();
 	}
 }

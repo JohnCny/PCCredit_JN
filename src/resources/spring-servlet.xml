@@ -97,11 +97,14 @@
 					<list>
 						<value>/login.json</value>
 						<value>/ws.htm</value>
+						<value>/startExcel.json</value>
+						<value>/flashPicUpload.json</value>
 					</list>
 				</property>
 				<property name="excludeContains">
 					<list> <!-- 不需要验证的匹配 -->
 						<value>/ipad/</value>
+						<value>/test/startexcel/</value>
 					</list>
 				</property>
 				<property name="mainPage" value="/main.page" />
