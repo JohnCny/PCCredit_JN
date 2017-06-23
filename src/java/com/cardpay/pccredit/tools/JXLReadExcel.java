@@ -424,7 +424,8 @@ public class JXLReadExcel {
      * @return
      */
     private String getCellValue(Cell cell) {
-	        String result = new String();  
+	        try{
+	        String result = new String();
 	        switch (cell.getCellType()) {  
 	        case Cell.CELL_TYPE_NUMERIC:// 数字类型  
 	        case Cell.CELL_TYPE_FORMULA:
@@ -471,7 +472,12 @@ public class JXLReadExcel {
 	            result = "";  
 	            break;  
 	        }  
-	        return result;  
+	        return result;
+	    } catch (Exception e) {
+	        throw new RuntimeException("错误单元格："+ cell.getSheet().getSheetName() 
+    				+"第"+(cell.getRowIndex()+1)+"行"+(cell.getColumnIndex()+1)+"列");
+
+	    }
     }
     
     /**
@@ -718,7 +724,7 @@ public class JXLReadExcel {
                         Row row = st.getRow(2);
                         Cell cell = row.getCell(4);
                         approveValue = getCellValue(cell);
-                        //get excel msg save model data
+                        // get excel msg save model data
                         saveModelForm(wb);
                         map = getExcelInfo(xWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }else if(wb instanceof HSSFWorkbook){
@@ -728,6 +734,8 @@ public class JXLReadExcel {
                         Row row = st.getRow(2);
                         Cell cell = row.getCell(4);
                         approveValue = getCellValue(cell);
+                        // get excel msg save model data
+                        saveModelForm(wb);
                         map = getExcelInfo(hWb,i,isWithStyle,ImportParameter.RowAndCol_jy,ImportParameter.editAble_jy,false);
                     }
                 	String content_base64 = getBASE64(map.get("computerData").toString());
@@ -979,10 +987,6 @@ public class JXLReadExcel {
         return sheet;
     }
   
-  /**
-   * @author songchen
-   * @time   2017年3月2日 11:37:09
-   */
   public void  saveModelForm(Workbook wb){
 	    /*start */
 	    try{

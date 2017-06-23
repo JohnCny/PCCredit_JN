@@ -132,11 +132,10 @@ public class BatchReturnRunController extends BaseController{
 			//ODS增量数据
 			}else if(batchCode.equals("incre")){
 				incrementService.doReadFileIncrementByDate(dateString);
-			//ODS全量数据(暂无)
-			}/*else if(batchCode.equals("whole")){
-				incrementService.doReadFileWholeByDate(dateString);
-			}*/
-		    else if(batchCode.equals("hk")){
+			//ODS授信表数据
+			}else if(batchCode.equals("sx")){
+				incrementService.doReadFileSxByDate(dateString);
+			}else if(batchCode.equals("hk")){
 		    	applicationInfoSynchScheduleService.doReturnReimbursement();
 		    }
 			//同步进件状态

@@ -201,7 +201,7 @@ public class DailyReportScheduleService {
 		//日报批处理周六未执行 使用管理系统手工导入功能
 		accountManagerParameterService.insertBatchTaskFlow("downLoad","下载和解压数据");//初始
 		accountManagerParameterService.insertBatchTaskFlow("incre","增量数据");//初始
-		//accountManagerParameterService.insertBatchTaskFlow("whole","全量数据");//初始
+		accountManagerParameterService.insertBatchTaskFlow("sx","授信信息数据");//初始
 		
 		log.info("【批处理task生成end】"+new Date()+"***********************************************");
 	}

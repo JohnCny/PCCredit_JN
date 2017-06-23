@@ -192,6 +192,10 @@
    	delete LOCAL_EXCEL t WHERE t.CUSTOMER_ID = #{customerId} and t.PRODUCT_ID = #{productId} 
   </delete>
   
+  <delete id="deleteByAppId">
+   	delete LOCAL_EXCEL t WHERE t.APPLICATION_ID = #{appId}
+  </delete>
+  
   
   <update id="updateCustomerInfoStatus">
 		update customer_application_info  set status = 'audit' where id =#{appId}
