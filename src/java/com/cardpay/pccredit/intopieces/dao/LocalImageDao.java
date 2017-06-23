@@ -33,6 +33,7 @@ public interface LocalImageDao {
 	public List<LocalImageForm> findByApplication(AddIntoPiecesFilter filter);
 	public int findCountByApplication(AddIntoPiecesFilter filter);
 	public void deleteByProductIdAndCustomerId(@Param("productId") String productId,@Param("customerId") String customerId);
+	public void deleteByAppId(@Param("appId") String appId);
 	public void updateCustomerInfoStatus(@Param("appId") String appId);
 	
 	public Dzjy findJy(@Param("customerId") String customerId,@Param("productId") String productId);
