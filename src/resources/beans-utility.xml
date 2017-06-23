@@ -299,6 +299,30 @@
     </bean>
     <!-- 放款排名信息更新  end -->
     
+    
+     <!-- 11.导入授信信息-->
+    <bean id="expSxJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="readWholeAndIncrementService"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>doReadFileSx</value>
+        </property>
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="expSxTigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+        <property name="jobDetail">
+            <ref bean="expSxJob"/>
+        </property>
+        <!-- cron表达式 -->
+        <property name="cronExpression">
+            <value>0 30 22 ? * *</value>
+        </property>
+    </bean>
+    <!-- 导入授信信息  end -->
+    
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
     <bean id="scheduler" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
@@ -313,6 +337,7 @@
                  <ref bean="lxCalDayBalanceTigger"/>
                  <ref bean="runBatchGeneratePerformancePayTigger"/>
                  <ref bean="fkRankingTigger"/>
+                 <ref bean="expSxTigger"/>
             </list>
         </property>
     </bean>
