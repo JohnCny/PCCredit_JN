@@ -1157,8 +1157,10 @@ public class AddIntoPiecesService {
 	public void downLoadDcmb(HttpServletResponse response,String custId,String prodId,String appId) throws Exception{
 		//String sql = "select URI,ATTACHMENT from local_excel where CUSTOMER_ID = '"+custId+"'" +" and PRODUCT_ID= '"+prodId+"'";
 		String sql = "select URI,ATTACHMENT from local_excel where APPLICATION_ID = '"+appId+"'";
-		LocalExcel v = commonDao.queryBySql(LocalExcel.class, sql, null).get(0);
-		if(v!=null){
+		List<LocalExcel> list = commonDao.queryBySql(LocalExcel.class, sql, null);
+		//LocalExcel v = commonDao.queryBySql(LocalExcel.class, sql, null).get(0);
+		if(list!=null&&list.size()>0){
+			LocalExcel v = list.get(0);
 			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
 				//本地测试
 				UploadFileTool.downLoadFile(response, v.getUri(), v.getAttachment());
