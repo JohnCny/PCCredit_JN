@@ -235,9 +235,9 @@
 			//设置参数
 			document.getElementById("base64-swf").setAppId(appId);
 			document.getElementById("base64-swf").setUserId("$!user.id");
-			document.getElementById("base64-swf").setUrl("http://192.168.3.26:8081/PCCredit/test/startexcel/flashPicUpload.json");
+			document.getElementById("base64-swf").setUrl("http://61.34.0.31:9080/${contextPath}/test/startexcel/flashPicUpload.json");
 			
-			var url = "ws://192.168.3.26:10088/ws/?appId="+appId+"&userId=$!user.id";
+			var url = "ws://61.34.0.31:10088/ws/?appId="+appId+"&userId=$!user.id";
 			ws = new WebSocket(url);
 			ws.onopen = function() {
 				var ta = document.getElementById('responseText');

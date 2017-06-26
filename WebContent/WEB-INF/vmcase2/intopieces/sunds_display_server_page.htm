@@ -60,27 +60,28 @@ function rotate(o,p){
  c.setAttribute('width', img.width); 
  c.setAttribute('height', img.height); 
  canvasContext.rotate(0 * Math.PI / 180); 
- canvasContext.drawImage(img, 0, 0); 
+ canvasContext.drawImage(img, 0, 0,700,700); 
  break; 
  case 1 : 
  c.setAttribute('width', img.height); 
  c.setAttribute('height', img.width); 
  canvasContext.rotate(90 * Math.PI / 180); 
- canvasContext.drawImage(img, 0, -img.height); 
+ canvasContext.drawImage(img, 0, -img.height,700,700); 
  break; 
  case 2 : 
  c.setAttribute('width', img.width); 
  c.setAttribute('height', img.height); 
  canvasContext.rotate(180 * Math.PI / 180); 
- canvasContext.drawImage(img, -img.width, -img.height); 
+ canvasContext.drawImage(img, -img.width, -img.height,700,700); 
  break; 
  case 3 : 
  c.setAttribute('width', img.height); 
  c.setAttribute('height', img.width); 
  canvasContext.rotate(270 * Math.PI / 180); 
- canvasContext.drawImage(img, -img.width, 0); 
+ canvasContext.drawImage(img, -img.width, 0,700,700);
  break; 
- } 
+ }
+
  } 
 } 
 </script>
@@ -120,7 +121,7 @@ function rotate(o,p){
 </script>
 
 <body style="background-color:#F0EFE7;text-align:center;">
-<div id="box" style="text-align:center;">
+<div id="box" style="text-align:center;margin:0 auto;margin-top:50px;padding:5px;background:#fff;border:1px solid #ddd;width:700px" >
 		<li><a href="javascript:void();"><img id="hugeImages1" width="700" height="700"  alt="" /></a></li>
 		 <input type="hidden"  name=totalCount value="$!totalCount"/>
       	 <input type="hidden"  name="rowNum" value="$!rowNum"/>

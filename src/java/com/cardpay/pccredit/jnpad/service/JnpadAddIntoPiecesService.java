@@ -330,10 +330,10 @@ public class JnpadAddIntoPiecesService {
 		Map<String, String> map  = new HashMap<String, String>();
 		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地测试
-			map = UploadFileTool.uploadYxzlFileBySpring(file,customerId);
+			map = JNPAD_UploadFileTool.uploadYxzlFileBySpring(file,customerId,fileName_1);
 		}else{
 			//指定服务器上传
-			map = SFTPUtil.uploadJn(file, customerId);
+			map = JNPAD_SFTPUtil.uploadJn(file, customerId,fileName_1);
 		}
 		String fileName = map.get("fileName");
 		String url = map.get("url");

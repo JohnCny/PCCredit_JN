@@ -167,7 +167,7 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 		
 		// 构造握手响应返回,本机测试
 		WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-				"ws://192.168.3.26:" + Constant.WS_PORT + "/ws", null, true,
+				"ws://61.34.0.31:" + Constant.WS_PORT + "/ws", null, true,
 				1389101);
 		handshaker = wsFactory.newHandshaker(req);
 		if (handshaker == null) {
