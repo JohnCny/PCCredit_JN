@@ -199,6 +199,14 @@ public class CustomerInforService {
 		return qr;
 	}
 	
+	
+	public QueryResult<CustomerInfor> findCustomerInforByFilter1(CustomerInforFilter filter) {
+		List<CustomerInfor> ls = customerInforDao.findCustomerOriginaList1(filter);
+		int size = customerInforDao.findCustomerOriginaCountList(filter);
+		QueryResult<CustomerInfor> qr = new QueryResult<CustomerInfor>(size,ls);
+		return qr;
+	}
+	
 	public int findCustomerOriginaCountList(CustomerInforFilter filter){
 		return customerInforDao.findCustomerOriginaCountList(filter);
 	}

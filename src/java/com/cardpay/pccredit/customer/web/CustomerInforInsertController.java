@@ -91,7 +91,8 @@ public class CustomerInforInsertController extends BaseController{
 					return returnMap;
 				}
 				filter.setCardType(customerinfoForm.getCardType());
-				List<CustomerInfor> ls = customerInforService.findCustomerInforByFilter(filter).getItems();
+				//List<CustomerInfor> ls = customerInforService.findCustomerInforByFilter(filter).getItems(); 
+				List<CustomerInfor> ls = customerInforService.findCustomerInforByFilter1(filter).getItems(); 
 				if(ls != null && ls.size()>0){
 					String message = "";
 					String gId = customerInforService.getUserInform(ls.get(0).getUserId());
