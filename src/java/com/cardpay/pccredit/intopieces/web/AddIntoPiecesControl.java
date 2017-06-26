@@ -76,10 +76,12 @@ import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -3469,9 +3471,17 @@ public class AddIntoPiecesControl extends BaseController {
 			if(StringUtils.isNotEmpty(currentPage)){
 				page = Integer.parseInt(currentPage);
 			}
-
+			
+			// get bean
+			DailyReportScheduleService dailyReportScheduleService = Beans.get(DailyReportScheduleService.class);
 			// 查询聊天记录
 			List<ChatMessage> list = chatMessageService.findMsg1(appId,page,limit);
+			SystemUser loginUser;
+			for(ChatMessage msg : list){
+			    loginUser = dailyReportScheduleService.queryCustomer(msg.getCreatedBy());
+				msg.setCreatedBy(loginUser.getDisplayName());
+			}
+			
 			int totalCount = chatMessageService.findCountByApplicationId(appId);
 			
 			Map<String,Object> result = new LinkedHashMap<String,Object>();
@@ -3491,9 +3501,14 @@ public class AddIntoPiecesControl extends BaseController {
 		public String browseChatTopTenMsg(HttpServletRequest request) {
 			
 			String appId=request.getParameter("appId");
-			
+			// get bean
+			DailyReportScheduleService dailyReportScheduleService = Beans.get(DailyReportScheduleService.class);
 			List<ChatMessage> msglist = chatMessageService.findMsg(appId,0,10);
-			
+			SystemUser loginUser;
+			for(ChatMessage msg : msglist){
+			    loginUser = dailyReportScheduleService.queryCustomer(msg.getCreatedBy());
+				msg.setCreatedBy(loginUser.getDisplayName());
+			}
 			Map<String,Object> result = new LinkedHashMap<String,Object>();
 			result.put("totalCount", chatMessageService.findCountByApplicationId(appId));
 			result.put("rownum", chatMessageService.findCountByApplicationId(appId)/10 + 1);

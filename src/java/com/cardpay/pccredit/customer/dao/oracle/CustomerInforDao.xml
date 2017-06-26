@@ -686,6 +686,45 @@
 	</select>
 	
 	
+	<select id="findCustomerOriginaList1" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+		SELECT * FROM
+		 (SELECT ROW_.*,ROWNUM ROWNUM_
+		   FROM (
+			select 
+			T1.id,
+			T1.chinese_name as chineseName,
+			T1.card_type as cardType,
+			T1.card_id as cardId,
+			T1.ty_customer_id as tyCustomerId,
+			T1.user_id as userId
+			from BASIC_CUSTOMER_INFORMATION T1
+		  where 1=1
+				<if test="chineseName != null and chineseName != '' ">
+					<![CDATA[ and T1.chinese_name like '%'||#{chineseName}||'%']]>
+				</if>
+				<if test="cardType != null and cardType != '' ">
+					AND T1.card_type=#{cardType}
+				</if>
+				<if test="cardId != null and cardId != '' ">
+					AND T1.card_id=#{cardId}
+				</if>
+				<if test="customerManagerId != null and customerManagerId != '' ">
+				    AND t1.user_id = #{customerManagerId}
+				</if>
+				<if test="customerManagerIds != null and customerManagerIds != '' ">  
+ 		    		and T1.user_id in  
+	 	    		<foreach collection="customerManagerIds" index="index" item="item" open="(" separator="," close=")"> 
+			   		#{item.userId} 
+					</foreach>
+				</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+		]]>
+	</select>
+	
+	
 	<select id="findCustomerOriginaCountList" resultType="int">
 		select count(0) 
 		from BASIC_CUSTOMER_INFORMATION T1 
