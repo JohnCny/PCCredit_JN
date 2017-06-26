@@ -106,6 +106,8 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 				.asShortText());
 		global.channelGroupMap.get(appId).remove(ctx.channel());
 		logger.info("客户端与服务端连接关闭");
+		
+		//test();
 	}
 
 	@Override
@@ -116,9 +118,9 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			handleHttpRequest(ctx, (FullHttpRequest) msg);
 		}
 		// WebSocket接入
-		else if (msg instanceof TextWebSocketFrame) {
-			handleWebSocketFrame(ctx, (TextWebSocketFrame) msg);
-		}
+        else if (msg instanceof WebSocketFrame) {
+            handleWebSocketFrame(ctx, (WebSocketFrame) msg);
+        }
 	}
 
 	@Override
@@ -179,95 +181,106 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 	}
 
 	private void handleWebSocketFrame(ChannelHandlerContext ctx,
-			TextWebSocketFrame frame) {
-		// 获取当前聊天时间
-		Date now = new Date();
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String dateString = format.format(now);
+			WebSocketFrame frame) {
+		// 判断是否是关闭链路的指令
+        if (frame instanceof CloseWebSocketFrame) {
+            handshaker.close(ctx.channel(),(CloseWebSocketFrame) frame.retain());
+            return;
+        }
+        
+        if (!(frame instanceof TextWebSocketFrame)) {
+            throw new UnsupportedOperationException(String.format("%s frame types not supported", frame.getClass().getName()));
+        }
+        else{
+        	// 获取当前聊天时间
+    		Date now = new Date();
+    		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    		String dateString = format.format(now);
 
-		// get bean
-		DailyReportScheduleService dailyReportScheduleService = Beans
-				.get(DailyReportScheduleService.class);
+    		// get bean
+    		DailyReportScheduleService dailyReportScheduleService = Beans
+    				.get(DailyReportScheduleService.class);
 
-		// 获取当前登陆聊天用户
-		String message;
+    		// 获取当前登陆聊天用户
+    		String message;
 
-		TextWebSocketFrame msg = (TextWebSocketFrame) frame;
-		Channel incoming = ctx.channel();
+    		TextWebSocketFrame msg = (TextWebSocketFrame) frame;
+    		Channel incoming = ctx.channel();
 
-		//appId = global.loginClientMap.get(incoming.id().asShortText());
-		// 文本
-		if (msg.text().indexOf("image:") == -1) {
-			message = msg.text();
-			SystemUser loginUser = dailyReportScheduleService
-					.queryCustomer(userId);
+    		//appId = global.loginClientMap.get(incoming.id().asShortText());
+    		// 文本
+    		if (msg.text().indexOf("image:") == -1) {
+    			message = msg.text();
+    			SystemUser loginUser = dailyReportScheduleService
+    					.queryCustomer(userId);
 
-			// 存聊天记录
-			String id = IDGenerator.generateID();
-			intoPiecesService.saveChatMessage(appId, id,userId,now,"0", message.replaceAll(" ", ""), "", "", "");
+    			// 存聊天记录
+    			String id = IDGenerator.generateID();
+    			intoPiecesService.saveChatMessage(appId, id,userId,now,"0", message.replaceAll(" ", ""), "", "", "");
 
-			// 查询客户对应appid
-			if (!global.loginClientMap.containsKey(incoming.id().asShortText())) {
-				return;
-			}
+    			// 查询客户对应appid
+    			if (!global.loginClientMap.containsKey(incoming.id().asShortText())) {
+    				return;
+    			}
 
-			if (global.channelGroupMap.containsKey(appId)) {
-				ChannelGroup group = global.channelGroupMap.get(appId);
-				for (Channel channel : group) {
-					if (channel != incoming) {
-						channel.writeAndFlush(new TextWebSocketFrame(loginUser
-								.getDisplayName()
-								+ " "
-								+ dateString
-								+ " "
-								+ message.replaceAll(" ", "")
-								+ " "
-								+ 0
-								+ " "
-								+ "text"));
-					} else {
-						channel.writeAndFlush(new TextWebSocketFrame(loginUser
-								.getDisplayName()
-								+ " "
-								+ dateString
-								+ " "
-								+ message.replaceAll(" ", "")
-								+ " "
-								+ 0
-								+ " "
-								+ "text"));
-					}
-				}
-			}
-		} else {// 图片
-			message = msg.text();
-			SystemUser loginUser = dailyReportScheduleService
-					.queryCustomer(userId);
-			
-			String id = message.substring(6);
-			if (global.channelGroupMap.containsKey(appId)) {
-				ChannelGroup group = global.channelGroupMap.get(appId);
-				for (Channel channel : group) {
-					if (channel != incoming) {
-						channel.writeAndFlush(new TextWebSocketFrame(loginUser
-								.getDisplayName()
-								+ " "
-								+ dateString
-								+ " "
-								+ null
-								+ " " + 2 + " " + id));
-					} else {
-						channel.writeAndFlush(new TextWebSocketFrame(loginUser
-								.getDisplayName()
-								+ " "
-								+ dateString
-								+ " "
-								+ null
-								+ " " + 2 + " " + id));
-					}
-				}
-			}
-		}
+    			if (global.channelGroupMap.containsKey(appId)) {
+    				ChannelGroup group = global.channelGroupMap.get(appId);
+    				for (Channel channel : group) {
+    					if (channel != incoming) {
+    						channel.writeAndFlush(new TextWebSocketFrame(loginUser
+    								.getDisplayName()
+    								+ " "
+    								+ dateString
+    								+ " "
+    								+ message.replaceAll(" ", "")
+    								+ " "
+    								+ 0
+    								+ " "
+    								+ "text"));
+    					} else {
+    						channel.writeAndFlush(new TextWebSocketFrame(loginUser
+    								.getDisplayName()
+    								+ " "
+    								+ dateString
+    								+ " "
+    								+ message.replaceAll(" ", "")
+    								+ " "
+    								+ 0
+    								+ " "
+    								+ "text"));
+    					}
+    				}
+    			}
+    		} else {// 图片
+    			message = msg.text();
+    			SystemUser loginUser = dailyReportScheduleService
+    					.queryCustomer(userId);
+    			
+    			String id = message.substring(6);
+    			if (global.channelGroupMap.containsKey(appId)) {
+    				ChannelGroup group = global.channelGroupMap.get(appId);
+    				for (Channel channel : group) {
+    					if (channel != incoming) {
+    						channel.writeAndFlush(new TextWebSocketFrame(loginUser
+    								.getDisplayName()
+    								+ " "
+    								+ dateString
+    								+ " "
+    								+ null
+    								+ " " + 2 + " " + id));
+    					} else {
+    						channel.writeAndFlush(new TextWebSocketFrame(loginUser
+    								.getDisplayName()
+    								+ " "
+    								+ dateString
+    								+ " "
+    								+ null
+    								+ " " + 2 + " " + id));
+    					}
+    				}
+    			}
+    		}
+        }
 	}
 
 	private static void sendHttpResponse(ChannelHandlerContext ctx,
@@ -293,5 +306,14 @@ public class TcpServerHandler extends SimpleChannelInboundHandler<Object> {
 			throws Exception {
 		cause.printStackTrace();
 		ctx.close();
+	}
+	
+	private void test(){
+		for (Map.Entry<String, ChannelGroup> entry : global.channelGroupMap.entrySet()) {
+		   System.out.println("key= " + entry.getKey());
+		   for (Channel channel : entry.getValue()) {
+			   System.out.println(channel.id());
+		   }
+		  }
 	}
 }

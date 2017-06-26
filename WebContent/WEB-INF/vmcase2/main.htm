@@ -222,6 +222,7 @@
 	    });
 
 		WEB_SOCKET_SWF_LOCATION = "${contextPath}/common/js/common/WebSocketMain.swf";
+		var cur_appid = "";
 		var ws;
 		var textarea;
 		var base64swf;
@@ -230,49 +231,57 @@
 	    var base64Data = "", base64Type = "";
 		
 		function initWsClient(appId) {
-			//document.getElementById("base64-swf").SetVariable("appId",appId);
-			//document.getElementById("base64-swf").SetVariable("userId","$!user.id");
-			//设置参数
-			document.getElementById("base64-swf").setAppId(appId);
-			document.getElementById("base64-swf").setUserId("$!user.id");
-			document.getElementById("base64-swf").setUrl("http://61.34.0.31:9080/${contextPath}/test/startexcel/flashPicUpload.json");
-			
-			var url = "ws://61.34.0.31:10088/ws/?appId="+appId+"&userId=$!user.id";
-			ws = new WebSocket(url);
-			ws.onopen = function() {
-				var ta = document.getElementById('responseText');
-			};
-			ws.onmessage = function(e) {
-	            	var ta = document.getElementById('responseText');
-	            	var arr = e.data.split(' ');
-	            	var name =arr[0];
-	            	var time =arr[1]+" "+arr[2];
-	            	var content =arr[3];
-	            	var ptype =arr[4];
-	            	if(ptype == '2'){
-	            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[5];
-	            		$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>");
-	            	}else{
-	            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
-	            	}
-	            	// 焦点始终在最后一行
-	            	var hei=$(".spjl").height(); 
-	            	$(".spjl").scrollTop(hei); 
-			};
-			ws.onclose = function() {
-				var ta = document.getElementById('responseText');
-			};
-			ws.onerror = function() {
-				var ta = document.getElementById('responseText');
-			};
-			
-			textarea = $("#base64-textarea");
-			base64swf = $("#base64-swf").get(0);
-			imgview = $("#base64-imgview");
-			img = $("#base64-img");
-			
-		   	base64Data = "";
-		   	base64Type = "";
+			//如果之前连接打开 先关闭
+			if(cur_appid != "" && cur_appid != appId){
+				closeWS();
+			}
+			if(cur_appid == "" || cur_appid != appId){
+				//document.getElementById("base64-swf").SetVariable("appId",appId);
+				//document.getElementById("base64-swf").SetVariable("userId","$!user.id");
+				//设置参数
+				document.getElementById("base64-swf").setAppId(appId);
+				document.getElementById("base64-swf").setUserId("$!user.id");
+				document.getElementById("base64-swf").setUrl("http://61.34.0.31:9080/${contextPath}/test/startexcel/flashPicUpload.json");
+				
+				var url = "ws://61.34.0.31:10088/ws/?appId="+appId+"&userId=$!user.id";
+				ws = new WebSocket(url);
+				ws.onopen = function() {
+					var ta = document.getElementById('responseText');
+				};
+				ws.onmessage = function(e) {
+		            	var ta = document.getElementById('responseText');
+		            	var arr = e.data.split(' ');
+		            	var name =arr[0];
+		            	var time =arr[1]+" "+arr[2];
+		            	var content =arr[3];
+		            	var ptype =arr[4];
+		            	if(ptype == '2'){
+		            		var src = "${contextPath}/intopieces/addIntopieces/startExcel.json?id="+arr[5];
+		            		$(".spjl").append("<div id='base64-imgview'><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p><img id='base64-img' onclick ='showBig(this)' style='height:100px;width:100px;' src ='"+src+"'/></p></div>");
+		            	}else{
+		            		$(".spjl").append("<div><p>"+name+"&nbsp;&nbsp;"+time+"&nbsp;:</p><p>"+content+"</p></div>");
+		            	}
+		            	// 焦点始终在最后一行
+		            	var hei=$(".spjl").height(); 
+		            	$(".spjl").scrollTop(hei); 
+				};
+				ws.onclose = function() {
+					var ta = document.getElementById('responseText');
+				};
+				ws.onerror = function() {
+					var ta = document.getElementById('responseText');
+				};
+				
+				textarea = $("#base64-textarea");
+				base64swf = $("#base64-swf").get(0);
+				imgview = $("#base64-imgview");
+				img = $("#base64-img");
+				
+			   	base64Data = "";
+			   	base64Type = "";
+			}
+
+			cur_appid = appId;
 		}
 		
 
@@ -285,6 +294,11 @@
 			}
 		}
 		
+		function closeWS(){
+			if (ws.readyState == WebSocket.OPEN) {
+				ws.close();
+			}
+		}
 		
 		// send text 
 		document.getElementById('send').onclick=function(){
