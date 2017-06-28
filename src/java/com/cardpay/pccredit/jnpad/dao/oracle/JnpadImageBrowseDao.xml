@@ -25,6 +25,14 @@
 	and uri not like '%.zip%'
 	and uri not like '%.pdf%'
 </select>
+<select id="findLocalImagePc" resultType="String">
+    
+    SELECT qd.URL FROM QZ_APPLN_ATTACHMENT_DETAIL qd INNER JOIN QZ_APPLN_ATTACHMENT_BATCH qb
+					ON qd.BATCH_ID =qb.ID
+					INNER JOIN  QZ_APPLN_ATTACHMENT_LIST ql ON ql.ID =qb.ATT_ID
+					WHERE ql.CUSTOMER_ID=#{customerId}
+					AND ql.APPLICATION_ID=#{productId}
+</select>
 <delete id="deleteImage">
     delete from local_image where id=#{id}
     
