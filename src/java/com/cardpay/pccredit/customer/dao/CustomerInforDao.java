@@ -236,6 +236,9 @@ public interface CustomerInforDao {
 	public List<CustomerInfor> findCustomerOriginaList(CustomerInforFilter filter);
 	public int findCustomerOriginaCountList(CustomerInforFilter filter);
 	
+	
+	public List<CustomerInfor> findCustomerOriginaList1(CustomerInforFilter filter);
+	
 	public List<CustomerInfor> findCustomerOriginaAllList(CustomerInforFilter filter);
 	
 	public int deleteRepayLSZ();

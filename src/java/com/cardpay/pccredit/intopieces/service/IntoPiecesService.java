@@ -12,10 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.calcuation.enums.ModelType;
 import com.cardpay.pccredit.common.UploadFileTool;
+import com.cardpay.pccredit.creditEval.CommonDecisionModel;
+import com.cardpay.pccredit.creditEvaluation.vo.CommonDecisionForm;
 import com.cardpay.pccredit.customer.model.CustomerCareersInformation;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.customer.service.CustomerInforService;
@@ -56,6 +60,7 @@ import com.cardpay.pccredit.postLoan.model.MibusidataForm;
 import com.cardpay.pccredit.product.model.AddressAccessories;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.jcraft.jsch.Logger;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.QueryResult;
@@ -1013,5 +1018,153 @@ public class IntoPiecesService {
 		commonDao.insertObject(chatMessage);
 		// System.out.println(chatMessage.getId());
 		return chatMessage.getId();
+	}
+	
+	
+	
+	public void saveEvaModelResult(CommonDecisionForm form){
+		/**
+		 * (信用-LNM00000000003  担保-LNM00000000004  抵押-LNM00000000001)
+		 * CREDIT_CPY：信用-企业主模型
+		 * CREDIT_INDI：信用-受薪者模型
+		 * WARR_CPY：担保-企业主模型
+		 * WARR_INDI：担保-受薪者模型
+		 * COLLE_CPY：抵押企业主模型
+		 * COLLE_INDI：抵押-受薪者模型
+		 */
+		if("0".equals(form.getLoanUse())){ 
+			if("LNM00000000003".equals(form.getProdType())){
+				ModelType.setModelType(ModelType.CREDIT_INDI);// 信用  消费
+				Log.info("*********信用  消费*********");
+			}else if("LNM00000000001".equals(form.getProdType())){
+				ModelType.setModelType(ModelType.COLLE_INDI);// 抵押  消费
+				Log.info("*********抵押  消费*********");
+			}else{
+				ModelType.setModelType(ModelType.WARR_INDI);// 担保  消费
+				Log.info("*********担保  消费*********");
+			}
+		}else{
+			if("LNM00000000003".equals(form.getProdType())){
+				ModelType.setModelType(ModelType.CREDIT_CPY);// 信用  消费
+				Log.info("*********信用  消费*********");
+			}else if("LNM00000000001".equals(form.getProdType())){
+				ModelType.setModelType(ModelType.COLLE_CPY);// 抵押  消费
+				Log.info("*********抵押  消费*********");
+			}else{
+				ModelType.setModelType(ModelType.WARR_CPY);// 担保  消费
+				Log.info("*********担保  消费*********");
+			}					
+		}
+		
+	
+		// model
+		com.calcuation.model.JNCreditBusinessModel jnCreditBusinessModel = new com.calcuation.model.JNCreditBusinessModel(
+				Double.valueOf(form.getApplyAmount()),
+				Integer.parseInt(form.getLoanUse()),
+			    Integer.parseInt(form.getSex()),
+			    Integer.parseInt(form.getAge()),
+			    Integer.parseInt(form.getEducation()),
+			    Integer.parseInt(form.getResidence()),
+			    Integer.parseInt(form.getMarriage()),
+			    Integer.parseInt(form.getChildrenEducation()),
+			    Integer.parseInt(form.getOwnedPropertyQuantity()),
+			    Integer.parseInt(form.getMortgagePropertyQuantity()),
+			    Double.valueOf(form.getMortgateBalance()), 				
+			    Integer.parseInt(form.getOwnedCarsQuantity()), 			
+			    Integer.parseInt(form.getBusinessYears()), 					
+			    Integer.parseInt(form.getCredit()), 									
+			    Integer.parseInt(form.getCreditCardOverdueCount()), 	
+			    Integer.parseInt(form.getLoanOverdueCount()), 				
+			    Double.valueOf(form.getLoanBalance()), 						
+			    Double.valueOf(form.getMortgageRemaining()), 			
+			    Integer.parseInt(form.getNumOfEconomicDependence()), 
+				Double.valueOf(form.getLiquidAssents()), 					
+				Double.valueOf(form.getStock()), 									
+			    Double.valueOf(form.getFixedAssents()), 						
+				Double.valueOf(form.getShortTermLiabilities()), 		
+				Double.valueOf(form.getTotalLiabilities()), 				
+				Double.valueOf(form.getTotalAssents()), 						
+				Double.valueOf(form.getOwnersEquity()), 						
+				Double.valueOf(form.getAnnualIncome()), 						
+				Double.valueOf(form.getOtherIncome()),						
+				Double.valueOf(form.getSpouseIncome()), 						
+				Double.valueOf(form.getPaymentByPrivateUse()), 		
+				Double.valueOf(form.getAnnualDisposableCapital()), 
+				Integer.parseInt(form.getArticleCategory()), 				
+				Double.valueOf(form.getCollateralValuation()),
+				0);
+		
+		
+		// save  model param
+		this.saveModelParam(form);
+		
+		// delete by excelId
+		String excelId  = form.getExcelId();
+		this.deleteEvaResult(excelId);
+		
+		// Message
+		com.calcuation.model.Message msg = jnCreditBusinessModel.getResult();
+		
+		// save eva_result
+		EvaResult re = new EvaResult();
+		re.setExcelId(excelId);
+		re.setCname(form.getCname()); 
+		re.setSex(form.getSex().equals("0")?"男":"女");
+		re.setCardNo(form.getCardNo());
+		re.setResult(msg.getResultStatus() == 1?"允许":"禁止");
+		re.setMoney(msg.getBottom()+"-"+msg.getTop());
+		re.setRefuseReason(msg.getFailureReason() == null? "" : msg.getFailureReason());
+		re.setCreatedTime(new Date());
+		this.saveEvaResult(re);
+	}
+	
+	
+	public void saveModelParam(CommonDecisionForm form){
+		try{
+			CommonDecisionModel model = new CommonDecisionModel();
+			
+			model.setCustomerName(form.getCname());             
+			model.setCardId(form.getCardNo());                   
+			model.setExcelId(form.getExcelId());                  
+			model.setApplyAmount(form.getApplyAmount());              
+			model.setLoanUse(form.getLoanUse());                  
+			model.setSex(form.getSex());                      
+			model.setAge(form.getAge());                      
+			model.setEducation(form.getEducation());                
+			model.setResidence(form.getResidence());                
+			model.setMarriage(form.getMarriage());                 
+			model.setChildrenEducation(form.getChildrenEducation());        
+			model.setOwnedPropertyQuantity(form.getOwnedPropertyQuantity());    
+			model.setMortgagePropertyQuantity(form.getMortgagePropertyQuantity()); 
+			model.setMortgateBalance(form.getMortgateBalance());          
+			model.setOwnedCarsQuantity(form.getOwnedCarsQuantity());        
+			model.setBusinessYears(form.getBusinessYears());            
+			model.setCredit(form.getCredit());                   
+			model.setCreditCardOverdueCount(form.getCreditCardOverdueCount());   
+			model.setLoanOverdueCount(form.getLoanOverdueCount());         
+			model.setLoanBalance(form.getLoanBalance());              
+			model.setMortgageRemaining(form.getMortgageRemaining());        
+			model.setNumOfEconomicDependence(form.getNumOfEconomicDependence());  
+			model.setLiquidAssents(form.getLiquidAssents());            
+			model.setStock(form.getStock());                    
+			model.setFixedAssents(form.getFixedAssents());             
+			model.setShortTermLiabilities(form.getShortTermLiabilities());     
+			model.setTotalLiabilities(form.getTotalLiabilities());         
+			model.setTotalAssents(form.getTotalAssents());             
+			model.setOwnersEquity(form.getOwnersEquity());             
+			model.setAnnualIncome(form.getAnnualIncome());             
+			model.setOtherIncome(form.getOtherIncome());              
+			model.setSpouseIncome(form.getSpouseIncome());             
+			model.setPaymentByPrivateUse(form.getPaymentByPrivateUse());      
+			model.setAnnualDisposableCapital(form.getAnnualDisposableCapital());  
+			model.setArticleCategory(form.getArticleCategory());          
+			model.setCollateralValuation(form.getCollateralValuation());      
+		  
+			model.setCreatedTime(new Date());
+		    commonDao.insertObject(model);
+	  }catch(Exception e){
+		  e.printStackTrace();
+		  Log.error("保存四维授信模型参数错误!");
+	  }
 	}
 }

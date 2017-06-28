@@ -29,6 +29,7 @@ public class Constant {
 	public static String FILE_PATH_BS = "/usr/pccreditFilebs/";
 	
 	public static String FILE_PATH_CHAT = "/usr/chat/";
+	//public static String FILE_PATH_CHAT = "E://usr//chat//";
 	
 	/* 保存进件*/
 	public static String SAVE_INTOPICES = "save";

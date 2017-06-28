@@ -144,6 +144,7 @@ function zxlt(){//显示在线审批记录
 		$("#topDiv").css("width","100%")
 		$("#downDiv").css("width","100%")
 		$("#ltjl",window.parent.document).animate({right:"0px"},200);
+		parent.initWsClient(appId);
 	}else{
 		Dialog.message("请选择一行!");
 	} 
