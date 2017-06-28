@@ -1,0 +1,277 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+
+<STYLE id=survey_style type=text/css>
+.forms table tr td{line-height:25px;height:25px;}
+.forms table tr td input[type=text]{height:20px;line-height:20px;}
+.forms table tr td.titlefc3{text-align:center;}
+</STYLE>
+</head>
+<body>
+<div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">四维授信评估模型</div>
+      </div>
+	  <form id="id_module_form" >
+	    <input type="hidden" name="excelId"  id="excelId" value="$!result.filter.excelId" />
+	    <input type="hidden" name="prodType" id="prodType" value="$!prodType" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>基本信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
+			<tr>
+              <td class="titlefc3" id='xm'>姓名</td>
+              <td><input type="text" name="cname" id ="cname" value="$!form.cname" /></td>
+              <td class="titlefc3" id='sfz'>身份证号</td>
+              <td><input type="text" name="cardNo" id ="cardNo" value="$!form.cardNo" /></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id="hjsz">户籍所在地</td>
+              <td><input type="text" name="domicileLocation" id ="domicileLocation" value="$!form.domicileLocation" /></td>
+              <td class="titlefc3" id="xxdz">详细地址</td>
+              <td><input type="text" name="address" id ="address" value="$!form.address" /></td>
+              <td class="titlefc3" id="dh">电话</td>
+              <td><input type="text" name="phoneNo" id ="phoneNo" value="$!form.phoneNo" /></td>
+			</tr>
+			<tr>
+              <td class="titlefc3" id="posfz">配偶身份证号</td>
+              <td><input type="text" name="spouseIdNo" id ="spouseIdNo" value="$!form.spouseIdNo" /></td>
+              <td class="titlefc3" id="qydz">店铺/企业地址</td>
+              <td><input type="text" name="companyAddress" id ="companyAddress" value="$!form.companyAddress" /></td>
+              <td class="titlefc3" id="sshy">所属行业</td>
+              <td><input type="text" name="industry" id ="industry" value="$!form.industry" /></td>
+			</tr> 
+			</table>
+			
+			<table class="rule" border="1" bordercolor="#CCCCCC">
+			<caption>评估信息</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+              <col width="23%" />
+              <col width="10%" />
+            </colgroup>
+            
+			<tr>
+              <td class="titlefc3" >申请贷款金额(元)</td>
+              <td><input type="text"  class="rinpsty" name="applyAmount" id ="applyAmount"   value=""/></td>
+              
+              <td class="titlefc3" >贷款用途</td>
+              <td>
+				<label><INPUT name="loanUse" type=radio  value="0">消费</label>
+				<label><INPUT name="loanUse" type=radio  value="1">经营</label>
+			  </td>
+			  
+			  <td class="titlefc3" >性别</td>
+              <td>
+				<label><INPUT name="sex" type=radio  value="0">男</label>
+				<label><INPUT name="sex" type=radio  value="1">女</label>
+			  </td>
+			</tr>
+			
+			<tr>
+               <td class="titlefc3" >最高学位学历</td>
+               <td>
+				<label><INPUT name="education" type=radio  value="0">初中及以下</label>
+				<label><INPUT name="education" type=radio  value="1">高中及技校</label>
+				<label><INPUT name="education" type=radio  value="2">大学及以上</label>
+			   </td>
+			   
+			   <td class="titlefc3" >户籍所在地</td>
+               <td>
+				<label><INPUT name="residence" type=radio  value="0">本地</label>
+				<label><INPUT name="residence" type=radio  value="1">本省外地</label>
+				<label><INPUT name="residence" type=radio  value="2">省外</label>
+			   </td>
+			   
+			  <td class="titlefc3" >子女教育状况</td>
+              <td>
+				<label><INPUT name="childrenEducation" type=radio  value="0">无子女</label>
+				<label><INPUT name="childrenEducation" type=radio  value="1">上学</label>
+				<label><INPUT name="childrenEducation" type=radio  value="2">学龄前</label>
+				<label><INPUT name="childrenEducation" type=radio  value="3">工作</label>
+			  </td>
+			</tr>
+			
+			
+			<tr>
+			   <td class="titlefc3" >年龄</td>
+               <td><input type="text"  name="age" id ="age" value=""/></td>
+               
+               <td class="titlefc3" >婚姻状况</td>
+               <td>
+				<label><INPUT name="marriage" type=radio  value="0">已婚</label>
+				<label><INPUT name="marriage" type=radio  value="1">未婚</label>
+				<label><INPUT name="marriage" type=radio  value="2">离婚</label>
+				<label><INPUT name="marriage" type=radio  value="3">再婚</label>
+			   </td>
+			</tr>
+			
+			
+			
+			<tr>
+              <td class="titlefc3" >自有房产数量</td>
+              <td><input type="text"   name="ownedPropertyQuantity" id ="ownedPropertyQuantity"   value=""/></td>
+              
+              <td class="titlefc3" >按揭房产数量</td>
+              <td><input type="text"  name="mortgagePropertyQuantity"   id ="mortgagePropertyQuantity" value=""/></td>
+              
+              <td class="titlefc3" >按揭贷款余额(元)</td>
+              <td><input type="text" class="rinpsty" name="mortgateBalance" id ="mortgateBalance"  value=""/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" >自有车辆数量</td>
+              <td><input type="text"   name="ownedCarsQuantity" id ="ownedCarsQuantity"   value=""/></td>
+              
+              <td class="titlefc3" >业务年限</td>
+              <td><input type="text"  name="businessYears"   id ="businessYears" value=""/></td>
+              
+              <td class="titlefc3" >信用状况</td>
+              <td>
+				<label><INPUT name="credit" type=radio  value="1">正常</label>
+				<label><INPUT name="credit" type=radio  value="2">不正常</label>
+				<label><INPUT name="credit" type=radio  value="3">无记录</label>
+			  </td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" >信用逾期次数</td>
+              <td><input type="text"   name="creditCardOverdueCount" id ="creditCardOverdueCount"   value=""/></td>
+              
+              <td class="titlefc3" >贷款逾期次数</td>
+              <td><input type="text"  name="loanOverdueCount"   id ="loanOverdueCount" value=""/></td>
+              
+              <td class="titlefc3" >贷款余额(元)</td>
+              <td><input type="text" class="rinpsty" name="loanBalance"   id ="loanBalance" value=""/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" >担保余额(元)</td>
+              <td><input type="text"  class="rinpsty" name="mortgageRemaining" id ="mortgageRemaining"   value=""/></td>
+              
+              <td class="titlefc3" >经济上依赖的人数</td>
+              <td><input type="text"  name="numOfEconomicDependence"   id ="numOfEconomicDependence" value=""/></td>
+              
+              <td class="titlefc3" >流动资产(元)</td>
+              <td><input type="text" class="rinpsty" name="liquidAssents"   id ="liquidAssents" value=""/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" >存货(元)</td>
+              <td><input type="text"  class="rinpsty" name="stock" id ="stock"   value=""/></td>
+              
+              <td class="titlefc3" >固定资产(元)</td>
+              <td><input type="text" class="rinpsty" name="fixedAssents"   id ="fixedAssents" value=""/></td>
+              
+              <td class="titlefc3" >短期负债(元)</td>
+              <td><input type="text" class="rinpsty" name="shortTermLiabilities"   id ="shortTermLiabilities" value=""/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" >负债总计(元)</td>
+              <td><input type="text"  class="rinpsty" name="totalLiabilities" id ="totalLiabilities"   value=""/></td>
+              
+              <td class="titlefc3" >资产总计(元)</td>
+              <td><input type="text" class="rinpsty" name="totalAssents"   id ="totalAssents" value=""/></td>
+              
+              <td class="titlefc3" >所有者权益(元)</td>
+              <td><input type="text" class="rinpsty" name="ownersEquity"   id ="ownersEquity" value=""/></td>
+			</tr>
+			
+			
+			<tr>
+              <td class="titlefc3" >主营业务收入(元)</td>
+              <td><input type="text"  class="rinpsty" name="annualIncome" id ="annualIncome"   value=""/></td>
+              
+              <td class="titlefc3" >其他工作年收入(元)</td>
+              <td><input type="text" class="rinpsty" name="otherIncome"   id ="otherIncome" value=""/></td>
+              
+              <td class="titlefc3" >配偶年收入(元)</td>
+              <td><input type="text" class="rinpsty" name="spouseIncome"   id ="spouseIncome" value=""/></td>
+			</tr>
+			
+			
+		    <tr>
+              <td class="titlefc3" >私人用途分期付款(元)</td>
+              <td><input type="text"  class="rinpsty" name="paymentByPrivateUse" id ="paymentByPrivateUse"   value=""/></td>
+              
+              <td class="titlefc3" >年可支配收入(元)</td>
+              <td><input type="text" class="rinpsty" name="annualDisposableCapital"   id ="annualDisposableCapital" value=""/></td>
+              
+              <td class="titlefc3" >抵质押物品种类</td>
+              <td>
+				<label><INPUT name="articleCategory" type=radio  value="0">商业房产</label>
+				<label><INPUT name="articleCategory" type=radio  value="1">住宅</label>
+			  </td>
+			</tr>
+			
+			
+			  <tr>
+              <td class="titlefc3" >抵押物估值(元)</td>
+              <td><input type="text"  class="rinpsty" name="collateralValuation" id ="collateralValuation"   value=""/></td>
+			</tr>
+         </table>
+		</div>
+	  </form>
+	  <div class="submit" style="margin-top:-20px;">
+	    <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+      </div>
+	</div>
+</div>
+</body>
+
+<script src='${contextPath}/js/maintenanceAccountManager/maintenanceAccountManager.js'></script> 
+<script language="javascript" type="text/javascript">
+	
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("/home/common_decision_validation.js")
+
+	$(document).ready(function() {
+		var opsObj = new Object();
+		prepareOperations(opsObj);
+		
+		$("#id_next_button").click(function() {
+			if(submitFlag == 1){
+				alert("请勿重复提交!")
+				return;
+			}
+			submitFlag = 1;
+			if ($($formName).valid()) {
+				 var formjson = $($formName).serialize();
+				 $.ajax({
+						url : "${contextPath}/intopieces/addIntopieces/doCommonDecisionModel.json",
+						type : "get",
+						data : formjson,
+						success : function(data) { 
+							if (data.success) {
+					             var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+					             window.location.href = url;
+							}else{
+								window.top.Dialog.message("系统出现异常,请联系管理员");
+					    	}
+						}
+			    });
+			}else{
+				submitFlag = 0;
+			}
+        });
+	});
+</script>
+#parse ("common/iframe_page_footer.htm")
