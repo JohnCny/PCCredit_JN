@@ -380,10 +380,10 @@ public class JNPAD_UploadFileTool {
 	
 	
 	//泉州影像上传
-	public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id) throws Exception {
+	public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id,String fileName) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
 		String newFileName = null;
-		String fileName = null;
+//		String fileName = null;
 		String serverPath = Constant.FILE_PATH_BS + batch_id + File.separator;
 		File tempDir = new File(serverPath);
 		if (!tempDir.isDirectory()) {
@@ -391,7 +391,7 @@ public class JNPAD_UploadFileTool {
 		}
 		// 取得上传文件
 		if (file != null && !file.isEmpty()) {
-			fileName = file.getOriginalFilename();
+//			fileName = file.getOriginalFilename();
 			File tempFile = new File(serverPath + fileName);
 			if (tempFile.exists()) {
 				newFileName = IDGenerator.generateID() + "." + fileName.split("\\.")[1];
