@@ -505,7 +505,7 @@ public class AddIntoPiecesService {
 				this.downLoadPadFile(response,v);
 			}else{
 				//服务器
-				SFTPUtil.downloadjn(response,v.getUri(), v.getAttachment());
+				SFTPUtil.downloadjnpad(response,v.getUri(), v.getAttachment());
 			}
 		}
 	}
