@@ -59,6 +59,7 @@ import com.cardpay.pccredit.intopieces.model.CustomerCreditInfo;
 import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentDetail;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
+import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.intopieces.model.PicPojo;
 import com.cardpay.pccredit.intopieces.model.QzApplnAttachmentBatch;
@@ -1645,6 +1646,7 @@ public class IntoPiecesControl extends BaseController {
 			CustomerInfor vo = addIntoPiecesService.findBasicCustomerInfor(custId);
 			mv.addObject("batch_ls", batch_ls);
 			mv.addObject("customerInfor",vo);
+			mv.addObject("appId",appId);
 			return mv;
 		}
 		
@@ -1740,6 +1742,44 @@ public class IntoPiecesControl extends BaseController {
 			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);
 			mv.addObject("batchId", batchId);
+			return mv;
+		}
+		
+		
+		@ResponseBody
+		@RequestMapping(value = "display_server_pad.page")
+		public AbstractModelAndView display_server_pad(@ModelAttribute IntoPiecesFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			
+			String appId = request.getParameter("appId");
+			String currentPage=request.getParameter("currentPage");
+			String pageSize=request.getParameter("pageSize");
+			
+			int page = 0;//rowNum
+			int limit = 1;//每页显示图片数
+			if(StringUtils.isNotEmpty(currentPage)){
+				page = Integer.parseInt(currentPage);
+			}
+			if(StringUtils.isNotEmpty(pageSize)){
+				limit = Integer.parseInt(pageSize);
+			}
+			
+			List<LocalImage> detaillist = addIntoPiecesService.findLocalImageList(page,limit,appId);
+			int totalCount = addIntoPiecesService.findLocalImageListCount(appId);
+			
+			
+			
+			JRadModelAndView mv = null;
+			mv = new JRadModelAndView("/intopieces/sunds_display_server_pad_page", request);
+			
+	        if(detaillist!=null&&detaillist.size()!=0){
+	        	mv.addObject("Id",detaillist.get(0).getId());//local image id 
+		    }
+	        
+			mv.addObject("rowNum", page);
+			mv.addObject("rowNum1", page+1);
+			mv.addObject("totalCount",totalCount);
+			mv.addObject("appId", appId);
 			return mv;
 		}
 		
