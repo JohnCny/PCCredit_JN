@@ -1,0 +1,142 @@
+#parse ("common/iframe_page_header5.htm")
+<script src="${contextPath}/js/startMove.js" charset="utf-8"></script>
+
+<style type="text/css"> 
+ul{padding:0 15px;} 
+ul li{padding-bottom:15px;border-bottom:1px dashed #EEE;} 
+.caption{padding:15px 0 5px;} 
+.caption input{margin-right:10px;padding:0 10px;} 
+</style>
+<script type="text/javascript">
+/* 
+ * songchen
+ * ok!: MSIE 6, 7, 8, Firefox 3.6, chrome 4, Safari 4, Opera 10 
+ * o 旋转图片ID; 
+ * p 选择旋转方向，固定值为'left'或'right'; 
+ */ 
+function rotate(o,p){ 
+ var img = document.getElementById(o); 
+ if(!img || !p) return false; 
+ var n = img.getAttribute('step'); 
+ if(n== null) n=0; 
+ if(p=='right'){ 
+ (n==3)? n=0:n++; 
+ }else if(p=='left'){ 
+ (n==0)? n=3:n--; 
+ } 
+ img.setAttribute('step',n); 
+ //MSIE 
+ if(document.all) { 
+ img.style.filter = 'progid:DXImageTransform.Microsoft.BasicImage(rotation='+ n +')'; 
+ //HACK FOR MSIE 8 
+ switch(n){ 
+ case 0: 
+ imgimg.parentNode.style.height = img.height; 
+ break; 
+ case 1: 
+ imgimg.parentNode.style.height = img.width; 
+ break; 
+ case 2: 
+ imgimg.parentNode.style.height = img.height; 
+ break; 
+ case 3: 
+ imgimg.parentNode.style.height = img.width; 
+ break; 
+ } 
+ //DOM 
+ }else{ 
+ var c = document.getElementById('canvas_'+o); 
+ if(c== null){ 
+ img.style.visibility = 'hidden'; 
+ img.style.position = 'absolute'; 
+ c = document.createElement('canvas'); 
+ c.setAttribute("id",'canvas_'+o); 
+ img.parentNode.appendChild(c); 
+ } 
+ var canvasContext = c.getContext('2d'); 
+ switch(n) { 
+ default : 
+ case 0 : 
+ c.setAttribute('width', img.width); 
+ c.setAttribute('height', img.height); 
+ canvasContext.rotate(0 * Math.PI / 180); 
+ canvasContext.drawImage(img, 0, 0,700,700); 
+ break; 
+ case 1 : 
+ c.setAttribute('width', img.height); 
+ c.setAttribute('height', img.width); 
+ canvasContext.rotate(90 * Math.PI / 180); 
+ canvasContext.drawImage(img, 0, -img.height,700,700); 
+ break; 
+ case 2 : 
+ c.setAttribute('width', img.width); 
+ c.setAttribute('height', img.height); 
+ canvasContext.rotate(180 * Math.PI / 180); 
+ canvasContext.drawImage(img, -img.width, -img.height,700,700); 
+ break; 
+ case 3 : 
+ c.setAttribute('width', img.height); 
+ c.setAttribute('height', img.width); 
+ canvasContext.rotate(270 * Math.PI / 180); 
+ canvasContext.drawImage(img, -img.width, 0,700,700);
+ break; 
+ }
+
+ } 
+} 
+</script>
+<script type="text/javascript">
+	window.onload=function(){
+		var id ='$Id';
+		$("#hugeImages" + 1).attr({
+			src:"${contextPath}/customer/customerInfor_wh_ty/downLoadYxzlJnPad.json"+"?id="+id
+		});
+	
+	}
+	
+	$(document).ready(function() {
+		var appId ='$!appId';
+		//上一张
+		$("#id_beer_button").click(function() {
+			var currentPage = Number($!rowNum) - Number(1);
+			if(Number(currentPage)<0){
+				alert("已经是第一张");
+			    return;
+			}
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?currentPage="+currentPage+"&appId="+appId;
+			window.location.href = url;
+		});
+		
+		//下一张
+		$("#id_next_button").click(function() {
+		    var currentPage = Number($!rowNum) +Number(1);
+		    if(Number(currentPage)>=Number($!totalCount)){
+		    	alert("已经是最后一张");
+		    	return;
+		    }
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?currentPage="+currentPage+"&appId="+appId;
+			window.location.href = url;
+		});
+	});
+</script>
+
+<body style="background-color:#F0EFE7;text-align:center;">
+<div id="box" style="text-align:center;margin:0 auto;margin-top:50px;padding:5px;background:#fff;border:1px solid #ddd;width:700px" >
+		<li><a href="javascript:void();"><img id="hugeImages1" width="700" height="700"  alt="" /></a></li>
+		 <input type="hidden"  name=totalCount value="$!totalCount"/>
+      	 <input type="hidden"  name="rowNum" value="$!rowNum"/>
+      	 <input type="hidden"  name="appId" value="$!appId"/>
+</div>
+<div class="pagebar">
+<div class="" style="text-align:center;">
+          <li>
+	          <a id="id_beer_button"><img src="${uicasePath}/images/pre.png" /></a>
+	          <a id="id_next_button"><img src="${uicasePath}/images/nex.png" /></a>
+	          <a><img src="${uicasePath}/images/left.png" onclick="rotate('hugeImages1','left')"/></a>
+	          <a><img src="${uicasePath}/images/rigt.png" onclick="rotate('hugeImages1','right')"/></a>
+          </li>
+</div>
+	<div style="text-align:center;">共<b>$!totalCount</b>张照片，当前第<b>$!rowNum1</b>页</div>
+</div>
+</body>
+#parse ("common/iframe_page_footer.htm")

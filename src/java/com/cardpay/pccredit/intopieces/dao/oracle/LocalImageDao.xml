@@ -36,6 +36,11 @@
 		<result property="batchId" column="BATCH_ID" />
 	</resultMap>
 	
+	<resultMap id="LocalImageMap" type="com.cardpay.pccredit.intopieces.model.LocalImage">
+		<result property="id" column="ID" />
+		<result property="applicationId" column="APPLICATION_ID" />
+	</resultMap>
+	
     <resultMap id="DhApplnDetailMap" type="com.cardpay.pccredit.intopieces.model.DhApplnAttachmentDetail">
 		<result property="id" column="ID" />
 		<result property="batchId" column="BATCH_ID" />
@@ -426,6 +431,32 @@
 			AND IS_UPLOAD=#{isUpload}
 		</if>
 	</select>
+	
+	
+	<select id="findLocalImageListCount" resultType="int">
+			select count(*) from local_image  where application_id=#{appId}
+			and uri not like '%.rar%'
+			and uri not like '%.zip%'
+			and uri not like '%.pdf%'
+			and uri not like '%.txt%'
+	</select>
+
+	
+     <select id="findLocalImageList" resultMap="LocalImageMap">
+    	SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from local_image where application_id=#{appId}
+		and uri not like '%.rar%'
+		and uri not like '%.zip%'
+		and uri not like '%.pdf%'
+		and uri not like '%.txt%'
+        <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+    </select>
 	
 	
 	

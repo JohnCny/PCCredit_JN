@@ -59,6 +59,12 @@ public interface LocalImageDao {
 	public List<DhApplnAttachmentDetail> findDhDetailByFilter(IntoPiecesFilter filter);
 	public int findDhDetailCountByFilter(IntoPiecesFilter filter);
 	
+	//========================================================================================
+	public List<LocalImage> findLocalImageList(@Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
+	
+	public int findLocalImageListCount(@Param("appId") String appId);
+	//========================================================================================
+	
 	public List<QzApplnAttachmentDetail> findQzApplnDetail(@Param("page") int currentPage,@Param("limit") int limit,@Param("batchId") String batchId);
 	
 	public List<DhApplnAttachmentDetail> findDhApplnDetail(@Param("page") int currentPage,@Param("limit") int limit,@Param("batchId") String batchId);
