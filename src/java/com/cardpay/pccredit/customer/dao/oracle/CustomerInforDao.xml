@@ -1981,7 +1981,7 @@
 	         else
 		        ''
 		       end) as deptcode,    
-	sum(t.MONEY) as money from t_mibusidata_view t,sys_user u
+	sum(t.balamt) as money from t_mibusidata_view t,sys_user u
 	where u.external_id=t.BUSIMANAGER GROUP BY u.display_name ,deptcode) order by money desc)
 	<![CDATA[
 	where rownum<=10 
