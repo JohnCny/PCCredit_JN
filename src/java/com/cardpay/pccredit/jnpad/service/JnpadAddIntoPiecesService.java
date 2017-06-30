@@ -927,28 +927,6 @@ public class JnpadAddIntoPiecesService {
 		String sql = "select * from basic_customer_information where id ='"+custId+"'";
 		return  commonDao.queryBySql(CustomerInfor.class, sql, null).get(0);
 	}
-	//浏览文件并缓存到服务器目录
-	public void browse_folder(MultipartFile file,String batch_id) throws Exception {
-		Map<String, String> map  = new HashMap<String, String>();
-		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
-			//本地
-			 map  = UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id);
-		}else{
-			//服务器
-			 map = SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id);
-		}
-		String newFileName = map.get("newFileName");
-		String url = map.get("url");
-		QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
-		detail.setBatchId(batch_id);
-		detail.setOriginalName(file.getOriginalFilename());
-		detail.setFileName(newFileName);
-		detail.setPicSize(file.getSize() + "");
-		detail.setUrl(url);
-		commonDao.insertObject(detail);
-	}
-	
-	
 	//贷后浏览文件并缓存到服务器目录
 	public void browse_folder_dh(MultipartFile file,String batch_id) throws Exception {
 		Map<String, String> map  = new HashMap<String, String>();
@@ -1122,6 +1100,29 @@ public class JnpadAddIntoPiecesService {
 	}
 	
 	
-
+	//pad上传照片到其他分支　浏览文件并缓存到服务器目录--进件查询影像资料上传
+		public void browse_folder(MultipartFile file,String batch_id,String fileName) throws Exception {
+			Map<String, String> map  = new HashMap<String, String>();
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
+				//本地
+				 map  = JNPAD_UploadFileTool.uploadYxzlFileBySpring_qz(file,batch_id,fileName);
+			}else{
+				//服务器
+				 map = JNPAD_SFTPUtil.uploadYxzlFileBySpring_qz(file,batch_id,fileName);
+			}
+			String newFileName = map.get("newFileName");
+			String url = map.get("url");
+			QzApplnAttachmentDetail detail = new QzApplnAttachmentDetail();
+			detail.setBatchId(batch_id);
+			detail.setOriginalName(fileName);
+			detail.setFileName(newFileName);
+			detail.setPicSize(file.getSize() + "");
+			detail.setUrl(url);
+			commonDao.insertObject(detail);
+			
+			//将is_upload 置为1
+			String sql = "update QZ_APPLN_ATTACHMENT_BATCH set is_upload = '1' where id='"+batch_id+"'";
+			commonDao.queryBySql(sql, null);
+		}
 
 }

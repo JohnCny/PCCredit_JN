@@ -91,6 +91,16 @@
               	#end
             </tr>
             #end
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
+              <td nowrap="nowrap">$!customerInfor.chineseName</td>
+              <td nowrap="nowrap">$!customerInfor.cardId</td>
+              <td nowrap="nowrap">pad上传图片</td>
+              <td nowrap="nowrap"></td>
+              <td nowrap="nowrap">
+	              <a id="id_server_button" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}')">在线预览</a>
+	          </td>
+            </tr>
           </table>
         </div>
       </div>
@@ -147,6 +157,12 @@
 					}
 				});
 			});
+	}
+	
+	// pad上传图片
+	function displayServerPadPage(id){
+		var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?appId="+id;
+		window.open(url,"newwindow");
 	}
 	
 </script>

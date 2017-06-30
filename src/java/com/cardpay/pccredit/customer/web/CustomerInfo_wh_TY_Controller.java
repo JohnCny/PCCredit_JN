@@ -1224,6 +1224,18 @@ public class CustomerInfo_wh_TY_Controller extends BaseController {
 		return null;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "downLoadYxzlJnPad.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadYxzlJnPad(HttpServletRequest request,HttpServletResponse response){
+		try {
+			addIntoPiecesService.downLoadYxzlJnPad(response,request.getParameter(ID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	//下载贷后影像
 	@ResponseBody
 	@RequestMapping(value = "downLoadDh.json",method = { RequestMethod.GET })

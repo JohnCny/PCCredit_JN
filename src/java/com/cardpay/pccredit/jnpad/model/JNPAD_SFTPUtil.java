@@ -240,7 +240,7 @@ public class JNPAD_SFTPUtil {
      * 批量上传图片 济南
      */
     
-    public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id) throws Exception {
+    public static Map<String, String>  uploadYxzlFileBySpring_qz(MultipartFile file,String batch_id,String fileName) throws Exception {
 	/*	Map<String, String> map = new HashMap<String, String>();
 		String newFileName = null;
 		String fileName = null;
@@ -267,7 +267,7 @@ public class JNPAD_SFTPUtil {
 		return map;*/
     	
     	String newFileName = null;
-		String fileName = null;
+//		String fileName = null;
     	Map<String, String> map = new HashMap<String, String>();
         try {  
         	if (file != null && !file.isEmpty()) {
@@ -282,7 +282,7 @@ public class JNPAD_SFTPUtil {
 					sftp.cd(path);
 				}
 	    			
-	    	    fileName = file.getOriginalFilename();
+//	    	    fileName = file.getOriginalFilename();
 				File tempFile = new File(path + File.separator + file.getOriginalFilename());
 				if (tempFile.exists()) {
 					newFileName = IDGenerator.generateID() + "."+ file.getOriginalFilename().split("\\.")[1];

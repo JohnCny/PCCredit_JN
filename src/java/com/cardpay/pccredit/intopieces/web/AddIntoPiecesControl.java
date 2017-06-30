@@ -28,12 +28,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.calcuation.enums.ModelType;
+import com.cardpay.pccredit.creditEval.CommonDecisionModel;
 import com.cardpay.pccredit.creditEval.CreditBusinessModel;
 import com.cardpay.pccredit.creditEval.JNCreditBusinessModel;
 import com.cardpay.pccredit.creditEval.Message;
 import com.cardpay.pccredit.creditEval.Model;
 import com.cardpay.pccredit.creditEvaluation.Applicant;
 import com.cardpay.pccredit.creditEvaluation.vo.ApplicantInfoVo;
+import com.cardpay.pccredit.creditEvaluation.vo.CommonDecisionForm;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditConditionVo;
 import com.cardpay.pccredit.creditEvaluation.vo.CreditModelModifyForm;
 import com.cardpay.pccredit.creditEvaluation.vo.LivingConditionVo;
@@ -76,10 +79,12 @@ import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.product.service.ProductService;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
@@ -2931,7 +2936,7 @@ public class AddIntoPiecesControl extends BaseController {
 	 * 诚易贷 四维授信评估模型
 	 * 2017年4月25日 13:34:17
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "callCreditModelModify.json")
 	public JRadReturnMap callCreditModelModify(@ModelAttribute CreditModelModifyForm form,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
@@ -3010,12 +3015,12 @@ public class AddIntoPiecesControl extends BaseController {
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
 		return returnMap;
-	}
+	}*/
 	/**
 	 * 抵押类 四维授信评估模型
 	 * 2017年6月15日
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "callMrtgageModel.json")
 	public JRadReturnMap callMrtgageModel(@ModelAttribute CreditModelModifyForm form,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
@@ -3097,12 +3102,12 @@ public class AddIntoPiecesControl extends BaseController {
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
 		return returnMap;
-	}
+	}*/
 	/**
 	 * 担保类 四维授信评估模型
 	 * 2017年6月15日
 	 */
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "callMcalculateModel.json")
 	public JRadReturnMap callMcalculateModel(@ModelAttribute CreditModelModifyForm form,HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
@@ -3182,161 +3187,36 @@ public class AddIntoPiecesControl extends BaseController {
 			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
 		}
 		return returnMap;
+	}*/
+	
+	
+	
+	
+	
+	/**
+	 * @Desc 四维授信评估模型
+	 * @Time 2017年6月27日17:11:14
+	 */
+	@ResponseBody
+	@RequestMapping(value = "doCommonDecisionModel.json")
+	public JRadReturnMap doCommonDecisionModel(@ModelAttribute CommonDecisionForm form,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				intoPiecesService.saveEvaModelResult(form);
+			}catch (Exception e) {
+				returnMap.put(JRadConstants.MESSAGE,"系统异常");
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return WebRequestHelper.processException(e);
+			}
+		}else{
+			returnMap.setSuccess(false);
+			returnMap.addGlobalError(CustomerInforConstant.CREATEERROR);
+		}
+		return returnMap;
 	}
 	
-	//========================================================================================================================
-		public  ApplicantInfoVo returnVo(){
-			/*"身份证号": "62010219860718003x",
-		    "姓名": "张钰森",
-		    "性别": "男",
-		    "户籍所在地": "陕西西安",
-		    "详细地址": "济南市市中区济南大学计算机系100号",
-		    "电话": "13800138000",
-		    "配偶身份证号": "130102197707210039",
-		    "店铺/企业地址": "济南市历下区会展路225号",
-		    "所属行业": "网店经营",
-		    "经营时间": 3*/
-			ApplicantInfoVo vo  = new ApplicantInfoVo();
-			vo.setCardNo("62010219860718003x");
-			vo.setCname("张钰森");
-			vo.setSex("男");
-			vo.setDomicileLocation("陕西西安");
-			vo.setAddress("济南市市中区济南大学计算机系100号");
-			vo.setPhoneNo("13800138000");
-			vo.setSpouseIdNo("130102197707210039");
-			vo.setCompanyAddress("济南市历下区会展路225号");
-			vo.setIndustry("网店经营");
-			vo.setOperatingTime(3);
-			return vo;
-		}
-		
-		
-		public  CreditConditionVo returnVo1(){
-			/*"婚姻状况": "已婚",
-		    "最高学位": "本科及以上",
-		    "家人对申请人评价": "好",
-		    "邻居对申请人评价": "好",
-		    "重要联系人对申请人评价": "好",
-		    "生意关联人对申请人评价": "好",
-		    "社会公益状况": "有",
-		    "违法违纪情况": "无",
-		    "家庭是否和睦": "是",
-		    "经济上依赖的人数": "1",
-		    "不良嗜好": "无",
-		    "不良公共记录": "无",
-		    "政治情况": "党员",
-		    "商业保险情况": "有",
-		    "社会关系": "一般",
-		    "赡养父母状况": "好",
-		    "亲属和睦状况": "一般",
-		    "信用状况": "正常",
-		    "信用卡逾期情况": "征信报告无逾期",
-		    "信用卡总数": "2"*/
-			CreditConditionVo vo  = new CreditConditionVo();
-			vo.setMaritalStatus("已婚");
-			vo.setHighestDegree("本科及以上");
-			vo.setFamilyEvaluationOfApplicants("好");
-			vo.setNeighborEvaluation("好");
-			vo.setEvaluationOfImportantContactPerson("好");
-			vo.setEvaluationOfBusinessAssociates("好");
-			vo.setSocialWelfareSituation("有");
-			vo.setViolationOfLaw("无");
-			vo.setFamilyHarmony("是");
-			vo.setEconomicDependence("1");
-			vo.setBadHabits("无");
-			vo.setBadPublicRecords("无");
-			vo.setPoliticalSituation("党员");
-			vo.setCommercialInsurance("有");
-			vo.setSocialRelations("一般");
-			vo.setParentalSupport("好");
-			vo.setDfamilyHarmony("一般");
-			vo.setCreditStatus("正常");
-			vo.setCreditCardOverdue("征信报告无逾期");
-			vo.setCreditCardTotalNum("2");
-			return vo;
-		}
-		
-		public  LivingConditionVo returnVo2(){
-			/*"居住类型": "自有",
-		    "装修情况": "好",
-		    "住房面积": "≤100",
-		    "自有房产数量": 3,
-		    "按揭房产数量": 2,
-		    "房产总价": "100-300",
-		    "自有房产总面积": "100-200",
-		    "自有车辆数量": 3,
-		    "贷款车辆数量": 2,
-		    "车辆总价": "50-100",
-		    "除经营生意外是否有其他工作": "是",
-		    "个人银行帐户余额": "300-500",
-		    "生意帐户余额": "500-1000",
-		    "信用卡授信总额": "5-10",
-		    "月平均还款金额占收入比例": "≥70%",
-		    "是否为他人担保": "是",
-		    "担保金额占本人自有资产比例": "10%-50%",
-		    "担保用途": "朋友买房/车/消费",
-		    "担保期限": "3-5"*/
-			LivingConditionVo vo  = new LivingConditionVo();
-		    vo.setDwellingType("自有");
-			vo.setDecorationSituation("好");
-			vo.setHousingArea("≤100");
-			vo.setOwnedPropertyQuantity("3");
-			vo.setNumberOfMortgage("2");
-			vo.setHousePrice("100-300");
-			vo.setTotalPropertyArea("100-200");
-			vo.setNumberOfPrivateVehicles("3");
-			vo.setNumberOfLoans("2");
-			vo.setVehiclePrice("50-100");
-			vo.setOthers("是");
-			vo.setPersonalBankAccountBalance("300-500");
-			vo.setBusinessAccountBalance("500-1000");
-			vo.setTotalCreditCardCredit("5-10");
-			vo.setAverageMonthlyRepaymentAmountOfIncome("≥70%");
-			vo.setGuaranteeForOthers("是");
-			vo.setTheProportionOfTheAmountOfTheSecuredAssets("10%-50%");
-			vo.setSecuredUse("朋友买房/车/消费");
-			vo.setGuaranteePeriod("3-5");
-			return vo;
-		}
-		
-		
-		public  OperateConditionVo returnVo3(){
-			/*  "组织类型": "个体",
-		    "经营场所面积": "100-200",
-		    "股东占比情况": "30%-50%",
-		    "雇员人数": "10-30",
-		    "营业执照": "有",
-		    "店铺类型": "自有产权",
-		    "店铺装修情况": "好"*/
-			OperateConditionVo vo  = new OperateConditionVo();
-			vo.setOrganizationType("个体");
-			vo.setOperatingArea("100-200");
-			vo.setProportionofShareholders("30%-50%");
-			vo.setEmployees("10-30");
-			vo.setBusinessLicense("有");
-			vo.setStoreType("自有产权");
-			vo.setShopDecoration("好");
-			return vo;
-		}
-		
-		public  RepayAbilitiesVo returnVo4(){
-			/*"自有资金": 20,
-		    "配偶年收入": 25,
-		    "非经营总资产": 300,
-		    "月利润": 8,
-		    "申请期限": 2,
-		    "非经营总负债": -60*/
-			RepayAbilitiesVo vo  = new RepayAbilitiesVo();
-		    vo.setOwnFunds(20);                               
-			vo.setSpouseIncome(25);                           
-			vo.setTotalNonOperatingAssets(300);                
-			vo.setMonthlyProfit(8);                          
-			vo.setApplicationPeriod(2);                      
-			vo.setNonPperatingTotalLiabilities(-60);           
-
-			return vo;
-		}
-		//======================================================================================================================
+	
 	
 	
 		/**
@@ -3353,53 +3233,20 @@ public class AddIntoPiecesControl extends BaseController {
 			QueryResult<LocalExcelForm> result = addIntoPiecesService.findLocalExcelByProductAndCustomer1(filter);
 			JRadPagedQueryResult<LocalExcelForm> pagedResult = new JRadPagedQueryResult<LocalExcelForm>(filter, result);
 			
-			/*// 0-第一套模型  1-第二套模型  2-诚意贷
-			String PARAM = (String) commonDao.queryBySql("select * from dict where dict_type = 'CREDIT_MODEL_TYPE' ", null).get(0).get("TYPE_CODE");
-			JRadModelAndView mv = null;
-			if("0".equals(PARAM)){
-				mv = new JRadModelAndView("/home/evaluateAppReq",request);
-				mv.addObject(PAGED_RESULT, pagedResult);
-				//查询 t_Model_form 最新的一条
-				TModelForm form;
-				String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
-				List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
-				if(list!=null&&!list.isEmpty()){
-					 form =  list.get(0);
-					 mv.addObject("form", form);
-				}
-			}else if("1".equals(PARAM)){
-				mv = new JRadModelAndView("/home/evaluateModifyAppReq",request);
-				//查询 贷款类型  信用-LNM00000000003   担保-LNM00000000004  抵押-LNM00000000001
-				String prodsql = "select p.* from local_excel l,product_attribute p where l.product_id =p.id and l.id ='"+filter.getExcelId()+"'";
-				List<ProductAttribute> prod = commonDao.queryBySql(ProductAttribute.class,prodsql, null);
-				if(prod!=null&&!prod.isEmpty()){
-					if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
-						//0为信用类贷款
-						mv.addObject("prodType","0");
-					}else{
-					    mv.addObject("prodType", "1");
-					}
-				}
-				mv.addObject(PAGED_RESULT, pagedResult);
-				//查询 t_Model_form 最新的一条
-				TModelForm form;
-				String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
-				List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
-				if(list!=null&&!list.isEmpty()){
-					 form =  list.get(0);
-					 mv.addObject("form", form);
-				}
-			}else{
-				mv = new JRadModelAndView("/home/evaluateCreditModifyApp",request);
-				mv.addObject(PAGED_RESULT, pagedResult);
-			}*/
-			
-			
-			
-			/* 贷款类型  【信用-LNM00000000003】   【担保-LNM00000000004 】 【抵押-LNM00000000001】 */
 			String prodsql = "select p.* from local_excel l,product_attribute p where l.product_id =p.id and l.id ='"+filter.getExcelId()+"'";
 			List<ProductAttribute> prod = commonDao.queryBySql(ProductAttribute.class,prodsql, null);
+			
 			JRadModelAndView mv = null;
+			if(prod!=null&&!prod.isEmpty()){
+				mv = new JRadModelAndView("/home/evaluateCommonDecision",request);
+				mv.addObject(PAGED_RESULT, pagedResult);
+				mv.addObject("prodType",prod.get(0).getAssureMeans());//信用-LNM00000000003  担保-LNM00000000004  抵押-LNM00000000001
+				String sql ="select * from t_model_form where card_no = (select CARD_ID from  basic_customer_information where id ='"+filter.getCustomerId()+"') order by CREATED_TIME desc";
+				List<TModelForm> list = commonDao.queryBySql(TModelForm.class,sql, null);
+				if(list!=null&&!list.isEmpty()){mv.addObject("form", list.get(0));}
+			}
+			
+			/*JRadModelAndView mv = null;
 			if(prod!=null&&!prod.isEmpty()){
 				if("LNM00000000003".equals(prod.get(0).getAssureMeans())){
 					mv = new JRadModelAndView("/home/evaluateCreditModifyApp",request);
@@ -3435,7 +3282,8 @@ public class AddIntoPiecesControl extends BaseController {
 						 mv.addObject("form", list.get(0));
 					}
 				}
-			}
+			}*/
+			
 			return mv;
 		}
 		
@@ -3469,9 +3317,17 @@ public class AddIntoPiecesControl extends BaseController {
 			if(StringUtils.isNotEmpty(currentPage)){
 				page = Integer.parseInt(currentPage);
 			}
-
+			
+			// get bean
+			DailyReportScheduleService dailyReportScheduleService = Beans.get(DailyReportScheduleService.class);
 			// 查询聊天记录
 			List<ChatMessage> list = chatMessageService.findMsg1(appId,page,limit);
+			SystemUser loginUser;
+			for(ChatMessage msg : list){
+			    loginUser = dailyReportScheduleService.queryCustomer(msg.getCreatedBy());
+				msg.setCreatedBy(loginUser.getDisplayName());
+			}
+			
 			int totalCount = chatMessageService.findCountByApplicationId(appId);
 			
 			Map<String,Object> result = new LinkedHashMap<String,Object>();
@@ -3491,9 +3347,14 @@ public class AddIntoPiecesControl extends BaseController {
 		public String browseChatTopTenMsg(HttpServletRequest request) {
 			
 			String appId=request.getParameter("appId");
-			
+			// get bean
+			DailyReportScheduleService dailyReportScheduleService = Beans.get(DailyReportScheduleService.class);
 			List<ChatMessage> msglist = chatMessageService.findMsg(appId,0,10);
-			
+			SystemUser loginUser;
+			for(ChatMessage msg : msglist){
+			    loginUser = dailyReportScheduleService.queryCustomer(msg.getCreatedBy());
+				msg.setCreatedBy(loginUser.getDisplayName());
+			}
 			Map<String,Object> result = new LinkedHashMap<String,Object>();
 			result.put("totalCount", chatMessageService.findCountByApplicationId(appId));
 			result.put("rownum", chatMessageService.findCountByApplicationId(appId)/10 + 1);
@@ -3546,11 +3407,7 @@ public class AddIntoPiecesControl extends BaseController {
 		
 		
 		
-		/**
-		 * 保存记录四维授信模型 页面填充参数
-		 * @param form
-		 */
-		public void saveModelParam(CreditModelModifyForm form){
+		/*public void saveModelParam(CreditModelModifyForm form){
 			try{
 			  CreditBusinessModel model = new CreditBusinessModel();
 			  model.setCardId(form.getCardNo());
@@ -3606,5 +3463,9 @@ public class AddIntoPiecesControl extends BaseController {
 			  e.printStackTrace();
 			  Log.error("保存四维授信模型参数错误!");
 		  }
-		}
+		}*/
+		
+		
+		
+		
 }

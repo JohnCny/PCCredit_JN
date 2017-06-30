@@ -48,6 +48,21 @@ public class JnpadImageBrowseController {
 	
 	
 	@ResponseBody
+	@RequestMapping(value = "/ipad/JnpadImageBrowse/uploadYxPc.json", method = { RequestMethod.GET })
+	public String display_server_pc(HttpServletRequest request) {
+		
+		List<String> imagerList = jnpadImageBrowseService.findLocalImagePc(request.getParameter("customerId"),request.getParameter("applicationId"));
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
+		map.put("imagerList",imagerList);
+		map.put("size",imagerList.size());
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(map, jsonConfig);
+		return json.toString();
+	}
+	
+	
+	@ResponseBody
 	@RequestMapping(value = "/ipad/JnpadImageBrowse/downLoadYxzlJn.json",method = { RequestMethod.GET })
 	@JRadOperation(JRadOperation.EXPORT)
 	public AbstractModelAndView downLoadYxzlJn(HttpServletRequest request,HttpServletResponse response){
@@ -55,6 +70,20 @@ public class JnpadImageBrowseController {
 			String s =request.getParameter("id");
 			
 			jnpadImageBrowseService.downLoadYxzlJn(response,s);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	//查看pc端上传图片
+	@ResponseBody
+	@RequestMapping(value = "/ipad/JnpadImageBrowse/downLoadYxzlJnPc.json",method = { RequestMethod.GET })
+	@JRadOperation(JRadOperation.EXPORT)
+	public AbstractModelAndView downLoadYxzlJnPc(HttpServletRequest request,HttpServletResponse response){
+		try {
+			String s =request.getParameter("url");
+			
+			jnpadImageBrowseService.downLoadYxzlJnPc(response,s);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
