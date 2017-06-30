@@ -44,6 +44,7 @@ public class AccLoanCollectInfo extends BusinessModel{
 	private String  ma;//当月日均贷款余额  显示用
 	private BigDecimal totalmonthaverageamt;//累计至今的日均贷款余额
 	private String  ta;//累计至今的日均贷款余额 显示用
+	private String totalLoan;//累计放款金额
 	
 	//占比
 	private String  c101numproportion;
@@ -68,6 +69,12 @@ public class AccLoanCollectInfo extends BusinessModel{
 	
 	
 	
+	public String getTotalLoan() {
+		return totalLoan;
+	}
+	public void setTotalLoan(String totalLoan) {
+		this.totalLoan = totalLoan;
+	}
 	public String getC101Num() {
 		return c101Num;
 	}
