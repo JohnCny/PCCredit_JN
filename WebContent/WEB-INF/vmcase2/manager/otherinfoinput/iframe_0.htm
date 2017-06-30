@@ -1,0 +1,85 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款台账</a></li>
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">拒绝台账</a></li>
+            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
+
+         </ul>
+         </div>
+      
+      <div class="inquiry" style="padding:15px;">
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">
+          	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
+            <ul>
+              <li>
+                <span>客户名称：<input type="text" id="customerName" name="customerName" value="$!result.filter.customerName" maxlength="100"/></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="20%" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户经理</th>
+              <th nowrap="nowrap">测评成绩</th>
+              <th nowrap="nowrap">考试成绩</th>
+              <th nowrap="nowrap">实施结论</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down" style="height:280px;">
+          <table>
+            <colgroup>
+              <col width="5%" />
+              <col width="10%" />
+              <col width="20%" />
+            </colgroup>
+            <tr status="$!accountManagerRetraining.status">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!accountManagerRetraining.id"/></td>
+              <td nowrap="nowrap">1</td>
+              <td nowrap="nowrap">2</td>
+              <td nowrap="nowrap">3</td>
+              <td nowrap="nowrap">4</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn" style=";">
+         	<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">新增</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+      
+    </div>
+    
+  </div>
+  <script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")
