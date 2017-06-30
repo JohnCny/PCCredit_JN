@@ -76,11 +76,10 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		QueryResult<IntoPieces> result=null;//intoPiecesService.findintoPiecesByFilter(filter);
-		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
-				filter, result);
+		//QueryResult<IntoPieces> result=new QueryResult<IntoPieces>();//intoPiecesService.findintoPiecesByFilter(filter);
+		//JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
 		mv.addObject("userId", userId);
-		mv.addObject(PAGED_RESULT, pagedResult);
+		//mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
 	
@@ -103,8 +102,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		filter.setRequest(request);
 		QueryResult<IntoPieces> result=null;//intoPiecesService.findintoPiecesByFilter(filter);
-		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(
-				filter, result);
+		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
 		mv.addObject("userId", userId);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;

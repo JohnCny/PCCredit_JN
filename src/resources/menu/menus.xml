@@ -45,6 +45,7 @@
  	        <menu id="070015" name="khjljyxx" 				title="团队业绩查询" 			url="/manager/tdyjcx/tdyjcx.page" 					 img="" operations="checked|display|browse"/>	
  	        <menu id="070016" name="registermeeting" 		title="客户经理上会登记" 			url="/manager/meeting/insert.page" 					 img="" operations="checked|display|browse"/>	
  	        <menu id="070017" name="selectmeeting" 			title="客户经理上会查询" 			url="/manager/meeting/select.page" 					 img="" operations="checked|display|browse"/>	
+ 	        <menu id="070018" name="otherinfoinput" 		title="其他信息录入" 			url="/manager/otherinfoinput/iframe_0.page" 			 img="" operations="create|change|browse"/>
 		</menu>
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" 		 title="风险客户管理" 				url="/riskcontrol/riskcustomermanager/managerbrowse.page" 			 img="" operations="reported|browse"/>
