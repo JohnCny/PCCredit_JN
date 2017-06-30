@@ -469,6 +469,62 @@ public class SFTPUtil {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public  synchronized static void  downloadjnpad(HttpServletResponse response,
+			String filePath, String fileName) {
+		try {
+			byte[] buff = new byte[2048];
+			int bytesRead;
+			response.setHeader("Content-Disposition", "attachment; filename="+ java.net.URLEncoder.encode(fileName, "UTF-8"));
+			connect();
+			sftp.cd(filePath.substring(0, 50));
+			
+			String GIF = "image/gif;charset=GB2312";// 设定输出的类型
+			String JPG = "image/jpeg;charset=GB2312";
+			String BMP = "image/bmp";
+		    String PNG = "image/png";
+		    
+			String imagePath = filePath.substring(51, filePath.length());
+			OutputStream output = response.getOutputStream();// 得到输出流
+			if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
+			{
+				response.setContentType(JPG);// 设定输出的类型
+				// 得到图片的真实路径
+
+				// 得到图片的文件流
+				BufferedInputStream imageIn = new BufferedInputStream(sftp.get(filePath.substring(51, filePath.length())));
+				// 得到输入的编码器，将文件流进行jpg格式编码
+				JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
+				// 得到编码后的图片对象
+				BufferedImage image = decoder.decodeAsBufferedImage();
+				// 得到输出的编码器
+				JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+				encoder.encode(image);// 对图片进行输出编码
+				imageIn.close();// 关闭文件流
+			} 
+
+			else if (imagePath.toLowerCase().endsWith(".png")
+					|| imagePath.toLowerCase().endsWith(".bmp")) {
+				
+				BufferedImage bi = ImageIO.read(sftp.get(filePath.substring(53, filePath.length())));
+				
+				if(imagePath.toLowerCase().endsWith(".png")){
+					response.setContentType(PNG);
+					ImageIO.write(bi, "png", response.getOutputStream());
+				}else{
+					response.setContentType(BMP);
+					ImageIO.write(bi, "bmp", response.getOutputStream());
+				}
+				
+			}
+			output.close();
+			System.out.println("图片下载成功！");
+			disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
     
  /*   public static void main(String[] args) throws Exception{    
     	SFTPUtil ftp= new SFTPUtil();  

@@ -495,6 +495,21 @@ public class AddIntoPiecesService {
 			}
 		}
 	}
+	
+	//进件查询在线浏览  pad 影像资料
+	public void downLoadYxzlJnPad(HttpServletResponse response,String id) throws Exception{
+		LocalImage v = commonDao.findObjectById(LocalImage.class, id);
+		if(v!=null){
+			if(ServerSideConstant.IS_SERVER_SIDE_TRUE.equals("0")){
+				//本地
+				this.downLoadPadFile(response,v);
+			}else{
+				//服务器
+				SFTPUtil.downloadjnpad(response,v.getUri(), v.getAttachment());
+			}
+		}
+	}
+	
 	//贷后查看影像资料
 	public void downLoadDh(HttpServletResponse response,String id) throws Exception{
 		DhApplnAttachmentDetail v = commonDao.findObjectById(DhApplnAttachmentDetail.class, id);
@@ -517,6 +532,49 @@ public class AddIntoPiecesService {
 	    String PNG = "image/png";
 	    
 		String imagePath = v.getUrl();
+		OutputStream output = response.getOutputStream();// 得到输出流
+		if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
+		{
+			response.setContentType(JPG);// 设定输出的类型
+			// 得到图片的真实路径
+
+			// 得到图片的文件流
+			InputStream imageIn = new FileInputStream(new File(imagePath));
+			// 得到输入的编码器，将文件流进行jpg格式编码
+			JPEGImageDecoder decoder = JPEGCodec.createJPEGDecoder(imageIn);
+			// 得到编码后的图片对象
+			BufferedImage image = decoder.decodeAsBufferedImage();
+			// 得到输出的编码器
+			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(output);
+			encoder.encode(image);// 对图片进行输出编码
+			imageIn.close();// 关闭文件流
+		} 
+
+		else if (imagePath.toLowerCase().endsWith(".png")
+				|| imagePath.toLowerCase().endsWith(".bmp")) {
+			
+			BufferedImage bi = ImageIO.read(new File(imagePath));
+			
+			if(imagePath.toLowerCase().endsWith(".png")){
+				response.setContentType(PNG);
+				ImageIO.write(bi, "png", response.getOutputStream());
+			}else{
+				response.setContentType(BMP);
+				ImageIO.write(bi, "bmp", response.getOutputStream());
+			}
+			
+		}
+		output.close();
+	}
+	
+	
+	public void downLoadPadFile(HttpServletResponse response,LocalImage v)throws Exception{
+		String GIF = "image/gif;charset=GB2312";// 设定输出的类型
+		String JPG = "image/jpeg;charset=GB2312";
+		String BMP = "image/bmp";
+	    String PNG = "image/png";
+	    
+		String imagePath = v.getUri();
 		OutputStream output = response.getOutputStream();// 得到输出流
 		if (imagePath.toLowerCase().endsWith(".jpg"))// 使用编码处理文件流的情况：
 		{
@@ -1015,6 +1073,19 @@ public class AddIntoPiecesService {
 		return queryResult;
 	}
 	
+	//================================================================================================
+	public List<LocalImage> findLocalImageList(int currentPage,int pageSize,String appId){
+		if(currentPage<0){
+			currentPage = 0;
+		}
+		return localImageDao.findLocalImageList(currentPage,pageSize,appId);
+	}
+	
+	public int findLocalImageListCount(String appId){
+		return localImageDao.findLocalImageListCount(appId);
+	}
+	
+	//================================================================================================
 	
 	public List<QzApplnAttachmentDetail> findQzApplnDetail(int currentPage,int pageSize,String batchId){
 		if(currentPage<0){
