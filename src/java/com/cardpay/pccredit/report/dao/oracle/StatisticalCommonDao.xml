@@ -374,7 +374,15 @@ union all
 		 WHERE RN = 1
 	    )
 	    
-	    select nvl(sum(money),0) as value from circle  
+	    <!-- select nvl(sum(money),0) as value from circle   -->
+	    select nvl(sum(a.MONEY),0) as value
+          from t_gccontractmain_view           a,
+               t_cipersonbasinfo 	   		   b,
+               t_gccontractmulticlient_view    c
+         where trim(a.KEYCODE) = c.KEYCODE
+           and c.custid = b.CUSTID
+           and a.keyeffectedstate in('1','2')
+           and c.keyeffectedstate in('1','2')
 		union all
 		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  
 		union all

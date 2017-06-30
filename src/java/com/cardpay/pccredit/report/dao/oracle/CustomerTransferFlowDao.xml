@@ -158,6 +158,7 @@
 	    <result property="xy" column="xy" />
 	    <result property="bz" column="bz" />
 	    <result property="dy" column="dy" />
+	    <result property="totalLoan" column="totalLoan" />
 	 </resultMap>
   
    
@@ -1073,7 +1074,16 @@
          	   and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
            <if test="userId != null and userId != '' ">
              and b.BUSIMANAGER = (select external_id from sys_user  where id = #{userId} )
-           </if>) as dy
+           </if>) as dy,
+         (select nvl(sum(a.money),0) from 
+           circle a,
+           t_cipersonbasinfo b
+         where a.custid = b.CUSTID
+               and a.LOANDATE <![CDATA[ <=  ]]> #{endDate}
+         	   and a.LOANDATE <![CDATA[ >=  ]]> #{startDate}
+           <if test="userId != null and userId != '' ">
+             and b.BUSIMANAGER = (select external_id from sys_user  where id = #{userId} )
+           </if>) as totalLoan
            
          
            
