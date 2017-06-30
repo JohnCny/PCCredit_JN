@@ -1,0 +1,240 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款台账</a></li>
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">拒绝台账</a></li>
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
+
+         </ul>
+         </div>
+      
+      <div class="inquiry" style="padding:15px;">
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">
+          	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
+            <ul>
+              <li>
+                <span>客户姓名：<input type="text" id="customerName" name="customerName" value="$!result.filter.customerName" maxlength="100"/></span>
+              </li>
+              
+              <li>
+                <span>拜访客户经理：<input type="text" id="customerManagerName" name="customerManagerName" value="$!result.filter.customerManagerName" maxlength="100"/></span>
+              </li>
+              
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+            <colgroup>
+              <col width="50" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">拜访日期</th>
+              <th nowrap="nowrap">商户名称</th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">联系方式</th>
+              <th nowrap="nowrap">性别</th>
+              <th nowrap="nowrap">户籍</th>
+              <th nowrap="nowrap">有无房产</th>
+              <th nowrap="nowrap">经营范围</th>
+              <th nowrap="nowrap">经营地址</th>
+              <th nowrap="nowrap">资金需求</th>
+              <th nowrap="nowrap">资金需求时间</th>
+              <th nowrap="nowrap">融资经历</th>
+              <th nowrap="nowrap">拜访客户经理</th>
+              <th nowrap="nowrap">所属管辖行</th>
+              <th nowrap="nowrap">备注</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down" style="height:280px;">
+          <table>
+            <colgroup>
+              <col width="50" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+            </colgroup>
+           #foreach ($reg in $result.items)
+            <tr ondblclick="javascript:$('#id_change_button').click();">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!reg.id"/></td>
+              <td nowrap="nowrap">$!reg.visitDate</td>
+              <td nowrap="nowrap">$!reg.merchantName</td>
+              <td nowrap="nowrap">$!reg.customerName</td>
+              <td nowrap="nowrap">$!reg.contactInfor</td>
+              <td nowrap="nowrap">$!reg.sex</td>
+              <td nowrap="nowrap">$!reg.registence</td>
+              <td nowrap="nowrap">$!reg.realEstate</td>
+              <td nowrap="nowrap">$!reg.scopeOfBusiness</td>
+              <td nowrap="nowrap">$!reg.scopeOfAddress</td>
+              <td nowrap="nowrap">$!reg.fundDemand</td>
+              <td nowrap="nowrap">$!reg.fundDemandDate</td>
+              <td nowrap="nowrap">$!reg.financeExp</td>
+              <td nowrap="nowrap">$!reg.visitManager</td>
+              <td nowrap="nowrap">$!reg.organ</td>
+              <td nowrap="nowrap">$!reg.remark</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn" style=";">
+         	<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">新增</a>
+         	<a id="id_update_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.update.hint')">修改</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+      
+    </div>
+    
+  </div>
+  <script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {
+		var opsObj = new Object();
+		opsObj.formObj = $("#submitForm");
+		opsObj.createUrl = "${modulePath}/iframe_4_create.page";
+		//opsObj.displayUrl = "${modulePath}/display.page";
+		opsObj.changeUrl = "${modulePath}/iframe_4_update.page";
+		//opsObj.deleteUrl = "${modulePath}/delete.json";
+		opsObj.browseUrl = "${modulePath}/iframe_4.page";
+		 prepareOperations(opsObj);
+		//创建
+		$("#id_create_button").click(function() {
+	            var url = opsObj.createUrl;
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	     });
+		
+		 //修改
+		 $("#id_update_button").click(function() {
+	         if ($(".checkbox :checked").length == 1) {
+	        	    var rowid = $($(".checkbox :checked")[0]).attr("value");
+	                var url ="";
+	                if(opsObj.changeUrl.indexOf("?")>=0){
+	                	url = opsObj.changeUrl + "&id=" + rowid;
+	                }else{
+	                	url = opsObj.changeUrl + "?id=" + rowid;
+	                }
+	            if (opsObj.formObj) {
+	                // 回调URL
+	                var callBackUrlObj = opsObj.formObj.find("div.pagebar div.page a.current");
+	                if (callBackUrlObj) {
+	                	if(url.indexOf("?")>=0){
+	                		url += "&" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}else{
+		                    url += "?" + $.param({
+		                        'callBackUrl': callBackUrlObj.length == 0 ? window.location.href: callBackUrlObj[0].href
+		                    });
+	                	}
+	                }
+	            }
+	            window.location.href = url;
+	         } else {
+	                Dialog.message("请选择一行");
+	         } 
+	       });
+		
+		  //删除
+		  $("#id_delete_button").click(function() {
+            if ($(".checkbox :checked").length == 1) {
+            	var url = opsObj.deleteUrl;
+                var rowid = $($(".checkbox :checked")[0]).attr("value");
+                Dialog.confirm("确定删除所选行吗？", "提示",
+                function() {
+                	$.ajax({
+        				url : url,
+        				type : "get",
+        				data : "id=" + rowid,//要发送的数据
+        				success : function(data) {
+        					if (data.success) {
+        						topWin.Dialog.message("保存成功！");
+        						window.location.href= contextPath+"/manager/managercreate/browse.page" ;
+        					}
+        					else{
+        						topWin.Dialog.message(data.message);
+        				    }
+        					submitFlag = 0;
+        				}
+        			});
+                 
+                });
+            } else {
+                Dialog.message("请选择一行");
+            }
+        });
+		
+		//查询
+		$("#id_browse_button").click(function() {
+            var url = opsObj.browseUrl;
+            if (opsObj.formObj) {
+                opsObj.formObj.action = opsObj.browseUrl;
+                opsObj.formObj.submit();
+            }
+        });
+	});
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

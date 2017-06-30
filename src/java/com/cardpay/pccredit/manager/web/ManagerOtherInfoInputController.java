@@ -33,12 +33,22 @@ import com.cardpay.pccredit.main.MainController;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
+
+import com.cardpay.pccredit.manager.form.VisitRegistLedgerForm;
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+
 import com.cardpay.pccredit.manager.model.LoanApproved;
 import com.cardpay.pccredit.manager.model.LoanRefused;
+
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
+
+import com.cardpay.pccredit.manager.model.VisitRegistLedger;
+
 import com.cardpay.pccredit.manager.service.ManagerOtherInfoInputService;
+
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
+import com.cardpay.pccredit.manager.service.OtherMusidataInputService;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -48,6 +58,7 @@ import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -60,6 +71,9 @@ public class ManagerOtherInfoInputController extends BaseController {
 	private static final Logger logger = Logger.getLogger(ManagerOtherInfoInputController.class);
 	@Autowired
 	private ManagerOtherInfoInputService managerOtherInfoInputService;
+	
+	@Autowired
+	private OtherMusidataInputService OtherMusidataInputService;
 
 	/**
 	 * 放款台账查询页面
@@ -111,4 +125,94 @@ public class ManagerOtherInfoInputController extends BaseController {
 		return mv;
 	}
 	
+	
+	
+	/**
+	 * 拜访台账查询页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4.page")
+	public AbstractModelAndView iframe_4(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4", request);
+		
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		
+		filter.setRequest(request);
+		QueryResult<VisitRegistLedger> result = OtherMusidataInputService.findVisitRegistLedgerByFilter(filter);
+		JRadPagedQueryResult<VisitRegistLedger> pagedResult = new JRadPagedQueryResult<VisitRegistLedger>(filter, result);
+		mv.addObject("userId", userId);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	/**
+	 * 拜访台账增加页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4_create.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_4_create(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4_create", request);
+		return mv;
+	}
+
+	
+	/**
+	 * 执行添加 拜访台账
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4_insert.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap iframe_4_insert(@ModelAttribute VisitRegistLedgerForm form, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			try {
+				if(StringUtils.isNotEmpty(form.getId())) {//update
+					VisitRegistLedger regt = form.createModel(VisitRegistLedger.class);
+					OtherMusidataInputService.updateVisitRegistLedgerParameter(regt);
+					returnMap.put(RECORD_ID, regt.getId());
+					
+				}else{
+					VisitRegistLedger vreg = form.createModel(VisitRegistLedger.class);
+					String id = OtherMusidataInputService.insertVisitRegistLedgerParameter(vreg);
+					returnMap.put(RECORD_ID, id);
+				}
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	
+	/**
+	 * 拜访台账修改页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4_update.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_4_update(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4_create", request);
+		String id = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(id)) {
+			VisitRegistLedger vreg = OtherMusidataInputService.findVisitRegistLedgerParameterById(id);
+			mv.addObject("vreg", vreg);
+		}
+		return mv;
+	}
 }
