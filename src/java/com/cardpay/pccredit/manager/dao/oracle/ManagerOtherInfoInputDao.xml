@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.ManagerOtherInfoInputDao">
+	
+	<resultMap id="ResultMapLoanApproved" type="com.cardpay.pccredit.manager.model.LoanApproved">
+		<result property="id" column="id" />
+		<result property="customerName" column="customer_name" />
+		<result property="customerAge" column="customer_age" />
+		<result property="customerTele" column="customer_tele" />
+		<result property="customerMarriage" column="customer_marriage" />
+		<result property="mateName" column="mate_name" />
+		<result property="mateIdNo" column="mate_id_no" />
+		<result property="mateTele" column="mate_tele" />
+		<result property="homeAdd" column="home_add" />
+		<result property="busIndustry" column="bus_industry" />
+		<result property="busName" column="bus_name" />
+		<result property="busAdd" column="bus_add" />
+		<result property="prdName" column="prd_name" />
+		<result property="chiefManager" column="chief_manager" />
+		<result property="supManager" column="sup_manager" />
+		<result property="approvalMember" column="approval_member" />
+		<result property="loanAmount" column="loan_amount" />
+		<result property="dueTime" column="due_time" />
+		<result property="rate" column="rate" />
+		<result property="loanMode" column="loan_mode" />
+		<result property="warrantor" column="warrantor" />
+		<result property="guarantyInfo" column="guaranty_info" />
+		<result property="loanBeginTime" column="loan_begin_time" />
+		<result property="loanEndTime" column="loan_end_time" />
+		<result property="payMode" column="pay_mode" />
+		<result property="loanAccount" column="loan_account" />
+		<result property="remarks" column="remarks" />
+		
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+	</resultMap>
+	
+	<resultMap id="ResultMapLoanRefused" type="com.cardpay.pccredit.manager.model.LoanRefused">
+		<result property="id" column="id" />
+		<result property="customerName" column="customer_name" />
+		<result property="busAdd" column="bus_add" />
+		<result property="applyTime" column="apply_time" />
+		<result property="applyAmount" column="apply_amount" />
+		<result property="refuseTime" column="refuse_time" />
+		<result property="refuseReason" column="refuse_reason" />
+		<result property="chiefManager" column="chief_manager" />
+		<result property="supManager" column="sup_manager" />
+		<result property="loanMode" column="loan_mode" />
+		<result property="remarks" column="remarks" />
+		
+		<result property="createdBy" column="created_by" />
+		<result property="createdTime" column="created_time" />
+		<result property="modifiedBy" column="modified_by" />
+		<result property="modifiedTime" column="modified_time" />
+	</resultMap>
+	
+	<select id="findLoanApprovedByFilter" resultMap="ResultMapLoanApproved" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT * from LOAN_APPROVED
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findLoanApprovedCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
+		SELECT count(1) from LOAN_APPROVED
+	</select>
+	
+	<select id="findLoanRefusedByFilter" resultMap="ResultMapLoanRefused" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
+		SELECT * FROM
+			(SELECT ROW_.*,ROWNUM ROWNUM_
+				FROM (
+					SELECT * from LOAN_REFUSED
+		 		<![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findLoanRefusedCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
+		SELECT count(1) from LOAN_REFUSED
+	</select>
+</mapper>

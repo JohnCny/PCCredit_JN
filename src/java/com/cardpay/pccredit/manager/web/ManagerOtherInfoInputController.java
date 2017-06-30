@@ -33,8 +33,11 @@ import com.cardpay.pccredit.main.MainController;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
+import com.cardpay.pccredit.manager.model.LoanApproved;
+import com.cardpay.pccredit.manager.model.LoanRefused;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
+import com.cardpay.pccredit.manager.service.ManagerOtherInfoInputService;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
@@ -56,7 +59,7 @@ import net.sf.json.JsonConfig;
 public class ManagerOtherInfoInputController extends BaseController {
 	private static final Logger logger = Logger.getLogger(ManagerOtherInfoInputController.class);
 	@Autowired
-	private ManagerPerformmanceService managerPerformmanceService;
+	private ManagerOtherInfoInputService managerOtherInfoInputService;
 
 	/**
 	 * 放款台账查询页面
@@ -76,10 +79,10 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		//QueryResult<IntoPieces> result=new QueryResult<IntoPieces>();//intoPiecesService.findintoPiecesByFilter(filter);
-		//JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
+		QueryResult<LoanApproved> result = managerOtherInfoInputService.findLoanApprovedByFilter(filter);
+		JRadPagedQueryResult<LoanApproved> pagedResult = new JRadPagedQueryResult<LoanApproved>(filter, result);
 		mv.addObject("userId", userId);
-		//mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
 	
@@ -101,8 +104,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		QueryResult<IntoPieces> result=null;//intoPiecesService.findintoPiecesByFilter(filter);
-		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
+		QueryResult<LoanRefused> result=managerOtherInfoInputService.findLoanRefusedByFilter(filter);
+		JRadPagedQueryResult<LoanRefused> pagedResult = new JRadPagedQueryResult<LoanRefused>(filter, result);
 		mv.addObject("userId", userId);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
