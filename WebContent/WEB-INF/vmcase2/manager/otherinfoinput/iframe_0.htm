@@ -197,20 +197,14 @@
 	window.top.currentWindow.setLayout(layout);
 	
 	$("#id_create_button").click(function() {
-		//if ($(".checkbox :checked").length == 1) {
-		//	var url = "${modulePath}/iframe_0_create.page?id=" + rowid;
-		//	window.location.href = url;
-		//}else{
-		//	Dialog.message("请选择记录!");
-		//}
-		var url = "${modulePath}/iframe_0_create.page";
+		var url = "${modulePath}/iframe_0_create.page?userId=${userId}";
 		window.location.href = url;
     });
 	
 	$("#id_update_button").click(function() {
 		if ($(".checkbox :checked").length == 1) {
             var rowid = $($(".checkbox :checked")[0]).attr("value");
-			var url = "${modulePath}/iframe_0_update.page?id=" + rowid;
+			var url = "${modulePath}/iframe_0_update.page?userId=${userId}&id=" + rowid;
 			window.location.href = url;
 		}else{
 			Dialog.message("请选择记录!");
