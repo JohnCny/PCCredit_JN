@@ -4,7 +4,7 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				<div class="title">客户经理业绩进度</div>
+				<div class="title">其他信息>申请台账</div>
 			</div>
 			<form id="id_module_form"
 				action="${contextPath}//manager/otherinfoinput/updateApply.json" />
@@ -77,8 +77,8 @@
 				</table>
 			</form>
 			<div class="submit" style="text-align: left;">
-				<input id="id_save_button" type="button"
-					value="#i18n('button.save')" class="current" />
+				<input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
+				<input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
 			</div>
 		</div>
 	</div>
