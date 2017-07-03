@@ -91,6 +91,17 @@ public class ManagerOtherInfoInputService {
 		return queryResult;
 	}
 	
+	public void insertLoanApproved(LoanApproved loanApproved){
+		commonDao.insertObject(loanApproved);
+	}
+	
+	public void updateLoanApproved(LoanApproved loanApproved){
+		commonDao.updateObject(loanApproved);
+	}
+	
+	public LoanApproved findLoanApprovedById(String id){
+		return commonDao.findObjectById(LoanApproved.class, id);
+	}
 	/**
 	 * @param 拒绝台账
 	 */
@@ -100,4 +111,6 @@ public class ManagerOtherInfoInputService {
 		QueryResult<LoanRefused> queryResult = new QueryResult<LoanRefused>(size, pList);
 		return queryResult;
 	}
+	
+	
 }

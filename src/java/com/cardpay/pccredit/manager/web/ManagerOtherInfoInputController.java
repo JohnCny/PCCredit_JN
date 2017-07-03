@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.web;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,8 +27,11 @@ import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.calcuation.utils.StringUtil;
 import com.cardpay.pccredit.dimensional.filter.DimensionalFilter;
+import com.cardpay.pccredit.intopieces.constant.CardStatus;
+import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.main.MainController;
 import com.cardpay.pccredit.manager.form.BankListForm;
@@ -54,6 +58,7 @@ import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.i18n.I18nHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.util.spring.Beans;
@@ -98,6 +103,97 @@ public class ManagerOtherInfoInputController extends BaseController {
 		mv.addObject("userId", userId);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
+	}
+	
+	/**
+	 * 跳转到放款台账新增界面
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_create.page")
+	public AbstractModelAndView iframe_0_create(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_0_create", request);
+		return mv;
+	}
+	
+	/**
+	 * 保存放款台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_create.json", method = { RequestMethod.POST })
+	public Map<String, Object> iframe_0_create_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+		loanApproved.setCreatedTime(new Date());
+		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.insertLoanApproved(loanApproved);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.SUCCESS_MESSAGE));
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		JSONObject obj = JSONObject.fromObject(map);
+		response.getWriter().print(obj.toString());
+		return null;
+	}
+	
+	/**
+	 * 跳转到放款台账修改界面
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_update.page")
+	public AbstractModelAndView iframe_0_update(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_0_update", request);
+		String id = request.getParameter("id");
+		LoanApproved loanApproved = managerOtherInfoInputService.findLoanApprovedById(id);
+		mv.addObject("obj", loanApproved);
+		return mv;
+	}
+	
+	/**
+	 * 修改放款台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_update.json", method = { RequestMethod.POST })
+	public Map<String, Object> iframe_0_update_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+		loanApproved.setCreatedTime(new Date());
+		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.updateLoanApproved(loanApproved);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.SUCCESS_MESSAGE));
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		JSONObject obj = JSONObject.fromObject(map);
+		response.getWriter().print(obj.toString());
+		return null;
 	}
 	
 	/**
