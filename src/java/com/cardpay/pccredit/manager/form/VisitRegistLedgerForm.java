@@ -23,6 +23,17 @@ public class VisitRegistLedgerForm extends  BaseForm{
 	 private String  visitManager;     
 	 private String  organ;             
 	 private String  remark;
+	 
+	 private String visitId;// 拜访客户经理id
+	 
+	 
+	
+	public String getVisitId() {
+		return visitId;
+	}
+	public void setVisitId(String visitId) {
+		this.visitId = visitId;
+	}
 	public String getId() {
 		return id;
 	}

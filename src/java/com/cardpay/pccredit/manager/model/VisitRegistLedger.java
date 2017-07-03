@@ -26,6 +26,16 @@ public class VisitRegistLedger extends BusinessModel{
 	 private String  visitManager;     
 	 private String  organ;             
 	 private String  remark;
+	 
+	 private String  visitId;
+	 
+	 
+	public String getVisitId() {
+		return visitId;
+	}
+	public void setVisitId(String visitId) {
+		this.visitId = visitId;
+	}
 	public String getId() {
 		return id;
 	}
