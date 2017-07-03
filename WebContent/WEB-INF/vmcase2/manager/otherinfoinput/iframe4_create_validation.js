@@ -5,6 +5,9 @@ var validator = $($formName).validate({
 		},
 		customerName :{
 			required : true
+		},
+		visitDate :{
+			required : true
 		}
 	},
 	messages : {
@@ -13,6 +16,9 @@ var validator = $($formName).validate({
 		},
 		customerName :{
 			required : "客户姓名不能为空"
+		},
+		visitDate :{
+			required : "拜访日期不能为空"
 		}
 	},
 	errorPlacement : function(error, element) {

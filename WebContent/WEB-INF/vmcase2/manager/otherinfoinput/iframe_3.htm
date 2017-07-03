@@ -6,8 +6,8 @@
     <div class="contentinner">
         <div class="tabplace">
             <ul class="com-tab" >
-            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款台账</a></li>
-            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">拒绝台账</a></li>
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">拒绝台账</a></li>
             <li class="tab activeTab" ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
             <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
 
@@ -121,9 +121,9 @@
         #if($!lock)
        		<a class="btn_g" href="${contextPath}/manager/otherinfoinput/applyinsert.page"  title="新增">新增</a>
        		<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">修改</a>
-       		<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">删除</a>
+       		<!-- <a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">删除</a> -->
        	#end	
-       		<a href="javascript:history.back();" class="btn_gr">返回</a>
+       		<!-- <a href="javascript:history.back();" class="btn_gr">返回</a> -->
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

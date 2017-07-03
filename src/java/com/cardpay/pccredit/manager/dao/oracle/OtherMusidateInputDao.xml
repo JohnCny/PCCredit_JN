@@ -34,6 +34,9 @@
 			<if test="customerManagerName != null and customerManagerName != '' ">
 				<![CDATA[ and VISIT_MANAGER like '%'||#{customerManagerName}||'%']]>
 			</if>
+			<if test="userId != null and userId != '' ">
+				and VISIT_ID=#{userId}
+			</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -53,6 +56,9 @@
 	    </if>
 		<if test="customerManagerName != null and customerManagerName != '' ">
 			<![CDATA[ and VISIT_MANAGER like '%'||#{customerManagerName}||'%']]>
+		</if>
+		<if test="userId != null and userId != '' ">
+				and VISIT_ID=#{userId}
 		</if>
 		)
 	</select>

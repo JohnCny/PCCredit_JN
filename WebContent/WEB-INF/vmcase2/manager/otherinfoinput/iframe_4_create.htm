@@ -4,13 +4,13 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">客户拜访登记台账保存</div>
+        <div class="title">其他信息>登记台账</div>
       </div>
       <form id="id_module_form" action="${contextPath}/manager/otherinfoinput/iframe_4_insert.json" method="post">
         <input type="hidden" name="id" value="$!vreg.id" />
         <div class="forms" id="formsId">
           <table class="rule" border="1" bordercolor="#CCCCCC" >
-          <caption>属性</caption>
+          <caption>拜访台账录入</caption>
             <colgroup>
               <col width="10%" />
               <col width="40%" />
@@ -28,7 +28,7 @@
             
             <tr>
               <td class="titlefc3"><label for="">拜访日期:</label></td>
-              <td><input class="rinpsty" type="text" id="visitDate" name="visitDate" value="$!vreg.visitDate" /></td>
+              <td><input class="rinpsty" type="text" id="visitDate" name="visitDate" value="$!vreg.visitDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" readonly/></td>
               <td class="titlefc3"><label for="">商户名称:</label></td>
               <td><input class="rinpsty" type="text" id="merchantName" name="merchantName" value="$!vreg.merchantName" /></td>
             </tr>
