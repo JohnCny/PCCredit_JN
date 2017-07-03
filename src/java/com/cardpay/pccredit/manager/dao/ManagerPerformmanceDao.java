@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.cardpay.pccredit.manager.filter.StandingBookFilter;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
+import com.cardpay.pccredit.manager.model.ApplyStandingBookModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
@@ -75,4 +77,7 @@ public interface ManagerPerformmanceDao {
 								@Param(value="endDate")String endDate);
 	//支行名称
 	String getOrgName(@Param(value="orgId")String orgId);
+	
+	List<ApplyStandingBookModel> findApplyStandingBookByFilter(StandingBookFilter standingBookFilter);
+	int findApplyStandingBookByFilterCount(StandingBookFilter standingBookFilter);
 }
