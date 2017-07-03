@@ -16,8 +16,17 @@ public class DimensionalFilter extends BaseQueryFilter {
 	
 	private String customerManagerName;
 	
-	private String userId;//客户经理id
+	private String userId;
 	
+	
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getCustomerManagerName() {
 		return customerManagerName;
@@ -33,13 +42,5 @@ public class DimensionalFilter extends BaseQueryFilter {
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 }

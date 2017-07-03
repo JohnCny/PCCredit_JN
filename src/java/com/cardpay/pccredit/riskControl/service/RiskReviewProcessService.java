@@ -345,7 +345,7 @@ public class RiskReviewProcessService {
 	 */
 	public RiskReviewProcess getFirstRiskReviewProcess(RiskReviewProcess riskReviewProcess){
 		RiskReviewProcessFilter filter = new RiskReviewProcessFilter();
-		filter.setPhase(RiskControlRole.manager.toString());
+		//filter.setPhase(RiskControlRole.manager.toString());
 		filter.setReportedManagerId(riskReviewProcess.getReportedManagerId());
 		filter.setRiskIssuesId(riskReviewProcess.getRiskIssuesId());
 		filter.setCreatedTime(riskReviewProcess.getCreatedTime());

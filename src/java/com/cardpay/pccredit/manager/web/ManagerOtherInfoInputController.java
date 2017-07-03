@@ -330,6 +330,9 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
+		if(user.getUserType() == 1){//客户经理
+			filter.setUserId(userId);
+		}
 		QueryResult<VisitRegistLedger> result = otherMusidataInputService.findVisitRegistLedgerByFilter(filter);
 		JRadPagedQueryResult<VisitRegistLedger> pagedResult = new JRadPagedQueryResult<VisitRegistLedger>(filter, result);
 		mv.addObject("userId", userId);
