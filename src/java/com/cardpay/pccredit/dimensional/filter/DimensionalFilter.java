@@ -13,6 +13,19 @@ import com.wicresoft.jrad.base.web.filter.BaseQueryFilter;
 public class DimensionalFilter extends BaseQueryFilter {
 
 	private String customerName;
+	
+	private String customerManagerName;
+	
+	
+	
+
+	public String getCustomerManagerName() {
+		return customerManagerName;
+	}
+
+	public void setCustomerManagerName(String customerManagerName) {
+		this.customerManagerName = customerManagerName;
+	}
 
 	public String getCustomerName() {
 		return customerName;
