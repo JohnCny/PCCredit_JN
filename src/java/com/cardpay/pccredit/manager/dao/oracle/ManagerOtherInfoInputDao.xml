@@ -68,6 +68,12 @@
 					<if test="userId != null and userId != '' ">
 					AND CREATED_BY =#{userId}
 					</if>
+					<if test="endDate != null and endDate != '' ">
+					and LOAN_BEGIN_TIME <![CDATA[ <=  ]]> #{endDate}
+				    </if>
+				    <if test="startDate != null and startDate != '' ">
+	     			and LOAN_BEGIN_TIME <![CDATA[ >=  ]]> #{startDate}
+	     		    </if>
 					order by created_time
 		 		<![CDATA[		
 							) ROW_
@@ -84,6 +90,12 @@
 					</if>
 					<if test="userId != null and userId != '' ">
 					AND CREATED_BY =#{userId}
+					<if test="endDate != null and endDate != '' ">
+					and LOAN_BEGIN_TIME <![CDATA[ <=  ]]> #{endDate}
+				    </if>
+				    <if test="startDate != null and startDate != '' ">
+	     			and LOAN_BEGIN_TIME <![CDATA[ >=  ]]> #{startDate}
+	     		    </if>
 					</if>
 	</select>
 	
@@ -99,6 +111,12 @@
 					<if test="userId != null and userId != '' ">
 					AND CREATED_BY =#{userId}
 					</if>
+					<if test="endDate != null and endDate != '' ">
+					and REFUSE_TIME <![CDATA[ <=  ]]> #{endDate}
+				    </if>
+				    <if test="startDate != null and startDate != '' ">
+	     			and REFUSE_TIME <![CDATA[ >=  ]]> #{startDate}
+	     		    </if>
 					order by created_time
 		 		<![CDATA[		
 							) ROW_
@@ -115,6 +133,12 @@
 					</if>
 					<if test="userId != null and userId != '' ">
 					AND CREATED_BY =#{userId}
+					<if test="endDate != null and endDate != '' ">
+					and REFUSE_TIME <![CDATA[ <=  ]]> #{endDate}
+				    </if>
+				    <if test="startDate != null and startDate != '' ">
+	     			and REFUSE_TIME <![CDATA[ >=  ]]> #{startDate}
+	     		    </if>
 					</if>
 	</select>
 </mapper>

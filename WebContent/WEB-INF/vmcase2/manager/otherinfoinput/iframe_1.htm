@@ -6,7 +6,7 @@
         <div class="tabplace">
             <ul class="com-tab" >
             <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
-            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">拒绝台账</a></li>
+            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
             <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
             <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
 
@@ -20,6 +20,12 @@
             <ul>
               <li>
                 <span>客户名称：<input type="text" id="customerName" name="customerName" value="$!result.filter.customerName" maxlength="100"/></span>
+              </li>
+              <li>
+                <span>拒绝日期(起)：<input type="text" name="startDate" value="$!filter.startDate" onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+                <span>拒绝日期(止)：<input type="text" name="endDate" value="$!filter.endDate" onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
               </li>
               
               <li class="search_button">
@@ -97,8 +103,11 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn" style=";">
+         #if($!lock)
          	<a id="id_create_button" class="btn_g" href="javascript:void(0);">新增</a>
          	<a id="id_update_button" class="btn_g" href="javascript:void(0);">修改</a>
+         #end	
+       		<a href="javascript:history.back();" class="btn_gr">返回</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
