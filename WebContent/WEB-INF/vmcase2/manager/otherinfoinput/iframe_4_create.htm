@@ -18,14 +18,13 @@
               <col width="40%" />
             </colgroup>
             
-            <!-- <tr>
-            <td class="titlefc3"><label for="">客户经理姓名：</label></td>
-              <td><select class="rinpsty" id="userId" name="userId" value="">
+            <td class="titlefc3"><label for="">拜访客户经理：</label></td>
+              <td><select class="rinpsty" id="visitId" name="visitId" value="">
                   <option value=""></option>
-                  #dict('CUSTOMERMANAGER', '')
+                  #dict("MANAGERUSERS","$!vreg.visitId")
                   </select>
               </td>
-            </tr> -->
+            </tr>
             
             <tr>
               <td class="titlefc3"><label for="">拜访日期:</label></td>
@@ -70,16 +69,14 @@
             </tr>
             
             <tr>
-              <td class="titlefc3"><label for="">拜访客户经理:</label></td>
-              <td><input class="rinpsty" type="text" id="visitManager" name="visitManager" value="$!vreg.visitManager" /></td>
+             <!--  <td class="titlefc3"><label for="">拜访客户经理:</label></td>
+              <td><input class="rinpsty" type="text" id="visitManager" name="visitManager" value="$!vreg.visitManager" /></td> -->
               <td class="titlefc3"><label for="">所属管辖行:</label></td>
               <td><input class="rinpsty" type="text" id="organ" name="organ" value="$!vreg.organ" /></td>
-            </tr>
-            
-            <tr>
               <td class="titlefc3"><label for="">备注:</label></td>
               <td><textarea style="width: 300px; height:50px" name="remark" id="remark">$!vreg.remark</textarea></td>
             </tr>
+            
           </table>
         
         </div>
@@ -94,13 +91,13 @@
 	var layout=new FormsLayout("formsId");	
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#parse ("/manager/account_manager/manager_create_validation.js")
+	#parse ("/manager/otherinfoinput/iframe4_create_validation.js")
 	
 	
 	// save and update
 	$("#id_save_button").click(function() {
 		if(submitFlag == 1){
-			alert("请勿重复提交!")
+			topWin.Dialog.message("请勿重复提交!")
 			return;
 		}
 		
@@ -116,7 +113,7 @@
 				success : function(data) {
 					if (data.success) {
 						topWin.Dialog.message("保存成功！");
-						//window.location.href= contextPath+"/manager/managercreate/browse.page" ;
+						window.location.href= contextPath+"/manager/otherinfoinput/iframe_4.page" ;
 					}else{
 						topWin.Dialog.message(data.message);
 				    }

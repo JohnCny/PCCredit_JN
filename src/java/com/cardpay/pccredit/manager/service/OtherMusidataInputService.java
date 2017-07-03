@@ -16,6 +16,7 @@ import com.cardpay.pccredit.manager.dao.OtherMusidataInputDao;
 import com.cardpay.pccredit.manager.dao.comdao.AccountManagerParameterComdao;
 import com.cardpay.pccredit.manager.model.VisitRegistLedger;
 import com.cardpay.pccredit.product.model.ProductAttribute;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.model.QueryResult;
 
@@ -59,4 +60,7 @@ public class OtherMusidataInputService {
 		return commonDao.findObjectById(VisitRegistLedger.class, id);
 	}
 	
+	public SystemUser  queryCustomer(String id) {
+		return commonDao.findObjectById(SystemUser.class,id);
+	}
 }
