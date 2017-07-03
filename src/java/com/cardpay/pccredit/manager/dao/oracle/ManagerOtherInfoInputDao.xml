@@ -26,7 +26,7 @@
 		<result property="warrantor" column="warrantor" />
 		<result property="guarantyInfo" column="guaranty_info" />
 		<result property="loanBeginTime" column="loan_begin_time" />
-		<result property="loanEndTime" column="loan_end_time" />
+		<result property="loanEdnTime" column="loan_edn_time" />
 		<result property="payMode" column="pay_mode" />
 		<result property="loanAccount" column="loan_account" />
 		<result property="remarks" column="remarks" />
@@ -61,6 +61,14 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					SELECT * from LOAN_APPROVED
+					where 1=1
+					<if test="customerName != null and customerName != '' ">
+					AND customer_Name =#{customerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+					AND CREATED_BY =#{userId}
+					</if>
+					order by created_time
 		 		<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -70,6 +78,13 @@
 	
 	<select id="findLoanApprovedCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
 		SELECT count(1) from LOAN_APPROVED
+					where 1=1
+					<if test="customerName != null and customerName != '' ">
+					AND customer_Name =#{customerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+					AND CREATED_BY =#{userId}
+					</if>
 	</select>
 	
 	<select id="findLoanRefusedByFilter" resultMap="ResultMapLoanRefused" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
@@ -77,6 +92,14 @@
 			(SELECT ROW_.*,ROWNUM ROWNUM_
 				FROM (
 					SELECT * from LOAN_REFUSED
+					where 1=1
+					<if test="customerName != null and customerName != '' ">
+					AND customer_Name =#{customerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+					AND CREATED_BY =#{userId}
+					</if>
+					order by created_time
 		 		<![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -86,5 +109,12 @@
 	
 	<select id="findLoanRefusedCountByFilter" resultType="int" parameterType="com.cardpay.pccredit.dimensional.filter.DimensionalFilter">
 		SELECT count(1) from LOAN_REFUSED
+					where 1=1
+					<if test="customerName != null and customerName != '' ">
+					AND customer_Name =#{customerName}
+					</if>
+					<if test="userId != null and userId != '' ">
+					AND CREATED_BY =#{userId}
+					</if>
 	</select>
 </mapper>

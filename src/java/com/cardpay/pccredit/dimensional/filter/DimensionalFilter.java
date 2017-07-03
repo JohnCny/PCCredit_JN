@@ -16,7 +16,7 @@ public class DimensionalFilter extends BaseQueryFilter {
 	
 	private String customerManagerName;
 	
-	
+	private String userId;//客户经理id
 	
 
 	public String getCustomerManagerName() {
@@ -35,4 +35,11 @@ public class DimensionalFilter extends BaseQueryFilter {
 		this.customerName = customerName;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 }
