@@ -433,6 +433,12 @@
 		<item name="3" title="离婚" />
 	</dictionary>
 	
+	<dictionary name="MARRIGE_VALUE" title="婚姻状况">
+		<item name="未婚" title="未婚" />
+		<item name="已婚" title="已婚" />
+		<item name="丧偶" title="丧偶" />
+		<item name="离婚" title="离婚" />
+	</dictionary>
 	
 	<dictionary name="RESIDE" title="居住状况">
 		<item name="0" title="自置" />

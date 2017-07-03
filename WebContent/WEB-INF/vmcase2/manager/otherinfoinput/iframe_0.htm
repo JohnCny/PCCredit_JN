@@ -17,14 +17,13 @@
         <div class="search_tag"></div>
         <div class="search">
           <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">
-          	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
             <ul>
               <li>
                 <span>客户名称：<input type="text" id="customerName" name="customerName" value="$!result.filter.customerName" maxlength="100"/></span>
               </li>
               
               <li class="search_button">
-                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                <input id="id_browse_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>
             </ul>
@@ -167,7 +166,7 @@
               <td nowrap="nowrap">$!obj.warrantor</td>
               <td nowrap="nowrap">$!obj.guarantyInfo</td>
               <td nowrap="nowrap">$!obj.loanBeginTime</td>
-              <td nowrap="nowrap">$!obj.loanEndTime</td>
+              <td nowrap="nowrap">$!obj.loanEdnTime</td>
               <td nowrap="nowrap">$!obj.payMode</td>
               
               <td nowrap="nowrap">$!obj.loanAccount</td>
@@ -197,20 +196,14 @@
 	window.top.currentWindow.setLayout(layout);
 	
 	$("#id_create_button").click(function() {
-		//if ($(".checkbox :checked").length == 1) {
-		//	var url = "${modulePath}/iframe_0_create.page?id=" + rowid;
-		//	window.location.href = url;
-		//}else{
-		//	Dialog.message("请选择记录!");
-		//}
-		var url = "${modulePath}/iframe_0_create.page";
+		var url = "${modulePath}/iframe_0_create.page?userId=${userId}";
 		window.location.href = url;
     });
 	
 	$("#id_update_button").click(function() {
 		if ($(".checkbox :checked").length == 1) {
             var rowid = $($(".checkbox :checked")[0]).attr("value");
-			var url = "${modulePath}/iframe_0_update.page?id=" + rowid;
+			var url = "${modulePath}/iframe_0_update.page?userId=${userId}&id=" + rowid;
 			window.location.href = url;
 		}else{
 			Dialog.message("请选择记录!");

@@ -34,11 +34,13 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.main.MainController;
+import com.cardpay.pccredit.manager.filter.StandingBookFilter;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.form.VisitRegistLedgerForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.ApplyStandingBookModel;
 import com.cardpay.pccredit.manager.model.LoanApproved;
 import com.cardpay.pccredit.manager.model.LoanRefused;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
@@ -75,6 +77,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@Autowired
 	private OtherMusidataInputService otherMusidataInputService;
 
+	@Autowired
+	private ManagerPerformmanceService managerPerformmanceService;
 	/**
 	 * 放款台账查询页面
 	 * @param request
@@ -93,6 +97,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
+		filter.setUserId(userId);
 		QueryResult<LoanApproved> result = managerOtherInfoInputService.findLoanApprovedByFilter(filter);
 		JRadPagedQueryResult<LoanApproved> pagedResult = new JRadPagedQueryResult<LoanApproved>(filter, result);
 		mv.addObject("userId", userId);
@@ -110,6 +115,9 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@RequestMapping(value = "iframe_0_create.page")
 	public AbstractModelAndView iframe_0_create(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_0_create", request);
+		String userId = request.getParameter("userId");
+
+		mv.addObject("userId", userId);
 		return mv;
 	}
 	
@@ -123,25 +131,21 @@ public class ManagerOtherInfoInputController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "iframe_0_create.json", method = { RequestMethod.POST })
-	public Map<String, Object> iframe_0_create_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("text/html;charset=utf-8");
-		Map<String, Object> map = new HashMap<String, Object>();
+	public JRadReturnMap iframe_0_create_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
 		loanApproved.setCreatedTime(new Date());
 		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
 		try {
 			managerOtherInfoInputService.insertLoanApproved(loanApproved);
-			map.put(JRadConstants.SUCCESS, true);
-			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.SUCCESS_MESSAGE));
+			returnMap.setSuccess(true);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			map.put(JRadConstants.SUCCESS, false);
-			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
 		}
 
-		JSONObject obj = JSONObject.fromObject(map);
-		response.getWriter().print(obj.toString());
-		return null;
+		return returnMap;
 	}
 	
 	/**
@@ -157,6 +161,10 @@ public class ManagerOtherInfoInputController extends BaseController {
 		String id = request.getParameter("id");
 		LoanApproved loanApproved = managerOtherInfoInputService.findLoanApprovedById(id);
 		mv.addObject("obj", loanApproved);
+
+		String userId = request.getParameter("userId");
+
+		mv.addObject("userId", userId);
 		return mv;
 	}
 	
@@ -170,25 +178,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "iframe_0_update.json", method = { RequestMethod.POST })
-	public Map<String, Object> iframe_0_update_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("text/html;charset=utf-8");
-		Map<String, Object> map = new HashMap<String, Object>();
-		loanApproved.setCreatedTime(new Date());
-		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+	public JRadReturnMap iframe_0_update_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		loanApproved.setModifiedTime(new Date());
+		loanApproved.setModifiedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
 		try {
 			managerOtherInfoInputService.updateLoanApproved(loanApproved);
-			map.put(JRadConstants.SUCCESS, true);
-			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.SUCCESS_MESSAGE));
+			returnMap.setSuccess(true);
 		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			map.put(JRadConstants.SUCCESS, false);
-			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
-		}
 
-		JSONObject obj = JSONObject.fromObject(map);
-		response.getWriter().print(obj.toString());
-		return null;
+			logger.error(e.getMessage(), e);
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+		
+		return returnMap;
 	}
 	
 	/**
@@ -209,6 +214,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
+		filter.setUserId(userId);
 		QueryResult<LoanRefused> result=managerOtherInfoInputService.findLoanRefusedByFilter(filter);
 		JRadPagedQueryResult<LoanRefused> pagedResult = new JRadPagedQueryResult<LoanRefused>(filter, result);
 		mv.addObject("userId", userId);
@@ -216,7 +222,96 @@ public class ManagerOtherInfoInputController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 跳转到放款台账新增界面
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_1_create.page")
+	public AbstractModelAndView iframe_1_create(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_1_create", request);
+		String userId = request.getParameter("userId");
+
+		mv.addObject("userId", userId);
+		return mv;
+	}
 	
+	/**
+	 * 保存放款台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_1_create.json", method = { RequestMethod.POST })
+	public JRadReturnMap iframe_1_create_json(@ModelAttribute LoanRefused loanRefused,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		loanRefused.setCreatedTime(new Date());
+		loanRefused.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.insertLoanRefused(loanRefused);
+			returnMap.setSuccess(true);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		return returnMap;
+	}
+	
+	/**
+	 * 跳转到放款台账修改界面
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_1_update.page")
+	public AbstractModelAndView iframe_1_update(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_1_update", request);
+		String id = request.getParameter("id");
+		LoanRefused loanRefused = managerOtherInfoInputService.findLoanRefusedById(id);
+		mv.addObject("obj", loanRefused);
+
+		String userId = request.getParameter("userId");
+
+		mv.addObject("userId", userId);
+		return mv;
+	}
+	
+	/**
+	 * 修改放款台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_1_update.json", method = { RequestMethod.POST })
+	public JRadReturnMap iframe_1_update_json(@ModelAttribute LoanRefused loanRefused,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		loanRefused.setModifiedTime(new Date());
+		loanRefused.setModifiedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.updateLoanRefused(loanRefused);
+			returnMap.setSuccess(true);
+		} catch (Exception e) {
+
+			logger.error(e.getMessage(), e);
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+		
+		return returnMap;
+	}
 	
 	/**
 	 * 拜访台账查询页面
@@ -312,5 +407,138 @@ public class ManagerOtherInfoInputController extends BaseController {
 			mv.addObject("vreg", vreg);
 		}
 		return mv;
+	}
+	
+	/**
+	 * 查询申请台帐
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_3.page")
+	public AbstractModelAndView ApplyBookbrowse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_3", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 申请台帐录入页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applyinsert.page")
+	public AbstractModelAndView create_apply(HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/applyStandingBookCreated", request);
+		return mv;
+	}
+	
+	/**
+	 * 申请台帐执行录入
+	 * @param managerPerformmance
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateApply.json")
+	public JRadReturnMap updateApply(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			applyStandingBook.setManagerId(user.getId());
+			applyStandingBook.setCreatedTime(new Date());
+			String id = IDGenerator.generateID();
+			applyStandingBook.setId(id);
+			managerPerformmanceService.insertapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+
+		return returnMap;
+	}
+	/**
+	 * 申请台帐执行删除
+	 * @param managerPerformmance
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applydelete.json")
+	public JRadReturnMap deleteApply(HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String id = request.getParameter("id");
+			managerPerformmanceService.deleteapplyStandingBook(id); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	/**
+	 * 申请台帐更新页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applyichange.page")
+	public AbstractModelAndView change_apply(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/applyStandingBookChange", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	/**
+	 * 申请台帐执行更新
+	 * @param managerPerformmance
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applychange.json")
+	public JRadReturnMap changeApply(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
 	}
 }
