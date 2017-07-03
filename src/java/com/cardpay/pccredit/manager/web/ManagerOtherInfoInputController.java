@@ -93,6 +93,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
+		filter.setUserId(userId);
 		QueryResult<LoanApproved> result = managerOtherInfoInputService.findLoanApprovedByFilter(filter);
 		JRadPagedQueryResult<LoanApproved> pagedResult = new JRadPagedQueryResult<LoanApproved>(filter, result);
 		mv.addObject("userId", userId);
@@ -128,7 +129,6 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@RequestMapping(value = "iframe_0_create.json", method = { RequestMethod.POST })
 	public JRadReturnMap iframe_0_create_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JRadReturnMap returnMap = new JRadReturnMap();
-		response.setContentType("text/html;charset=utf-8");
 		loanApproved.setCreatedTime(new Date());
 		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
@@ -176,7 +176,6 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@RequestMapping(value = "iframe_0_update.json", method = { RequestMethod.POST })
 	public JRadReturnMap iframe_0_update_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JRadReturnMap returnMap = new JRadReturnMap();
-		response.setContentType("text/html;charset=utf-8");
 		loanApproved.setModifiedTime(new Date());
 		loanApproved.setModifiedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
@@ -211,6 +210,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
+		filter.setUserId(userId);
 		QueryResult<LoanRefused> result=managerOtherInfoInputService.findLoanRefusedByFilter(filter);
 		JRadPagedQueryResult<LoanRefused> pagedResult = new JRadPagedQueryResult<LoanRefused>(filter, result);
 		mv.addObject("userId", userId);
@@ -246,7 +246,6 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@RequestMapping(value = "iframe_1_create.json", method = { RequestMethod.POST })
 	public JRadReturnMap iframe_1_create_json(@ModelAttribute LoanRefused loanRefused,HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JRadReturnMap returnMap = new JRadReturnMap();
-		response.setContentType("text/html;charset=utf-8");
 		loanRefused.setCreatedTime(new Date());
 		loanRefused.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
@@ -294,7 +293,6 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@RequestMapping(value = "iframe_1_update.json", method = { RequestMethod.POST })
 	public JRadReturnMap iframe_1_update_json(@ModelAttribute LoanRefused loanRefused,HttpServletRequest request, HttpServletResponse response) throws IOException {
 		JRadReturnMap returnMap = new JRadReturnMap();
-		response.setContentType("text/html;charset=utf-8");
 		loanRefused.setModifiedTime(new Date());
 		loanRefused.setModifiedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		

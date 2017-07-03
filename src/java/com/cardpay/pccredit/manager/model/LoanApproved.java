@@ -33,7 +33,7 @@ public class LoanApproved extends BusinessModel {
 	private String warrantor;
 	private String guarantyInfo;
 	private String loanBeginTime;
-	private String loanEndTime;
+	private String loanEdnTime;
 	private String payMode;
 	private String loanAccount;
 	private String remarks;
@@ -170,11 +170,11 @@ public class LoanApproved extends BusinessModel {
 	public void setLoanBeginTime(String loanBeginTime) {
 		this.loanBeginTime = loanBeginTime;
 	}
-	public String getLoanEndTime() {
-		return loanEndTime;
+	public String getLoanEdnTime() {
+		return loanEdnTime;
 	}
-	public void setLoanEdnTime(String loanEndTime) {
-		this.loanEndTime = loanEndTime;
+	public void setLoanEdnTime(String loanEdnTime) {
+		this.loanEdnTime = loanEdnTime;
 	}
 	public String getPayMode() {
 		return payMode;

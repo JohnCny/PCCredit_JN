@@ -17,14 +17,13 @@
         <div class="search_tag"></div>
         <div class="search">
           <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">
-          	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
             <ul>
               <li>
                 <span>客户名称：<input type="text" id="customerName" name="customerName" value="$!result.filter.customerName" maxlength="100"/></span>
               </li>
               
               <li class="search_button">
-                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                <input id="id_browse_button" type="submit" value="#i18n('button.browse')" class="search_button_inquiry"
                   title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
               </li>
             </ul>
@@ -167,7 +166,7 @@
               <td nowrap="nowrap">$!obj.warrantor</td>
               <td nowrap="nowrap">$!obj.guarantyInfo</td>
               <td nowrap="nowrap">$!obj.loanBeginTime</td>
-              <td nowrap="nowrap">$!obj.loanEndTime</td>
+              <td nowrap="nowrap">$!obj.loanEdnTime</td>
               <td nowrap="nowrap">$!obj.payMode</td>
               
               <td nowrap="nowrap">$!obj.loanAccount</td>
