@@ -1,0 +1,117 @@
+#parse ("common/iframe_page_header.htm")
+ <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">客户经理业绩进度</div>
+			</div>
+			<form id="id_module_form"
+				action="${contextPath}//manager/otherinfoinput/applychange.json" />
+			
+				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
+					bordercolor="#cccccc" style="width: 97%;margin-top:20px;margin-left:1.5%;">
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">申请台账录入</td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="applyDate">申请日期:</label></td>
+						<td><input type="text" id ="applyDate" name="applyDate" value="$!date.format('yyyy-MM-dd',$!result.applyDate)"
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span></td>
+						<td class="titlefc3"><label for="customerName">客户姓名:</label></td>
+						<td><input class="rinpsty" type="text" id="customerName"
+							name="customerName" value="$!result.customerName" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="contactMethod">联系方式:</label></td>
+						<td><input class="rinpsty" type="text" id="contactMethod"
+							name="contactMethod" value="$!result.contactMethod" /></td>
+						<td class="titlefc3"><label for="homeAddress">家庭住址:</label></td>
+						<td><input class="rinpsty" type="text" id="homeAddress"
+							name="homeAddress" value="$!result.homeAddress" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="workPlace">营业实体/工作单位:</label></td>
+						<td><input class="rinpsty" type="text" id="workPlace"
+							name="workPlace" value="$!result.workPlace" /></td>
+						<td class="titlefc3"><label for="product">贷款产品:</label></td>
+						<td><input class="rinpsty" type="text" id="product"
+							name="product" value="$!result.product" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="applyAmount">申请金额:</label></td>
+						<td><input class="rinpsty" type="text" id="applyAmount"
+							name="applyAmount" value="$!result.applyAmount" /></td>
+						<td class="titlefc3"><label for="applyDeadline">申请期限:</label></td>
+						<td><input class="rinpsty" type="text" id="applyDeadline"
+							name="applyDeadline" value="$!result.applyDeadline" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="proceedUse">贷款用途:</label></td>
+						<td><input class="rinpsty" type="text" id="proceedUse"
+							name="proceedUse" value="$!result.proceedUse" /></td>
+						<td class="titlefc3"><label for="financingExperience">是否有融资经历（贷款信息）:</label></td>
+						<td><input class="rinpsty" type="text" id="financingExperience"
+							name="financingExperience" value="$!result.financingExperience" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="managerName">接待客户经理:</label></td>
+						<td><input class="rinpsty" type="text" id="managerName"
+							name="managerName" value="$!result.managerName" /></td>
+						<td class="titlefc3"><label for="jurisdiction">所属管辖行:</label></td>
+						<td><input class="rinpsty" type="text" id="jurisdiction"
+							name="jurisdiction" value="$!result.jurisdiction" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="remark">备注:</label></td>
+						<td><input class="rinpsty" type="text" id="remark"
+							name="remark" value="$!result.remark" /></td>
+						<td style="display:none"><label for="remark">备注:</label></td>
+						<td style="display:none"><input class="rinpsty" type="text" id="id"
+							name="id" value="$!result.id" /></td>
+					</tr>
+					
+				</table>
+			</form>
+			<div class="submit" style="text-align: left;">
+				<input id="id_save_button" type="button"
+					value="#i18n('button.save')" class="current" />
+			</div>
+		</div>
+	</div>
+</body>
+ <script type="text/javascript">
+ $(document).ready(function() {	
+	 #set ($formName = "'#id_module_form'");
+	 $("#id_save_button").click(function (){
+	  var formjson = $($formName).serialize();
+   	  var url = $($formName).attr("action");
+   	  Dialog.confirm("确定要处理吗？", "提示",
+	     		function() {
+					 $.ajax({
+							url : url,
+							type : "get",
+							data : formjson,
+							success : function(data) {
+								if (data.success) {
+									topWin.Dialog.message(data.mess);
+									location.href="${contextPath}/manager/otherinfoinput/iframe_3.page";
+								}else{
+									topWin.Dialog.message(data.mess);
+							    }
+							}
+						});
+   			    });
+	  });
+	
+ })
+ 
+ 
+ </script>
+#parse ("common/iframe_page_footer.htm")

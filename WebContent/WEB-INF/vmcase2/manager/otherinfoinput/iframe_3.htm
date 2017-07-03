@@ -1,0 +1,181 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/macro.htm")
+  <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+        <div class="tabplace">
+            <ul class="com-tab" >
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款台账</a></li>
+            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">拒绝台账</a></li>
+            <li class="tab activeTab" ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
+
+         </ul>
+         </div>
+      
+      <div class="inquiry" style="padding:15px;">
+        <div class="search_tag"></div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_3.page">
+          	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
+            <ul>
+              <li style="display:none">
+                <span  style="display:none">客户经理ID：<input  style="display:none" type="text" id="userId" name="userId" value="$!filter.managerId" maxlength="100"/></span>
+              </li>
+              <li>
+                <span>客户名称：<input type="text" id="customerName" name="customerName" value="$!filter.customerName" maxlength="100"/></span>
+              </li>
+               <li>
+	          	<span>开始日期:&nbsp;<input type="text" id ="startDate" name="startDate" value='$!date.format("yyyy-MM-dd",$!filter.startDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li>
+	          	<span>结束日期:&nbsp;<input type="text" id ="endDate" name="endDate" value='$!date.format("yyyy-MM-dd",$!filter.endDate)' 
+	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span>
+              </li>
+              <li class="search_button">
+                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
+                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+              </li>
+            </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+             <colgroup>
+              <col width="40" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="300" />
+              <col width="300" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="200" />
+              <col width="200" />
+              <col width="100" />
+              <col width="100" />
+              <col width="300" />
+            </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">申请日期</th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">联系方式</th>
+              <th nowrap="nowrap">家庭住址</th>
+              <th nowrap="nowrap">营业实体/工作单位</th>
+              <th nowrap="nowrap">贷款产品</th>
+              <th nowrap="nowrap">申请金额</th>
+              <th nowrap="nowrap">申请期限</th>
+              <th nowrap="nowrap">贷款用途</th>
+              <th nowrap="nowrap">是否有融资经历（贷款信息）</th>
+              <th nowrap="nowrap">接待客户经理</th>
+              <th nowrap="nowrap">所属管辖行</th>
+              <th nowrap="nowrap">备注</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down" style="height:280px;">
+          <table>
+            <colgroup>
+              <col width="40" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="300" />
+              <col width="300" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="200" />
+              <col width="200" />
+              <col width="100" />
+              <col width="100" />
+              <col width="300" />
+            </colgroup>
+             #foreach($applyBook in $!result.items)
+            <tr>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$applyBook.id"/></td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!applyBook.applyDate)</td>
+              <td nowrap="nowrap">$!applyBook.customerName</td>
+              <td nowrap="nowrap">$!applyBook.contactMethod</td>
+              <td nowrap="nowrap">$!applyBook.homeAddress</td>
+              <td nowrap="nowrap">$!applyBook.workPlace</td>
+              <td nowrap="nowrap">$!applyBook.product</td>
+              <td nowrap="nowrap">$!applyBook.applyAmount</td>
+              <td nowrap="nowrap">$!applyBook.applyDeadline</td>
+              <td nowrap="nowrap">$!applyBook.proceedUse</td>
+              <td nowrap="nowrap">$!applyBook.financingExperience</td>
+              <td nowrap="nowrap">$!applyBook.managerName</td>
+              <td nowrap="nowrap">$!applyBook.jurisdiction</td>
+              <td nowrap="nowrap">$!applyBook.remark</td>
+            </tr>
+            #end
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn" style="">
+        #if($!lock)
+       		<a class="btn_g" href="${contextPath}/manager/otherinfoinput/applyinsert.page"  title="新增">新增</a>
+       		<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">修改</a>
+       		<a id="id_delete_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">删除</a>
+       	#end	
+       		<a href="javascript:history.back();" class="btn_gr">返回</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+      </div>
+      
+    </div>
+    
+  </div>
+  <script type="text/javascript">
+	var layout = new TableLayout(2);
+	window.top.currentWindow.setLayout(layout);
+	 $("#id_browse_button").click(function() {
+		 var beginDate=$("#startDate").val(); 
+		 var endDate=$("#endDate").val(); 
+		 var d1 = new Date(beginDate.replace(/\-/g, "\/")); 
+		 var d2 = new Date(endDate.replace(/\-/g, "\/")); 
+		  if(beginDate!=""&&endDate!=""&&d1 >=d2) 
+		 { 
+			  window.top.Dialog.message("开始时间不能大于结束时间！"); 
+		  return false; 
+		 }
+	     document.getElementById("submitForm").submit();
+	 });
+	 $("#id_delete_button").click(function() {
+		 
+		 if ($(".checkbox :checked").length == 1) {
+             var rowid = $($(".checkbox :checked")[0]).attr("value");
+             Dialog.confirm("确定要处理吗？", "提示",function(){
+                
+            	 $.ajax({
+ 					url : "${contextPath}/manager/otherinfoinput/applydelete.json?id="+rowid,
+ 					type : "get",
+ 					success : function(data) {
+ 						window.top.Dialog.message(data.mess);
+ 						location.reload();
+ 				    	}
+ 					})
+                 })
+         } else {
+             Dialog.message("请选择一行");
+         }
+	 });
+	 $("#id_change_button").click(function() {
+		 
+		 if ($(".checkbox :checked").length == 1) {
+             var rowid = $($(".checkbox :checked")[0]).attr("value");
+             window.location.href="${contextPath}/manager/otherinfoinput/applyichange.page?id="+rowid;
+         } else {
+             Dialog.message("请选择一行");
+         }
+	 });
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")
