@@ -21,7 +21,7 @@
                 <span>证件号码：<input type="text" id="cardId" name="cardId" value="$!result.filter.cardId" /></span>
               </li>
               <li style="width:300px">
-	          	  <span>申请金额：<input type="text" name="startAmt" value='' maxlength="7" style="width: 80px;min-width:80px"/></span>&nbsp;-
+	          	  <span>申请金额(元)：<input type="text" name="startAmt" value='' maxlength="7" style="width: 80px;min-width:80px"/></span>&nbsp;-
 	          	  <span><input type="text" name="endAmt" value=''  maxlength="7" style="width: 80px;min-width:80px"/></span>
               </li>
               
@@ -61,18 +61,18 @@
         <div id="topDiv" class="inquiry_list inquiry_top">
           <table>
             <colgroup>
-              <col width="5%" />
-              <col width="8%" />
-              <col width="7%" />
-              <col width="6%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="13%"/> 
-              <col width="8%"/>
-              <col width="8%"/>
-              <col width="10%"/>
-              <col width="10%"/>
+              <col width="40" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150"/> 
+              <col width="150"/>
+              <col width="150"/>
+              <col width="200"/>
+              <col width="200"/>
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -93,18 +93,18 @@
         <div id="downDiv" class="inquiry_list inquiry_down">
           <table>
             <colgroup>
-              <col width="5%" />
-              <col width="8%" />
-              <col width="7%" />
-              <col width="6%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="7%" />
-              <col width="13%"/> 
-              <col width="8%"/>
-              <col width="8%"/>
-              <col width="10%"/>
-              <col width="10%"/>
+              <col width="40" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150" />
+              <col width="150"/> 
+              <col width="150"/>
+              <col width="150"/>
+              <col width="200"/>
+              <col width="200"/>
             </colgroup>
            #foreach ($wait in $result.items)
             <tr ondblclick="javascript:$('#id_change_button').click();">
