@@ -100,7 +100,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		filter.setUserId(userId);
 		QueryResult<LoanApproved> result = managerOtherInfoInputService.findLoanApprovedByFilter(filter);
 		JRadPagedQueryResult<LoanApproved> pagedResult = new JRadPagedQueryResult<LoanApproved>(filter, result);
-		mv.addObject("userId", userId);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
@@ -217,7 +222,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		filter.setUserId(userId);
 		QueryResult<LoanRefused> result=managerOtherInfoInputService.findLoanRefusedByFilter(filter);
 		JRadPagedQueryResult<LoanRefused> pagedResult = new JRadPagedQueryResult<LoanRefused>(filter, result);
-		mv.addObject("userId", userId);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
@@ -330,12 +340,16 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		if(user.getUserType() == 1){//客户经理
-			filter.setUserId(userId);
-		}
+		
+		filter.setUserId(userId);
 		QueryResult<VisitRegistLedger> result = otherMusidataInputService.findVisitRegistLedgerByFilter(filter);
 		JRadPagedQueryResult<VisitRegistLedger> pagedResult = new JRadPagedQueryResult<VisitRegistLedger>(filter, result);
-		mv.addObject("userId", userId);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
