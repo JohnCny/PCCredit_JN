@@ -37,22 +37,17 @@ import com.cardpay.pccredit.main.MainController;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
-
 import com.cardpay.pccredit.manager.form.VisitRegistLedgerForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
-
 import com.cardpay.pccredit.manager.model.LoanApproved;
 import com.cardpay.pccredit.manager.model.LoanRefused;
-
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
-
 import com.cardpay.pccredit.manager.model.VisitRegistLedger;
-
 import com.cardpay.pccredit.manager.service.ManagerOtherInfoInputService;
-
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.cardpay.pccredit.manager.service.OtherMusidataInputService;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -78,7 +73,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 	private ManagerOtherInfoInputService managerOtherInfoInputService;
 	
 	@Autowired
-	private OtherMusidataInputService OtherMusidataInputService;
+	private OtherMusidataInputService otherMusidataInputService;
 
 	/**
 	 * 放款台账查询页面
@@ -240,7 +235,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		QueryResult<VisitRegistLedger> result = OtherMusidataInputService.findVisitRegistLedgerByFilter(filter);
+		QueryResult<VisitRegistLedger> result = otherMusidataInputService.findVisitRegistLedgerByFilter(filter);
 		JRadPagedQueryResult<VisitRegistLedger> pagedResult = new JRadPagedQueryResult<VisitRegistLedger>(filter, result);
 		mv.addObject("userId", userId);
 		mv.addObject(PAGED_RESULT, pagedResult);
@@ -273,15 +268,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 	public JRadReturnMap iframe_4_insert(@ModelAttribute VisitRegistLedgerForm form, HttpServletRequest request) {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
+			SystemUser sys =  otherMusidataInputService.queryCustomer(form.getVisitId());
 			try {
 				if(StringUtils.isNotEmpty(form.getId())) {//update
 					VisitRegistLedger regt = form.createModel(VisitRegistLedger.class);
-					OtherMusidataInputService.updateVisitRegistLedgerParameter(regt);
+					if(sys!=null){
+						regt.setVisitManager(sys.getDisplayName());
+					}
+					otherMusidataInputService.updateVisitRegistLedgerParameter(regt);
 					returnMap.put(RECORD_ID, regt.getId());
 					
 				}else{
 					VisitRegistLedger vreg = form.createModel(VisitRegistLedger.class);
-					String id = OtherMusidataInputService.insertVisitRegistLedgerParameter(vreg);
+					if(sys!=null){
+						vreg.setVisitManager(sys.getDisplayName());
+					}
+					String id = otherMusidataInputService.insertVisitRegistLedgerParameter(vreg);
 					returnMap.put(RECORD_ID, id);
 				}
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
@@ -306,7 +308,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4_create", request);
 		String id = RequestHelper.getStringValue(request, ID);
 		if (StringUtils.isNotEmpty(id)) {
-			VisitRegistLedger vreg = OtherMusidataInputService.findVisitRegistLedgerParameterById(id);
+			VisitRegistLedger vreg = otherMusidataInputService.findVisitRegistLedgerParameterById(id);
 			mv.addObject("vreg", vreg);
 		}
 		return mv;
