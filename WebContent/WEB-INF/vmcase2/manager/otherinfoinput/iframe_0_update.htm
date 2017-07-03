@@ -1,0 +1,183 @@
+#parse ("common/iframe_page_header.htm")
+
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户基本信息>放款台账</div>
+      </div>
+       
+      <form id="id_module_form" action="${contextPath}/manager/otherinfoinput/iframe_0_insert.json"/>
+         <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;margin-top:20px;">
+            <colgroup>
+              <col width="10%" />
+              <col width="35%" />
+              
+              <col width="10%" />
+              <col width="35%" />
+            </colgroup>
+            <tr>
+              <td class="titlec" colspan="4" style="text-align: center;">借款人信息</td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">借款人姓名:</label></td>
+              <td><input class="rinpsty"  type="text" id="customerName" name="customerName" value="$!obj.customerName" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">借款人年龄:</label></td>
+              <td><input class="rinpsty"  type="text" id="customerAge" name="customerAge" value="$!obj." style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">联系方式:</label></td>
+              <td><input class="rinpsty"  type="text" id="customerTele" name="customerTele" value="$!obj." style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">婚姻状况:</label></td>
+              <td><input class="rinpsty"  type="text" id="customerMarriage" name="customerMarriage" value="$!obj." style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">配偶姓名:</label></td>
+              <td><input class="rinpsty"  type="text" id="mateName" name="mateName" value="$!obj." style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">配偶身份证号:</label></td>
+              <td><input class="rinpsty"  type="text" name="mateIdNo" id="cardId" value="$!obj." style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">配偶联系方式:</label></td>
+              <td><input class="rinpsty"  type="text" id="mateTele" name="mateTele" value="$!obj.mateTele" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">家庭住址:</label></td>
+              <td><input class="rinpsty"  type="text" id="homeAdd" name="homeAdd" value="$!obj.homeAdd" style="width:300px"/></td>
+            </tr>
+            
+            <tr>
+              <td class="titlec" colspan="4" style="text-align: center;">经营信息</td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">借款人经营行业:</label></td>
+              <td><input class="rinpsty"  type="text" id="busIndustry" name="busIndustry" value="$!obj.busIndustry" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">借款人实际经营实体名称:</label></td>
+              <td><input class="rinpsty"  type="text" id="busName" name="busName" value="$!obj.busName" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">借款人经营地址:</label></td>
+              <td><input class="rinpsty"  type="text" id="busAdd" name="busAdd" value="$!obj.busAdd" style="width:300px"/></td>
+              <td class="titlefc3"></td>
+              <td></td>
+            </tr>
+            
+            <tr>
+              <td class="titlec" colspan="4" style="text-align: center;">贷款信息</td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">贷款产品:</label></td>
+              <td><input class="rinpsty"  type="text" id="prdName" name="prdName" value="$!obj.prdName" style="width:300px"/></td>
+              <td class="titlefc3"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">主办客户经理:</label></td>
+              <td><input class="rinpsty"  type="text" id="chiefManager" name="chiefManager" value="$!obj.chiefManager" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">协办客户经理:</label></td>
+              <td><input class="rinpsty"  type="text" id="supManager" name="supManager" value="$!obj.supManager" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">贷审委成员:</label></td>
+              <td><input class="rinpsty"  type="text" id="approvalMember" name="approvalMember" value="$!obj.approvalMember" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">贷款金额:</label></td>
+              <td><input class="rinpsty"  type="text" id="loanAmount" name="loanAmount" value="$!obj.loanAmount" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">贷款期限（月）:</label></td>
+              <td><input class="rinpsty"  type="text" id="dueTime" name="dueTime" value="$!obj.dueTime" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">利率(年):</label></td>
+              <td><input class="rinpsty"  type="text" id="rate" name="rate" value="$!obj.rate" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">信用/担保方式:</label></td>
+              <td><input class="rinpsty"  type="text" id="loanMode" name="loanMode" value="$!obj.loanMode" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">保证人:</label></td>
+              <td><input class="rinpsty"  type="text" id="warrantor" name="warrantor" value="$!obj.warrantor" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">抵(质)押物信息:</label></td>
+              <td><input class="rinpsty"  type="text" id="guarantyInfo" name="guarantyInfo" value="$!obj.guarantyInfo" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">放款日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="loanBeginTime" name="loanBeginTime" value="$!obj.loanBeginTime" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">到期日期:</label></td>
+              <td><input class="rinpsty"  type="text" id="loanEndTime" name="loanEndTime" value="$!obj.loanEndTime" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">支付方式:</label></td>
+              <td><input class="rinpsty"  type="text" id="payMode" name="payMode" value="$!obj.payMode" style="width:300px"/></td>
+            </tr>
+            <tr>
+              <td class="titlefc3"><label for="chineseName">扣款账号:</label></td>
+              <td><input class="rinpsty"  type="text" id="loanAccount" name="loanAccount" value="$!obj.loanAccount" style="width:300px"/></td>
+              <td class="titlefc3"><label for="chineseName">备注:</label></td>
+              <td><input class="rinpsty"  type="text" id="remarks" name="remarks" value="$!obj.remarks" style="width:300px"/></td>
+            </tr>
+          </table>
+        </div>
+      </form>
+      <div class="submit" style="text-align:left;">
+        <input id="id_save_button" type="button" value="保存" class="current" />
+      </div>
+    </div>
+  </div>
+ 
+  <script type="text/javascript">
+  
+  	#set ($formName = "'#id_module_form'")
+	#parse ("manager/otherinfoinput/iframe0Create_validation.js")
+	
+	var layout = new FormsLayout("formsId");
+	window.top.currentWindow.setLayout(layout);
+	
+	$(document).ready(function() {		
+		$("#id_save_button").click(function() {
+			
+			var cardId = $("#cardId").val();
+			if(cardId !=""){
+				var idReg = /(^\d{15}$)|(^\d{17}([0-9]|[X]|[x])$)/;
+			
+			    if(idReg.test(cardId)){
+		    	 	$("#cardIde").remove();	
+    	 	 	}else{
+			       	$("input[name='mateIdNo']").after("<label class='error' id='cardIde' generated='true' ><br>请输入正确的身份证号(15/18位)</label>");   
+		     	}	
+			}
+			
+			var leng = 0;
+	    	leng = $("#cardIde").length;
+	    	
+	    	if(leng > 0){
+	    		return;
+	    	}
+	    	
+	    	if ($($formName).valid()) {
+   				var formjson = $($formName).serialize();
+   	   	        var url = $($formName).attr("action");
+   				$.ajax({
+   					url : url,
+   					type : "get",
+   					data : formjson,
+   					success : function(data) {
+   						if (data.success) {
+   							topWin.Dialog.message("保存成功!");
+   		   	            	window.location.reload() ;
+   						}else{
+   							topWin.Dialog.message(data.message);
+   					    }
+   					}
+   				});
+   			}
+	      });
+	});
+	
+	//返回
+	function returnClick(){
+		window.location.href= contextPath + "/customer/basiccustomerinforCreate/insert.page";
+	}
+	
+	
+  </script>
+  
+</body>
+#parse ("common/iframe_page_footer.htm")

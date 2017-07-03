@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cardpay.pccredit.manager.dao.OtherMusidataInputDao">
+	
+	<resultMap id="VMap" type="com.cardpay.pccredit.manager.model.VisitRegistLedger">
+		<result property="id"                column="ID" />
+		<result property="visitDate"         column="VISIT_DATE" />
+		<result property="merchantName"      column="MERCHANT_NAME" />
+		<result property="customerName"      column="CUSTOMER_NAME" />
+		<result property="contactInfor"      column="CONTACT_INFOR" />
+		<result property="sex"               column="SEX" />
+		<result property="registence"        column="REGISTENCE" />
+		<result property="realEstate"        column="REAL_ESTATE" />
+		<result property="scopeOfBusiness"   column="SCOPE_OF_BUSINESS" />
+		<result property="scopeOfAddress"    column="SCOPE_OF_ADDRESS" />
+		<result property="fundDemand"        column="FUND_DEMAND" />
+		<result property="fundDemandDate"   column="FUND_DEMAND_DATE" />
+		<result property="financeExp"        column="FINANCE_EXP" />
+		<result property="visitManager"      column="VISIT_MANAGER" />
+		<result property="organ"             column="ORGAN" />
+		<result property="remark"            column="REMARK" />
+	</resultMap>
+	
+	
+	<select id="findVisitRegistLedgerByFilter" resultMap="VMap" parameterType="map">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+	    	SELECT * from VISIT_REGIST_LEDGER t
+			WHERE 1=1
+			<if test="customerName != null and customerName != '' ">
+				<![CDATA[ and CUSTOMER_NAME like '%'||#{customerName}||'%']]>
+			</if>
+			<if test="customerManagerName != null and customerManagerName != '' ">
+				<![CDATA[ and VISIT_MANAGER like '%'||#{customerManagerName}||'%']]>
+			</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findVisitRegistLedgerCountByFilter" resultType="int">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT * from VISIT_REGIST_LEDGER t
+		WHERE 1=1
+		<if test="customerName != null and customerName != '' ">
+				<![CDATA[ and CUSTOMER_NAME like '%'||#{customerName}||'%']]>
+	    </if>
+		<if test="customerManagerName != null and customerManagerName != '' ">
+			<![CDATA[ and VISIT_MANAGER like '%'||#{customerManagerName}||'%']]>
+		</if>
+		)
+	</select>
+	
+	
+</mapper>

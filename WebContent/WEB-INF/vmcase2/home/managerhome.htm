@@ -146,14 +146,14 @@ $(document).ready(function() {
       type: 'column'
    };
    var title = {
-      text: '<b>放款,逾期,不良总额度</b>',
+      text: '<b>授信,逾期,不良总额度</b>',
       style:{
           color:"#304568",
           fontFamily:"微软雅黑"
       }
    };
    var xAxis = {
-      categories: ['放款总额度','逾期总额度','不良总额度'],
+      categories: ['授信总额度','逾期总额度','不良总额度'],
       crosshair: true
    };
    var exporting = {
@@ -379,7 +379,7 @@ $(document).ready(function() {
 			<tr>
 				<th><span>排名</span></th>
 				<th><span>客户经理</span></th>
-				<th><span>放款总金额</span></th>
+				<th><span>用信金额</span></th>
 				<th><span style="border-right: 0;">所属部门</span></th>
 			</tr>
 			#foreach ($fks in $fk)

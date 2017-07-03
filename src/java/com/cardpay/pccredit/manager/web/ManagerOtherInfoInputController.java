@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.web;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,25 +27,38 @@ import com.wicresoft.jrad.base.web.utility.WebRequestHelper;
 import com.wicresoft.jrad.modules.privilege.model.User;
 import com.calcuation.utils.StringUtil;
 import com.cardpay.pccredit.dimensional.filter.DimensionalFilter;
+import com.cardpay.pccredit.intopieces.constant.CardStatus;
+import com.cardpay.pccredit.intopieces.constant.Constant;
 import com.cardpay.pccredit.intopieces.filter.IntoPiecesFilter;
 import com.cardpay.pccredit.intopieces.model.IntoPieces;
+import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.main.MainController;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
+import com.cardpay.pccredit.manager.form.VisitRegistLedgerForm;
+import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.LoanApproved;
+import com.cardpay.pccredit.manager.model.LoanRefused;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
+import com.cardpay.pccredit.manager.model.VisitRegistLedger;
+import com.cardpay.pccredit.manager.service.ManagerOtherInfoInputService;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
+import com.cardpay.pccredit.manager.service.OtherMusidataInputService;
+import com.cardpay.pccredit.system.model.SystemUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
 import com.wicresoft.jrad.base.database.model.QueryResult;
+import com.wicresoft.jrad.base.i18n.I18nHelper;
 import com.wicresoft.jrad.base.web.JRadModelAndView;
 import com.wicresoft.jrad.base.web.controller.BaseController;
 import com.wicresoft.util.spring.Beans;
 import com.wicresoft.util.spring.mvc.mv.AbstractModelAndView;
+import com.wicresoft.util.web.RequestHelper;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -56,7 +70,10 @@ import net.sf.json.JsonConfig;
 public class ManagerOtherInfoInputController extends BaseController {
 	private static final Logger logger = Logger.getLogger(ManagerOtherInfoInputController.class);
 	@Autowired
-	private ManagerPerformmanceService managerPerformmanceService;
+	private ManagerOtherInfoInputService managerOtherInfoInputService;
+	
+	@Autowired
+	private OtherMusidataInputService otherMusidataInputService;
 
 	/**
 	 * 放款台账查询页面
@@ -76,11 +93,102 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		//QueryResult<IntoPieces> result=new QueryResult<IntoPieces>();//intoPiecesService.findintoPiecesByFilter(filter);
-		//JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
+		QueryResult<LoanApproved> result = managerOtherInfoInputService.findLoanApprovedByFilter(filter);
+		JRadPagedQueryResult<LoanApproved> pagedResult = new JRadPagedQueryResult<LoanApproved>(filter, result);
 		mv.addObject("userId", userId);
-		//mv.addObject(PAGED_RESULT, pagedResult);
+		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
+	}
+	
+	/**
+	 * 跳转到放款台账新增界面
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_create.page")
+	public AbstractModelAndView iframe_0_create(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_0_create", request);
+		return mv;
+	}
+	
+	/**
+	 * 保存放款台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_create.json", method = { RequestMethod.POST })
+	public Map<String, Object> iframe_0_create_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+		loanApproved.setCreatedTime(new Date());
+		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.insertLoanApproved(loanApproved);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.SUCCESS_MESSAGE));
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		JSONObject obj = JSONObject.fromObject(map);
+		response.getWriter().print(obj.toString());
+		return null;
+	}
+	
+	/**
+	 * 跳转到放款台账修改界面
+	 * @param filter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_update.page")
+	public AbstractModelAndView iframe_0_update(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_0_update", request);
+		String id = request.getParameter("id");
+		LoanApproved loanApproved = managerOtherInfoInputService.findLoanApprovedById(id);
+		mv.addObject("obj", loanApproved);
+		return mv;
+	}
+	
+	/**
+	 * 修改放款台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_0_update.json", method = { RequestMethod.POST })
+	public Map<String, Object> iframe_0_update_json(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setContentType("text/html;charset=utf-8");
+		Map<String, Object> map = new HashMap<String, Object>();
+		loanApproved.setCreatedTime(new Date());
+		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.updateLoanApproved(loanApproved);
+			map.put(JRadConstants.SUCCESS, true);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.SUCCESS_MESSAGE));
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			map.put(JRadConstants.SUCCESS, false);
+			map.put(JRadConstants.MESSAGE, Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		JSONObject obj = JSONObject.fromObject(map);
+		response.getWriter().print(obj.toString());
+		return null;
 	}
 	
 	/**
@@ -101,11 +209,108 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		filter.setRequest(request);
-		QueryResult<IntoPieces> result=null;//intoPiecesService.findintoPiecesByFilter(filter);
-		JRadPagedQueryResult<IntoPieces> pagedResult = new JRadPagedQueryResult<IntoPieces>(filter, result);
+		QueryResult<LoanRefused> result=managerOtherInfoInputService.findLoanRefusedByFilter(filter);
+		JRadPagedQueryResult<LoanRefused> pagedResult = new JRadPagedQueryResult<LoanRefused>(filter, result);
 		mv.addObject("userId", userId);
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
 	
+	
+	
+	/**
+	 * 拜访台账查询页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4.page")
+	public AbstractModelAndView iframe_4(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4", request);
+		
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		
+		filter.setRequest(request);
+		QueryResult<VisitRegistLedger> result = otherMusidataInputService.findVisitRegistLedgerByFilter(filter);
+		JRadPagedQueryResult<VisitRegistLedger> pagedResult = new JRadPagedQueryResult<VisitRegistLedger>(filter, result);
+		mv.addObject("userId", userId);
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	/**
+	 * 拜访台账增加页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4_create.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_4_create(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4_create", request);
+		return mv;
+	}
+
+	
+	/**
+	 * 执行添加 拜访台账
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4_insert.json")
+	@JRadOperation(JRadOperation.CREATE)
+	public JRadReturnMap iframe_4_insert(@ModelAttribute VisitRegistLedgerForm form, HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		if (returnMap.isSuccess()) {
+			SystemUser sys =  otherMusidataInputService.queryCustomer(form.getVisitId());
+			try {
+				if(StringUtils.isNotEmpty(form.getId())) {//update
+					VisitRegistLedger regt = form.createModel(VisitRegistLedger.class);
+					if(sys!=null){
+						regt.setVisitManager(sys.getDisplayName());
+					}
+					otherMusidataInputService.updateVisitRegistLedgerParameter(regt);
+					returnMap.put(RECORD_ID, regt.getId());
+					
+				}else{
+					VisitRegistLedger vreg = form.createModel(VisitRegistLedger.class);
+					if(sys!=null){
+						vreg.setVisitManager(sys.getDisplayName());
+					}
+					String id = otherMusidataInputService.insertVisitRegistLedgerParameter(vreg);
+					returnMap.put(RECORD_ID, id);
+				}
+				returnMap.addGlobalMessage(CHANGE_SUCCESS);
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+
+		return returnMap;
+	}
+	
+	
+	/**
+	 * 拜访台账修改页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_4_update.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_4_update(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4_create", request);
+		String id = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(id)) {
+			VisitRegistLedger vreg = otherMusidataInputService.findVisitRegistLedgerParameterById(id);
+			mv.addObject("vreg", vreg);
+		}
+		return mv;
+	}
 }
