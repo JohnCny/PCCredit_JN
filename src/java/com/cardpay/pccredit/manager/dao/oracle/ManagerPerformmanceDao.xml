@@ -87,6 +87,26 @@
 		<result property="crateday" column="crateday" />
 		<result property="money" column="money" />
 	</resultMap>
+	<resultMap type="com.cardpay.pccredit.manager.model.ApplyStandingBookModel"
+		id="applyBook">
+		<result property="id" column="ID" />
+		<result property="managerId" column="manager_id" />
+		<result property="applyDate" column="apply_Date" />
+		<result property="customerName" column="customer_Name" />
+		<result property="contactMethod" column="contact_Method" />
+		<result property="homeAddress" column="home_Address" />
+		<result property="workPlace" column="work_Place" />
+		<result property="product" column="product" />
+		<result property="applyAmount" column="apply_Amount" />
+		<result property="applyDeadline" column="apply_Deadline" />
+		<result property="proceedUse" column="proceed_Use" />
+		<result property="financingExperience" column="financing_Experience" />
+		<result property="managerName" column="manager_Name" />
+		<result property="jurisdiction" column="jurisdiction" />
+		<result property="remark" column="remark" />
+		<result property="createdTime" column="created_Time" />
+
+	</resultMap>
 	<select id="findMumberByDeptId" resultMap="ResultMap">
 		select o.name as oname ,d.name,t.* from sys_user t
 		left join sys_dept_user sd on t.id = sd.user_id
@@ -468,6 +488,49 @@
 <select id="getOrgName" resultType="String">
     
     SELECT name  FROM sys_organization WHERE id =#{orgId}
+    
+</select>
+<select id="findApplyStandingBookByFilter" resultMap="applyBook">
+    SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+		select * from ApplyStandingBook asb
+		where 1=1
+		 <if test="managerId != null and managerId != ''">
+		and asb.manager_Id=#{managerId}
+		</if>
+		<if test="customerName != null and customerName != ''">
+		and asb.customer_Name=#{customerName}
+		</if>
+		 <if test="startDate != null and startDate != ''">
+		and trunc(asb.apply_Date)>=trunc(#{startDate})
+		</if>
+		<if test="endDate != null and endDate != ''">
+		AND  trunc(#{endDate})>= trunc(asb.apply_Date)
+		</if>
+		order by asb.created_Time
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+</select>
+<select id="findApplyStandingBookByFilterCount" resultType="int">
+    select count(*) from ApplyStandingBook asb
+		where 1=1
+		 <if test="managerId != null and managerId != ''">
+		and asb.manager_Id=#{managerId}
+		</if>
+		 <if test="customerName != null and customerName != ''">
+		and asb.customer_Name=#{customerName}
+		</if>
+		 <if test="startDate != null and startDate != ''">
+		and trunc(asb.apply_Date)>=trunc(#{startDate})
+		</if>
+		<if test="endDate != null and endDate != ''">
+		AND  trunc(#{endDate})>= trunc(asb.apply_Date)
+		</if>
+		order by asb.created_Time
     
 </select>
 </mapper>

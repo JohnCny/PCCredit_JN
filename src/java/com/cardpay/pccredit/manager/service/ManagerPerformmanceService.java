@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,15 +21,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.manager.dao.ManagerPerformmanceDao;
+import com.cardpay.pccredit.manager.filter.StandingBookFilter;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
+import com.cardpay.pccredit.manager.model.ApplyStandingBookModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceSum;
 import com.cardpay.pccredit.manager.model.ManagerSalaryForm;
 import com.wicresoft.jrad.base.database.dao.common.CommonDao;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
+import com.wicresoft.jrad.base.database.model.QueryResult;
 
 @Service
 public class ManagerPerformmanceService {
@@ -496,6 +501,36 @@ public class ManagerPerformmanceService {
 		public String getOrgName(String orgId) {
 			// TODO Auto-generated method stub
 			return managerPerformmanceDao.getOrgName(orgId);
+		}
+		
+		public void insertapplyStandingBook(ApplyStandingBookModel applyStandingBook) {
+			commonDao.insertObject(applyStandingBook);
+		}
+
+		public QueryResult<ApplyStandingBookModel> findApplyStandingBookByFilter(StandingBookFilter standingBookFilter) {
+			
+			List<ApplyStandingBookModel>  ls =	managerPerformmanceDao.findApplyStandingBookByFilter(standingBookFilter);
+			int size = managerPerformmanceDao.findApplyStandingBookByFilterCount(standingBookFilter);
+		
+			return new QueryResult<ApplyStandingBookModel>(size, ls);
+		}
+
+		public void deleteapplyStandingBook(String id) {
+			String sql="DELETE FROM ApplyStandingBook WHERE id = '"+id+"'";
+			Map<String, Object> params = new HashMap<String, Object>();
+			commonDao.queryBySql(sql, params);
+		}
+
+		public List<ApplyStandingBookModel> queryapplyStandingBook(String id) {
+			String sql="select * FROM ApplyStandingBook WHERE id = '"+id+"'";
+			Map<String, Object> params = new HashMap<String, Object>();
+			return commonDao.queryBySql( ApplyStandingBookModel.class,sql, params);
+			
+		}
+
+		public void changeapplyStandingBook(ApplyStandingBookModel applyStandingBook) {
+			
+			commonDao.updateObject(applyStandingBook);
 		}
 }
 

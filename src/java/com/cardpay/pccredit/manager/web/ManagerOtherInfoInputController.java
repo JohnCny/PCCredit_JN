@@ -34,11 +34,13 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.intopieces.model.MakeCard;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
 import com.cardpay.pccredit.main.MainController;
+import com.cardpay.pccredit.manager.filter.StandingBookFilter;
 import com.cardpay.pccredit.manager.form.BankListForm;
 import com.cardpay.pccredit.manager.form.DeptMemberForm;
 import com.cardpay.pccredit.manager.form.ManagerPerformmanceForm;
 import com.cardpay.pccredit.manager.form.VisitRegistLedgerForm;
 import com.cardpay.pccredit.manager.model.AccountManagerParameter;
+import com.cardpay.pccredit.manager.model.ApplyStandingBookModel;
 import com.cardpay.pccredit.manager.model.LoanApproved;
 import com.cardpay.pccredit.manager.model.LoanRefused;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
@@ -75,6 +77,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@Autowired
 	private OtherMusidataInputService otherMusidataInputService;
 
+	@Autowired
+	private ManagerPerformmanceService managerPerformmanceService;
 	/**
 	 * 放款台账查询页面
 	 * @param request
@@ -403,5 +407,138 @@ public class ManagerOtherInfoInputController extends BaseController {
 			mv.addObject("vreg", vreg);
 		}
 		return mv;
+	}
+	
+	/**
+	 * 查询申请台帐
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_3.page")
+	public AbstractModelAndView ApplyBookbrowse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_3", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	/**
+	 * 申请台帐录入页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applyinsert.page")
+	public AbstractModelAndView create_apply(HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/applyStandingBookCreated", request);
+		return mv;
+	}
+	
+	/**
+	 * 申请台帐执行录入
+	 * @param managerPerformmance
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "updateApply.json")
+	public JRadReturnMap updateApply(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			applyStandingBook.setManagerId(user.getId());
+			applyStandingBook.setCreatedTime(new Date());
+			String id = IDGenerator.generateID();
+			applyStandingBook.setId(id);
+			managerPerformmanceService.insertapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+
+		return returnMap;
+	}
+	/**
+	 * 申请台帐执行删除
+	 * @param managerPerformmance
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applydelete.json")
+	public JRadReturnMap deleteApply(HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			String id = request.getParameter("id");
+			managerPerformmanceService.deleteapplyStandingBook(id); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	/**
+	 * 申请台帐更新页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applyichange.page")
+	public AbstractModelAndView change_apply(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/applyStandingBookChange", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	/**
+	 * 申请台帐执行更新
+	 * @param managerPerformmance
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "applychange.json")
+	public JRadReturnMap changeApply(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
 	}
 }
