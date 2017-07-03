@@ -6,9 +6,11 @@
     <div class="contentinner">
         <div class="tabplace">
             <ul class="com-tab" >
+            #if($!lock)
             <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
             <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
             <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+           #end
             <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
 
          </ul>
@@ -17,9 +19,12 @@
       <div class="inquiry" style="padding:15px;">
         <div class="search_tag"></div>
         <div class="search">
-          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">
+          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_4.page">
           	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
             <ul>
+            <li style="display:none">
+                <span  style="display:none">客户经理ID：<input  style="display:none" type="text" id="userId" name="userId" value="$!userId" maxlength="100"/></span>
+              </li>
               <li>
                 <span>客户姓名：<input type="text" id="customerName" name="customerName" value="$!result.filter.customerName" maxlength="100"/></span>
               </li>

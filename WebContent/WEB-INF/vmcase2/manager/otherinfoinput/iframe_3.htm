@@ -6,11 +6,14 @@
     <div class="contentinner">
         <div class="tabplace">
             <ul class="com-tab" >
+            #if($!lock)
             <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
             <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
+           #end
             <li class="tab activeTab" ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+          #if($!lock)
             <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
-
+		#end
          </ul>
          </div>
       
