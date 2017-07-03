@@ -56,6 +56,18 @@
 		A .DICT_TYPE =
 		'CMMSCLNM-贷款担保方式'
 	</dictionary>
+	
+	<dictionary name="CMMSCLNM_VALUE" title="贷款担保方式" timeout="1000">
+		SELECT
+		A.TYPE_NAME AS name,
+		A.TYPE_NAME AS title
+		FROM
+		DICT A
+		WHERE
+		A .DICT_TYPE =
+		'CMMSCLNM-贷款担保方式'
+	</dictionary>
+	
 	<dictionary name="CMMHKFS" title="信用(还款）方式" timeout="1000">
 		SELECT
 		A.TYPE_CODE AS name,
@@ -143,6 +155,15 @@
 		FROM
 		PRODUCT_ATTRIBUTE
 	</dictionary>
+	
+	<dictionary name="ProductName_value" title="产品名称" timeout="1000">
+		SELECT
+		PRODUCT_NAME AS name,
+		PRODUCT_NAME AS title
+		FROM
+		PRODUCT_ATTRIBUTE
+	</dictionary>
+	
 	<dictionary name="CustomerName" title="客户名称" timeout="1000">
 		select
 		t.id as name ,
@@ -397,6 +418,15 @@ AND A.USER_TYPE !='0'
 		  FROM sys_user
 		union
 		select s.id as NAME, s.external_id || s.display_name AS title
+		  from account_manager_parameter m, sys_user s
+		 where s.id = m.user_id
+	</dictionary>
+	
+	<dictionary name="MANAGERUSERS_VALUE" title="客户经理" timeout="10000">
+		select '0' as NAME, '请选择' as title
+		  FROM sys_user
+		union
+		select s.display_name as NAME, s.external_id || s.display_name AS title
 		  from account_manager_parameter m, sys_user s
 		 where s.id = m.user_id
 	</dictionary>

@@ -111,6 +111,18 @@ public class ManagerOtherInfoInputService {
 		QueryResult<LoanRefused> queryResult = new QueryResult<LoanRefused>(size, pList);
 		return queryResult;
 	}
+
+	public void insertLoanRefused(LoanRefused loanRefused) {
+		commonDao.insertObject(loanRefused);
+	}
+
+	public void updateLoanRefused(LoanRefused loanRefused) {
+		commonDao.updateObject(loanRefused);
+	}
+	
+	public LoanRefused findLoanRefusedById(String id) {
+		return commonDao.findObjectById(LoanRefused.class, id);
+	}
 	
 	
 }
