@@ -8,7 +8,7 @@
         <div class="title">客户基本信息>放款台账</div>
       </div>
        
-      <form id="id_module_form" action="${contextPath}/manager/otherinfoinput/iframe_0_insert.json?userId="/>
+      <form id="id_module_form" action="${contextPath}/manager/otherinfoinput/iframe_0_create.json"/>
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;margin-top:20px;">
             <colgroup>
@@ -31,7 +31,11 @@
               <td class="titlefc3"><label for="chineseName">联系方式:</label></td>
               <td><input class="rinpsty"  type="text" id="customerTele" name="customerTele" value="" style="width:300px"/></td>
               <td class="titlefc3"><label for="chineseName">婚姻状况:</label></td>
-              <td><input class="rinpsty"  type="text" id="customerMarriage" name="customerMarriage" value="" style="width:300px"/></td>
+              <td>
+              	<select class="rinpsty" id="customerMarriage" name="customerMarriage" style="width:300px">
+              		#dict("MARRIGE_VALUE", "")
+              	</select>
+              </td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">配偶姓名:</label></td>
@@ -67,15 +71,27 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">贷款产品:</label></td>
-              <td><input class="rinpsty"  type="text" id="prdName" name="prdName" value="" style="width:300px"/></td>
+              <td>
+              	<select class="rinpsty" id="prdName" name="prdName" style="width:300px">
+              		#dict("ProductName_value", '')
+              	</select>
+              </td>
               <td class="titlefc3"></td>
               <td></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">主办客户经理:</label></td>
-              <td><input class="rinpsty"  type="text" id="chiefManager" name="chiefManager" value="" style="width:300px"/></td>
+              <td>
+              	<select class="rinpsty" id="chiefManager" name="chiefManager" style="width:300px">
+              		#dict("MANAGERUSERS_VALUE","")
+              	</select>
+              </td>
               <td class="titlefc3"><label for="chineseName">协办客户经理:</label></td>
-              <td><input class="rinpsty"  type="text" id="supManager" name="supManager" value="" style="width:300px"/></td>
+              <td>
+              	<select class="rinpsty" id="supManager" name="supManager" style="width:300px">
+              		#dict("MANAGERUSERS_VALUE","")
+              	</select>
+              </td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">贷审委成员:</label></td>
@@ -91,7 +107,11 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">信用/担保方式:</label></td>
-              <td><input class="rinpsty"  type="text" id="loanMode" name="loanMode" value="" style="width:300px"/></td>
+              <td>
+              	<select class="rinpsty" id="loanMode" name="loanMode" style="width:300px">
+              		 #dict("CMMSCLNM_VALUE","")
+              	</select>
+              </td>
               <td class="titlefc3"><label for="chineseName">保证人:</label></td>
               <td><input class="rinpsty"  type="text" id="warrantor" name="warrantor" value="" style="width:300px"/></td>
             </tr>
@@ -99,11 +119,11 @@
               <td class="titlefc3"><label for="chineseName">抵(质)押物信息:</label></td>
               <td><input class="rinpsty"  type="text" id="guarantyInfo" name="guarantyInfo" value="" style="width:300px"/></td>
               <td class="titlefc3"><label for="chineseName">放款日期:</label></td>
-              <td><input class="rinpsty"  type="text" id="loanBeginTime" name="loanBeginTime" value="" style="width:300px"/></td>
+              <td><input class="rinpsty"  type="text" id="loanBeginTime" name="loanBeginTime" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" readonly></td>
             </tr>
             <tr>
               <td class="titlefc3"><label for="chineseName">到期日期:</label></td>
-              <td><input class="rinpsty"  type="text" id="loanEndTime" name="loanEndTime" value="" style="width:300px"/></td>
+              <td><input class="rinpsty"  type="text" id="loanEndTime" name="loanEndTime" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" readonly></td>
               <td class="titlefc3"><label for="chineseName">支付方式:</label></td>
               <td><input class="rinpsty"  type="text" id="payMode" name="payMode" value="" style="width:300px"/></td>
             </tr>
@@ -118,6 +138,7 @@
       </form>
       <div class="submit" style="text-align:left;">
         <input id="id_save_button" type="button" value="保存" class="current" />
+        <input id="id_return_button" type="button" value="返回" class="current" />
       </div>
     </div>
   </div>
@@ -156,12 +177,12 @@
    	   	        var url = $($formName).attr("action");
    				$.ajax({
    					url : url,
-   					type : "get",
+   					type : "post",
    					data : formjson,
    					success : function(data) {
    						if (data.success) {
    							topWin.Dialog.message("保存成功!");
-   		   	            	window.location.href = "${modulePath}/iframe_0.page?";
+   		   	            	window.location.href = "${modulePath}/iframe_0.page?userId=${userId}";
    						}else{
    							topWin.Dialog.message(data.message);
    					    }
@@ -172,9 +193,10 @@
 	});
 	
 	//返回
-	function returnClick(){
-		window.location.href= contextPath + "/customer/basiccustomerinforCreate/insert.page";
-	}
+	
+	$("#id_return_button").click(function() {
+		window.location.href = "${modulePath}/iframe_0.page?userId=${userId}";
+	});
 	
 	
   </script>

@@ -37,6 +37,7 @@ public class LoanApproved extends BusinessModel {
 	private String payMode;
 	private String loanAccount;
 	private String remarks;
+	
 	public String getCustomerName() {
 		return customerName;
 	}
