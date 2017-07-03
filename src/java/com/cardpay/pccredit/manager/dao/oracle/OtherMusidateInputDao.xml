@@ -37,6 +37,12 @@
 			<if test="userId != null and userId != '' ">
 				and VISIT_ID=#{userId}
 			</if>
+			<if test="endDate != null and endDate != '' ">
+				and VISIT_DATE <![CDATA[ <=  ]]> #{endDate}
+			</if>
+			<if test="startDate != null and startDate != '' ">
+     			and VISIT_DATE <![CDATA[ >=  ]]> #{startDate}
+     		</if>
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
@@ -60,6 +66,12 @@
 		<if test="userId != null and userId != '' ">
 				and VISIT_ID=#{userId}
 		</if>
+		<if test="endDate != null and endDate != '' ">
+				and VISIT_DATE <![CDATA[ <=  ]]> #{endDate}
+		</if>
+		<if test="startDate != null and startDate != '' ">
+     			and VISIT_DATE <![CDATA[ >=  ]]> #{startDate}
+     	</if>
 		)
 	</select>
 	
