@@ -314,4 +314,35 @@
 	 And p.ID != #{productId}
     </if>
 	</select>
+	
+	
+	
+	<select id="findProductListByFilter" resultMap="ResultMap" parameterType="map">
+		SELECT * FROM
+		(SELECT ROW_.*,ROWNUM ROWNUM_
+		FROM (
+	    	SELECT * from product_attribute t
+			WHERE 1=1
+			<if test="productName != null and productName != '' ">
+				<![CDATA[ and PRODUCT_NAME like '%'||#{productName}||'%']]>
+			</if>
+		 <![CDATA[		
+							) ROW_
+						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
+					WHERE ROWNUM_ > #{limit}*#{page}
+					]]>
+	</select>
+	
+	<select id="findProductCountListByFilter" resultType="int">
+		SELECT
+		COUNT (*)
+		FROM
+		(
+		SELECT * from product_attribute t
+		WHERE 1=1
+		<if test="productName != null and productName != '' ">
+			<![CDATA[ and PRODUCT_NAME like '%'||#{productName}||'%']]>
+		</if>
+		)
+	</select>
 </mapper>

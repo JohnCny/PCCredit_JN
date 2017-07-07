@@ -274,7 +274,7 @@
 				FROM (
 					 select a.*,trim(a.state) as ACCOUNTSTATE from yffdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND trim(a.cardtype)=#{certiCode}
 					</if>
 								 
 					<if test="customerName != null and customerName != '' ">
@@ -294,7 +294,7 @@
 		  			</if>
 					
 					<if test="status != null and status != '' ">
-						AND a.state=#{status}
+						AND trim(a.state)=#{status}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -308,7 +308,7 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
  		 			select a.*,ROWNUM row_index from yffdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardtype=#{certiCode}
+						AND trim(a.cardtype)=#{certiCode}
 					</if>
 								 
 					<if test="customerName != null and customerName != '' ">
@@ -328,7 +328,7 @@
 		  			</if>
 					
 					<if test="status != null and status != '' ">
-						AND a.state=#{status}
+						AND trim(a.state)=#{status}
 					</if>
  	</select>
 	
@@ -336,7 +336,7 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*) from yffdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardtype=#{certiCode}
+			AND trim(a.cardtype)=#{certiCode}
 		</if>
 					 
 		<if test="customerName != null and customerName != '' ">
@@ -356,7 +356,7 @@
 		</if>
 		
 		<if test="status != null and status != '' ">
-			AND a.state=#{status}
+			AND trim(a.state)=#{status}
 		</if>
 	</select>
 	
@@ -529,7 +529,7 @@
 		      			AND a.id =#{userId}
 		  			</if>
 					<if test="status != null and status != '' ">
-						AND a.state=#{status}
+						AND trim(a.state)=#{status}
 					</if>
 		 <![CDATA[		
 							) ROW_
@@ -557,7 +557,7 @@
 		    AND a.id =#{userId}
 		</if>
 		<if test="status != null and status != '' ">
-			AND a.state=#{status}
+			AND trim(a.state)=#{status}
 		</if>
 	</select>
 	
@@ -580,7 +580,7 @@
 		      			AND a.id =#{userId}
 		  			</if>
 					<if test="status != null and status != '' ">
-						AND a.state=#{status}
+						AND trim(a.state)=#{status}
 					</if>
 	</select>
 	
@@ -592,7 +592,7 @@
 				FROM (
 					 select * from yqdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardnum=#{certiCode}
+						AND trim(a.cardnum)=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
@@ -619,7 +619,7 @@
 					
 					 select a.*,ROWNUM row_index from yqdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardnum=#{certiCode}
+						AND trim(a.cardnum)=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
@@ -640,7 +640,7 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*) from yqdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardnum=#{certiCode}
+			AND trim(a.cardnum)=#{certiCode}
 		</if>
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
@@ -664,7 +664,7 @@
 				FROM (
 					 select * from yqhkdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardnum=#{certiCode}
+						AND trim(a.cardnum)=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
@@ -689,7 +689,7 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 		 select count(*) from yqhkdktjbb a WHERE 1=1 
 		<if test="certiCode != null and certiCode != '' ">
-			AND a.cardnum=#{certiCode}
+			AND trim(a.cardnum)=#{certiCode}
 		</if>
 		<if test="customerName != null and customerName != '' ">
 		    AND a.cname=#{customerName}
@@ -709,7 +709,7 @@
 			parameterType="com.cardpay.pccredit.report.filter.ReportFilter">
 					 select a.*,ROWNUM row_index from yqhkdktjbb a WHERE 1=1 
 					<if test="certiCode != null and certiCode != '' ">
-						AND a.cardnum=#{certiCode}
+						AND trim(a.cardnum)=#{certiCode}
 					</if>
 					<if test="customerName != null and customerName != '' ">
 					    AND a.cname=#{customerName}
