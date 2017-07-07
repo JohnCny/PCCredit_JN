@@ -2,6 +2,7 @@ package com.cardpay.pccredit.manager.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.cardpay.pccredit.intopieces.model.IntoPieces;
 import com.cardpay.pccredit.manager.dao.AccountManagerParameterDao;
 import com.cardpay.pccredit.manager.dao.OtherMusidataInputDao;
 import com.cardpay.pccredit.manager.dao.comdao.AccountManagerParameterComdao;
+import com.cardpay.pccredit.manager.model.ApplyStandingBookModel;
 import com.cardpay.pccredit.manager.model.VisitRegistLedger;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.system.model.SystemUser;
@@ -59,6 +61,13 @@ public class OtherMusidataInputService {
 	public VisitRegistLedger findVisitRegistLedgerParameterById(String id) {
 		return commonDao.findObjectById(VisitRegistLedger.class, id);
 	}
+	
+	public List<VisitRegistLedger> findVisitRegistLedgerParameterByVisitId(String id) {
+		String sql="select * FROM VISIT_REGIST_LEDGER WHERE id not in (select visted_id from ApplyStandingBook ) and VISIT_ID = '"+id+"'";
+		Map<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql( VisitRegistLedger.class,sql, params);
+	}
+	
 	
 	public SystemUser  queryCustomer(String id) {
 		return commonDao.findObjectById(SystemUser.class,id);

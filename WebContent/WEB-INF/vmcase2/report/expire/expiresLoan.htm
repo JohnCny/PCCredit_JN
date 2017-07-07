@@ -124,11 +124,17 @@
 	
 	
 	$(document).ready(function() {
-		var opsObj = new Object();
-		opsObj.formObj = $("#submitForm");
-		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/exportAll.page";
-		prepareOperations(opsObj);
+		$("#id_browse_button").click(function() {
+			var url = "${modulePath}/queryExpireLoan.page";
+			document.getElementById("submitForm").action = url;
+			document.getElementById("submitForm").submit();
+		});
+		$("#id_export_button").click(function() {
+			var url = "${modulePath}/exportAll.page";
+			document.getElementById("submitForm").action = url;
+			document.getElementById("submitForm").submit();
+
+		});
 	});
 	
 	

@@ -295,7 +295,7 @@ public class MainController {
 		/*审批通过*/
 		int application_success_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, Constant.SUCCESS_INTOPICES, null);
 		/*补充调查*/
-		int application_nopass_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, Constant.NOPASS_REPLENISH_INTOPICES, null);
+		int application_nopass_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, "returnedToFirst", null);
 		/*拒绝*/
 		int application_refuse_size = customerApplicationInfoService.findCustomerApplicationInfoCount(userId, Constant.REFUSE_INTOPICES, null);
 		/*退回*/

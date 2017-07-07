@@ -8,7 +8,7 @@
 			</div>
 			<form id="id_module_form"
 				action="${contextPath}//manager/otherinfoinput/updateApply.json" />
-			
+				 <input type="hidden" name="vistedId" id="vistedId" value=""/>
 				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
 					bordercolor="#cccccc" style="width: 97%;margin-top:20px;margin-left:1.5%;">
 					<colgroup>
@@ -21,12 +21,11 @@
 						<td class="titlec" colspan="4" style="text-align: center;">申请台账录入</td>
 					</tr>
 					<tr>
-						<td class="titlefc3"><label for="applyDate">申请日期:</label></td>
-						<td><input type="text" id ="applyDate" name="applyDate" value=""
-	          		onmouseover="_calendar()" readonly="readonly" maxlength="30"/></span></td>
-						<td class="titlefc3"><label for="customerName">客户姓名:</label></td>
-						<td><input class="rinpsty" type="text" id="customerName"
-							name="customerName" value="" /></td>
+	          		    <td class="titlefc3">接待客户经理</td>
+		                <td><select id="managerName" name="managerName"></select></td>
+		                <td class="titlefc3">客户名称:</td>
+		                <td><select id="customerName" name="customerName" ></select>
+		                </td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="contactMethod">联系方式:</label></td>
@@ -61,9 +60,9 @@
 							name="financingExperience" value="" /></td>
 					</tr>
 					<tr>
-						<td class="titlefc3"><label for="managerName">接待客户经理:</label></td>
-						<td><input class="rinpsty" type="text" id="managerName"
-							name="managerName" value="" /></td>
+						<td class="titlefc3"><label for="applyDate">申请日期:</label></td>
+						<td><input class="rinpsty" type="text" id ="applyDate" name="applyDate" value=""
+	          		    onmouseover="_calendar()" readonly="readonly" style="width:300px" /></span></td>
 						<td class="titlefc3"><label for="jurisdiction">所属管辖行:</label></td>
 						<td><input class="rinpsty" type="text" id="jurisdiction"
 							name="jurisdiction" value="" /></td>
@@ -73,6 +72,7 @@
 						<td><input class="rinpsty" type="text" id="remark"
 							name="remark" value="" /></td>
 					</tr>
+					
 					
 				</table>
 			</form>
@@ -86,8 +86,83 @@
  <script type="text/javascript">
  $(document).ready(function() {	
 	 #set ($formName = "'#id_module_form'");
+	 
+	 
+	 //获取客户经理和拜访
+	 var addSelOption = function(jq){
+			$("<option/>").text("请选择...").attr("value","").appendTo(jq);
+		};
+	 var requestUrl = "getManager.json";
+		$.ajax({
+			    type:"GET",
+				url:requestUrl,
+				dataType:"json",
+				success:function(json){
+					$("#managerName").empty();
+					addSelOption($("#managerName"));
+					$.each(json,function(i,n){
+						$("<option/>").text(n.displayName).attr("value",n.userId).appendTo($("#managerName"));
+						});
+				}
+		});
+		
+		$("#managerName").change(function(){
+			var managerName = $(this).val();
+			if(managerName != ""){
+				getCustomer();
+			}else{
+				$("#customerName").empty();
+				addSelOption($("#customerName"));
+			}
+		});
+		
+		$("#customerName").change(function(){
+			var customerName = $(this).val();
+			if(customerName != ""){
+				getParameter();
+			}else{
+				$("#contactMethod").val("");
+				$("#jurisdiction").val("");
+				$("#financingExperience").val("");
+				$("#proceedUse").val("");
+			}
+		});
+		
+		//查询拜访客户
+		function getCustomer(){
+			$.ajax({
+			    type:"GET",
+				url:"getCustomer.json",
+				data:{id:$("#managerName").val()},
+				dataType:"json",
+				success:function(json){
+					$("#customerName").empty();
+					addSelOption($("#customerName"));
+					$.each(json,function(i,n){
+						$("<option/>").text(n.customerName).attr("value",n.customerName+"_"+n.id).appendTo($("#customerName"));
+					});
+				}
+		   });
+		}
+			
+		  // 查询拜访资料
+		  function getParameter(){
+				$.ajax({
+				    type:"GET",
+					url:"getParameter.json",
+					data:{id:$("#customerName").val()},
+					dataType:"json",
+					success:function(json){
+						$("#contactMethod").val(json[0].contactInfor);
+						$("#jurisdiction").val(json[0].organ);//管辖行
+						$("#financingExperience").val(json[0].financeExp);//是否有融资经历（贷款信息）FINANCE_EXP
+						$("#proceedUse").val(json[0].fundDemand);//贷款用途
+						$("#vistedId").val(json[0].id);
+					}
+		  });
+		}
+	 
 	 $("#id_save_button").click(function (){
-		 
 	  var formjson = $($formName).serialize();
    	  var url = $($formName).attr("action");
    	  Dialog.confirm("确定要处理吗？", "提示",

@@ -28,6 +28,16 @@ public class ApplyStandingBookModel extends BaseModel{
 	private String jurisdiction;//所属管辖行
 	private String remark;//备注
 	private Date createdTime;
+	
+	private String vistedId;//拜访id
+	
+	
+	public String getVistedId() {
+		return vistedId;
+	}
+	public void setVistedId(String vistedId) {
+		this.vistedId = vistedId;
+	}
 	public String getManagerId() {
 		return managerId;
 	}

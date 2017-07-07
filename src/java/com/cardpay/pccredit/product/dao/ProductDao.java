@@ -22,6 +22,9 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface ProductDao {
 	
+	List<ProductAttribute> findProductListByFilter(ProductFilter filter);
+	int findProductCountListByFilter(ProductFilter filter);
+	
 	//查询在产品期限内的产品
 	List<ProductAttribute>  findProductsByFilter(ProductFilter filter);
 	
