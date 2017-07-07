@@ -25,7 +25,7 @@
                  <span>所属客户经理：<input type="text" id="custManagerName" name="custManagerName"" /></span>
               </li>
               <li>
-              	 <span>贷款状态：<select id="status" name="status"><option value="">请选择</option>#dict("STATE","")</select></span>
+              	 <span>贷款状态：<select id="status" name="status"><option value="">请选择</option>#dict("ACCOUNTSTATE","")</select></span>
               </li>
               <li>
 				<span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
@@ -128,11 +128,17 @@
 	
 	
 	$(document).ready(function() {
-		var opsObj = new Object();
-		opsObj.formObj = $("#submitForm");
-		opsObj.browseUrl = "${modulePath}/browse.page";
-		opsObj.exportUrl = "${modulePath}/exportAll.page";
-		prepareOperations(opsObj);
+		$("#id_browse_button").click(function() {
+			var url = "${modulePath}/queryBalanceLoan.page";
+			document.getElementById("submitForm").action = url;
+			document.getElementById("submitForm").submit();
+		});
+		$("#id_export_button").click(function() {
+			var url = "${modulePath}/exportAll.page";
+			document.getElementById("submitForm").action = url;
+			document.getElementById("submitForm").submit();
+
+		});
 	});
 	
 	
