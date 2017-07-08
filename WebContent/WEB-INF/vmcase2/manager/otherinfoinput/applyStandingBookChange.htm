@@ -6,9 +6,8 @@
 			<div class="place">
 				<div class="title">其他信息>申请台账</div>
 			</div>
-			<form id="id_module_form"
-				action="${contextPath}//manager/otherinfoinput/applychange.json" />
-			
+			<form id="id_module_form" action="${contextPath}//manager/otherinfoinput/applychange.json" />
+				<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
 				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
 					bordercolor="#cccccc" style="width: 97%;margin-top:20px;margin-left:1.5%;">
 					<colgroup>
@@ -23,10 +22,10 @@
 					<tr>
 						<td class="titlefc3"><label for="managerName">接待客户经理:</label></td>
 						<td><input class="rinpsty" type="text" id="managerName"
-							name="managerName" value="$!result.managerName" /></td>
+							name="managerName" value="$!result.managerName" readonly="readonly"/></td>
 						<td class="titlefc3"><label for="customerName">客户姓名:</label></td>
 						<td><input class="rinpsty" type="text" id="customerName"
-							name="customerName" value="$!result.customerName" /></td>
+							name="customerName" value="$!result.customerName" readonly="readonly"/></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="contactMethod">联系方式:</label></td>
@@ -78,6 +77,7 @@
 					</tr>
 					
 				</table>
+				</div>
 			</form>
 			<div class="submit" style="text-align: left;">
 				<input id="id_save_button" type="button" value="#i18n('button.save')" class="current" />
@@ -87,27 +87,30 @@
 	</div>
 </body>
  <script type="text/javascript">
+ #set ($formName = "'#id_module_form'");
+ #parse ("manager/otherinfoinput/applyStandingBook_validation.js")
  $(document).ready(function() {	
-	 #set ($formName = "'#id_module_form'");
 	 $("#id_save_button").click(function (){
 	  var formjson = $($formName).serialize();
    	  var url = $($formName).attr("action");
-   	  Dialog.confirm("确定要处理吗？", "提示",
-	     		function() {
-					 $.ajax({
-							url : url,
-							type : "get",
-							data : formjson,
-							success : function(data) {
-								if (data.success) {
-									topWin.Dialog.message(data.mess);
-									location.href="${contextPath}/manager/otherinfoinput/iframe_3.page";
-								}else{
-									topWin.Dialog.message(data.mess);
-							    }
-							}
-						});
-   			    });
+   	  if ($($formName).valid()) {
+	   	  Dialog.confirm("确定要处理吗？", "提示",
+		     		function() {
+						 $.ajax({
+								url : url,
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message(data.mess);
+										location.href="${contextPath}/manager/otherinfoinput/iframe_3.page";
+									}else{
+										topWin.Dialog.message(data.mess);
+								    }
+								}
+							});
+	   			    });
+   	  }
 	  });
 	
  })

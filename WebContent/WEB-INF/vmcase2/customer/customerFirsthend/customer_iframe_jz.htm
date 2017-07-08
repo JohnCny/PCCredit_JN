@@ -60,7 +60,7 @@
             </tr>
             <tr>
               <td class="titlefc3"><label for="zjlx">居住起始年月:</label></td>
-              <td><input class="rinpsty"  type="text" id="beginDateString" name="beginDateString" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!living.beginDate)"
+              <td><input class="rinpsty"  type="text" id="beginDateString" name="beginDateString" readonly="readonly" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!living.beginDate)"
 						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
               <td class="titlefc3"><label for="zjhm">是否按揭:</label></td>
               <td><input class="rinpsty"  type="text" id="wetherMortgage" name="wetherMortgage" value="$!living.wetherMortgage" /></td>
@@ -84,7 +84,7 @@
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	#parse ("/customer/customerFirsthend/iframe_gr_validation.js")
 	
 	/* $(document).ready(function() {		
 		$("input[type='text']").attr("disabled",true);

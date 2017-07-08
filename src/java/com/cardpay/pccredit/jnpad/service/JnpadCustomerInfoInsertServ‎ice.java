@@ -185,7 +185,53 @@ public class JnpadCustomerInfoInsertServ‎ice {
 		customerhouse.setId(id);
 		commonDao.insertObject(customerhouse);
 	}
+	
+	////==================================================================
+	public void updateCustomerInfoFc(CustomerHouse customerhouse) {
+		// TODO Auto-generated method stub
+		commonDao.updateObject(customerhouse);
+	}
+	
+	public void updateCustomerCarInfo(CustomerCarInfo customerCarInfo) {
+		// TODO Auto-generated method stub
+		commonDao.updateObject(customerCarInfo);
+	}
+	
+	public void updateCustomerLxrInfo(CustomerContact customerContact) {
+		// TODO Auto-generated method stub
+		commonDao.updateObject(customerContact);
+	}
+	
+	public void updateCustomerQykhInfo(CustomerBank customerBank) {
+		// TODO Auto-generated method stub
+		commonDao.updateObject(customerBank);
+	}
 
+	public List<CustomerHouse> selectCustomerInfoFcById(String id) {
+		String sql="select * from customerinformation_fc where id='"+id+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerHouse.class, sql, params);
+	}
+	
+	public List<CustomerCarInfo> selectCustomerInfoccById(String id) {
+		String sql="select * from customerinformation_cc where id='"+id+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerCarInfo.class, sql, params);
+	}
+	
+	public List<CustomerContact> selectCustomerInfolxrById(String id) {
+		String sql="select * from customerinformation_lxr where id='"+id+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerContact.class, sql, params);
+	}
+	
+	public List<CustomerBank> selectCustomerInfoQykhById(String id) {
+		String sql="select * from customerinformation_qykh where id='"+id+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerBank.class, sql, params);
+	}
+	
+////==================================================================
 
 
 	public List<CustomerHouse> selectCustomerInfoFc(String customerId) {

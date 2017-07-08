@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -136,12 +137,44 @@ public class CustomerDetailedInfoController extends BaseController{
 		returnMap.put("customerNm", customerId);
 		return returnMap;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updatefc.json", method = { RequestMethod.GET })
+	public JRadReturnMap customer_fc_upd( @ModelAttribute CustomerHouse customerhouse,HttpServletRequest request) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		String customerId=request.getParameter("custId");
+		String monetaryDateString=request.getParameter("monetaryDateString");
+		try {
+			customerhouse.setCustomerId(customerId);
+			customerhouse.setMonetaryDate(DateHelper.getDateFormat(monetaryDateString, "yyyy-MM-dd HH:mm:ss"));
+			JnpadCustomerInfoInsertServ‎ice.updateCustomerInfoFc(customerhouse);
+			returnMap.put("message","修改客户房产信息成功");
+		} catch (Exception e) {
+			return WebRequestHelper.processException(e);
+		}
+		returnMap.put("customerNm", customerId);
+		return returnMap;
+	}
 	//房产录入页面
 	@ResponseBody
 	@RequestMapping(value = "insertfc_browse.page", method = { RequestMethod.GET })
 	public AbstractModelAndView customer_fc_browse( @ModelAttribute CustomerHouse customerhouse,HttpServletRequest request) {
 		String customerId=request.getParameter("id");
 		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_fc_add", request);
+		mv.addObject("customerNm",customerId);
+		return mv;		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updatefc_browse.page", method = { RequestMethod.GET })
+	public AbstractModelAndView customer_fc_update_browse( @ModelAttribute CustomerHouse customerhouse,HttpServletRequest request) {
+		String id=request.getParameter("id");
+		String customerId=request.getParameter("customerId");
+		JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_fc_update", request);
+		 List<CustomerHouse> list = JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoFcById(id);
+		if(list!=null&&list.size()>0){
+			mv.addObject("fc",list.get(0));
+		}
 		mv.addObject("customerNm",customerId);
 		return mv;		
 	}
@@ -263,6 +296,38 @@ public class CustomerDetailedInfoController extends BaseController{
 			return mv;		
 		}
 		
+		@ResponseBody
+		@RequestMapping(value = "updatecc_browse.page", method = { RequestMethod.GET })
+		public AbstractModelAndView customer_cc_update_browse( @ModelAttribute CustomerCarInfo CustomerCarInfo,HttpServletRequest request) {
+			String id=request.getParameter("id");
+			String customerId=request.getParameter("customerId");
+			JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_cc_update", request);
+			 List<CustomerCarInfo> list = JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoccById(id);
+			if(list!=null&&list.size()>0){
+				mv.addObject("cc",list.get(0));
+			}
+			mv.addObject("customerNm",customerId);
+			return mv;		
+		}
+		
+		@ResponseBody
+		@RequestMapping(value = "updatecc.json", method = { RequestMethod.GET })
+		public JRadReturnMap customer_cc_upd( @ModelAttribute CustomerCarInfo customerCarInfo,HttpServletRequest request) {
+			JRadReturnMap returnMap = new JRadReturnMap();
+			String customerId=request.getParameter("custId");
+			String monetaryDateString=request.getParameter("monetaryDateString");
+			try {
+				customerCarInfo.setCustomerId(customerId);
+				customerCarInfo.setMonetaryDate(DateHelper.getDateFormat(monetaryDateString, "yyyy-MM-dd HH:mm:ss"));
+				JnpadCustomerInfoInsertServ‎ice.updateCustomerCarInfo(customerCarInfo);
+				returnMap.put("message","修改客户车产信息成功");
+			} catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+			returnMap.put("customerNm", customerId);
+			return returnMap;
+		}
+		
 		//查询客户车产信息
 			@ResponseBody
 			@RequestMapping(value = "selectcc.page", method = { RequestMethod.GET })
@@ -315,6 +380,37 @@ public class CustomerDetailedInfoController extends BaseController{
 				JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_lxr_add", request);
 				mv.addObject("customerNm",customerId);
 				return mv;		
+			}
+			
+			
+			@ResponseBody
+			@RequestMapping(value = "updatelxr_browse.page", method = { RequestMethod.GET })
+			public AbstractModelAndView customer_lxr_update_browse( @ModelAttribute CustomerContact customerContact,HttpServletRequest request) {
+				String id=request.getParameter("id");
+				String customerId=request.getParameter("customerId");
+				JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_lxr_update", request);
+				 List<CustomerContact> list = JnpadCustomerInfoInsertServ‎ice.selectCustomerInfolxrById(id);
+				if(list!=null&&list.size()>0){
+					mv.addObject("lxr",list.get(0));
+				}
+				mv.addObject("customerNm",customerId);
+				return mv;		
+			}
+			
+			@ResponseBody
+			@RequestMapping(value = "updatelxr.json", method = { RequestMethod.GET })
+			public JRadReturnMap customer_lxr_upd( @ModelAttribute CustomerContact customerContact,HttpServletRequest request) {
+				JRadReturnMap returnMap = new JRadReturnMap();
+				String customerId=request.getParameter("custId");
+				try {
+					customerContact.setCustomerId(customerId);
+					JnpadCustomerInfoInsertServ‎ice.updateCustomerLxrInfo(customerContact);
+					returnMap.put("message","修改联系人信息成功");
+				} catch (Exception e) {
+					return WebRequestHelper.processException(e);
+				}
+				returnMap.put("customerNm", customerId);
+				return returnMap;
 			}
 			
 			//查询客户联系人信息
@@ -523,7 +619,9 @@ public class CustomerDetailedInfoController extends BaseController{
 				customerstore.setCustomerId(customerId);
 				JRadReturnMap returnMap = new JRadReturnMap();
 				String beginDateString=request.getParameter("beginDateString");
-				customerstore.setBeginDate(DateHelper.getDateFormat(beginDateString, "yyyy-MM-dd HH:mm:ss"));
+				if(!StringUtils.isEmpty(beginDateString)){
+					customerstore.setBeginDate(DateHelper.getDateFormat(beginDateString, "yyyy-MM-dd HH:mm:ss"));
+				}
 				List<CustomerStore> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQydp(customerId);
 				try {
 					if(custp.size()!=0){
@@ -646,6 +744,36 @@ public class CustomerDetailedInfoController extends BaseController{
 				JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_qykh_add", request);
 				mv.addObject("customerNm",customerId);
 				return mv;		
+			}
+			
+			@ResponseBody
+			@RequestMapping(value = "updateqykh_browse.page", method = { RequestMethod.GET })
+			public AbstractModelAndView customer_qykh_update_browse( @ModelAttribute CustomerBank customerBank,HttpServletRequest request) {
+				String id=request.getParameter("id");
+				String customerId=request.getParameter("customerId");
+				JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_qykh_update", request);
+				 List<CustomerBank> list = JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoQykhById(id);
+				if(list!=null&&list.size()>0){
+					mv.addObject("lxr",list.get(0));
+				}
+				mv.addObject("customerNm",customerId);
+				return mv;		
+			}
+			
+			@ResponseBody
+			@RequestMapping(value = "updateqykh.json", method = { RequestMethod.GET })
+			public JRadReturnMap customer_qykh_upd( @ModelAttribute CustomerBank customerBank,HttpServletRequest request) {
+				JRadReturnMap returnMap = new JRadReturnMap();
+				String customerId=request.getParameter("custId");
+				try {
+					customerBank.setCustomerId(customerId);
+					JnpadCustomerInfoInsertServ‎ice.updateCustomerQykhInfo(customerBank);
+					returnMap.put("message","修改企业开户信息成功");
+				} catch (Exception e) {
+					return WebRequestHelper.processException(e);
+				}
+				returnMap.put("customerNm", customerId);
+				return returnMap;
 			}
 			
 			//查询客户企业开户信息

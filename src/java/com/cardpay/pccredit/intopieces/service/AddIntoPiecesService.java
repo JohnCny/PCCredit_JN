@@ -237,6 +237,8 @@ public class AddIntoPiecesService {
 		String url = map.get("url");
 		//删除  update 2017年6月23日09:17:32 
 		//localImageDao.deleteByProductIdAndCustomerId(productId,customerId);
+		// 
+		String oldExcelId = returnExcelId(appId);
 		localImageDao.deleteByAppId(appId);
 		
 		LocalExcel localExcel = new LocalExcel();
@@ -244,7 +246,7 @@ public class AddIntoPiecesService {
 		localExcel.setCustomerId(customerId);
 		localExcel.setCreatedTime(new Date());
 		localExcel.setApplicationId(appId);
-		
+		localExcel.setId(oldExcelId);
 		if (StringUtils.trimToNull(url) != null) {
 			localExcel.setUri(url);
 		}
@@ -301,6 +303,13 @@ public class AddIntoPiecesService {
 		//添加模板
 		commonDao.insertObject(localExcel);
 	
+	}
+	
+	public String returnExcelId(String appId){
+		// update  2017年7月7日15:36:13
+		String sql = "select id from LOCAL_EXCEL where APPLICATION_ID = '"+appId+"'";
+		LocalExcel excel = commonDao.queryBySql(LocalExcel.class, sql, null).get(0);
+		return excel.getId();
 	}
 
 	/* 查询影像资料信息 */

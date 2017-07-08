@@ -35,16 +35,17 @@
          </div>
          
       <form id="id_module_form">
+      <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
          <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
-          <input type="hidden" id="id" name="id" value="$!{customerId}" />
-          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" >
+         <input type="hidden" id="id" name="id" value="$!{customerId}" />
+          <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc"  style="width: 100%;">
             <colgroup>
               <col width="10%" />
               <col width="30%" />
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">家庭信息</td></tr>
+            <tr><td class="titlec" colspan="4" style="text-align: center;">家庭信息</td></tr>
             <tr>
               <td class="titlefc3"><label for="khh">家庭成员:</label></td>
               <td><input class="rinpsty"  type="text" id="familyNum" name="familyNum" value="$!cusf.familyNum" /></td>
@@ -53,8 +54,7 @@
             </tr>
              <tr>
               <td class="titlefc3"><label for="rh">经济依赖人数:</label></td>
-             <td><input class="rinpsty"  type="text" id="economicNum" name="economicNum" value="$!cusf.economicNum" /></td> 
-              
+              <td><input class="rinpsty"  type="text" id="economicNum" name="economicNum" value="$!cusf.economicNum" /></td> 
               <td class="titlefc3"><label for="khlx">配偶姓名:</label></td>
               <td><input class="rinpsty"  type="text" id="mateName" name="mateName" value="$!cusf.mateName" /></td>
             </tr>
@@ -64,119 +64,122 @@
               <td class="titlefc3"><label for="zjhm">配偶工作单位:</label></td>
               <td><input class="rinpsty"  type="text" id="mateJobAdress" name="mateJobAdress" value="$!cusf.mateJobAdress" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">配偶年收入:</label></td>
-             　<td><input class="rinpsty"  type="text" id="mateIncome" name="mateIncome" value="$!cusf.mateIncome" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="mateIncome" name="mateIncome" value="$!cusf.mateIncome" /></td>
               <td class="titlefc3"><label for="sfcq">配偶电话:</label></td>
-            　<td><input class="rinpsty"  type="text" id="mateTel" name="mateTel" value="$!cusf.mateTel" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="mateTel" name="mateTel" value="$!cusf.mateTel" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">配偶其他状况说明:</label></td>
-             　<td><input class="rinpsty"  type="text" id="mateOtherInfo" name="mateOtherInfo" value="$!cusf.mateOtherInfo" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="mateOtherInfo" name="mateOtherInfo" value="$!cusf.mateOtherInfo" /></td>
               <td class="titlefc3"><label for="sfcq">子女工作状态:</label></td>
-            　<td><input class="rinpsty"  type="text" id="childJob" name="childJob" value="$!cusf.childJob" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="childJob" name="childJob" value="$!cusf.childJob" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">子女教育状态:</label></td>
-             　<td><input class="rinpsty"  type="text" id="childEducation" name="childEducation" value="$!cusf.childEducation" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="childEducation" name="childEducation" value="$!cusf.childEducation" /></td>
             </tr>
+            
             <!------------------------------------------------父亲信息---------------------------------------------------->
             <tr><td class="titlec" colspan="4" style="text-align: center;">父亲信息</td></tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">父亲姓名:</label></td>
-             　<td><input class="rinpsty"  type="text" id="fatherName" name="fatherName" value="$!cusf.fatherName" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="fatherName" name="fatherName" value="$!cusf.fatherName" /></td>
               <td class="titlefc3"><label for="sfcq">父亲籍贯:</label></td>
-            　<td><input class="rinpsty"  type="text" id="fatherDomicile" name="fatherDomicile" value="$!cusf.fatherDomicile" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="fatherDomicile" name="fatherDomicile" value="$!cusf.fatherDomicile" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">父亲年龄:</label></td>
-             　<td><input class="rinpsty"  type="text" id="fatherAge" name="fatherAge" value="$!cusf.fatherAge" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="fatherAge" name="fatherAge" value="$!cusf.fatherAge" /></td>
               <td class="titlefc3"><label for="sfcq">父亲民族:</label></td>
-            　<td><input class="rinpsty"  type="text" id="fatherMinzu" name="fatherMinzu" value="$!cusf.fatherMinzu" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="fatherMinzu" name="fatherMinzu" value="$!cusf.fatherMinzu" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">父亲工作单位:</label></td>
-             　<td><input class="rinpsty"  type="text" id="fatherCompany" name="fatherCompany" value="$!cusf.fatherCompany" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="fatherCompany" name="fatherCompany" value="$!cusf.fatherCompany" /></td>
               <td class="titlefc3"><label for="sfcq">父亲工作地址:</label></td>
-            　<td><input class="rinpsty"  type="text" id="fatherCompanyAddress" name="fatherCompanyAddress" value="$!cusf.fatherCompanyAddress" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="fatherCompanyAddress" name="fatherCompanyAddress" value="$!cusf.fatherCompanyAddress" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">父亲年收入:</label></td>
-             　<td><input class="rinpsty"  type="text" id="fatherIncome" name="fatherIncome" value="$!cusf.fatherIncome" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="fatherIncome" name="fatherIncome" value="$!cusf.fatherIncome" /></td>
               <td class="titlefc3"><label for="sfcq">父亲联系方式:</label></td>
-            　<td><input class="rinpsty"  type="text" id="fatherContact" name="fatherContact" value="$!cusf.fatherContact" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="fatherContact" name="fatherContact" value="$!cusf.fatherContact" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">父亲毕业院校:</label></td>
-             　<td><input class="rinpsty"  type="text" id="fatherSchool" name="fatherSchool" value="$!cusf.fatherSchool" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="fatherSchool" name="fatherSchool" value="$!cusf.fatherSchool" /></td>
               <td class="titlefc3"><label for="sfcq">父亲学历学位:</label></td>
-            　<td><input class="rinpsty"  type="text" id="fatherEducation" name="fatherEducation" value="$!cusf.fatherEducation" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="fatherEducation" name="fatherEducation" value="$!cusf.fatherEducation" /></td>
             </tr>
+            
             <!------------------------------------------------母亲信息---------------------------------------------------->
             <tr><td class="titlec" colspan="4" style="text-align: center;">母亲信息</td></tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">母亲姓名:</label></td>
-             　<td><input class="rinpsty"  type="text" id="motherName" name="motherName" value="$!cusf.motherName" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="motherName" name="motherName" value="$!cusf.motherName" /></td>
               <td class="titlefc3"><label for="sfcq">母亲籍贯:</label></td>
-            　<td><input class="rinpsty"  type="text" id="motherDomicile" name="motherDomicile" value="$!cusf.motherDomicile" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="motherDomicile" name="motherDomicile" value="$!cusf.motherDomicile" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">母亲年龄:</label></td>
-             　<td><input class="rinpsty"  type="text" id="motherAge" name="motherAge" value="$!cusf.motherAge" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="motherAge" name="motherAge" value="$!cusf.motherAge" /></td>
               <td class="titlefc3"><label for="sfcq">母亲民族:</label></td>
-            　<td><input class="rinpsty"  type="text" id="motherMinzu" name="motherMinzu" value="$!cusf.motherMinzu" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="motherMinzu" name="motherMinzu" value="$!cusf.motherMinzu" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">母亲工作单位:</label></td>
-             　<td><input class="rinpsty"  type="text" id="motherCompany" name="motherCompany" value="$!cusf.motherCompany" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="motherCompany" name="motherCompany" value="$!cusf.motherCompany" /></td>
               <td class="titlefc3"><label for="sfcq">母亲工作地址:</label></td>
-            　<td><input class="rinpsty"  type="text" id="motherCompanyAddress" name="motherCompanyAddress" value="$!cusf.motherCompanyAddress" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="motherCompanyAddress" name="motherCompanyAddress" value="$!cusf.motherCompanyAddress" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">母亲年收入:</label></td>
-             　<td><input class="rinpsty"  type="text" id="motherIncome" name="motherIncome" value="$!cusf.motherIncome" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="motherIncome" name="motherIncome" value="$!cusf.motherIncome" /></td>
               <td class="titlefc3"><label for="sfcq">母亲联系方式:</label></td>
-            　<td><input class="rinpsty"  type="text" id="motherContact" name="motherContact" value="$!cusf.motherContact" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="motherContact" name="motherContact" value="$!cusf.motherContact" /></td>
             </tr>
              <tr>
               <td class="titlefc3"><label for="qfjg">母亲毕业院校:</label></td>
-             　<td><input class="rinpsty"  type="text" id="motherSchool" name="motherSchool" value="$!cusf.motherSchool" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="motherSchool" name="motherSchool" value="$!cusf.motherSchool" /></td>
               <td class="titlefc3"><label for="sfcq">母亲学历学位:</label></td>
-            　<td><input class="rinpsty"  type="text" id="motherEducation" name="motherEducation" value="$!cusf.motherEducation" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="motherEducation" name="motherEducation" value="$!cusf.motherEducation" /></td>
             </tr>
             <!------------------------------------------------兄弟姐妹信息---------------------------------------------------->
             <tr><td class="titlec" colspan="4" style="text-align: center;">兄弟姐妹信息</td></tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">兄弟姐妹姓名:</label></td>
-             　<td><input class="rinpsty"  type="text" id="brotherName" name="brotherName" value="$!cusf.brotherName" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="brotherName" name="brotherName" value="$!cusf.brotherName" /></td>
               <td class="titlefc3"><label for="sfcq">兄弟姐妹籍贯:</label></td>
-            　<td><input class="rinpsty"  type="text" id="brotherDomicile" name="brotherDomicile" value="$!cusf.brotherDomicile" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="brotherDomicile" name="brotherDomicile" value="$!cusf.brotherDomicile" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">兄弟姐妹年龄:</label></td>
-             　<td><input class="rinpsty"  type="text" id="brotherAge" name="brotherAge" value="$!cusf.brotherAge" /></td>
+             　   		  <td><input class="rinpsty"  type="text" id="brotherAge" name="brotherAge" value="$!cusf.brotherAge" /></td>
               <td class="titlefc3"><label for="sfcq">兄弟姐妹民族:</label></td>
-            　<td><input class="rinpsty"  type="text" id="brotherMinzu" name="brotherMinzu" value="$!cusf.brotherMinzu" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="brotherMinzu" name="brotherMinzu" value="$!cusf.brotherMinzu" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">兄弟姐妹工作单位:</label></td>
-             　<td><input class="rinpsty"  type="text" id="brotherCompany" name="brotherCompany" value="$!cusf.brotherCompany" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="brotherCompany" name="brotherCompany" value="$!cusf.brotherCompany" /></td>
               <td class="titlefc3"><label for="sfcq">兄弟姐妹工作地址:</label></td>
-            　<td><input class="rinpsty"  type="text" id="brotherCompanyAddress" name="brotherCompanyAddress" value="$!cusf.brotherCompanyAddress" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="brotherCompanyAddress" name="brotherCompanyAddress" value="$!cusf.brotherCompanyAddress" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">兄弟姐妹年收入:</label></td>
-             　<td><input class="rinpsty"  type="text" id="brotherIncome" name="brotherIncome" value="$!cusf.brotherIncome" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="brotherIncome" name="brotherIncome" value="$!cusf.brotherIncome" /></td>
               <td class="titlefc3"><label for="sfcq">兄弟姐妹联系方式:</label></td>
-            　<td><input class="rinpsty"  type="text" id="brotherContact" name="brotherContact" value="$!cusf.brotherContact" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="brotherContact" name="brotherContact" value="$!cusf.brotherContact" /></td>
             </tr>
-             <tr>
+            <tr>
               <td class="titlefc3"><label for="qfjg">兄弟姐妹毕业院校:</label></td>
-             　<td><input class="rinpsty"  type="text" id="brotherSchool" name="brotherSchool" value="$!cusf.brotherSchool" /></td>
+             　		  <td><input class="rinpsty"  type="text" id="brotherSchool" name="brotherSchool" value="$!cusf.brotherSchool" /></td>
               <td class="titlefc3"><label for="sfcq">兄弟姐妹学历学位:</label></td>
-            　<td><input class="rinpsty"  type="text" id="brotherEducation" name="brotherEducation" value="$!cusf.brotherEducation" /></td>
+            　		  <td><input class="rinpsty"  type="text" id="brotherEducation" name="brotherEducation" value="$!cusf.brotherEducation" /></td>
             </tr>
           </table>
+           </div> 
         </div>
       </form>
       <div class="submit">
@@ -191,7 +194,7 @@
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	#parse ("/customer/customerFirsthend/iframe_gr_validation.js")
 	
 	/* $(document).ready(function() {		
 		$("input[type='text']").attr("disabled",true);
