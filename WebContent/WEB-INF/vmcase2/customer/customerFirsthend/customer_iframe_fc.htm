@@ -90,6 +90,7 @@
         <div class="submit">
   		 #if(!$!lock)
          <input id="id_save_button" type="button" onclick="addLxr();" value="新增" class="current" />
+         <input id="id_update_button" type="button" onclick="updLxr();" value="修改" class="current" />
          <input id="id_delete_button" type="button" value="删除" class="current" />
          #end       
           <input type="button" onclick="javascript:history.back();" value="返回" />
@@ -104,6 +105,14 @@
 	}
 	function addLxr(){
 		 window.location.href= contextPath+"/customer/firsthend/insertfc_browse.page?id=${customerNm}" ;
+	}
+	function updLxr(){
+		if ($(".checkbox :checked").length == 1) {
+        	var value = $("input[name='checkbox']:checked").val();
+		 	window.location.href= contextPath+"/customer/firsthend/updatecc_browse.page?id="+value+"&customerId=${customerNm}";
+		}else {
+            Dialog.message("请选择一行");
+        }
 	}
 	$("#id_delete_button").click(function() {
         if ($(".checkbox :checked").length == 1) {

@@ -29,7 +29,7 @@
       <input type="hidden" name="custManagerId" id="custManagerId" value="$!custManagerId" />
       <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;"></div>
       	<!--start  -->
-	     <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+	    <!--  <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
 	     <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
             <colgroup>
               <col width="13%" />
@@ -58,28 +58,28 @@
               <td class="titlefc3">性别：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.sex</span></td>
             </tr>
-           <!--  <tr>
+            <tr>
 			  <td class="titlefc3">经营状况得分：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.busScore</span></td>
               <td class="titlefc3">道德品质得分：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.habScore</span></td>
               <td class="titlefc3">生存状况得分：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.liveScore</span></td>
-            </tr> -->
+            </tr>
             <tr>
-			  <!-- <td class="titlefc3">还款能力（万元）：</td>
-              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td> -->
+			  <td class="titlefc3">还款能力（万元）：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.payAbli</span></td>
               <td class="titlefc3">拟授信额度（万元）：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.money</span></td>
-               <!-- <td class="titlefc3">未评估项/总项：</td>
-              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td> -->
+               <td class="titlefc3">未评估项/总项：</td>
+              <td><span style="color: #428bca;padding-left:5px;">$!evaResult.project</span></td>
               #if($!evaResult.result =='禁止')
               <td class="titlefc3">拒绝原因：</td>
               <td><span style="color: #428bca;padding-left:5px;">$!evaResult.refuseReason</span></td>
               #end
             </tr>
           </table>
-	     </div>	 
+	     </div>	  -->
 	     <!--end  -->
        	 <div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
           <table cellpadding="0" cellspacing="0" class="table-bd" border="1" bordercolor="#cccccc" style="width: 100%;">
@@ -301,8 +301,8 @@
 			
 			var status = $("select[name=status]").val();
 			if( status == "APPROVE"){
-				$("tr:eq(9)").show();
-				$("tr:eq(12)").hide();
+				$("tr:eq(5)").show();
+				$("tr:eq(8)").hide();
 				if($("input[name=decision_amount]").val() == ""){
 					 $("input[name='decision_amount']").after("<label class='error myerror' generated='true' >金额不能为空</label>");   
 				}
@@ -312,16 +312,16 @@
 			}
 			
 			if( status == "REJECTAPPROVE"){
-				$("tr:eq(9)").hide();
-				$("tr:eq(12)").show();
+				$("tr:eq(5)").hide();
+				$("tr:eq(8)").show();
 				if($("textarea[name=decision_refusereason]").val() == ""){
 					 $("textarea[name='decision_refusereason']").after("<label class='error myerror' generated='true' >拒绝原因不能为空</label>");   
 				}
 			}
 			
 			if( status == "RETURNAPPROVE"){
-				$("tr:eq(9)").hide();
-				$("tr:eq(12)").show();
+				$("tr:eq(5)").hide();
+				$("tr:eq(8)").show();
 			}
 			
 			if(status =='RETURNAPPROVE'){

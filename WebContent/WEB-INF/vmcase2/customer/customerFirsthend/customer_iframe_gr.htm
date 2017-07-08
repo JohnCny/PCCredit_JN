@@ -20,7 +20,7 @@
 				<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_8.page?id=${customerNm}">学习履历情况</a></li>
 				<li class="tab"><a href="${contextPath}/customer/firsthend/iframe_9.page?id=${customerNm}">工作履历</a></li>
 	            <li class="tab"><a href="${contextPath}/customer/firsthend/iframe_10.page?id=${customerNm}">入保信息</a></li> -->
-           		<li class="tab activeTab"><a href="${contextPath}/customer/firsthend/selectgr.page?customerId=${customerNm}">个人信息</a></li>
+           		<li class="tab activeTab"><a href="${contextPath}/customer/firsthend/selectgr.page?id=${customerNm}">个人信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectfc.page?id=${customerNm}">房产信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectjt.page?id=${customerNm}">家庭信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectcc.page?id=${customerNm}">车产信息</a></li>
@@ -86,7 +86,7 @@
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	#parse ("/customer/customerFirsthend/iframe_gr_validation.js")
 	
 	/* $(document).ready(function() {		
 		$("input[type='text']").attr("disabled",true);
