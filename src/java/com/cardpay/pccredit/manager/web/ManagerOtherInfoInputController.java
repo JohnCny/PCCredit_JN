@@ -1,6 +1,7 @@
 package com.cardpay.pccredit.manager.web;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,10 +47,14 @@ import com.cardpay.pccredit.manager.model.LoanRefused;
 import com.cardpay.pccredit.manager.model.ManagerPerformmance;
 import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.VisitRegistLedger;
+import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.service.ManagerOtherInfoInputService;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.cardpay.pccredit.manager.service.OtherMusidataInputService;
+import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
+import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.SystemUser;
+import com.wicresoft.jrad.base.auth.IUser;
 import com.wicresoft.jrad.base.auth.JRadModule;
 import com.wicresoft.jrad.base.auth.JRadOperation;
 import com.wicresoft.jrad.base.constant.JRadConstants;
@@ -79,6 +84,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 
 	@Autowired
 	private ManagerPerformmanceService managerPerformmanceService;
+	
+	@Autowired
+	private RiskCustomerCollectionService riskCustomerCollectionService;
+	
+	@Autowired
+	private ManagerBelongMapService managerBelongMapService;
 	/**
 	 * 放款台账查询页面
 	 * @param request
@@ -482,10 +493,17 @@ public class ManagerOtherInfoInputController extends BaseController {
 		try {
 
 			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
-			applyStandingBook.setManagerId(user.getId());
+			//applyStandingBook.setManagerId(user.getId());
 			applyStandingBook.setCreatedTime(new Date());
 			String id = IDGenerator.generateID();
 			applyStandingBook.setId(id);
+			
+			//
+			applyStandingBook.setCustomerName(applyStandingBook.getCustomerName().split("_")[0]);//包括n.customerName+"_"+n.id
+			applyStandingBook.setManagerId(applyStandingBook.getManagerName());
+			SystemUser sys =  otherMusidataInputService.queryCustomer(applyStandingBook.getManagerName());
+			applyStandingBook.setManagerName(sys.getDisplayName());
+			
 			managerPerformmanceService.insertapplyStandingBook(applyStandingBook); 
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
@@ -557,5 +575,55 @@ public class ManagerOtherInfoInputController extends BaseController {
 		}
 		
 		return returnMap;
+	}
+	
+	
+	
+	@RequestMapping(value = "getManager.json",method = RequestMethod.GET)
+	public void getManager(HttpServletRequest request,PrintWriter printWriter){
+		try {
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId = user.getId();
+			List<AccountManagerParameterForm> accountManagerParameterForms = managerBelongMapService.findSubManagerBelongMapByManagerId(userId);
+			JSONArray json = new JSONArray();
+			json = JSONArray.fromObject(accountManagerParameterForms);
+			printWriter.write(json.toString());
+			printWriter.flush();
+			printWriter.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping(value = "getCustomer.json",method = RequestMethod.GET)
+	public void getCustomer(HttpServletRequest request,PrintWriter printWriter){
+		try {
+			String userId = RequestHelper.getStringValue(request, ID);
+			// 查询拜访客户列表  //  TODO不在申请里面
+			List<VisitRegistLedger> vreg = otherMusidataInputService.findVisitRegistLedgerParameterByVisitId(userId);
+			JSONArray json = new JSONArray();
+			json = JSONArray.fromObject(vreg);
+			printWriter.write(json.toString());
+			printWriter.flush();
+			printWriter.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@RequestMapping(value = "getParameter.json",method = RequestMethod.GET)
+	public void getParameter(HttpServletRequest request,PrintWriter printWriter){
+		try {
+			String paramId = RequestHelper.getStringValue(request, ID);
+			// 查询拜访客户列表
+			VisitRegistLedger vreg = otherMusidataInputService.findVisitRegistLedgerParameterById(paramId.split("_")[1]);
+			JSONArray json = new JSONArray();
+			json = JSONArray.fromObject(vreg);
+			printWriter.write(json.toString());
+			printWriter.flush();
+			printWriter.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }

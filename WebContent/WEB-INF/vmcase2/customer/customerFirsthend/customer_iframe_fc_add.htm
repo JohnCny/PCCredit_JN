@@ -34,7 +34,7 @@
             <tr>
               <td class="titlefc3"><label for="zjlx">购买日期:</label></td>
               <td><input class="rinpsty"  type="text" id="monetaryDateString" name="monetaryDateString" value=""
-						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
+						   			   onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})" readonly="readonly"/></td>
               <td class="titlefc3"><label for="zjhm">购置方式:</label></td>
               <td><input class="rinpsty"  type="text" id="getWay" name="getWay" value="" /></td>
             </tr>
@@ -56,7 +56,7 @@
 	var layout = new FormsLayout("formsId");
 	window.top.currentWindow.setLayout(layout);
 	#set ($formName = "'#id_module_form'")
-	#parse ("customer/customerInforInsert/customerInforCreate_validation.js")
+	#parse ("/customer/customerFirsthend/iframe_gr_validation.js")
 	
 	/* $(document).ready(function() {		
 		$("input[type='text']").attr("disabled",true);

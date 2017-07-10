@@ -443,7 +443,7 @@ public class IntoPiecesComdao {
 		if(dataType.equals("application")){
 			sql += " left join customer_application_process aa on pr.id = aa.serial_number" +
 					" left join sys_user su on t.examine_user = su.id " +
-					" where aa.application_id = #{id}";
+					" where aa.application_id = #{id} and su.display_name is not null";
 		} else if(dataType.equals("amountadjustment")){
 			sql += " left join amount_adjustment_process aa on pr.id = aa.serial_number" +
 					" left join sys_user su on t.examine_user = su.id " +

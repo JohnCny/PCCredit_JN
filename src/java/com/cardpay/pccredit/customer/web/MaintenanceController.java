@@ -353,7 +353,7 @@ public class MaintenanceController extends BaseController{
 					String maintenancePlanId = "";
 					if(endResult.equals(MaintenanceEndResultEnum.nextmaintain.toString())){
 						/*新增一条新的计划，计划内容与当前计划相同,最终结果为维护中*/
-						maintenancePlanId = maintenanceService.copyMaintenancePlan(maintenanceId, MaintenanceEndResultEnum.maintaining, createdBy);
+						//maintenancePlanId = maintenanceService.copyMaintenancePlan(maintenanceId, MaintenanceEndResultEnum.maintaining, createdBy);
 						/*返回最初维护计划页面*/
 						returnMap.put(ID, maintenanceId+"/"+appId);
 						returnMap.put(RECORD_ID,maintenancePlanId);

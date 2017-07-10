@@ -187,7 +187,7 @@
 		<item name="save" title="未申请" />
 		<item name="audit" title="已申请" />
 		<item name="nopass" title="申请未通过" />
-		<item name="refuse" title="被拒接" />
+		<item name="refuse" title="被拒绝" />
 		<item name="approved" title="审批结束" />
 		<item name="succeed" title="申请成功" />
 		<item name="end" title="放款成功" />

@@ -155,7 +155,11 @@ public class ProductService {
     
     //产品信息
     public QueryResult<ProductAttribute> findProductsFilter(ProductFilter filter) {
-  		return commonDao.findObjectsByFilter(ProductAttribute.class, filter);
+  		//return commonDao.findObjectsByFilter(ProductAttribute.class, filter);
+  		List<ProductAttribute> productAttribute = productDao.findProductListByFilter(filter);
+		int size = productDao.findProductCountListByFilter(filter);
+		QueryResult<ProductAttribute> qs = new QueryResult<ProductAttribute>(size, productAttribute);
+		return qs;
       }
 
 	/*
