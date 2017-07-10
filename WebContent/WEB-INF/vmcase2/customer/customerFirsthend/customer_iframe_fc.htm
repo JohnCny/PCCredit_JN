@@ -109,7 +109,7 @@
 	function updLxr(){
 		if ($(".checkbox :checked").length == 1) {
         	var value = $("input[name='checkbox']:checked").val();
-		 	window.location.href= contextPath+"/customer/firsthend/updatecc_browse.page?id="+value+"&customerId=${customerNm}";
+		 	window.location.href= contextPath+"/customer/firsthend/updatefc_browse.page?id="+value+"&customerId=${customerNm}";
 		}else {
             Dialog.message("请选择一行");
         }
