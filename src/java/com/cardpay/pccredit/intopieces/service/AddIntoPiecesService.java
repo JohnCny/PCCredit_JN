@@ -1083,15 +1083,15 @@ public class AddIntoPiecesService {
 	}
 	
 	//================================================================================================
-	public List<LocalImage> findLocalImageList(int currentPage,int pageSize,String appId){
+	public List<LocalImage> findLocalImageList(String imageClasses, int currentPage,int pageSize,String appId){
 		if(currentPage<0){
 			currentPage = 0;
 		}
-		return localImageDao.findLocalImageList(currentPage,pageSize,appId);
+		return localImageDao.findLocalImageList(imageClasses,currentPage,pageSize,appId);
 	}
 	
-	public int findLocalImageListCount(String appId){
-		return localImageDao.findLocalImageListCount(appId);
+	public int findLocalImageListCount(String appId, String imageClasses){
+		return localImageDao.findLocalImageListCount(appId,imageClasses);
 	}
 	
 	//================================================================================================

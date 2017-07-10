@@ -205,8 +205,7 @@ public class JnpadMaintenanceController extends BaseController{
 			QueryResult<MaintenanceWeb> result = jnpadMaintenanceService.findMaintenanceWebPlansByFilter(filter);
 //			JRadPagedQueryResult<MaintenanceWeb> pagedResult = new JRadPagedQueryResult<MaintenanceWeb>(filter, result);
 			Map<String, Object> map =new LinkedHashMap<String, Object>();
-			map.put("result", result);
-			map.put("filter", filter);
+			map.put("result", result.getItems());
 			
 			JsonConfig jsonConfig = new JsonConfig();
 			jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

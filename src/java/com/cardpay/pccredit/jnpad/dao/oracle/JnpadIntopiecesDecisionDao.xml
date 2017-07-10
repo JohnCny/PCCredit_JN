@@ -147,6 +147,7 @@
 		<if test="nextNodeName!=null and nextNodeName!=''">
 			and N.NODE_NAME=#{nextNodeName}
 		</if>
+		order by b.created_time desc
 	</select>
 
 	<select id="findCustomerApplicationIntopieceDecisionCountForm"

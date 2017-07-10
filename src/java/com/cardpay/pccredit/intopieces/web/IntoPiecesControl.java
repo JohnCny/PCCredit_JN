@@ -1753,6 +1753,7 @@ public class IntoPiecesControl extends BaseController {
 			
 			String appId = request.getParameter("appId");
 			String currentPage=request.getParameter("currentPage");
+			String imageClasses=request.getParameter("imageClasses");
 			String pageSize=request.getParameter("pageSize");
 			
 			int page = 0;//rowNum
@@ -1764,8 +1765,8 @@ public class IntoPiecesControl extends BaseController {
 				limit = Integer.parseInt(pageSize);
 			}
 			
-			List<LocalImage> detaillist = addIntoPiecesService.findLocalImageList(page,limit,appId);
-			int totalCount = addIntoPiecesService.findLocalImageListCount(appId);
+			List<LocalImage> detaillist = addIntoPiecesService.findLocalImageList(imageClasses,page,limit,appId);
+			int totalCount = addIntoPiecesService.findLocalImageListCount(appId,imageClasses);
 			
 			
 			
@@ -1863,4 +1864,18 @@ public class IntoPiecesControl extends BaseController {
 			return mv;
 		}
 		
+		//pad图片浏览
+				@ResponseBody
+				@RequestMapping(value = "pad_ocx.page")
+				public AbstractModelAndView sunds_ocxd(HttpServletRequest request) {
+					JRadModelAndView mv = new JRadModelAndView("/intopieces/pad_ocx", request);
+					String appId = RequestHelper.getStringValue(request, "appId");
+					String custId = RequestHelper.getStringValue(request, "custId");
+					mv.addObject("appId", appId);
+					//查询客户信息
+					CustomerInfor vo = addIntoPiecesService.findBasicCustomerInfor(custId);
+					mv.addObject("customerInfor",vo);
+					mv.addObject("appId",appId);
+					return mv;
+				}
 }
