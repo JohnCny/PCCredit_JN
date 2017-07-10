@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.jnpad.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -114,6 +116,21 @@ public class JnpadMaintenanceService {
 	 */
 	public QueryResult<MaintenanceWeb> findMaintenanceWebPlansByFilter(MaintenanceFilter filter) {
 		List<MaintenanceWeb> plans = mmaintenanceDao.findMaintenanceWebPlansByFilter(filter);
+		SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		for (int i = 0; i < plans.size(); i++) {
+				try {
+					if(plans.get(i).getStartDay()!=null&&plans.get(i).getStartDay()!=""){
+					plans.get(i).setStartDay(sf.format(sf.parse(plans.get(i).getStartDay())));
+					}
+					if(plans.get(i).getEndDay()!=null&&plans.get(i).getEndDay()!=""){
+						plans.get(i).setEndDay(sf.format(sf.parse(plans.get(i).getEndDay())));
+					}
+				
+				} catch (ParseException e) {
+					e.printStackTrace();
+			}
+			
+		}
 		int size = mmaintenanceDao.findMaintenancePlansCountByFilter(filter);
 		QueryResult<MaintenanceWeb> qr = new QueryResult<MaintenanceWeb>(size,plans);
 		return qr;

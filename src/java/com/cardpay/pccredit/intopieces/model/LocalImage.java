@@ -13,7 +13,16 @@ public class LocalImage extends BusinessModel {
 	private String applicationId;
 	private String attachment;
 	private String uri;
+	private String imageClasses;
 	
+	
+	
+	public String getImageClasses() {
+		return imageClasses;
+	}
+	public void setImageClasses(String imageClasses) {
+		this.imageClasses = imageClasses;
+	}
 	public String getCustomerId() {
 		return customerId;
 	}

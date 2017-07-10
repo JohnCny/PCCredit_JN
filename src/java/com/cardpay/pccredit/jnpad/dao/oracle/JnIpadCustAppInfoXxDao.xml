@@ -212,13 +212,13 @@
 
 	<select id="getReturnPrepareAmountById" resultType="String">
 		select
-		TOTAL_RISK_MARGIN from T_RISK_MARGIN t
+		nvl(sum(TOTAL_RISK_MARGIN),0) from T_RISK_MARGIN t
 		where 
 		t.customer_id=#{id}
 	</select>
 	<select id="getSumReturnPrepareAmountById" resultType="String">
 		select
-		sum(TOTAL_RISK_MARGIN) from T_RISK_MARGIN t
+		nvl(sum(TOTAL_RISK_MARGIN),0) from T_RISK_MARGIN t
 	</select>
 
 	<select id="findYunyinstatus" resultMap="YunyinstatusResultMap">
