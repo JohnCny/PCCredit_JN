@@ -42,90 +42,135 @@
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">经营情况</td>
+             #if ($!imagecount.jyqk==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button7" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','jyqk')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">合影</td>
+              #if ($!imagecount.hy==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button8" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','hy')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">家访</td>
+              #if ($!imagecount.jf==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+              #else
+               <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button9" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','jf')">在线预览</a>
 	          </td>
+	          #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">工资证明</td>
+               #if ($!imagecount.gzzm==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button1" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','gzzm')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">身份材料</td>
+               #if ($!imagecount.zj==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button2" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','zj')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">审贷结论</td>
+               #if ($!imagecount.sdjl==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button3" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','sdjl')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">银行流水</td>
+               #if ($!imagecount.yhls==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button4" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','yhls')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">资产情况</td>
+               #if ($!imagecount.cc==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button5" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','cc')">在线预览</a>
 	          </td>
+              #end
 	          </tr>
             <tr>
               <td class="checkbox"><input type="radio" name="checkbox" value="$!obj.id"/></td>
               <td nowrap="nowrap">$!customerInfor.chineseName</td>
               <td nowrap="nowrap">$!customerInfor.cardId</td>
               <td nowrap="nowrap">其它</td>
+               #if ($!imagecount.qt==0) 
+              <td nowrap="nowrap">未上传</td>
               <td nowrap="nowrap"></td>
+             #else
+              <td nowrap="nowrap">已上传</td>
               <td nowrap="nowrap">
 	              <a id="id_server_button6" class="btn_g" href="javascript:void(0);" title="在线预览" onclick="displayServerPadPage('$!{appId}','qt')">在线预览</a>
 	          </td>
+              #end
             </tr>
           </table>
         </div>
