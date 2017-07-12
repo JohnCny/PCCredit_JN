@@ -44,12 +44,13 @@ public class JnpadCustomerSelectController {
 public String selectCustomerInfoByCardId(HttpServletRequest request){
 	String chineseName = request.getParameter("chineseName");	
 	String cardId = request.getParameter("cardId");
+	String cardType = request.getParameter("cardType");
 	String userId = "";
 	String userType = request.getParameter("userType");
 	if(userType.equals("1")){
 		userId = request.getParameter("userId");
 	}
-		List<CustomerInfo> customerList = customerSelectSercice.selectCustomerInfo(cardId,chineseName,userId);
+		List<CustomerInfo> customerList = customerSelectSercice.selectCustomerInfo(cardType,cardId,chineseName,userId);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		Map<String,Object> result = new LinkedHashMap<String,Object>();

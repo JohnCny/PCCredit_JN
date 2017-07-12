@@ -134,7 +134,7 @@ public class JnIpadUserLoginController {
 		result.put("totalCount", totalCount);
 		result.put("result", products);
 		JsonConfig jsonConfig = new JsonConfig();
-		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+//		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(result, jsonConfig);
 		return json.toString();
 	}

@@ -421,6 +421,7 @@ public class JnpadCustomerInfoInsertServ‎ice {
 	public void deleteinfo(String id, String tables) {
 		jnpadcustomerinfoinsertdao.deleteinfo(id,tables);
 	}
+	
 	}
 
 

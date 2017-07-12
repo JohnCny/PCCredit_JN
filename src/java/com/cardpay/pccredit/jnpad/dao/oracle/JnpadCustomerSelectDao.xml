@@ -164,6 +164,11 @@
 		 AND 
 		c.USER_ID=#{userId}
 		</if>
+		<if test="cardType != null and cardType != '' ">
+		 AND 
+		c.card_Type=#{cardType}
+		</if>
+		order by c.created_time
 		) ROW_)
 
 </select>

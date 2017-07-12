@@ -1874,6 +1874,26 @@ public class IntoPiecesControl extends BaseController {
 					mv.addObject("appId", appId);
 					//查询客户信息
 					CustomerInfor vo = addIntoPiecesService.findBasicCustomerInfor(custId);
+					int jyqk= addIntoPiecesService.findImageCount(appId,"jyqk");
+					int hy=addIntoPiecesService.findImageCount(appId,"hy");
+					int jf=addIntoPiecesService.findImageCount(appId,"jf");
+					int gzzm=addIntoPiecesService.findImageCount(appId,"gzzm");
+					int zj=addIntoPiecesService.findImageCount(appId,"zj");
+					int sdjl=addIntoPiecesService.findImageCount(appId,"sdjl");
+					int yhls=addIntoPiecesService.findImageCount(appId,"yhls");
+					int cc=addIntoPiecesService.findImageCount(appId,"cc");
+					int qt=addIntoPiecesService.findImageCount(appId,"qt");
+					Map<String, Object> imagecount=new HashMap<String, Object>();
+					imagecount.put("jyqk", jyqk);
+					imagecount.put("hy", hy);
+					imagecount.put("jf", jf);
+					imagecount.put("gzzm", gzzm);
+					imagecount.put("zj", zj);
+					imagecount.put("sdjl", sdjl);
+					imagecount.put("yhls", yhls);
+					imagecount.put("cc", cc);
+					imagecount.put("qt", qt);
+					mv.addObject("imagecount",imagecount);
 					mv.addObject("customerInfor",vo);
 					mv.addObject("appId",appId);
 					return mv;
