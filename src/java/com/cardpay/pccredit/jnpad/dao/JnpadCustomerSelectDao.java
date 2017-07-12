@@ -21,7 +21,7 @@ public interface JnpadCustomerSelectDao {
 
 	public CIPERSONBASINFO selectCustomerByNm(@Param(value = "custid")String custid);
 	//根据姓名和经理Id查询
-	public List<CustomerInfo> selectCustomerInfo(@Param(value = "cardId")String cardId,@Param(value = "chineseName")String chineseName, @Param(value = "userId")String userId);
+	public List<CustomerInfo> selectCustomerInfo(@Param(value = "cardType")String cardType,@Param(value = "cardId")String cardId,@Param(value = "chineseName")String chineseName, @Param(value = "userId")String userId);
 	
 
 
