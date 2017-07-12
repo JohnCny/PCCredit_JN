@@ -1032,7 +1032,7 @@ public class IntoPiecesService {
 		 * COLLE_CPY：抵押企业主模型
 		 * COLLE_INDI：抵押-受薪者模型
 		 */
-		if("0".equals(form.getLoanUse())){ 
+		/*if("0".equals(form.getLoanUse())){ 
 			if("LNM00000000003".equals(form.getProdType())){
 				ModelType.setModelType(ModelType.CREDIT_INDI);// 信用  消费
 				Log.info("*********信用  消费*********");
@@ -1045,18 +1045,36 @@ public class IntoPiecesService {
 			}
 		}else{
 			if("LNM00000000003".equals(form.getProdType())){
-				ModelType.setModelType(ModelType.CREDIT_CPY);// 信用  消费
-				Log.info("*********信用  消费*********");
+				ModelType.setModelType(ModelType.CREDIT_CPY);// 信用  经营
+				Log.info("*********信用 经营*********");
 			}else if("LNM00000000001".equals(form.getProdType())){
-				ModelType.setModelType(ModelType.COLLE_CPY);// 抵押  消费
-				Log.info("*********抵押  消费*********");
+				ModelType.setModelType(ModelType.COLLE_CPY);// 抵押  经营
+				Log.info("*********抵押  经营*********");
 			}else{
-				ModelType.setModelType(ModelType.WARR_CPY);// 担保  消费
-				Log.info("*********担保  消费*********");
+				ModelType.setModelType(ModelType.WARR_CPY);// 担保  经营
+				Log.info("*********担保  经营*********");
 			}					
+		}*/
+		if("CREDIT_CPY".equals(form.getModelType())){
+			ModelType.setModelType(ModelType.CREDIT_CPY);
+			Log.info("*********信用-企业主模型*********");
+		}else if("CREDIT_INDI".equals(form.getModelType())){
+			ModelType.setModelType(ModelType.CREDIT_INDI);
+			Log.info("*********信用-受薪者模型*********");
+		}else if("WARR_CPY".equals(form.getModelType())){
+			ModelType.setModelType(ModelType.WARR_CPY);
+			Log.info("*********担保-企业主模型*********");
+		}else if("WARR_INDI".equals(form.getModelType())){
+			ModelType.setModelType(ModelType.WARR_INDI);
+			Log.info("*********担保-受薪者模型*********");
+		}else if("COLLE_CPY".equals(form.getModelType())){
+			ModelType.setModelType(ModelType.COLLE_CPY);
+			Log.info("*********抵押企业主模型*********");
+		}else if("COLLE_INDI".equals(form.getModelType())){
+			ModelType.setModelType(ModelType.COLLE_INDI);
+			Log.info("*********抵押-受薪者模型*********");
 		}
 		
-	
 		// model
 		com.calcuation.model.JNCreditBusinessModel jnCreditBusinessModel = new com.calcuation.model.JNCreditBusinessModel(
 				Double.valueOf(form.getApplyAmount()),
@@ -1159,7 +1177,8 @@ public class IntoPiecesService {
 			model.setAnnualDisposableCapital(form.getAnnualDisposableCapital());  
 			model.setArticleCategory(form.getArticleCategory());          
 			model.setCollateralValuation(form.getCollateralValuation());      
-		  
+			model.setModelType(form.getModelType());
+			
 			model.setCreatedTime(new Date());
 		    commonDao.insertObject(model);
 	  }catch(Exception e){

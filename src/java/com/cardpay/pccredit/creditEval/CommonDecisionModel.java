@@ -17,7 +17,7 @@ public class CommonDecisionModel extends BusinessModel
     private String cardId;
     private String excelId;
   
-  
+    private String modelType;
 	private String applyAmount;
 	private String loanUse;
 	private String sex;
@@ -51,6 +51,14 @@ public class CommonDecisionModel extends BusinessModel
 	private String annualDisposableCapital;
 	private String articleCategory;
 	private String collateralValuation;
+	
+	
+	public String getModelType() {
+		return modelType;
+	}
+	public void setModelType(String modelType) {
+		this.modelType = modelType;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}
