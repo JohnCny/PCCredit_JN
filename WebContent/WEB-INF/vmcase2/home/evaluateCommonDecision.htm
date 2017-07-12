@@ -61,23 +61,31 @@
             </colgroup>
             
 			<tr>
+			   <td class="titlefc3" >模型类型</td> 
+               <td>
+				<label><INPUT name="modelType" type=radio  value="CREDIT_CPY">信用-企业主模型</label>
+				<label><INPUT name="modelType" type=radio  value="CREDIT_INDI">信用-受薪者模型</label>
+				<label><INPUT name="modelType" type=radio  value="WARR_CPY">担保-企业主模型</label>
+				<label><INPUT name="modelType" type=radio  value="WARR_INDI">担保-受薪者模型</label>
+				<label><INPUT name="modelType" type=radio  value="COLLE_CPY">抵押-企业主模型</label>
+				<label><INPUT name="modelType" type=radio  value="COLLE_INDI">抵押-受薪者模型</label>
+			   </td>
               <td class="titlefc3" >申请贷款金额(元)</td>
               <td><input type="text"  class="rinpsty" name="applyAmount" id ="applyAmount"   value=""/></td>
               
-              <td class="titlefc3" >贷款用途</td>
+              <td class="titlefc3" >贷款用途</td> 
               <td>
 				<label><INPUT name="loanUse" type=radio  value="0">消费</label>
 				<label><INPUT name="loanUse" type=radio  value="1">经营</label>
 			  </td>
-			  
-			  <td class="titlefc3" >性别</td>
-              <td>
-				<label><INPUT name="sex" type=radio  value="0">男</label>
-				<label><INPUT name="sex" type=radio  value="1">女</label>
-			  </td>
 			</tr>
 			
 			<tr>
+			   <td class="titlefc3" >性别</td>
+               <td>
+				<label><INPUT name="sex" type=radio  value="0">男</label>
+				<label><INPUT name="sex" type=radio  value="1">女</label>
+			   </td>
                <td class="titlefc3" >最高学位学历</td>
                <td>
 				<label><INPUT name="education" type=radio  value="0">初中及以下</label>
@@ -91,7 +99,10 @@
 				<label><INPUT name="residence" type=radio  value="1">本省外地</label>
 				<label><INPUT name="residence" type=radio  value="2">省外</label>
 			   </td>
-			   
+			</tr>
+			
+			
+			<tr>
 			  <td class="titlefc3" >子女教育状况</td>
               <td>
 				<label><INPUT name="childrenEducation" type=radio  value="0">无子女</label>
@@ -99,10 +110,7 @@
 				<label><INPUT name="childrenEducation" type=radio  value="2">学龄前</label>
 				<label><INPUT name="childrenEducation" type=radio  value="3">工作</label>
 			  </td>
-			</tr>
-			
-			
-			<tr>
+			    
 			   <td class="titlefc3" >年龄</td>
                <td><input type="text"  name="age" id ="age" value=""/></td>
                
