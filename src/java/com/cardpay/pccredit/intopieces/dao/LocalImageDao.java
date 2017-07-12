@@ -60,9 +60,9 @@ public interface LocalImageDao {
 	public int findDhDetailCountByFilter(IntoPiecesFilter filter);
 	
 	//========================================================================================
-	public List<LocalImage> findLocalImageList(@Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
+	public List<LocalImage> findLocalImageList(@Param("imageClasses")String imageClasses, @Param("page") int currentPage,@Param("limit") int limit,@Param("appId") String appId);
 	
-	public int findLocalImageListCount(@Param("appId") String appId);
+	public int findLocalImageListCount(@Param("appId") String appId, @Param("imageClasses")String imageClasses);
 	//========================================================================================
 	
 	public List<QzApplnAttachmentDetail> findQzApplnDetail(@Param("page") int currentPage,@Param("limit") int limit,@Param("batchId") String batchId);

@@ -36,14 +36,14 @@ public class JnpadImageBrowseService {
 	
 	
 	
-	public List<LocalImageForm> findLocalImage(String customerId,String productId ) {
+	public List<LocalImageForm> findLocalImage(String imageClass,String customerId,String productId ) {
 		// TODO Auto-generated method stub
-		return jnpadImageBrowseDao.findLocalImage(customerId,productId);
+		return jnpadImageBrowseDao.findLocalImage(imageClass,customerId,productId);
 	}
 	
-	public List<String> findLocalImagePc(String customerId,String productId ) {
+	public List<String> findLocalImagePc(String customerId,String productId, String batchId ) {
 		// TODO Auto-generated method stub
-		return jnpadImageBrowseDao.findLocalImagePc(customerId,productId);
+		return jnpadImageBrowseDao.findLocalImagePc(customerId,productId,batchId);
 	}
 
 	

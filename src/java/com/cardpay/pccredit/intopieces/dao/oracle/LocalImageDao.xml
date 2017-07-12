@@ -439,6 +439,9 @@
 			and uri not like '%.zip%'
 			and uri not like '%.pdf%'
 			and uri not like '%.txt%'
+			<if test="imageClasses != null and imageClasses != '' ">
+			AND image_Classes=#{imageClasses}
+		</if>
 	</select>
 
 	
@@ -451,6 +454,9 @@
 		and uri not like '%.zip%'
 		and uri not like '%.pdf%'
 		and uri not like '%.txt%'
+		<if test="imageClasses != null and imageClasses != '' ">
+			AND image_Classes=#{imageClasses}
+		</if>
         <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

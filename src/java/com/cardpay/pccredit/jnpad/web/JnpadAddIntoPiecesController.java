@@ -93,6 +93,8 @@ public class JnpadAddIntoPiecesController {
 		public Map<String, Object> imageImport(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws Exception {        
 			response.setContentType("text/html;charset=utf-8");
 			Map<String, Object> map = new HashMap<String, Object>();
+			String loginId = request.getParameter("loginId");
+			String displayName = request.getParameter("displayName");
 			try {
 				if(file==null||file.isEmpty()){
 					map.put(JRadConstants.SUCCESS, false);
@@ -104,7 +106,8 @@ public class JnpadAddIntoPiecesController {
 				String productId = request.getParameter("productId");
 				String customerId = request.getParameter("customerId");
 				String applicationId = request.getParameter("applicationId");
-				jnpadaddIntoPiecesService.importImage(file,productId,customerId,applicationId,fileName);
+				String imageClasses = request.getParameter("imageClasses");
+				jnpadaddIntoPiecesService.importImage(file,productId,customerId,applicationId,fileName,imageClasses);
 				map.put(JRadConstants.SUCCESS, true);
 //				map.put("successToOther", false);
 				map.put(JRadConstants.MESSAGE, CustomerInforConstant.IMPORTSUCCESS);
@@ -112,6 +115,14 @@ public class JnpadAddIntoPiecesController {
 				response.getWriter().print(obj.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
+				OperationLog ol = new OperationLog();
+				ol.setUser_id(loginId);
+			    ol.setUser_login(displayName);
+			    ol.setModule("PAD上传影像资料");
+			    ol.setOperation_result("失败");
+			    ol.setOperation_name("ADD");
+			    ol.setIp_address(request.getRemoteAddr());
+				userLogService.addUserLog(ol);
 				map.put(JRadConstants.SUCCESS, false);
 				map.put(JRadConstants.MESSAGE, "上传失败:"+e.getMessage());
 				JSONObject obj = JSONObject.fromObject(map);

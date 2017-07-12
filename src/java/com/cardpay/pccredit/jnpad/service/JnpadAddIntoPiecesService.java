@@ -326,7 +326,7 @@ public class JnpadAddIntoPiecesService {
 	}
 	
 	public void importImage(MultipartFile file, String productId,
-			String customerId,String applicationId ,String fileName_1) {
+			String customerId,String applicationId ,String fileName_1,String imageClasses) {
 		Map<String, String> map  = new HashMap<String, String>();
 		if(ServerSideConstant.IS_SERVER_SIDE_TRUE_PAD.equals("0")){
 			//本地测试
@@ -340,6 +340,7 @@ public class JnpadAddIntoPiecesService {
 		LocalImage localImage = new LocalImage();
 		localImage.setProductId(productId);
 		localImage.setCustomerId(customerId);
+		localImage.setImageClasses(imageClasses);
 		if(applicationId != null){
 			localImage.setApplicationId(applicationId);
 		}
