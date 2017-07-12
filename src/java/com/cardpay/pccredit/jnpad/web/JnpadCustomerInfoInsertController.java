@@ -521,7 +521,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 						customercompanyinfo.setId(custp.get(0).getId());
 						customercompanyinfo.setUpdateDate(new Date());
 						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoQyxx(customercompanyinfo);
-						result.put("mess", "更新客企业基本信息成功");
+						result.put("mess", "更新客户企业基本信息成功");
 					}else{
 						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQyxx(customercompanyinfo);
 						result.put("mess", "添加客户企业基本信息成功");
@@ -572,7 +572,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 						customercompanybusiness.setId(custp.get(0).getId());
 						customercompanybusiness.setUpdateDate(new Date());
 						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoQyyw(customercompanybusiness);
-						result.put("mess", "更新客企业业务信息成功");
+						result.put("mess", "更新客户企业业务信息成功");
 					}else{
 						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQyyw(customercompanybusiness);
 						result.put("mess", "添加客户企业业务信息成功");
@@ -623,7 +623,7 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 						customerstore.setId(custp.get(0).getId());
 						customerstore.setUpdateDate(new Date());
 						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoQydp(customerstore);
-						result.put("mess", "更新客企业店铺或其他信息成功");
+						result.put("mess", "更新客户企业店铺或其他信息成功");
 					}else{
 						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoQydp(customerstore);
 						result.put("mess", "添加客户企业店铺或其他信息成功");
@@ -839,4 +839,93 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 				JSONObject json = JSONObject.fromObject(result, jsonConfig);
 				return json.toString();
 			}
+			/**
+			 * 修改---车产
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/updatecc.json", method = { RequestMethod.GET })
+			public String updatecc( @ModelAttribute CustomerCarInfo customercarinfo,HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				try {
+					JnpadCustomerInfoInsertServ‎ice.updateCustomerCarInfo(customercarinfo);
+					result.put("mess", "修改客户车产信息成功");
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 修改---房产
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/updatefc.json", method = { RequestMethod.GET })
+			public String updatefc( @ModelAttribute CustomerHouse customerhouse,HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				try {
+					JnpadCustomerInfoInsertServ‎ice.updateCustomerInfoFc(customerhouse);
+					result.put("mess", "修改客户房产信息成功");
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 修改---联系人
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/updatelxr.json", method = { RequestMethod.GET })
+			public String updatelxr( @ModelAttribute CustomerContact customerContact,HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				try {
+					JnpadCustomerInfoInsertServ‎ice.updateCustomerLxrInfo(customerContact);
+					result.put("mess", "修改客户联系人信息成功");
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			/**
+			 * 修改---企业开户
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/updateqykh.json", method = { RequestMethod.GET })
+			public String updateqykh( @ModelAttribute CustomerBank customerBank,HttpServletRequest request) {
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				try {
+					JnpadCustomerInfoInsertServ‎ice.updateCustomerQykhInfo(customerBank);
+					result.put("mess", "修改客户企业开户信息成功");
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
 }

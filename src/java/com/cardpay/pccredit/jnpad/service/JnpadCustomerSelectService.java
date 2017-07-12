@@ -70,9 +70,9 @@ public class JnpadCustomerSelectService {
 	}
 
 
-	public List<CustomerInfo> selectCustomerInfo(String cardId,String chineseName, String userId) {
+	public List<CustomerInfo> selectCustomerInfo(String cardType,String cardId,String chineseName, String userId) {
 		// TODO Auto-generated method stub
-		return jnpadCustomerSelectDao.selectCustomerInfo(cardId,chineseName, userId);
+		return jnpadCustomerSelectDao.selectCustomerInfo(cardType,cardId,chineseName, userId);
 	}
 
 

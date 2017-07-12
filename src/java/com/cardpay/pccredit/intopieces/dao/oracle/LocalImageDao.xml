@@ -180,6 +180,7 @@
 		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
 		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
 		    where application_id=#{applicationId}
+		    and uri like '%.pdf%'
 		    
 		    <![CDATA[		
 							) ROW_
@@ -190,6 +191,7 @@
   <select id="findCountByApplication" resultType="int">
     select count(0) from local_image
     where application_id=#{applicationId}
+    and uri like '%.pdf%'
   </select>
   
   

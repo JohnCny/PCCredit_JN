@@ -1260,5 +1260,10 @@ public class AddIntoPiecesService {
 	public void saveModelForm(TModelForm form){
 		commonDao.insertObject(form);
 	}
+
+	public int findImageCount(String appId, String imageClasses) {
+		// TODO Auto-generated method stub
+		return localImageDao.findLocalImageListCount(appId,imageClasses);
+	}
 	
 }
