@@ -104,6 +104,9 @@ var validator = $($formName).validate({
 		},
 		cardNo :{
 			required : true
+		},
+		modelType :{
+			required : true
 		}
 	},
 	messages : {
@@ -211,6 +214,9 @@ var validator = $($formName).validate({
 		},
 		cardNo :{
 			required : "身份证号不能为空"
+		},
+		modelType :{
+			required : "模型类型不能为空"
 		}
 	},
 	errorPlacement : function(error, element) {

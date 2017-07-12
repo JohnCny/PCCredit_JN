@@ -22,7 +22,7 @@ public class CommonDecisionForm extends BaseForm{
 	private String companyAddress;
 	private String industry;
 	
-	
+	private String modelType;
 	// 申请贷款金额，单位：元
     private String applyAmount;
     
@@ -121,6 +121,14 @@ public class CommonDecisionForm extends BaseForm{
 
     // 抵押物估值，单位：元
     private String collateralValuation;
+
+	public String getModelType() {
+		return modelType;
+	}
+
+	public void setModelType(String modelType) {
+		this.modelType = modelType;
+	}
 
 	public String getExcelId() {
 		return excelId;
