@@ -23,6 +23,7 @@ import com.cardpay.pccredit.jnpad.model.CustomerCompanyInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerContact;
 import com.cardpay.pccredit.jnpad.model.CustomerFamilyInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerHouse;
+import com.cardpay.pccredit.jnpad.model.CustomerJob;
 import com.cardpay.pccredit.jnpad.model.CustomerLiving;
 import com.cardpay.pccredit.jnpad.model.CustomerPersonal;
 import com.cardpay.pccredit.jnpad.model.CustomerStore;
@@ -912,6 +913,64 @@ public class CustomerDetailedInfoController extends BaseController{
 					mv.addObject("qydp3",new CustomerStore());
 				}
 				mv.addObject("customerNm",customerId);
+				return mv;
+			}
+			
+			/**
+			 * 客户资料录入---工薪信息
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "insertgxxx.json", method = { RequestMethod.GET })
+			public JRadReturnMap customer_gxxx( @ModelAttribute CustomerJob customerjob,HttpServletRequest request) {
+				String customerId=request.getParameter("id");
+				customerjob.setCustomerId(customerId);
+				JRadReturnMap returnMap = new JRadReturnMap();
+				List<CustomerJob> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGxxx(customerId);
+				try {
+				if(custp.size()!=0){
+					customerjob.setId(custp.get(0).getId());
+					customerjob.setUpdateDate(new Date());
+					JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoGxxx(customerjob);
+					returnMap.put("message","更新客户工薪类信息成功");
+				}else{
+					JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoGxxx(customerjob);
+					returnMap.put("message","添加客户工薪类信息成功");
+					
+				}
+				} catch (Exception e) {
+					return WebRequestHelper.processException(e);
+				}
+				returnMap.put("customerNm", customerId);
+				return returnMap;
+			}
+			
+			//查询客户工薪信息
+			@ResponseBody
+			@RequestMapping(value = "selectgxxx.page", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public AbstractModelAndView selectGxxx( HttpServletRequest request) {
+				String customerId=request.getParameter("id");
+				JRadModelAndView mv = new JRadModelAndView("/customer/customerFirsthend/customer_iframe_gxxx", request);
+				//查询权限 非本人只能查看 不能操作
+				IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+				String userId = user.getId();
+				boolean lock = false;
+				if(!customerInforService.findCustomerInforById(customerId).getUserId().equals(userId)){
+					lock = true;
+				}
+				mv.addObject("lock", lock);
+				List<CustomerJob> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGxxx(customerId);
+				CustomerJob customerpersonal =new CustomerJob();
+				if(custp.size()!=0){
+					customerpersonal=custp.get(0);
+				}
+				mv.addObject("custp",customerpersonal);
+				
+				mv.addObject("customerNm", customerId);
 				return mv;
 			}
 }
