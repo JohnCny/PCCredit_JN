@@ -51,6 +51,7 @@ import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.service.ManagerOtherInfoInputService;
 import com.cardpay.pccredit.manager.service.ManagerPerformmanceService;
 import com.cardpay.pccredit.manager.service.OtherMusidataInputService;
+import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.riskControl.service.RiskCustomerCollectionService;
 import com.cardpay.pccredit.system.model.Dict;
 import com.cardpay.pccredit.system.model.SystemUser;
@@ -90,6 +91,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 	
 	@Autowired
 	private ManagerBelongMapService managerBelongMapService;
+	
 	/**
 	 * 放款台账查询页面
 	 * @param request
@@ -376,6 +378,10 @@ public class ManagerOtherInfoInputController extends BaseController {
 	@JRadOperation(JRadOperation.CREATE)
 	public AbstractModelAndView iframe_4_create(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_4_create", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		VisitRegistLedger vreg = new VisitRegistLedger();
+		vreg.setVisitId(user.getId());
+		mv.addObject("vreg", vreg);
 		return mv;
 	}
 
@@ -455,6 +461,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 			userId = user.getId();
 		}
 		standingBookFilter.setManagerId(userId);
+		standingBookFilter.setState("0");//非申请拒绝的
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
 		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
 		boolean lock =false;
@@ -598,7 +605,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 	public void getCustomer(HttpServletRequest request,PrintWriter printWriter){
 		try {
 			String userId = RequestHelper.getStringValue(request, ID);
-			// 查询拜访客户列表  //  TODO不在申请里面
+			// 查询拜访客户列表 
 			List<VisitRegistLedger> vreg = otherMusidataInputService.findVisitRegistLedgerParameterByVisitId(userId);
 			JSONArray json = new JSONArray();
 			json = JSONArray.fromObject(vreg);
@@ -626,4 +633,1017 @@ public class ManagerOtherInfoInputController extends BaseController {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	//=======================================申请拒绝台账=======================================================//
+	/**
+	 * 查询申请台帐
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_2.page")
+	public AbstractModelAndView iframe_2_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_2", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("1");//申请拒绝的
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_2_update.page")
+	public AbstractModelAndView iframe_2_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_2_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_2_update.json")
+	public JRadReturnMap iframe_2_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			applyStandingBook.setState("1");//拒绝
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	//=======================================申请拒绝台账=======================================================//
+	
+	
+	//=======================================征信=======================================================//
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_5.page")
+	public AbstractModelAndView iframe_5_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_5", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("2");//申请征信
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_5_update.page")
+	public AbstractModelAndView iframe_5_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_5_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_5_update.json")
+	public JRadReturnMap iframe_5_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			applyStandingBook.setState("2");//征信
+			applyStandingBook.setQueryDate(applyStandingBook.getQueryDate());
+			applyStandingBook.setQueryReason(applyStandingBook.getQueryReason());
+			applyStandingBook.setSignDate(applyStandingBook.getSignDate());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	//=======================================征信=======================================================//
+	
+	
+	//=======================================征信拒绝=======================================================//
+	@ResponseBody
+	@RequestMapping(value = "iframe_6.page")
+	public AbstractModelAndView iframe_6_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_6", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("3");//征信拒绝
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_6_update.page")
+	public AbstractModelAndView iframe_6_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_6_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_6_update.json")
+	public JRadReturnMap iframe_6_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			applyStandingBook.setState("3");//征信拒绝
+			applyStandingBook.setQueryDate(applyStandingBook.getQueryDate());
+			applyStandingBook.setQueryReason(applyStandingBook.getQueryReason());
+			applyStandingBook.setSignDate(applyStandingBook.getSignDate());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	//=======================================征信拒绝=======================================================//
+	
+	//=======================================实调=======================================================//
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_7.page")
+	public AbstractModelAndView iframe_7_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_7", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("4");//征信通过实调
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_7_update.page")
+	public AbstractModelAndView iframe_7_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_7_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_7_update.json")
+	public JRadReturnMap iframe_7_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			applyStandingBook.setState("4");//征信通过实调
+			applyStandingBook.setHostManager(applyStandingBook.getHostManager());
+			applyStandingBook.setAssistManager(applyStandingBook.getAssistManager());
+			applyStandingBook.setActualDate(applyStandingBook.getActualDate());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	//=======================================实调=======================================================//
+	
+	
+	//=======================================报告=======================================================//
+	@ResponseBody
+	@RequestMapping(value = "iframe_8.page")
+	public AbstractModelAndView iframe_8_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_8", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("5");//报告
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_8_update.page")
+	public AbstractModelAndView iframe_8_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_8_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_8_update.json")
+	public JRadReturnMap iframe_8_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			applyStandingBook.setState("5");//报告
+			applyStandingBook.setTabulaTime(applyStandingBook.getTabulaTime());// 制表时间
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	//=======================================报告=======================================================//
+	
+	
+	//=======================================内审=======================================================//
+	/**
+	 * 内审这一环节的录入由内审人员录入
+	 * 查询已经报告的申请
+	 * @param standingBookFilter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_9.page")
+	public AbstractModelAndView iframe_9_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_9", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("5");//报告
+		//standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_9_update.page")
+	public AbstractModelAndView iframe_9_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_9_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_9_update.json")
+	public JRadReturnMap iframe_9_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			// 判断是否是内审岗
+			String message;
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user.getUserType()!=5){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			applyStandingBook.setState("6");//内审通过
+			applyStandingBook.setInternalAuditDate(applyStandingBook.getInternalAuditDate());
+			applyStandingBook.setInternalAuditor(applyStandingBook.getInternalAuditor());
+			applyStandingBook.setInternalAuditProdType(applyStandingBook.getInternalAuditProdType());
+			applyStandingBook.setInternalAuditAmt(applyStandingBook.getInternalAuditAmt());
+			applyStandingBook.setAppInterest(applyStandingBook.getAppInterest());
+			applyStandingBook.setAppPeriod(applyStandingBook.getAppPeriod());
+			applyStandingBook.setAppRepayMethod(applyStandingBook.getAppRepayMethod());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	//=======================================内审=======================================================//
+	
+	
+	//=======================================上会登记=======================================================//
+	/**
+	 * 上会登记由审贷人员录入
+	 * 查询内审通过待登记上会的申请
+	 * @param standingBookFilter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_10.page")
+	public AbstractModelAndView iframe_10_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_10", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("6");//内审通过待登记上会
+		//standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_10_update.page")
+	public AbstractModelAndView iframe_10_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_10_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_10_update.json")
+	public JRadReturnMap iframe_10_update(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			// 判断是否是审批岗
+			String message;
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user.getUserType()!=5){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			applyStandingBook.setState("7");//上会中
+			applyStandingBook.setOneMeetDate(applyStandingBook.getOneMeetDate());
+			applyStandingBook.setTwoMeetDate(applyStandingBook.getTwoMeetDate());
+			applyStandingBook.setThreeMeetDate(applyStandingBook.getThreeMeetDate());
+			applyStandingBook.setAuditUser(applyStandingBook.getAuditUser());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	
+	//=======================================上会登记=======================================================//
+	
+	
+	//=======================================上会=======================================================//
+	/**
+	 * 查询上会中的申请
+	 * @param standingBookFilter
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_11.page")
+	public AbstractModelAndView iframe_11_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_11", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("7");//上会中
+		//standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_11_refuse_update.page")
+	public AbstractModelAndView iframe_11_refuse_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_11_refuse_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_11_pass_update.page")
+	public AbstractModelAndView iframe_11_pass_update(HttpServletRequest request) {  
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_11_pass_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_11_pass.json")
+	public JRadReturnMap iframe_11_pass(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			// 判断是否是审批岗
+			String message;
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user.getUserType()!=5){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			applyStandingBook.setState("8");//上会通过
+			applyStandingBook.setApprovedMeetDate(applyStandingBook.getApprovedMeetDate());
+			applyStandingBook.setApprovedMeetProdType(applyStandingBook.getApprovedMeetProdType());
+			applyStandingBook.setApprovedAmt(applyStandingBook.getApprovedAmt());
+			applyStandingBook.setApprovedLv(applyStandingBook.getApprovedLv());
+			applyStandingBook.setApprovedPeriod(applyStandingBook.getApprovedPeriod());
+			applyStandingBook.setApprovedRepayMethod(applyStandingBook.getApprovedRepayMethod());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_11_refuse.json")
+	public JRadReturnMap iframe_11_refuse(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			// 判断是否是审批岗
+			String message;
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user.getUserType()!=5){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			applyStandingBook.setState("9");//上会拒绝
+			applyStandingBook.setMeetRefuseReason(applyStandingBook.getMeetRefuseReason());
+			applyStandingBook.setMeetRefuseDate(applyStandingBook.getMeetRefuseDate());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	/**
+	 * 重新上会
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_11_update.json")
+	public JRadReturnMap iframe_11_update(HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			// 判断是否是审批岗
+			String message;
+			User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+			if(user.getUserType()!=5){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			String id = RequestHelper.getStringValue(request, ID);
+			//6-内审通过待登记上会 
+			managerPerformmanceService.updateApplyStandingBook(id);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	//=======================================上会=======================================================//
+	
+	
+	
+	//=======================================审批=======================================================//
+	@ResponseBody
+	@RequestMapping(value = "iframe_12.page")
+	public AbstractModelAndView iframe_12_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_12", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		
+		if("00000547".equals(user.getExternalId())){
+			standingBookFilter.setState("8");//上会通过待小微贷负责人审批
+		}else if("00000548".equals(user.getExternalId())){
+			standingBookFilter.setState("10");//上会通过待总经理审批
+		}else if("00000549".equals(user.getExternalId())){
+			standingBookFilter.setState("11");//上会通过待行长审批
+		}
+		
+		String userId = request.getParameter("userId");
+		
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		//standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_12_update.page")
+	public AbstractModelAndView iframe_12_update(HttpServletRequest request) {
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_12_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		mv.addObject("exterId",user.getExternalId());
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_12_pass.json")
+	public JRadReturnMap iframe_12_pass(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		try {
+			// 判断是否是审批岗
+			String message;
+			if(user.getUserType()!=2&&user.getUserType()!=3){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			if("00000547".equals(user.getExternalId())){
+				applyStandingBook.setRemark1(applyStandingBook.getRemark1());
+				if(!isContinue(applyStandingBook,applyStandingBook.getApprovedAmt(),"00000547")){
+					applyStandingBook.setState("12");//待签约
+				}else{
+					applyStandingBook.setState("10");//上会通过待总经理审批
+				}
+			}else if("00000548".equals(user.getExternalId())){
+				applyStandingBook.setRemark2(applyStandingBook.getRemark2());
+				if(!isContinue(applyStandingBook,applyStandingBook.getApprovedAmt(),"00000548")){
+					applyStandingBook.setState("12");//待签约
+				}else{
+					applyStandingBook.setState("11");//上会通过待行长审批
+				}
+			}else if("00000549".equals(user.getExternalId())){
+				applyStandingBook.setState("12");//待签约
+				applyStandingBook.setRemark3(applyStandingBook.getRemark3());
+			}
+			
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	// 审批流程控制
+	public boolean isContinue(ApplyStandingBookModel applyStandingBook,String exAmount,String auditType){
+		//查询产品担保方式
+		if("LNM00000000003".equals(applyStandingBook.getApprovedMeetProdType())){//信用
+			if("00000547".equals(auditType)){
+				if(Float.parseFloat(exAmount)<=100000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			if("00000548".equals(auditType)){
+				if(Float.parseFloat(exAmount)<=200000){//&&Float.parseFloat(exAmount)>100000
+					return false;
+				}else{
+					return true;
+				}
+			}
+			
+		}else if("LNM00000000004".equals(applyStandingBook.getApprovedMeetProdType())){//担保
+			if("00000547".equals(auditType)){
+				if(Float.parseFloat(exAmount)<=200000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			if("00000548".equals(auditType)){
+				if(Float.parseFloat(exAmount)<=800000){//&&Float.parseFloat(exAmount)>200000
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}else if("LNM00000000001".equals(applyStandingBook.getApprovedMeetProdType())){//抵押
+			if("00000547".equals(auditType)){
+				if(Float.parseFloat(exAmount)<=500000){
+					return false;
+				}else{
+					return true;
+				}
+			}
+			if("00000548".equals(auditType)){
+				if(Float.parseFloat(exAmount)<=2000000){//&&Float.parseFloat(exAmount)>500000
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}
+		return true;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_12_refuse.json")
+	public JRadReturnMap iframe_12_refuse(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		try {
+			// 判断是否是审批岗
+			String message;
+			if(user.getUserType()!=2&&user.getUserType()!=3){
+				message = "保存失败,当前用户非审批岗!";
+				returnMap.put("mess", message);
+				returnMap.put(JRadConstants.SUCCESS, false);
+				return returnMap;
+			}
+			
+			if("00000547".equals(user.getExternalId())){
+				applyStandingBook.setRemark3(applyStandingBook.getRemark1());
+			}else if("00000548".equals(user.getExternalId())){
+				applyStandingBook.setRemark3(applyStandingBook.getRemark2());
+			}else if("00000549".equals(user.getExternalId())){
+				applyStandingBook.setRemark3(applyStandingBook.getRemark3());
+			}
+			
+			applyStandingBook.setState("13");//审核审批拒绝
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	
+	//=======================================审批=======================================================//
+	
+	
+	//=======================================签约=======================================================//
+	@ResponseBody
+	@RequestMapping(value = "iframe_13.page")
+	public AbstractModelAndView iframe_13_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_13", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("12");//审批审核通过待签约
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_13_update.page")
+	public AbstractModelAndView iframe_13_update(HttpServletRequest request) {
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_13_update", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_13_pass.json")
+	public JRadReturnMap iframe_13_pass(@ModelAttribute ApplyStandingBookModel applyStandingBook,HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+		try {
+			applyStandingBook.setState("14");//已签约 待放款
+			applyStandingBook.setDateSign(applyStandingBook.getDateSign());
+			applyStandingBook.setSignPerson(applyStandingBook.getSignPerson());
+			applyStandingBook.setSignPlace(applyStandingBook.getSignPlace());
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			returnMap.addGlobalMessage(CREATE_SUCCESS);
+			returnMap.put("mess", "提交成功");
+		} catch (Exception e) {
+			returnMap.put(JRadConstants.SUCCESS, false);
+			returnMap.put("mess", "提交失败");
+			returnMap.addGlobalMessage("保存失败");
+		}
+		
+		return returnMap;
+	}
+	//=======================================签约=======================================================//
+	
+	/**
+	 * 查询已经签约待放款
+	 * @param standingBookFilter
+	 * @param request
+	 * @return
+	 */
+	//=======================================放款=======================================================//
+	@ResponseBody
+	@RequestMapping(value = "iframe_14.page")
+	public AbstractModelAndView iframe_14_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_14", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("14");//已签约待放款
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_14_pass.page")
+	public AbstractModelAndView iframe_14_pass(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_14_pass", request);
+		String userId = request.getParameter("userId");
+		String appId = request.getParameter("id");//申请id
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(appId);
+		mv.addObject("userId", userId);
+		mv.addObject("appModel",ApplyStandingBookModel.get(0));
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_14_pass.json", method = { RequestMethod.POST })
+	public JRadReturnMap iframe_14_pass(@ModelAttribute LoanApproved loanApproved,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		loanApproved.setCreatedTime(new Date());
+		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.insertLoanApproved(loanApproved);
+			returnMap.setSuccess(true);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		return returnMap;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_14_refuse.page")
+	public AbstractModelAndView iframe_14_refuse(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_14_refuse", request);
+		String userId = request.getParameter("userId");
+		String appId = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(appId);
+		mv.addObject("userId", userId);
+		mv.addObject("appModel",ApplyStandingBookModel.get(0));
+		mv.addObject("userId", userId);
+		return mv;
+	}
+	
+	/**
+	 * 保存放款拒绝台账
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_14_refuse.json", method = { RequestMethod.POST })
+	public JRadReturnMap iframe_4_refuse(@ModelAttribute LoanRefused loanRefused,HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		loanRefused.setCreatedTime(new Date());
+		loanRefused.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
+		
+		try {
+			managerOtherInfoInputService.insertLoanRefused(loanRefused);
+			returnMap.setSuccess(true);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		return returnMap;
+	}
+	//=======================================放款=======================================================//
+	
+	
+	//=======================================台帐进度查询=======================================================//
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_query.page")
+	public AbstractModelAndView iframe_query(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_query", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		if(user.getUserType()==1){
+			standingBookFilter.setManagerId(userId);	
+		}
+		
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	//=======================================台帐进度查询=======================================================//
+	
 }

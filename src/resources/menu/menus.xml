@@ -45,8 +45,19 @@
  	        <menu id="070015" name="khjljyxx" 				title="团队业绩查询" 			url="/manager/tdyjcx/tdyjcx.page" 					 img="" operations="checked|display|browse"/>	
  	        <menu id="070016" name="registermeeting" 		title="客户经理上会登记" 			url="/manager/meeting/insert.page" 					 img="" operations="checked|display|browse"/>	
  	        <menu id="070017" name="selectmeeting" 			title="客户经理上会查询" 			url="/manager/meeting/select.page" 					 img="" operations="checked|display|browse"/>	
- 	        <menu id="070018" name="otherinfoinput" 		title="其他信息录入" 			url="/manager/otherinfoinput/iframe_0.page" 			 img="" operations="create|change|browse"/> 
 		</menu>
+
+		<menu id="071000" name="performanceSchedule" title="业绩进度管理" url="" img="images/icon_sys.gif" operations="">
+			<menu id="071001" name="otherinfoinputSearch"   title="台账进度查询" 				url="/manager/otherinfoinput/iframe_query.page" 	     img="" operations="create|change|browse"/>
+			<menu id="071002" name="otherinfoinputC" 		title="台账信息录入(客户经理)" 		url="/manager/otherinfoinput/iframe_0.page" 			 img="" operations="create|change|browse"/>
+			<menu id="071003" name="otherinfoinputNs" 		title="台账内审审批(风险岗)" 			url="/manager/otherinfoinput/iframe_9.page" 			 img="" operations="create|change|browse"/>
+			<menu id="071005" name="otherinfoinputDj" 		title="台账上会登记(审贷岗)" 			url="/manager/otherinfoinput/iframe_10.page" 			 img="" operations="create|change|browse"/> 
+			<menu id="071006" name="otherinfoinputSd" 		title="台账上会审批(审贷岗)" 			url="/manager/otherinfoinput/iframe_11.page" 			 img="" operations="create|change|browse"/> 
+			<menu id="071007" name="otherinfoinputSp" 		title="台账审核审批(审批岗)" 			url="/manager/otherinfoinput/iframe_12.page" 			 img="" operations="create|change|browse"/>
+			<menu id="071008" name="otherinfoinputDqy" 		title="待签约台账(客户经理)" 			url="/manager/otherinfoinput/iframe_13.page" 			 img="" operations="create|change|browse"/>
+			<menu id="071009" name="otherinfoinputDfk" 		title="待放款台账(客户经理)" 			url="/manager/otherinfoinput/iframe_14.page" 			 img="" operations="create|change|browse"/>
+		</menu>
+		
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
 			<menu id="080001" name="riskcustomermanager" 		 title="风险客户管理" 				url="/riskcontrol/riskcustomermanager/managerbrowse.page" 			 img="" operations="reported|browse"/>
 			<menu id="080002" name="riskcustomercollection" 	 title="客户催收计划列表" 			url="/riskcontrol/riskcustomercollection/browse.page" 			  	 img="" operations="create|change|display|browse"/>

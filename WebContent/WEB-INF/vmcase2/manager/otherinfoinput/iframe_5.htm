@@ -5,18 +5,18 @@
   <div class="content_main">
     <div class="contentinner">
         <div class="tabplace">
-        <!--  申请台账-->
+        <!--  征信台账-->
             <ul class="com-tab" >
                 <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
-	            <li class="tab activeTab" ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
 	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">申请拒绝台账</a></li>
-	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_5.page?userId=${userId}">征信台账</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_5.page?userId=${userId}">征信台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_6.page?userId=${userId}">征信拒绝台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_7.page?userId=${userId}">实调台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_8.page?userId=${userId}">报告台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
-           </ul>
+            </ul>
          </div>
       
       <div class="inquiry" style="padding:15px;">
@@ -63,6 +63,9 @@
               <col width="100" />
               <col width="100" />
               <col width="300" />
+              <col width="300" />
+              <col width="100" />
+              <col width="100" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -79,6 +82,9 @@
               <th nowrap="nowrap">接待客户经理</th>
               <th nowrap="nowrap">所属管辖行</th>
               <th nowrap="nowrap">备注</th>
+              <th nowrap="nowrap" style="color:red">查询原因</th>
+              <th nowrap="nowrap" style="color:red">查询日期</th>
+              <th nowrap="nowrap" style="color:red">签字日期</th>
             </tr>
           </table>
         </div>
@@ -99,6 +105,9 @@
               <col width="100" />
               <col width="100" />
               <col width="300" />
+              <col width="300" />
+              <col width="100" />
+              <col width="100" />
             </colgroup>
              #foreach($applyBook in $!result.items)
             <tr>
@@ -116,6 +125,9 @@
               <td nowrap="nowrap">$!applyBook.managerName</td>
               <td nowrap="nowrap">$!applyBook.jurisdiction</td>
               <td nowrap="nowrap">$!applyBook.remark</td>
+              <td nowrap="nowrap">$!applyBook.queryReason</td>
+              <td nowrap="nowrap">$!applyBook.queryDate</td>
+              <td nowrap="nowrap">$!applyBook.signDate</td>
             </tr>
             #end
           </table>
@@ -124,10 +136,8 @@
       <div class="pagebar">
         <div class="controlbtn" style="">
         #if($!lock)
-       		<a class="btn_g" href="${contextPath}/manager/otherinfoinput/applyinsert.page"  title="新增">新增</a>
-       		<a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">修改</a>
-       		<a id="id_refuse_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">申请拒绝</a>
-       		<a id="id_credit_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">征信查询</a>
+           <a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">征信拒绝</a>
+           <a id="id_realtune_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">实调</a>
        	#end	
        		<a href="javascript:history.back();" class="btn_gr">返回</a>
         </div>
@@ -139,9 +149,8 @@
     
   </div>
   <script type="text/javascript">
-	var layout = new TableLayout(2);
-	window.top.currentWindow.setLayout(layout);
-	
+	 var layout = new TableLayout(2);
+	 window.top.currentWindow.setLayout(layout);
 	
 	 $("#id_browse_button").click(function() {
 		 var beginDate=$("#startDate").val(); 
@@ -157,55 +166,25 @@
 	 });
 	 
 	 
-	 $("#id_delete_button").click(function() {
-		 
-		 if ($(".checkbox :checked").length == 1) {
-             var rowid = $($(".checkbox :checked")[0]).attr("value");
-             Dialog.confirm("确定要处理吗？", "提示",function(){
-                
-            	 $.ajax({
- 					url : "${contextPath}/manager/otherinfoinput/applydelete.json?id="+rowid,
- 					type : "get",
- 					success : function(data) {
- 						window.top.Dialog.message(data.mess);
- 						location.reload();
- 				    	}
- 					})
-                 })
-         } else {
-             Dialog.message("请选择一行");
-         }
-	 });
-	 
-	 
 	 $("#id_change_button").click(function() {
 		 if ($(".checkbox :checked").length == 1) {
              var rowid = $($(".checkbox :checked")[0]).attr("value");
-             window.location.href="${contextPath}/manager/otherinfoinput/applyichange.page?id="+rowid;
+             window.location.href="${contextPath}/manager/otherinfoinput/iframe_6_update.page?id="+rowid;
          } else {
              Dialog.message("请选择一行");
          }
 	 });
 	 
-	 //申请拒绝
-     $("#id_refuse_button").click(function() {
+	 
+	 $("#id_realtune_button").click(function() {
 		 if ($(".checkbox :checked").length == 1) {
              var rowid = $($(".checkbox :checked")[0]).attr("value");
-             window.location.href="${contextPath}/manager/otherinfoinput/iframe_2_update.page?id="+rowid;
+             window.location.href="${contextPath}/manager/otherinfoinput/iframe_7_update.page?id="+rowid;
          } else {
              Dialog.message("请选择一行");
          }
 	 });
-     
-     // 征信
-     $("#id_credit_button").click(function() {
-		 if ($(".checkbox :checked").length == 1) {
-             var rowid = $($(".checkbox :checked")[0]).attr("value");
-             window.location.href="${contextPath}/manager/otherinfoinput/iframe_5_update.page?id="+rowid;
-         } else {
-             Dialog.message("请选择一行");
-         }
-	 });
+	
   </script>
   
 </body>
