@@ -5,7 +5,7 @@
   <div class="content_main">
     <div class="contentinner">
       <div class="place">
-        <div class="title">客户原始信息>企业基本信息</div>
+        <div class="title">客户原始信息>工薪基本信息</div>
       </div>
         <div class="tabplace">
             <ul class="com-tab" >
@@ -26,8 +26,8 @@
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectcc.page?id=${customerNm}">车产信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectlxr.page?id=${customerNm}">联系人信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectjz.page?id=${customerNm}">居住信息</a></li>
-                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectgxxx.page?id=${customerNm}">工薪类基本信息</a></li>
-                <li class="tab activeTab"><a href="${contextPath}/customer/firsthend/selectqyxx.page?id=${customerNm}">企业基本信息</a></li>
+                <li class="tab activeTab"><a href="${contextPath}/customer/firsthend/selectgxxx.page?id=${customerNm}">工薪类基本信息</a></li>
+                <li class="tab"><a href="${contextPath}/customer/firsthend/selectqyxx.page?id=${customerNm}">企业基本信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectqyyw.page?id=${customerNm}">企业业务信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectqydp.page?id=${customerNm}">企业店铺信息</a></li>
                 <li class="tab"><a href="${contextPath}/customer/firsthend/selectqykh.page?id=${customerNm}">企业开户信息</a></li>
@@ -45,45 +45,42 @@
               <col width="10%" />
               <col width="30%" />
             </colgroup>
-              <tr><td class="titlec" colspan="4" style="text-align: center;">企业信息</td></tr>
+              <tr><td class="titlec" colspan="4" style="text-align: center;">个人信息</td></tr>
             <tr>
-              <td class="titlefc3"><label for="khh">企业名称:</label></td>
-              <td><input class="rinpsty"  type="text" id="companyName" name="companyName" value="$!company.companyName" /></td>
-              <td class="titlefc3"><label for="khmc">组织类型:</label></td>
-              <td><input class="rinpsty"  type="text" id="organizationPattern" name="organizationPattern" value="$!company.organizationPattern" /></td>
+              <td class="titlefc3"><label for="khh">工作单位:</label></td>
+              <td><input class="rinpsty"  type="text" id="jobAddress" name="jobAddress" value="$!custp.jobAddress" /></td>
+              <td class="titlefc3"><label for="khmc">工作年限:</label></td>
+              <td><input class="rinpsty"  type="text" id="jobYears" name="jobYears" value="$!custp.jobYears" /></td>
             </tr>
              <tr>
-              <td class="titlefc3"><label for="rh">法人代表:</label></td>
-             <td><input class="rinpsty"  type="text" id="representative" name="representative" value="$!company.representative" /></td> 
+              <td class="titlefc3"><label for="rh">工资水平:</label></td>
+             <td><input class="rinpsty"  type="text" id="jobAmount" name="jobAmount" value="$!custp.jobAmount" /></td> 
               
-              <td class="titlefc3"><label for="khlx">实际控制人:</label></td>
-              <td><input class="rinpsty"  type="text" id="realControl" name="realControl" value="$!company.realControl" /></td>
+              <td class="titlefc3"><label for="khlx">职级:</label></td>
+              <td><input class="rinpsty"  type="text" id="rank" name="rank" value="$!custp.rank" /></td>
             </tr>
             <tr>
-              <td class="titlefc3"><label for="zjlx">股东股份情况:</label></td>
-              <td><input class="rinpsty"  type="text" id="stockSituation" name="stockSituation" value="$!company.stockSituation" /></td>
-              <td class="titlefc3"><label for="zjhm">营业执照:</label></td>
-              <td><input class="rinpsty"  type="text" id="businessLicense" name="businessLicense" value="$!company.businessLicense" /></td>
+              <td class="titlefc3"><label for="zjlx">公积金缴存额:</label></td>
+              <td><input class="rinpsty"  type="text" id="accumulation" name="accumulation" value="$!custp.accumulation" /></td>
+              <td class="titlefc3"><label for="zjhm">公积金缴存年限:</label></td>
+              <td><input class="rinpsty"  type="text" id="accumulationYears" name="accumulationYears" value="$!custp.accumulationYears" /></td>
             </tr>
              <tr>
-              <td class="titlefc3"><label for="qfjg">经营起始时间:</label></td>
-             　<td><input class="rinpsty"  type="text" id="beginDateString" name="beginDateString" readonly="readonly" value="$!date.format('yyyy-MM-dd HH:mm:ss',$!company.beginDate)" 
-             onmouseover="_calendar({format:'yyyy-MM-dd HH:mm:ss'})"/></td>
-              <td class="titlefc3"><label for="sfcq">经营年限:</label></td>
-            　<td><input class="rinpsty"  type="text" id="plantingYear" name="plantingYear" value="$!company.plantingYear" /></td>
+              <td class="titlefc3"><label for="qfjg">社保缴存基数:</label></td>
+             　<td><input class="rinpsty"  type="text" id="social" name="social" value="$!custp.social" /></td>
+              <td class="titlefc3"><label for="sfcq">社保缴存年限:</label></td>
+            　<td><input class="rinpsty"  type="text" id="socialYears" name="socialYears" value="$!custp.socialYears" /></td>
             </tr>
              <tr>
-              <td class="titlefc3"><label for="qfjg">地址:</label></td>
-             　<td><input class="rinpsty"  type="text" id="adress" name="adress" value="$!company.adress" /></td>
-              <td class="titlefc3"><label for="sfcq">电话:</label></td>
-            　<td><input class="rinpsty"  type="text" id="telephone" name="telephone" value="$!company.telephone" /></td>
+              <td class="titlefc3"><label for="qfjg">单位性质:</label></td>
+             　<td><input class="rinpsty"  type="text" id="unitProperty" name="unitProperty" value="$!custp.unitProperty" /></td>
             </tr>
           </table>
         </div>
       </form>
       <div class="submit">
         <!-- <input type="button" onclick="returnClick();" value="返回" /> -->
-          #if(!$!lock)
+           #if(!$!lock)
         <input id="id_save_button" type="button" value="保存" class="current" />
         #end
         <input type="button" onclick="javascript:history.back();" value="返回" />
@@ -112,8 +109,7 @@
 			submitFlag = 1;
 			if ($($formName).valid()) {
 				var formjson = $($formName).serialize();
-				var beginDateString = $("#beginDateString").val();
-	   	        var url = "${modulePath}/insertqyxx.json?id=${customerNm}&beginDateString="+beginDateString;
+	   	        var url = "${modulePath}/insertgxxx.json?id=${customerNm}";
 				$.ajax({
 					url : url,
 					type : "get",
@@ -121,7 +117,7 @@
 					success : function(data) {
 						if (data.success) {
 							topWin.Dialog.message(data.message);
-							window.location.href= contextPath+"/customer/firsthend/selectqyxx.page?id=${customerNm}" ;
+							window.location.href= contextPath+"/customer/firsthend/selectgxxx.page?id=${customerNm}" ;
 						}
 						else{
 							topWin.Dialog.message(data.message);
