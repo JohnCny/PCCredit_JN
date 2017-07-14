@@ -70,8 +70,7 @@
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="remark">备注:</label></td>
-						<td><input class="rinpsty" type="text" id="remark"
-							name="remark" value="" /></td>
+						<td><textarea name="remark" id="remark" >$!result.remark</textarea></td>
 					</tr>
 					
 					
@@ -184,7 +183,7 @@
 							success : function(data) {
 								if (data.success) {
 									topWin.Dialog.message(data.mess);
-									location.href="${contextPath}/manager/otherinfoinput/applyinsert.page";
+									location.href="${contextPath}/manager/otherinfoinput/iframe_3.page";
 								}else{
 									topWin.Dialog.message(data.mess);
 							    }

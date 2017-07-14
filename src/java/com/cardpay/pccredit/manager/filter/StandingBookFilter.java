@@ -11,7 +11,15 @@ public class StandingBookFilter extends BaseQueryFilter{
 	private String managerId;
 	private String customerName;
 	
+	private String state;
 	
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}

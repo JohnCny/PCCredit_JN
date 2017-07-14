@@ -105,7 +105,42 @@
 		<result property="jurisdiction" column="jurisdiction" />
 		<result property="remark" column="remark" />
 		<result property="createdTime" column="created_Time" />
-
+		<result property="applyRefuseReason" column="APPLY_REFUSE_REASON" />
+		<result property="queryReason" column="QUERY_REASON" />
+		<result property="queryDate" column="QUERY_DATE" />
+		<result property="signDate" column="SIGN_DATE" />
+		<result property="creditRefuseReason" column="CREDIT_REFUSE_REASON" />
+		<result property="hostManager" column="HOST_MANAGER" />
+		<result property="assistManager" column="ASSIST_MANAGER" />
+		<result property="actualDate" column="ACTUAL_DATE" />
+		<result property="tabulaTime" column="TABULA_TIME" />
+		
+		<result property="internalAuditDate" column="INTERNAL_AUDIT_DATE" />
+		<result property="internalAuditor" column="INTERNAL_AUDITOR" />
+		<result property="internalAuditProdType" column="INTERNAL_AUDIT_PROD_TYPE" />
+		<result property="internalAuditAmt" column="INTERNAL_AUDIT_AMT" />
+		<result property="appInterest" column="APP_INTEREST" />
+		<result property="appPeriod" column="APP_PERIOD" />
+		<result property="appRepayMethod" column="APP_REPAY_METHOD" />
+		<result property="oneMeetDate" column="ONE_MEET_DATE" />
+		<result property="twoMeetDate" column="TWO_MEET_DATE" />
+		<result property="threeMeetDate" column="THREE_MEET_DATE" />
+		<result property="auditUser" column="AUDIT_USER" />
+		<result property="approvedMeetDate" column="APPROVED_MEET_DATE" />
+		<result property="approvedMeetProdType" column="APPROVED_MEET_PROD_TYPE" />
+		<result property="approvedAmt" column="APPROVED_AMT" />
+		<result property="approvedLv" column="APPROVED_LV" />
+		
+		<result property="approvedPeriod" column="APPROVED_PERIOD" />
+		<result property="approvedRepayMethod" column="APPROVED_REPAY_METHOD" />
+		<result property="meetRefuseDate" column="MEET_REFUSE_DATE" />
+		<result property="meetRefuseReason" column="MEET_REFUSE_REASON" />
+		<result property="remark1" column="REMARK1" />
+		<result property="remark2" column="REMARK2" />
+		<result property="remark3" column="REMARK3" />
+		<result property="dateSign" column="DATE_SIGN" />
+		<result property="signPerson" column="SIGN_PERSON" />
+		<result property="signPlace" column="SIGN_PLACE" />
 	</resultMap>
 	<select id="findMumberByDeptId" resultMap="ResultMap">
 		select o.name as oname ,d.name,t.* from sys_user t
@@ -508,6 +543,10 @@
 		<if test="endDate != null and endDate != ''">
 		AND  trunc(#{endDate})>= trunc(asb.apply_Date)
 		</if>
+		<if test="state != null and state != ''">
+		AND  state = #{state}
+		</if>
+		
 		order by asb.created_Time
 		 <![CDATA[		
 							) ROW_
@@ -529,6 +568,9 @@
 		</if>
 		<if test="endDate != null and endDate != ''">
 		AND  trunc(#{endDate})>= trunc(asb.apply_Date)
+		</if>
+		<if test="state != null and state != ''">
+		AND  state = #{state}
 		</if>
 		order by asb.created_Time
     
