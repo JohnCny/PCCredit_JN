@@ -21,6 +21,16 @@ public class LoanRefused extends BusinessModel {
 	private String supManager;
 	private String loanMode;
 	private String remarks;
+	
+	private String appId;
+	
+	
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}

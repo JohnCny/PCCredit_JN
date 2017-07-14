@@ -38,6 +38,19 @@ public class LoanApproved extends BusinessModel {
 	private String loanAccount;
 	private String remarks;
 	
+	private String appId;
+	
+	
+	
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	public String getCustomerName() {
 		return customerName;
 	}

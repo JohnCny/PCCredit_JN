@@ -5,15 +5,18 @@
   <div class="content_main">
     <div class="contentinner">
         <div class="tabplace">
+        <!--  拜访台账-->
             <ul class="com-tab" >
-            #if($!lock)
-            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
-            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
-            <li class="tab"><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
-           #end
-            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
-
-         </ul>
+                <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
+	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">申请拒绝台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_5.page?userId=${userId}">征信台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_6.page?userId=${userId}">征信拒绝台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_7.page?userId=${userId}">实调台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_8.page?userId=${userId}">报告台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
+            </ul>
          </div>
       
       <div class="inquiry" style="padding:15px;">
@@ -69,9 +72,9 @@
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
-              <th nowrap="nowrap">拜访日期</th>
-              <th nowrap="nowrap">商户名称</th>
               <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">商户名称</th>
+              <th nowrap="nowrap">拜访日期</th>
               <th nowrap="nowrap">联系方式</th>
               <th nowrap="nowrap">性别</th>
               <th nowrap="nowrap">户籍</th>
@@ -110,9 +113,9 @@
            #foreach ($reg in $result.items)
             <tr ondblclick="javascript:$('#id_change_button').click();">
               <td class="checkbox"><input type="radio" name="checkbox" value="$!reg.id"/></td>
-              <td nowrap="nowrap">$!reg.visitDate</td>
-              <td nowrap="nowrap">$!reg.merchantName</td>
               <td nowrap="nowrap">$!reg.customerName</td>
+              <td nowrap="nowrap">$!reg.merchantName</td>
+              <td nowrap="nowrap">$!reg.visitDate</td>
               <td nowrap="nowrap">$!reg.contactInfor</td>
               <td nowrap="nowrap">$!reg.sex</td>
               <td nowrap="nowrap">$!reg.registence</td>

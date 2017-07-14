@@ -20,6 +20,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cardpay.pccredit.intopieces.model.CustomerApplicationInfo;
 import com.cardpay.pccredit.manager.dao.ManagerPerformmanceDao;
 import com.cardpay.pccredit.manager.filter.StandingBookFilter;
 import com.cardpay.pccredit.manager.form.BankListForm;
@@ -531,6 +532,13 @@ public class ManagerPerformmanceService {
 		public void changeapplyStandingBook(ApplyStandingBookModel applyStandingBook) {
 			
 			commonDao.updateObject(applyStandingBook);
+		}
+		
+		
+		public void updateApplyStandingBook(String id){
+			ApplyStandingBookModel info= commonDao.findObjectById(ApplyStandingBookModel.class, id);
+			info.setState("6");//6-内审通过待上会
+			commonDao.updateObject(info);
 		}
 }
 

@@ -1,0 +1,293 @@
+#parse ("common/iframe_page_header.htm")
+ <link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+	<div class="content_main">
+		<div class="contentinner">
+			<div class="place">
+				<div class="title">台账信息>审核审批</div>
+			</div>
+			<form id="id_module_form" />
+				<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
+				<table cellpadding="0" cellspacing="0" class="table-bd" border="1"
+					bordercolor="#cccccc" style="width: 97%;margin-top:20px;margin-left:1.5%;">
+					<colgroup>
+						<col width="10%" />
+						<col width="40%" />
+						<col width="10%" />
+						<col width="40%" />
+					</colgroup>
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">申请台账详情</td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="managerName">接待客户经理:</label></td>
+						<td><input class="rinpsty" type="text" id="managerName"
+							name="managerName" value="$!result.managerName" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="customerName">客户姓名:</label></td>
+						<td><input class="rinpsty" type="text" id="customerName"
+							name="customerName" value="$!result.customerName" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="contactMethod">联系方式:</label></td>
+						<td><input class="rinpsty" type="text" id="contactMethod"
+							name="contactMethod" value="$!result.contactMethod" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="homeAddress">家庭住址:</label></td>
+						<td><input class="rinpsty" type="text" id="homeAddress"
+							name="homeAddress" value="$!result.homeAddress" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="workPlace">营业实体/工作单位:</label></td>
+						<td><input class="rinpsty" type="text" id="workPlace"
+							name="workPlace" value="$!result.workPlace" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="product">贷款产品:</label></td>
+						<td><input class="rinpsty" type="text" id="product"
+							name="product" value="$!result.product" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="applyAmount">申请金额:</label></td>
+						<td><input class="rinpsty" type="text" id="applyAmount"
+							name="applyAmount" value="$!result.applyAmount" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="applyDeadline">申请期限:</label></td>
+						<td><input class="rinpsty" type="text" id="applyDeadline"
+							name="applyDeadline" value="$!result.applyDeadline" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="proceedUse">贷款用途:</label></td>
+						<td><input class="rinpsty" type="text" id="proceedUse"
+							name="proceedUse" value="$!result.proceedUse" readonly="readonly"/></td>
+						<td class="titlefc3"><label for="financingExperience">是否有融资经历（贷款信息）:</label></td>
+						<td><input class="rinpsty" type="text" id="financingExperience"
+							name="financingExperience" value="$!result.financingExperience" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="applyDate">申请日期:</label></td>
+						<td><input type="text" class="rinpsty" id ="applyDate" name="applyDate" style="width:300px" value="$!date.format('yyyy-MM-dd',$!result.applyDate)"
+	          				 onmouseover="_calendar()" readonly="readonly" maxlength="30"/></td>
+						<td class="titlefc3"><label for="jurisdiction">所属管辖行:</label></td>
+						<td><input class="rinpsty" type="text" id="jurisdiction" name="jurisdiction" readonly="readonly" value="$!result.jurisdiction" /></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label for="remark">备注:</label></td>
+						<td><textarea name="remark" id="remark" readonly="readonly">$!result.remark</textarea></td>
+						<td class="titlefc3"><label  for="queryReason">查询原因:</label></td>
+					    <td><textarea name="queryReason" id="queryReason" readonly="readonly">$!result.queryReason</textarea></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="signDate">客户签字日期:</label></td>
+						<td><input type="text" class="rinpsty" id ="signDate" name="signDate" style="width:300px" value="$!result.signDate"
+	          				  readonly="readonly" maxlength="30"/></td>
+						<td class="titlefc3"><label  for="queryDate">查询日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="queryDate" name="queryDate" style="width:300px" value="$!result.queryDate"
+	          				  readonly="readonly" maxlength="30"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="hostManager">主办客户经理:</label></td>
+						<td><input class="rinpsty" type="text" id="hostManager"
+							name="hostManager" value="$!result.hostManager" readonly="readonly"/></td>
+					    <td class="titlefc3"><label  for="assistManager">协办客户经理:</label></td>
+						<td><input class="rinpsty" type="text" id="assistManager"
+							name="assistManager" value="$!result.assistManager" readonly="readonly"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="actualDate">实调日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="actualDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" name="actualDate" style="width:300px" value="$!result.actualDate"
+	          				  readonly="readonly" maxlength="30"/></td>
+						<td class="titlefc3"><label  for="actualDate">制表时间:</label></td>
+					    <td><input type="text" class="rinpsty" id ="tabulaTime" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" name="tabulaTime" style="width:300px" value="$!result.tabulaTime"
+	          				  readonly="readonly" maxlength="30"/></td>
+					</tr>
+					<tr>
+	          		    <td style="display:none"><label for="remark">备注:</label></td>
+						<td style="display:none"><input class="rinpsty" type="text" id="id" name="id" value="$!result.id" /></td>
+					</tr>
+					<!-- 内审信息 -->
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">内审信息</td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="internalAuditDate">内审日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="internalAuditDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="internalAuditDate"  value="$!result.internalAuditDate" readonly="readonly" maxlength="30"/></td>
+						<td class="titlefc3"><label  for="internalAuditor">内审人员:</label></td>
+					    <td><input type="text" class="rinpsty" id ="internalAuditor"  readonly="readonly"  name="internalAuditor"  value="$!result.internalAuditor" maxlength="30"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="internalAuditProdType">内审产品类型:</label></td>
+					    <td><select id="internalAuditProdType" name="internalAuditProdType" style="width:150px" disabled="disabled">
+                 			   <option value=""></option>
+                			    #dict("CMMSCLNM",$!result.internalAuditProdType)
+                			  </select></td>
+						<td class="titlefc3"><label  for="internalAuditAmt">内审金额:</label></td>
+					    <td><input type="text" class="rinpsty" id ="internalAuditAmt"  readonly="readonly"  name="internalAuditAmt"  value="$!result.internalAuditAmt" maxlength="30"/></td>
+					</tr>
+					
+					<tr>
+						<td class="titlefc3"><label  for="appInterest">申请利率:</label></td>
+					    <td><input type="text" class="rinpsty" id ="appInterest"   readonly="readonly" name="appInterest"  value="$!result.appInterest" maxlength="30"/></td>
+						<td class="titlefc3"><label  for="appPeriod">申请期限:</label></td>
+					    <td><select  name="appPeriod" disabled="disabled">
+                  			#dict("decision_term",$!result.appPeriod)</select>
+              			</td>
+					</tr>
+					
+					<tr>
+						<td class="titlefc3"><label  for="appRepayMethod">申请还款方式:</label></td>
+					    <td><select id ="appRepayMethod" name="appRepayMethod" disabled="disabled">
+                  			#dict("HKFS",$!result.appRepayMethod)
+                  			</select></td>
+					</tr>
+					
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">上会登记信息</td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="oneMeetDate">一次上会日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="oneMeetDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="oneMeetDate"  value="$!result.oneMeetDate" readonly="readonly" maxlength="30"/></td>
+					    <td class="titlefc3"><label  for="twoMeetDate">二次上会日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="twoMeetDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="twoMeetDate"  value="$!result.twoMeetDate" readonly="readonly" maxlength="30"/></td>
+					</tr>
+					<tr>
+						<td class="titlefc3"><label  for="threeMeetDate">三次上会日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="threeMeetDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="threeMeetDate"  value="$!result.threeMeetDate" readonly="readonly" maxlength="30"/></td>
+					    <td class="titlefc3"><label  for="auditUser">审贷人员:</label></td>
+					    <td><input type="text" class="rinpsty" id ="auditUser" readonly="readonly" name="auditUser"  value="$!result.auditUser"  maxlength="30"/></td>
+					</tr>
+					
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">上会通过信息</td>
+					</tr>
+					
+					<tr>
+						<td class="titlefc3"><label  for="approvedMeetDate">过会日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="approvedMeetDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="approvedMeetDate"  value="$!result.approvedMeetDate" readonly="readonly" maxlength="30"/></td>
+					    <td class="titlefc3"><label  for="approvedMeetProdType">过会产品类型:</label></td>
+					    <td><select id="approvedMeetProdType" name="approvedMeetProdType" disabled="disabled" style="width:150px">
+                 			   <option value=""></option>
+                			    #dict("CMMSCLNM",$!result.approvedMeetProdType)
+                			  </select></td>
+					</tr>
+					
+					<tr>
+						<td class="titlefc3"><label  for="approvedAmt">过会金额:</label></td>
+					    <td><input type="text" class="rinpsty" id ="approvedAmt" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="approvedAmt"  value="$!result.approvedAmt" readonly="readonly" maxlength="30"/></td>
+					    <td class="titlefc3"><label  for="approvedLv">过会利率:</label></td>
+					    <td><input type="text" class="rinpsty" id ="approvedLv" name="approvedLv"  value="$!result.approvedLv"  maxlength="30"/></td>
+					</tr>
+					
+					<tr>
+						<td class="titlefc3"><label  for="approvedPeriod">过会期限:</label></td>
+					    <td><select  name="approvedPeriod" disabled="disabled">
+                  			#dict("decision_term",$!result.approvedPeriod)</select>
+              			</td>
+					    <td class="titlefc3"><label  for="approvedRepayMethod">过会还款方式:</label></td>
+					    <td><select id ="approvedRepayMethod" disabled="disabled" name="approvedRepayMethod">
+                  			#dict("HKFS",$!result.approvedRepayMethod)
+                  			</select></td>
+					</tr>
+					<tr>
+						<td class="titlec" colspan="4" style="text-align: center;">审批信息</td>
+					</tr>
+					#if($exterId=='00000547')
+					  <tr>
+						  <td class="titlefc3"><label  for="remark1">小微贷负责人备注:</label></td>
+						  <td><textarea name="remark1" id="remark1" >$!result.remark1</textarea></td>
+					  </tr>
+					#end
+					
+					#if($exterId=='00000548')
+					  <tr>
+						  <td class="titlefc3"><label  for="remark1">小微贷负责人备注:</label></td>
+						  <td><textarea name="remark1" readonly="readonly" id="remark1" >$!result.remark1</textarea></td>
+						   <td class="titlefc3"><label  for="remark2">零售业务部总经理备注:</label></td>
+						  <td><textarea name="remark2" id="remark2" >$!result.remark2</textarea></td>
+					  </tr>
+					#end
+					
+					#if($exterId=='00000549')
+					  <tr>
+						  <td class="titlefc3"><label  for="remark1">小微贷负责人备注:</label></td>
+						  <td><textarea name="remark1" readonly="readonly" id="remark1" >$!result.remark1</textarea></td>
+						  <td class="titlefc3"><label  for="remark2">零售业务部总经理备注:</label></td>
+						  <td><textarea name="remark2" readonly="readonly" id="remark2" >$!result.remark2</textarea></td>
+					  </tr>
+					  <tr>
+						  <td class="titlefc3"><label  for="remark3">行长备注:</label></td>
+						  <td><textarea name="remark3"  id="remark3" >$!result.remark3</textarea></td>
+					  </tr>
+					#end
+					
+				</table>
+				</div>
+			</form>
+			<div class="submit" style="text-align: left;">
+				<input id="id_pass_button" type="button" value="审批通过" class="current" />
+				<input id="id_refuse_button" type="button" value="审批拒绝" class="current" />
+				<input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+			</div>
+		</div>
+	</div>
+</body>
+ <script type="text/javascript">
+ #set ($formName = "'#id_module_form'");
+ #parse ("manager/otherinfoinput/applyStandingBook_validation.js")
+ 
+ $(document).ready(function() {
+	 
+	 //审批通过
+	 $("#id_pass_button").click(function (){
+	  var formjson = $($formName).serialize();
+   	  var url ="${contextPath}/manager/otherinfoinput/iframe_12_pass.json" 
+   	  if ($($formName).valid()) {
+	   	  Dialog.confirm("确定要通过了吗？", "提示",
+		     		function() {
+						 $.ajax({
+								url : url,
+								type : "get",
+								data : formjson,
+								success : function(data) {
+									if (data.success) {
+										topWin.Dialog.message(data.mess);
+										location.href="${contextPath}/manager/otherinfoinput/iframe_12.page";
+									}else{
+										topWin.Dialog.message(data.mess);
+								    }
+								}
+							});
+	   			    });
+   	  }
+	  });
+	 
+	 //审批拒绝
+	 $("#id_refuse_button").click(function (){
+		  var formjson = $($formName).serialize();
+	   	  var url ="${contextPath}/manager/otherinfoinput/iframe_12_refuse.json" 
+	   	  if ($($formName).valid()) {
+		   	  Dialog.confirm("确定要拒绝了吗？", "提示",
+			     		function() {
+							 $.ajax({
+									url : url,
+									type : "get",
+									data : formjson,
+									success : function(data) {
+										if (data.success) {
+											topWin.Dialog.message(data.mess);
+											location.href="${contextPath}/manager/otherinfoinput/iframe_12.page";
+										}else{
+											topWin.Dialog.message(data.mess);
+									    }
+									}
+								});
+		   			    });
+	   	  }
+		  });
+	
+ })
+ 
+ 
+ </script>
+#parse ("common/iframe_page_footer.htm")
