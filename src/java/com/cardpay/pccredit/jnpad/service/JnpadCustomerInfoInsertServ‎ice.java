@@ -21,6 +21,7 @@ import com.cardpay.pccredit.jnpad.model.CustomerContact;
 import com.cardpay.pccredit.jnpad.model.CustomerFamilyInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerHouse;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
+import com.cardpay.pccredit.jnpad.model.CustomerJob;
 import com.cardpay.pccredit.jnpad.model.CustomerLiving;
 import com.cardpay.pccredit.jnpad.model.CustomerPersonal;
 import com.cardpay.pccredit.jnpad.model.CustomerStore;
@@ -420,6 +421,31 @@ public class JnpadCustomerInfoInsertServ‎ice {
 
 	public void deleteinfo(String id, String tables) {
 		jnpadcustomerinfoinsertdao.deleteinfo(id,tables);
+	}
+
+
+
+	public List<CustomerJob> selectCustomerInfoGxxx(String customerId) {
+		String sql="select * from customerinformation_gxxx where customer_Id='"+customerId+"'";
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		return commonDao.queryBySql(CustomerJob.class, sql, params);
+	}
+
+
+
+	public void insertCustomerInfoGxxx(CustomerJob customerJob) {
+		String id = IDGenerator.generateID();
+		customerJob.setId(id);
+		customerJob.setCreateDate(new Date());;
+		commonDao.insertObject(customerJob);
+		
+	}
+
+
+
+	public void updatetCustomerInfoGxxx(CustomerJob customerJob) {
+		commonDao.updateObject(customerJob);
+		
 	}
 	
 	}
