@@ -31,6 +31,7 @@ import com.cardpay.pccredit.jnpad.model.CustomerFamilyInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerHouse;
 import com.cardpay.pccredit.jnpad.model.CustomerInfo;
 import com.cardpay.pccredit.jnpad.model.CustomerInfoForm;
+import com.cardpay.pccredit.jnpad.model.CustomerJob;
 import com.cardpay.pccredit.jnpad.model.CustomerLiving;
 import com.cardpay.pccredit.jnpad.model.CustomerPersonal;
 import com.cardpay.pccredit.jnpad.model.CustomerStore;
@@ -809,6 +810,16 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 					result.put("qyqt2","未录入");
 					result.put("qydp3",new CustomerStore());
 				}
+				List<CustomerJob> CustomerJob=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGxxx(customerId);
+				if(CustomerJob.size()!=0){
+					result.put("gxxx","success");
+					result.put("gxxx2","已录入");
+					result.put("gxxx3",CustomerJob.get(0));
+				}else{
+					result.put("gxxx","important");
+					result.put("gxxx2","未录入");
+					result.put("gxxx3",new CustomerJob());
+				}
 				JsonConfig jsonConfig = new JsonConfig();
 				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 				JSONObject json = JSONObject.fromObject(result, jsonConfig);
@@ -928,4 +939,55 @@ public class JnpadCustomerInfoInsertController extends BaseController {
 				return json.toString();
 			}
 			
+			/**
+			 * 客户资料录入---工薪信息
+			 * 
+			 * @param filter
+			 * @param request
+			 * @return
+			 */
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/insertgxxx.json", method = { RequestMethod.GET })
+			public String customer_gxxx( @ModelAttribute CustomerJob CustomerJob,HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerJob> custp=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGxxx(customerId);
+				try {
+					if(custp.size()!=0){
+						CustomerJob.setId(custp.get(0).getId());
+						CustomerJob.setUpdateDate(new Date());
+						JnpadCustomerInfoInsertServ‎ice.updatetCustomerInfoGxxx(CustomerJob);
+						result.put("mess", "更新客户工薪类信息成功");
+					}else{
+						JnpadCustomerInfoInsertServ‎ice.insertCustomerInfoGxxx(CustomerJob);
+						result.put("mess", "添加客户工薪类信息成功");
+						
+					}
+				} catch (Exception e) {
+					result.put("mess", "操作失败");
+				}
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
+			
+			//查询客户工薪信息
+			@ResponseBody
+			@RequestMapping(value = "/ipad/customerIntopiece/selectgxxx.json", method = { RequestMethod.GET })
+			@JRadOperation(JRadOperation.BROWSE)
+			public String selectgxxx( HttpServletRequest request) {
+				String customerId=request.getParameter("customerId");
+				HashMap<String, Object> result = new HashMap<String, Object>();
+				List<CustomerJob> CustomerJob=JnpadCustomerInfoInsertServ‎ice.selectCustomerInfoGxxx(customerId);
+				CustomerJob customerJob =new CustomerJob();
+				if(CustomerJob.size()!=0){
+					customerJob=CustomerJob.get(0);
+				}
+				result.put("gxxx",customerJob);
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+				JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
 }
