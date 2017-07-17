@@ -49,7 +49,7 @@
 
 		<menu id="071000" name="performanceSchedule" title="业绩进度管理" url="" img="images/icon_sys.gif" operations="">
 			<menu id="071001" name="otherinfoinputSearch"   title="台账进度查询" 				url="/manager/otherinfoinput/iframe_query.page" 	     img="" operations="create|change|browse"/>
-			<menu id="071002" name="otherinfoinputC" 		title="台账信息录入(客户经理)" 		url="/manager/otherinfoinput/iframe_0.page" 			 img="" operations="create|change|browse"/>
+			<menu id="071002" name="otherinfoinputC" 		title="台账信息录入(客户经理)" 		url="/manager/otherinfoinput/iframe_4.page" 			 img="" operations="create|change|browse"/>
 			<menu id="071003" name="otherinfoinputNs" 		title="台账内审审批(风险岗)" 			url="/manager/otherinfoinput/iframe_9.page" 			 img="" operations="create|change|browse"/>
 			<menu id="071005" name="otherinfoinputDj" 		title="台账上会登记(审贷岗)" 			url="/manager/otherinfoinput/iframe_10.page" 			 img="" operations="create|change|browse"/> 
 			<menu id="071006" name="otherinfoinputSd" 		title="台账上会审批(审贷岗)" 			url="/manager/otherinfoinput/iframe_11.page" 			 img="" operations="create|change|browse"/> 
