@@ -53,6 +53,20 @@ public class NotificationService {
 		notificationMessage.setUserId(userId);
 	    return	commonDao.insertObject(notificationMessage);
 	}
+	
+	
+	public int insertNotify(String type,String userId,String title,String context,String createUser){
+		NotificationMessage notificationMessage=new NotificationMessage();
+		notificationMessage.setIsCheck(NotificationConstant.no_read);
+		notificationMessage.setNoticeTitle(title);
+		notificationMessage.setNoticeContent(context);//内容
+		notificationMessage.setNoticeType(type);
+		notificationMessage.setUserId(userId);
+		
+		notificationMessage.setCreatedTime(new Date());
+		notificationMessage.setCreatedBy(createUser);
+	    return	commonDao.insertObject(notificationMessage);
+	}
 
 	public QueryResult<NotificationMessage> findNotificationMessageByFilter(NotificationMessageFilter filter) {
 		return commonDao.findObjectsByFilter(NotificationMessage.class, filter);
