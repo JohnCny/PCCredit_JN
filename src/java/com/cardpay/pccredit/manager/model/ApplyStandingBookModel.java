@@ -34,6 +34,7 @@ public class ApplyStandingBookModel extends BaseModel{
 	
 	/*申请拒绝数*/
 	private String applyRefuseReason;//申请拒绝原因
+	private String applyRefuseDate;//申请拒绝日期
 	
 	/*征信数*/
 	private String queryReason;  //查询原因
@@ -42,6 +43,7 @@ public class ApplyStandingBookModel extends BaseModel{
 	
 	/*征信拒绝数*/
 	private String creditRefuseReason;//征信拒绝原因
+	private String creditRefuseDate;//征信拒绝日期
 	
 	/*实调数*/
 	private String  hostManager;//主办客户经理
@@ -92,6 +94,20 @@ public class ApplyStandingBookModel extends BaseModel{
     private String signPerson;//签字人员
     private String signPlace;//签字地点
     
+    
+    
+	public String getCreditRefuseDate() {
+		return creditRefuseDate;
+	}
+	public void setCreditRefuseDate(String creditRefuseDate) {
+		this.creditRefuseDate = creditRefuseDate;
+	}
+	public String getApplyRefuseDate() {
+		return applyRefuseDate;
+	}
+	public void setApplyRefuseDate(String applyRefuseDate) {
+		this.applyRefuseDate = applyRefuseDate;
+	}
 	public String getManagerId() {
 		return managerId;
 	}

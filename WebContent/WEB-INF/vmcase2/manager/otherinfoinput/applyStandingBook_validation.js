@@ -95,6 +95,15 @@ var validator = $($formName).validate({
 		},
 		signPlace :{
 			required : true
+		},
+		applyRefuseDate :{
+			required : true
+		},
+		creditRefuseDate :{
+			required : true
+		},
+		creditRefuseReason :{
+			required : true
 		}
 	},
 	messages : {
@@ -193,6 +202,15 @@ var validator = $($formName).validate({
 		},
 		signPlace :{
 			required : "签约地点不能为空"
+		},
+		applyRefuseDate :{
+			required : "申请拒绝日期不能为空"
+		},
+		creditRefuseDate :{
+			required : "征信拒绝日期不能为空"
+		},
+		creditRefuseReason :{
+			required : "征信拒绝原因不能为空"
 		}
 	},
 	errorPlacement : function(error, element) {
