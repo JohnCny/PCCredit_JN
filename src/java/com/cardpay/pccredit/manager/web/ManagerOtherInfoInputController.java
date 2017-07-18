@@ -1275,6 +1275,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 			standingBookFilter.setState("10");//上会通过待总经理审批
 		}else if("00000549".equals(user.getExternalId())){
 			standingBookFilter.setState("11");//上会通过待行长审批
+		}else{
+			standingBookFilter.setState("8");
 		}
 		
 		String userId = request.getParameter("userId");
@@ -1640,6 +1642,17 @@ public class ManagerOtherInfoInputController extends BaseController {
 		mv.addObject("lock", lock);	
 		mv.addObject("filter", standingBookFilter);	
 		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_query_detail.page")
+	public AbstractModelAndView iframe_query_detail(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(id);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_query_detail", request);
+		mv.addObject("result",ApplyStandingBookModel.get(0));
 		return mv;
 	}
 	

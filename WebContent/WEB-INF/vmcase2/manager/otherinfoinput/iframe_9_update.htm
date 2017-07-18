@@ -68,9 +68,9 @@
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="remark">备注:</label></td>
-						<td><textarea name="remark"  id="remark" readonly="readonly" style="width:80%;">$!result.remark</textarea></td>
+						<td><textarea name="remark"  id="remark" readonly="readonly" style="width: 300px; height:50px">$!result.remark</textarea></td>
 						<td class="titlefc3"><label  for="queryReason">查询原因:</label></td>
-					    <td><textarea name="queryReason"  id="queryReason" readonly="readonly" style="width:80%;">$!result.queryReason</textarea></td>
+					    <td><textarea name="queryReason"  id="queryReason" readonly="readonly" style="width: 300px; height:50px">$!result.queryReason</textarea></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label  for="signDate">客户签字日期:</label></td>
@@ -124,7 +124,7 @@
 					<tr>
 						<td class="titlefc3"><label style="color:red" for="appInterest">申请利率(%):</label></td>
 					    <td><input type="text" class="rinpsty" id ="appInterest"   name="appInterest"  value="$!result.appInterest" maxlength="30"/></td>
-						<td class="titlefc3"><label style="color:red" for="appPeriod" style="width:150px">申请期限(月):</label></td>
+						<td class="titlefc3"><label style="color:red" for="appPeriod" style="width:200px">申请期限(月):</label></td>
 					    <td><select  name="appPeriod">
                   			#dict("decision_term",$!result.appPeriod)</select>
               			</td>

@@ -45,7 +45,7 @@
 							name="product" value="" /></td>
 					</tr>
 					<tr>
-						<td class="titlefc3"><label for="applyAmount">申请金额:</label></td>
+						<td class="titlefc3"><label for="applyAmount">申请金额(元):</label></td>
 						<td><input class="rinpsty" type="text" id="applyAmount"
 							name="applyAmount" value="" /></td>
 						<td class="titlefc3"><label for="applyDeadline">申请期限:</label></td>
@@ -70,7 +70,7 @@
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="remark">备注:</label></td>
-						<td><textarea name="remark" id="remark" >$!result.remark</textarea></td>
+						<td><textarea name="remark" id="remark" style="width: 300px; height:50px">$!result.remark</textarea></td>
 					</tr>
 					
 					
@@ -171,6 +171,21 @@
 		  
 	 // 保存
 	 $("#id_save_button").click(function (){
+      //  判断
+	  /* var dob =/^[-\+]?\d+(\.\d+)?$/
+   	  if(!dob.test($('#applyAmount').val())){
+    	 Dialog.message("申请金额应为数值类型!");	
+         return;
+      } */
+      /* $("#ide").remove();
+      var dob =/^[-\+]?\d+(\.\d+)?$/
+      if(!dob.test($('#applyAmount').val())){
+      	  $("input[name='applyAmount']").after("<label class='error' id='ide' generated='true' ><br>申请金额应为数值类型</label>");
+          return;
+      }else{
+    	  $("#ide").remove();	
+      } */
+      
 	  var formjson = $($formName).serialize();
    	  var url = $($formName).attr("action");
    	  if ($($formName).valid()) {
