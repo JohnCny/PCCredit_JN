@@ -809,9 +809,9 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadReturnMap returnMap = new JRadReturnMap();
 		try {
 			applyStandingBook.setState("3");//征信拒绝
-			applyStandingBook.setQueryDate(applyStandingBook.getQueryDate());
+			/*applyStandingBook.setQueryDate(applyStandingBook.getQueryDate());
 			applyStandingBook.setQueryReason(applyStandingBook.getQueryReason());
-			applyStandingBook.setSignDate(applyStandingBook.getSignDate());
+			applyStandingBook.setSignDate(applyStandingBook.getSignDate());*/
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
