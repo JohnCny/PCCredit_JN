@@ -73,6 +73,11 @@
 					    <td><textarea name="applyRefuseReason" id="applyRefuseReason">$!result.applyRefuseReason</textarea></td>
 					</tr>
 					<tr>
+						<td class="titlefc3"><label style="color:red" for="applyRefuseDate">申请拒绝时间:</label></td>
+					    <td><input type="text" class="rinpsty" id ="applyRefuseDate" name="applyRefuseDate" style="width:300px" value="$!date.format('yyyy-MM-dd',$!result.applyRefuseDate)"
+	          				 onmouseover="_calendar()" readonly="readonly" maxlength="30"/></td>
+					</tr>
+					<tr>
 						<td style="display:none"><label for="remark">备注:</label></td>
 						<td style="display:none"><input class="rinpsty" type="text" id="id" name="id" value="$!result.id" /></td>
 					</tr>

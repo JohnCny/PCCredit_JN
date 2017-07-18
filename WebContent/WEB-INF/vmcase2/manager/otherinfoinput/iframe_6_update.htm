@@ -83,6 +83,12 @@
 					<tr>
 					    <td class="titlefc3"><label style="color:red" for="creditRefuseReason">征信拒绝原因:</label></td>
 					    <td><textarea name="creditRefuseReason" id="creditRefuseReason">$!result.creditRefuseReason</textarea></td>
+						<td class="titlefc3"><label style="color:red" for="creditRefuseDate">征信拒绝日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="creditRefuseDate" name="creditRefuseDate" style="width:300px" value="$!date.format('yyyy-MM-dd',$!result.creditRefuseDate)"
+	          				 onmouseover="_calendar()" readonly="readonly" maxlength="30"/></td>
+					</tr>
+					
+					<tr>
 						<td style="display:none"><label for="remark">备注:</label></td>
 						<td style="display:none"><input class="rinpsty" type="text" id="id" name="id" value="$!result.id" /></td>
 					</tr>
