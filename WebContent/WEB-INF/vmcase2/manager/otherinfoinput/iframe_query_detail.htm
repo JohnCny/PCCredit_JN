@@ -4,7 +4,7 @@
 	<div class="content_main">
 		<div class="contentinner">
 			<div class="place">
-				<div class="title">台账信息>签约</div>
+				<div class="title">台账信息>详情</div>
 			</div>
 			<form id="id_module_form" />
 				<div class="form-bd" id="formsId" style="margin-top: 0px;padding-top: 0px;">
@@ -68,9 +68,9 @@
 					</tr>
 					<tr>
 						<td class="titlefc3"><label for="remark">备注:</label></td>
-						<td><textarea name="remark" id="remark" readonly="readonly" style="width: 300px; height:50px">$!result.remark</textarea></td>
+						<td><textarea name="remark" id="remark" readonly="readonly">$!result.remark</textarea></td>
 						<td class="titlefc3"><label  for="queryReason">查询原因:</label></td>
-					    <td><textarea name="queryReason" id="queryReason" readonly="readonly" style="width: 300px; height:50px">$!result.queryReason</textarea></td>
+					    <td><textarea name="queryReason" id="queryReason" readonly="readonly">$!result.queryReason</textarea></td>
 					</tr>
 					<tr>
 						<td class="titlefc3"><label  for="signDate">客户签字日期:</label></td>
@@ -91,11 +91,19 @@
 					<tr>
 						<td class="titlefc3"><label  for="actualDate">实调日期:</label></td>
 					    <td><input type="text" class="rinpsty" id ="actualDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" name="actualDate" style="width:300px" value="$!result.actualDate"
-	          				  readonly="readonly" maxlength="30"/></td>
+	          				  readonly="readonly" maxlength="30" disabled="disabled"/></td>
 						<td class="titlefc3"><label  for="actualDate">制表时间:</label></td>
 					    <td><input type="text" class="rinpsty" id ="tabulaTime" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" name="tabulaTime" style="width:300px" value="$!result.tabulaTime"
-	          				  readonly="readonly" maxlength="30"/></td>
+	          				  readonly="readonly" maxlength="30" disabled="disabled"/></td>
 					</tr>
+					
+					<tr>
+						<td class="titlefc3"><label for="applyRefuseReason">申请拒绝原因:</label></td>
+						<td><textarea name="remark" id="applyRefuseReason" readonly="readonly">$!result.applyRefuseReason</textarea></td>
+						<td class="titlefc3"><label  for="creditRefuseReason">征信拒绝原因:</label></td>
+					    <td><textarea name="creditRefuseReason" id="creditRefuseReason" readonly="readonly">$!result.creditRefuseReason</textarea></td>
+					</tr>
+					
 					<tr>
 	          		    <td style="display:none"><label for="remark">备注:</label></td>
 						<td style="display:none"><input class="rinpsty" type="text" id="id" name="id" value="$!result.id" /></td>
@@ -157,7 +165,7 @@
 					</tr>
 					
 					<tr>
-						<td class="titlec" colspan="4" style="text-align: center;">上会通过信息</td>
+						<td class="titlec" colspan="4" style="text-align: center;">上会信息</td>
 					</tr>
 					
 					<tr>
@@ -190,36 +198,44 @@
                   			</select></td>
 					</tr>
 					<tr>
+						<td class="titlefc3"><label  for="meetRefuseDate">上会拒绝日期:</label></td>
+					    <td><input type="text" class="rinpsty" id ="meetRefuseDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
+					    	style="width:300px" name="meetRefuseDate"  value="$!result.meetRefuseDate" readonly="readonly" maxlength="30" disabled="disabled"/></td>
+					    <td class="titlefc3"><label  for="meetRefuseReason">上会拒绝原因:</label></td>
+					    <td><textarea name="meetRefuseReason" id="meetRefuseReason" readonly="readonly">$!result.meetRefuseReason</textarea></td>
+					</tr>
+					<tr>
 						<td class="titlec" colspan="4" style="text-align: center;">审核审批信息</td>
 					</tr>
 					<tr>
 						  <td class="titlefc3"><label  for="remark1">小微贷负责人备注:</label></td>
-						  <td><textarea name="remark1" id="remark1" readonly="readonly" style="width: 300px; height:50px">$!result.remark1</textarea></td>
+						  <td><textarea name="remark1" id="remark1" readonly="readonly">$!result.remark1</textarea></td>
 						  <td class="titlefc3"><label  for="remark2" >零售业务部总经理备注:</label></td>
-						  <td><textarea name="remark2" id="remark2" readonly="readonly" style="width: 300px; height:50px">$!result.remark2</textarea></td>
+						  <td><textarea name="remark2" id="remark2" readonly="readonly">$!result.remark2</textarea></td>
 					</tr>
 					<tr>
 						  <td class="titlefc3"><label  for="remark2">行长备注:</label></td>
-						  <td><textarea name="remark3" id="remark3" readonly="readonly" style="width: 300px; height:50px">$!result.remark3</textarea></td>
+						  <td><textarea name="remark3" id="remark3" readonly="readonly">$!result.remark3</textarea></td>
 					 </tr>
-					 
+					 <tr>
+						<td class="titlec" colspan="4" style="text-align: center;">签约信息</td>
+					</tr>
 					<tr>
-						<td class="titlefc3"><label style="color:red" for="dateSign">签约日期:</label></td>
+						<td class="titlefc3"><label  for="dateSign">签约日期:</label></td>
 					    <td><input type="text" class="rinpsty" id ="dateSign" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
-					    	style="width:300px" name="dateSign"  value="$!result.dateSign" readonly="readonly" maxlength="30"/></td>
-					    <td class="titlefc3"><label style="color:red" for="signPerson">签约人员:</label></td>
-					    <td><input type="text" class="rinpsty" id ="signPerson" name="signPerson"  value="$!result.signPerson"  maxlength="30"/></td>
+					    	style="width:300px" name="dateSign"  value="$!result.dateSign" readonly="readonly" maxlength="30" disabled="disabled"/></td>
+					    <td class="titlefc3"><label  for="signPerson">签约人员:</label></td>
+					    <td><input type="text" class="rinpsty" id ="signPerson" name="signPerson" readonly="readonly" value="$!result.signPerson"  maxlength="30"/></td>
 					</tr>
 					
 					<tr>
-						<td class="titlefc3"><label style="color:red" for="signPlace">签约地点:</label></td>
-					    <td><input type="text" class="rinpsty" id ="signPlace" name="signPlace"  value="$!result.signPlace"  maxlength="30"/></td>
+						<td class="titlefc3"><label  for="signPlace">签约地点:</label></td>
+					    <td><input type="text" class="rinpsty" id ="signPlace" name="signPlace" readonly="readonly" value="$!result.signPlace"  maxlength="30"/></td>
 					</tr>
 				</table>
 				</div>
 			</form>
 			<div class="submit" style="text-align: left;">
-				<input id="id_pass_button" type="button" value="签约" class="current" />
 				<input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
 			</div>
 		</div>

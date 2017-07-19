@@ -7,7 +7,7 @@ var validator = $($formName).validate({
 			required : true
 		},
 		applyAmount :{
-			required : true
+			required : true,number:true
 		},
 		applyDate :{
 			required : true
@@ -114,7 +114,7 @@ var validator = $($formName).validate({
 			required : "客户姓名不能为空"
 		},
 		applyAmount :{
-			required : "申请金额不能为空"
+			required : "申请金额不能为空",number : "请输入整数"
 		},
 		applyDate :{
 			required : "申请日期不能为空"

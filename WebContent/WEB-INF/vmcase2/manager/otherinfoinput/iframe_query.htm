@@ -82,7 +82,7 @@
               <th nowrap="nowrap">协办客户经理</th>
               <th nowrap="nowrap">实调日期</th>
               <th nowrap="nowrap">制表时间</th>
-              <th nowrap="nowrap">进度状态</th>
+              <th nowrap="nowrap" style="color:red">进度状态</th>
             </tr>
           </table>
         </div>
@@ -143,6 +143,7 @@
       </div>
       <div class="pagebar">
         <div class="controlbtn" style="">
+        	<a id="id_search_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">查看详情</a>
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
@@ -155,8 +156,20 @@
 	 var layout = new TableLayout(2);
 	 window.top.currentWindow.setLayout(layout);
 	
+	 // 筛选
 	 $("#id_browse_button").click(function() {
 	     document.getElementById("submitForm").submit();
+	 });
+	 
+	 
+	 // 查看详情
+     $("#id_search_button").click(function() {
+		 if ($(".checkbox :checked").length == 1) {
+             var rowid = $($(".checkbox :checked")[0]).attr("value");
+             window.location.href="${contextPath}/manager/otherinfoinput/iframe_query_detail.page?id="+rowid;
+         } else {
+             Dialog.message("请选择一行");
+         }
 	 });
 	
   </script>

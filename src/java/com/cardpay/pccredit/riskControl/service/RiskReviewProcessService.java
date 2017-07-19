@@ -212,6 +212,10 @@ public class RiskReviewProcessService {
 						process.setCreatedBy(riskReviewProcess.getAuditPeople());
 						updateRiskReviewProcess(process);
 					}
+					
+					// 插入通知信息
+					RiskConsiderations riskConsiderations = riskConsiderationsService.findRiskConsiderationsById(riskReviewProcess.getRiskIssuesId());
+					insertNotificationMsg(riskConsiderations);
 				// 卡中心确认
 				}else{
 					RiskReviewProcess firstProcess = getFirstRiskReviewProcess(riskReviewProcess);
@@ -296,6 +300,23 @@ public class RiskReviewProcessService {
 		for(HashMap<String, Object> hm : customerList){
 			customerId = (String) hm.get("CUSTOMER_ID");
 			notificationService.insertNotification(NotificationEnum.qita, customerId, "风险事项", "风险事项", null);
+		}
+	}
+	
+	/**
+	 * 插入通知信息
+	 * jn
+	 */
+	public void insertNotificationMsg(RiskConsiderations riskConsiderations){
+		HashMap<String,Object> params = new HashMap<String,Object>();
+		StringBuffer sql = new StringBuffer();
+		sql.append("select a.user_id USER_ID from account_manager_parameter a");
+		List<HashMap<String, Object>> list =  commonDao.queryBySql(sql.toString(), params);
+		
+		String userId = "";//客户经理id
+		for(HashMap<String, Object> hm : list){
+			userId = (String) hm.get("USER_ID");
+			notificationService.insertNotify("fengxian", userId, "风险事项", riskConsiderations.getRiskIssuesDescribed(), null);
 		}
 	}
 	
