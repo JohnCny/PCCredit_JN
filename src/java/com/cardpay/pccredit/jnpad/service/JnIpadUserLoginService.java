@@ -136,4 +136,13 @@ public class JnIpadUserLoginService {
 		String PARAM = (String) commonDao.queryBySql(sql, null).get(0).get("TYPE_CODE");
 		return PARAM;
 	}
+
+
+
+	public List<com.cardpay.pccredit.jnpad.model.ProductAttribute> findAllProducts() {
+		String sql="select p.*,to_char(p.PROD_LIMIT_TIME,'yyyy-MM-dd') as prod_Li_Time from PRODUCT_ATTRIBUTE p "
+				+ "where 1=1 AND (p.STATUS = 'Published' OR p.STATUS = 'Screen') order by p.created_time desc";
+		Map<String, Object> params = new LinkedHashMap<String, Object>();
+		return commonDao.queryBySql(com.cardpay.pccredit.jnpad.model.ProductAttribute.class, sql, params);
+	}
 }

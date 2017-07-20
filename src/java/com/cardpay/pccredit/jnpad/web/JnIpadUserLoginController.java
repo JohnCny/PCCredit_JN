@@ -27,6 +27,7 @@ import com.cardpay.pccredit.jnpad.model.CustYunyinVo;
 import com.cardpay.pccredit.jnpad.model.CustomerManagerVo;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginIpad;
 import com.cardpay.pccredit.jnpad.model.JnUserLoginResult;
+import com.cardpay.pccredit.jnpad.model.ProductAttribute;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.system.model.SystemUser;
@@ -133,9 +134,25 @@ public class JnIpadUserLoginController {
 		int totalCount = userService.findProductsCount();
 		result.put("totalCount", totalCount);
 		result.put("result", products);
-		JsonConfig jsonConfig = new JsonConfig();
+//		JsonConfig jsonConfig = new JsonConfig();
 //		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-		JSONObject json = JSONObject.fromObject(result, jsonConfig);
+		JSONObject json = JSONObject.fromObject(result);
+		return json.toString();
+	}
+	/**
+	 * 产品查询
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ipad/product/productBrowse.json", method = { RequestMethod.GET })
+	public String productbrowse(HttpServletRequest request) {
+		Map<String,Object> result = new LinkedHashMap<String,Object>();
+		List<ProductAttribute> products = userService.findAllProducts();
+		result.put("result", products);
+		JsonConfig jsonConfig = new JsonConfig();
+		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+		JSONObject json = JSONObject.fromObject(result,jsonConfig);
 		return json.toString();
 	}
 	

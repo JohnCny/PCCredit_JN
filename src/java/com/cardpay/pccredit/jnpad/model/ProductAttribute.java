@@ -37,6 +37,16 @@ public class ProductAttribute extends BusinessModel {
 	private String seqno;
 	private Date prodLimitTime;
 	private String prodCreditRange;
+	private String prodLiTime;
+	
+	
+
+	public String getProdLiTime() {
+		return prodLiTime;
+	}
+	public void setProdLiTime(String prodLiTime) {
+		this.prodLiTime = prodLiTime;
+	}
 	public String getProductName() {
 		return productName;
 	}
