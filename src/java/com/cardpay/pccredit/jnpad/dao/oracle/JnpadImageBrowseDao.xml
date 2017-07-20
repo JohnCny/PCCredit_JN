@@ -27,6 +27,7 @@
 	<if test="imageClass != null and imageClass != ''">
 	AND image_Classes=#{imageClass}
 	</if>
+	order by i.CREATED_TIME desc
 </select>
 <select id="findLocalImagePc" resultType="String">
     

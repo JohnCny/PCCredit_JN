@@ -20,6 +20,8 @@ import com.cardpay.pccredit.jnpad.model.ManagerInfoForm;
 import com.cardpay.pccredit.jnpad.service.JnIpadCustAppInfoXxService;
 import com.cardpay.pccredit.jnpad.service.JnIpadUserLoginService;
 import com.cardpay.pccredit.jnpad.service.JnpadLocationInfoService;
+import com.wicresoft.jrad.modules.log.model.OperationLog;
+import com.wicresoft.jrad.modules.log.service.UserLogService;
 import com.wicresoft.util.format.DateFormat;
 
 import net.sf.json.JSONObject;
@@ -36,9 +38,10 @@ public class JnpadLocationInfoController {
 
 	@Autowired
 	private JnpadLocationInfoService jnpadLocationInfoService;
-
 	@Autowired
 	private JnIpadUserLoginService userService;
+	@Autowired
+	private UserLogService userLogService;
 	/**
 	 * 
 	 * 更新客户经理位置信息
@@ -58,12 +61,21 @@ public class JnpadLocationInfoController {
 		locationInfoForm.setLongitude(request.getParameter("lon"));
 		String managerId = request.getParameter("userId");
 		locationInfoForm .setUserId(managerId);
+		ManagerInfoForm managerInfoForm = jnpadLocationInfoService.selectManagerInforById(managerId);
 		//判断是否在早八点至晚八点之间
 						String startTime="08:00:00";
 						String endTime="20:00:00";
 							boolean isRightTime = isInDate(startTime,endTime);
 							if(!isRightTime){
 								map.put("message","晚八点之后，早八点以前不能提交位置信息");
+								OperationLog ol = new OperationLog();
+								ol.setUser_id(managerInfoForm.getEXTERNAL_ID());
+							    ol.setUser_login(managerInfoForm.getDISPLAY_NAME());
+							    ol.setModule("PAD提交位置信息");
+							    ol.setOperation_result("晚八点之后，早八点以前不能提交位置信息");
+							    ol.setOperation_name("ADD");
+							    ol.setIp_address(request.getRemoteAddr());
+								userLogService.addUserLog(ol);
 								JsonConfig jsonConfig = new JsonConfig();
 								jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 								JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -86,6 +98,14 @@ public class JnpadLocationInfoController {
 				if(minutes<60){
 					
 					map.put("message","更新位置信息间隔不能小于一小时");
+					OperationLog ol = new OperationLog();
+					ol.setUser_id(managerInfoForm.getEXTERNAL_ID());
+				    ol.setUser_login(managerInfoForm.getDISPLAY_NAME());
+				    ol.setModule("PAD提交位置信息");
+				    ol.setOperation_result("更新位置信息间隔不能小于一小时");
+				    ol.setOperation_name("ADD");
+				    ol.setIp_address(request.getRemoteAddr());
+					userLogService.addUserLog(ol);
 					JsonConfig jsonConfig = new JsonConfig();
 					jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 					JSONObject json = JSONObject.fromObject(map, jsonConfig);
@@ -95,8 +115,6 @@ public class JnpadLocationInfoController {
 			}
 			if(num<=10){
 				//如果位置信息表中没客户经理信息  插入
-
-				ManagerInfoForm managerInfoForm = jnpadLocationInfoService.selectManagerInforById(managerId);
 				locationInfoForm.setUserName(managerInfoForm.getDISPLAY_NAME());
 				jnpadLocationInfoService.insertManagerLocation(locationInfoForm);
 
@@ -111,6 +129,14 @@ public class JnpadLocationInfoController {
 		} catch (Exception e) {
 			map.put("message", "提交位置信息失败");
 		}
+		OperationLog ol = new OperationLog();
+		ol.setUser_id(managerInfoForm.getEXTERNAL_ID());
+	    ol.setUser_login(managerInfoForm.getDISPLAY_NAME());
+	    ol.setModule("PAD提交位置信息");
+	    ol.setOperation_result("SUCCESS");
+	    ol.setOperation_name("ADD");
+	    ol.setIp_address(request.getRemoteAddr());
+		userLogService.addUserLog(ol);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
 		JSONObject json = JSONObject.fromObject(map, jsonConfig);
