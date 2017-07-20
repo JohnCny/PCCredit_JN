@@ -7,18 +7,24 @@
         <div class="tabplace">
           <!--  实调台账-->
             <ul class="com-tab" >
-               <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
-	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
-	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">申请拒绝台账</a></li>
+                <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">申请拒绝台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_5.page?userId=${userId}">征信台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_6.page?userId=${userId}">征信拒绝台账</a></li>
 	            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_7.page?userId=${userId}">实调台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_8.page?userId=${userId}">报告台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_15.page?userId=${userId}">内审台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_16.page?userId=${userId}">上会台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_17.page?userId=${userId}">上会通过台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_18.page?userId=${userId}">上会拒绝台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_19.page?userId=${userId}">审批台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_20.page?userId=${userId}">签约台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_0.page?userId=${userId}">放款台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_1.page?userId=${userId}">放款拒绝台账</a></li>
             </ul>
          </div>
-      
+      <div class="tabplace"></div>
       <div class="inquiry" style="padding:15px;">
         <div class="search_tag"></div>
         <div class="search">
@@ -120,7 +126,7 @@
             </colgroup>
              #foreach($applyBook in $!result.items)
             <tr>
-              <td class="checkbox"><input type="radio" name="checkbox" value="$applyBook.id"/></td>
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!applyBook.id@$!applyBook.state"/></td>
               <td nowrap="nowrap">$!applyBook.customerName</td>
               <td nowrap="nowrap">$!date.format("yyyy-MM-dd",$!applyBook.applyDate)</td>
               <td nowrap="nowrap">$!applyBook.contactMethod</td>
@@ -180,7 +186,11 @@
 	 // 报告
      $("#id_report_button").click(function() {
 		 if ($(".checkbox :checked").length == 1) {
-             var rowid = $($(".checkbox :checked")[0]).attr("value");
+             var rowid = $($(".checkbox :checked")[0]).attr("value").split("@")[0];
+             if($($(".checkbox :checked")[0]).attr("value").split("@")[1] != '4'){
+				 Dialog.message("状态非实调!");
+				 return;
+		     }
              window.location.href="${contextPath}/manager/otherinfoinput/iframe_8_update.page?id="+rowid;
          } else {
              Dialog.message("请选择一行");

@@ -125,4 +125,14 @@ public class ManagerOtherInfoInputService {
 	}
 	
 	
+    public void saveLoadRefuseAndUpdateApplyState(LoanRefused loanRefused){
+    	// 保存放款台账信息表
+    	this.insertLoanRefused(loanRefused);
+		// 修改申请表状态 15-款拒绝
+    	String sql = "update APPLYSTANDINGBOOK set state = '15' where id='"+loanRefused.getAppId()+"'";
+    	commonDao.queryBySql(sql, null);
+    }
+	
+	
+	
 }
