@@ -33,8 +33,8 @@
 			<menu id="070002" name="belongmap" 				title="客户经理从属设置" 			url="/manager/belongmap/browse.page" 				 img="" operations="create|subturnother|delete|browse"/>
 			<menu id="070003" name="dailyaccount" 			title="客户经理日报" 			url="/manager/dailyaccount/browse.page" 			 img="" operations="change|display|browse"/>
 			<menu id="070004" name="retraining" 			title="客户经理培训计划列表" 		url="/manager/retraining/browse.page" 				 img="" operations="create|change|delete|display|browse"/>
- 			<menu id="070006" name="performmanceinput" 		title="业绩进度录入" 			url="/manager/performmance/insert.page" 			 img="" operations="checked|display|browse"/>		    
- 			<menu id="070007" name="performmancebrowse" 	title="业绩进度查询" 			url="/manager/performmance/browse.page" 			 img="" operations="checked|display|browse"/>
+ 	   <!-- <menu id="070006" name="performmanceinput" 		title="业绩进度录入" 			url="/manager/performmance/insert.page" 			 img="" operations="checked|display|browse"/>		    
+ 			<menu id="070007" name="performmancebrowse" 	title="业绩进度查询" 			url="/manager/performmance/browse.page" 			 img="" operations="checked|display|browse"/> -->
  			<menu id="070008" name="managerKhgl" 			title="管辖客户管理" 			url="/manager/khgl/browse.page" 					 img="" operations="checked|display|browse"/>
  			<menu id="070009" name="model" 					title="四维授信评估模型" 			url="/manager/khgl/dimensionsCreditModel.page" 		 img="" operations="checked|display|browse"/>
  	   		<menu id="070010" name="weeklyaccount" 			title="客户经理周报" 			url="/manager/weeklyaccount/browse.page" 			 img="" operations="change|display|browse"/> 
@@ -56,6 +56,8 @@
 			<menu id="071007" name="otherinfoinputSp" 		title="台账审核审批(审批岗)" 			url="/manager/otherinfoinput/iframe_12.page" 			 img="" operations="create|change|browse"/>
 			<menu id="071008" name="otherinfoinputDqy" 		title="待签约台账(客户经理)" 			url="/manager/otherinfoinput/iframe_13.page" 			 img="" operations="create|change|browse"/>
 			<menu id="071009" name="otherinfoinputDfk" 		title="待放款台账(客户经理)" 			url="/manager/otherinfoinput/iframe_14.page" 			 img="" operations="create|change|browse"/>
+			<menu id="071010" name="performmanceinput" 		title="业绩进度录入" 			url="/manager/performmance/insert.page" 			 		 img="" operations="checked|display|browse"/>		    
+ 			<menu id="071011" name="performmancebrowse" 	title="业绩进度查询" 			url="/manager/performmance/browse.page" 			 		 img="" operations="checked|display|browse"/>
 		</menu>
 		
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 

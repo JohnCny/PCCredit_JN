@@ -159,7 +159,10 @@
         <div class="controlbtn" style="">
         #if($!lock)
        	#end	
-       		<a href="javascript:history.back();" class="btn_gr">返回</a>
+       	#if(!$!lock)
+       		<!-- <a href="javascript:history.back();" class="btn_gr">返回</a> -->
+       		<a href="${contextPath}/manager/performmance/browse.page"  class="btn_gr">返回</a>
+        #end          
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>
