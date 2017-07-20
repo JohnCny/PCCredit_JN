@@ -546,7 +546,15 @@
 		<if test="state != null and state != ''">
 		AND  state = #{state}
 		</if>
-		
+		<if test="states != null and states != ''">
+		AND  TO_NUMBER(state) >= #{states}
+		</if>
+		<if test="ids != null and ids != '' ">  
+		  	AND state in  
+			<foreach collection="ids" index="index" item="item" open="(" separator="," close=")"> 
+			#{item.state} 
+			</foreach>
+		</if>
 		order by asb.created_Time
 		 <![CDATA[		
 							) ROW_
@@ -571,6 +579,15 @@
 		</if>
 		<if test="state != null and state != ''">
 		AND  state = #{state}
+		</if>
+		<if test="states != null and states != ''">
+		AND  TO_NUMBER(state) >= #{states}
+		</if>
+		<if test="ids != null and ids != '' ">  
+		  	AND state in  
+			<foreach collection="ids" index="index" item="item" open="(" separator="," close=")"> 
+			#{item.state} 
+			</foreach>
 		</if>
 		order by asb.created_Time
     

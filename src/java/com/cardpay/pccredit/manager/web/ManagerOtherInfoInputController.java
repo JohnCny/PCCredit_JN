@@ -461,7 +461,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 			userId = user.getId();
 		}
 		standingBookFilter.setManagerId(userId);
-		standingBookFilter.setState("0");//非申请拒绝的
+		//standingBookFilter.setState("0");//非申请拒绝的
+		standingBookFilter.setStates(0);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
 		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
 		boolean lock =false;
@@ -716,7 +717,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 		if(StringUtils.isEmpty(userId)){
 			userId = user.getId();
 		}
-		standingBookFilter.setState("2");//申请征信
+		//standingBookFilter.setState("2");//申请征信
+		standingBookFilter.setStates(2);
 		standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
 		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
@@ -839,7 +841,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 		if(StringUtils.isEmpty(userId)){
 			userId = user.getId();
 		}
-		standingBookFilter.setState("4");//征信通过实调
+		//standingBookFilter.setState("4");//征信通过实调
+		standingBookFilter.setStates(4);
 		standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
 		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
@@ -901,7 +904,8 @@ public class ManagerOtherInfoInputController extends BaseController {
 		if(StringUtils.isEmpty(userId)){
 			userId = user.getId();
 		}
-		standingBookFilter.setState("5");//报告
+		//standingBookFilter.setState("5");//报告
+		standingBookFilter.setStates(5);//报告
 		standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
 		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
@@ -1603,7 +1607,10 @@ public class ManagerOtherInfoInputController extends BaseController {
 		loanRefused.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
 		try {
-			managerOtherInfoInputService.insertLoanRefused(loanRefused);
+			// 保存放款拒绝台账
+			//managerOtherInfoInputService.insertLoanRefused(loanRefused);
+			// 修改申请表状态
+			managerOtherInfoInputService.saveLoadRefuseAndUpdateApplyState(loanRefused);
 			returnMap.setSuccess(true);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
@@ -1659,4 +1666,171 @@ public class ManagerOtherInfoInputController extends BaseController {
 	
 	//=======================================台帐进度查询=======================================================//
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_15.page")
+	public AbstractModelAndView iframe_15_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_15", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setStates(5);//内审台账
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_16.page")
+	public AbstractModelAndView iframe_16_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_16", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setStates(7);//上会台帐
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_17.page")
+	public AbstractModelAndView iframe_17_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_17", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		//上会通过台帐
+		standingBookFilter.setIds(addState(new String[]{"8", "10","11","12","13","14","15"}));
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	public List<StandingBookFilter> addState(String[] ss){
+		List<StandingBookFilter> list = new ArrayList<StandingBookFilter>();
+		for(int i=0;i<ss.length;i++){
+			StandingBookFilter f = new StandingBookFilter();
+			f.setState(ss[i]);
+			list.add(f);
+		}
+		return list;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_18.page")
+	public AbstractModelAndView iframe_18_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_18", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setState("9");//上会拒绝台帐
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_19.page")
+	public AbstractModelAndView iframe_19_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_19", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		//审批台帐
+		standingBookFilter.setIds(addState(new String[]{"8", "10","11","12","13","14","15"}));
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "iframe_20.page")
+	public AbstractModelAndView iframe_20_browse(@ModelAttribute StandingBookFilter standingBookFilter,HttpServletRequest request) { 
+		standingBookFilter.setRequest(request);
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_20", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){
+			userId = user.getId();
+		}
+		standingBookFilter.setStates(14);//签约台帐
+		standingBookFilter.setManagerId(userId);
+		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
+		JRadPagedQueryResult<ApplyStandingBookModel> pagedResult = new JRadPagedQueryResult<ApplyStandingBookModel>(standingBookFilter, applyStandingBookModel);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject("filter", standingBookFilter);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
 }

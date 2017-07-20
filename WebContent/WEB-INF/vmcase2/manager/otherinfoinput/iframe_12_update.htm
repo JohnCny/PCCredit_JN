@@ -165,7 +165,7 @@
 					    <td><input type="text" class="rinpsty" id ="approvedMeetDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" 
 					    	style="width:300px" name="approvedMeetDate"  value="$!result.approvedMeetDate" readonly="readonly" maxlength="30"/></td>
 					    <td class="titlefc3"><label  for="approvedMeetProdType">过会产品类型:</label></td>
-					    <td><select id="approvedMeetProdType" name="approvedMeetProdType"   style="width:150px">
+					    <td><select id="approvedMeetProdType" name="approvedMeetProdType" disabled="disabled"  style="width:150px">
                  			   <option value=""></option>
                 			    #dict("CMMSCLNM",$!result.approvedMeetProdType)
                 			  </select></td>
@@ -241,6 +241,7 @@
 	 //审批通过
 	 $("#id_pass_button").click(function (){
 	  var formjson = $($formName).serialize();
+	  formjson = formjson + "&approvedMeetProdType="+$("#approvedMeetProdType").val();
    	  var url ="${contextPath}/manager/otherinfoinput/iframe_12_pass.json" 
    	  if ($($formName).valid()) {
 	   	  Dialog.confirm("确定要通过了吗？", "提示",
