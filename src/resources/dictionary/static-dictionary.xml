@@ -685,5 +685,6 @@
 	   <item name="12"  		title="待签约 "/>
 	   <item name="13"  		title="审核审批拒绝"/>
 	   <item name="14"  		title="已签约待放款"/>
+	   <item name="15"  		title="放款拒绝"/>
 	</dictionary>    
 </dictionaries>

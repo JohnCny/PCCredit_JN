@@ -5,18 +5,18 @@
   <div class="content_main">
     <div class="contentinner">
         <div class="tabplace">
-          <!--  征信拒绝台账-->
+          <!--  上会通过台账-->
             <ul class="com-tab" >
-                <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
-	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
-	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">申请拒绝台账</a></li>
+               <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_4.page?userId=${userId}">拜访台账</a></li>
+	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_3.page?userId=${userId}">申请台账</a></li>
+	            <li class="tab " ><a href="${contextPath}/manager/otherinfoinput/iframe_2.page?userId=${userId}">申请拒绝台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_5.page?userId=${userId}">征信台账</a></li>
-	            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_6.page?userId=${userId}">征信拒绝台账</a></li>
+	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_6.page?userId=${userId}">征信拒绝台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_7.page?userId=${userId}">实调台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_8.page?userId=${userId}">报告台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_15.page?userId=${userId}">内审台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_16.page?userId=${userId}">上会台账</a></li>
-	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_17.page?userId=${userId}">上会通过台账</a></li>
+	            <li class="tab activeTab"><a href="${contextPath}/manager/otherinfoinput/iframe_17.page?userId=${userId}">上会通过台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_18.page?userId=${userId}">上会拒绝台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_19.page?userId=${userId}">审批台账</a></li>
 	            <li class="tab "><a href="${contextPath}/manager/otherinfoinput/iframe_20.page?userId=${userId}">签约台账</a></li>
@@ -28,7 +28,7 @@
       <div class="inquiry" style="padding:15px;">
         <div class="search_tag"></div>
         <div class="search">
-          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_6.page">
+          <form id="submitForm" action="${contextPath}/manager/otherinfoinput/iframe_17.page">
           	<input type="hidden" name="retrainId" value="$!result.filter.retrainId"/>
             <ul>
               <li style="display:none">
@@ -72,7 +72,28 @@
               <col width="300" />
               <col width="100" />
               <col width="100" />
-              <col width="300" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="200" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="200" />
             </colgroup>
             <tr class="title">
               <th nowrap="nowrap"></th>
@@ -92,7 +113,27 @@
               <th nowrap="nowrap">查询原因</th>
               <th nowrap="nowrap">查询日期</th>
               <th nowrap="nowrap">签字日期</th>
-              <th nowrap="nowrap">征信拒绝原因</th>
+              <th nowrap="nowrap">主办客户经理</th>
+              <th nowrap="nowrap">协办客户经理</th>
+              <th nowrap="nowrap">实调日期</th>
+              <th nowrap="nowrap">制表时间</th>
+              <th nowrap="nowrap">内审日期</th>
+              <th nowrap="nowrap">内审人员</th>
+              <th nowrap="nowrap">内审产品类型</th>
+              <th nowrap="nowrap">内审金额</th>
+              <th nowrap="nowrap">申请利率</th>
+              <th nowrap="nowrap">申请期限</th>
+              <th nowrap="nowrap">申请还款方式</th>
+              <th nowrap="nowrap">一次上会日期</th>
+              <th nowrap="nowrap">二次上会日期</th>
+              <th nowrap="nowrap">三次上会日期</th>
+              <th nowrap="nowrap">审贷人员</th>
+              <th nowrap="nowrap">过会日期</th>
+              <th nowrap="nowrap">过会产品类型</th>
+              <th nowrap="nowrap">过会金额</th>
+              <th nowrap="nowrap">过会利率</th>
+              <th nowrap="nowrap">过会期限</th>
+              <th nowrap="nowrap">过会还款方式</th>
             </tr>
           </table>
         </div>
@@ -116,7 +157,27 @@
               <col width="300" />
               <col width="100" />
               <col width="100" />
-              <col width="300" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="200" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="100" />
+              <col width="200" />
             </colgroup>
              #foreach($applyBook in $!result.items)
             <tr>
@@ -137,7 +198,27 @@
               <td nowrap="nowrap">$!applyBook.queryReason</td>
               <td nowrap="nowrap">$!applyBook.queryDate</td>
               <td nowrap="nowrap">$!applyBook.signDate</td>
-              <td nowrap="nowrap">$!applyBook.creditRefuseReason</td>
+              <td nowrap="nowrap">$!applyBook.hostManager</td>
+              <td nowrap="nowrap">$!applyBook.assistManager</td>
+              <td nowrap="nowrap">$!applyBook.actualDate</td>
+              <td nowrap="nowrap">$!applyBook.tabulaTime</td>
+              <td nowrap="nowrap">$!applyBook.internalAuditDate</td>
+              <td nowrap="nowrap">$!applyBook.internalAuditor</td>
+              <td nowrap="nowrap">#dictVal("CMMSCLNM", $!applyBook.internalAuditProdType)</td>
+              <td nowrap="nowrap">$!applyBook.internalAuditAmt</td>
+              <td nowrap="nowrap">$!applyBook.appInterest</td>
+              <td nowrap="nowrap">$!applyBook.appPeriod</td>
+              <td nowrap="nowrap">#dictVal("HKFS", $!applyBook.appRepayMethod)</td>
+              <td nowrap="nowrap">$!applyBook.oneMeetDate</td>
+              <td nowrap="nowrap">$!applyBook.twoMeetDate</td>
+              <td nowrap="nowrap">$!applyBook.threeMeetDate</td>
+              <td nowrap="nowrap">$!applyBook.auditUser</td>
+              <td nowrap="nowrap">$!applyBook.approvedMeetDate</td>
+              <td nowrap="nowrap">#dictVal("CMMSCLNM", $!applyBook.approvedMeetProdType)</td>
+              <td nowrap="nowrap">$!applyBook.approvedAmt</td>
+              <td nowrap="nowrap">$!applyBook.approvedLv</td>
+              <td nowrap="nowrap">$!applyBook.approvedPeriod</td>
+              <td nowrap="nowrap">#dictVal("HKFS", $!applyBook.approvedRepayMethod)</td>
             </tr>
             #end
           </table>
@@ -174,14 +255,7 @@
 	 });
 	 
 	 
-	 $("#id_change_button").click(function() {
-		 if ($(".checkbox :checked").length == 1) {
-             var rowid = $($(".checkbox :checked")[0]).attr("value");
-             window.location.href="${contextPath}/manager/otherinfoinput/iframe_6_update.page?id="+rowid;
-         } else {
-             Dialog.message("请选择一行");
-         }
-	 });
+	 
 	
   </script>
   
