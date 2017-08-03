@@ -73,7 +73,7 @@
 						<td class="titlefc3"><label for="givemoneycount">放款金额:</label></td>
 						</tr>
 						 #foreach($gxperformList in $!gxperformList)
-						 #if($gxperformList.managerName=="汇总" || $gxperformList.managerName=="总计")
+						 #if($gxperformList.managerName=="汇总")
 						<td class="titlefc3">$gxperformList.name</td>
 						<td class="titlefc3">$gxperformList.managerName</td>
 						<td class="titlefc3">$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
@@ -89,20 +89,36 @@
 						<td class="titlefc3">$gxperformList.signcount_s ( $gxperformList.signcount )</td>
 						<td class="titlefc3">$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
 						<td class="titlefc3">$gxperformList.money</td>
+						#elseif($gxperformList.managerName=="总计")
+						<td class="titlefc3">$gxperformList.name</td>
+						<td class="titlefc3">$gxperformList.managerName</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_4.page'">$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_3.page'">$gxperformList.applycount_s ( $gxperformList.applycount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_2.page'">$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_5.page'">$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_6.page'">$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_7.page'">$gxperformList.realycount_s ( $gxperformList.realycount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_8.page'">$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_15.page'">$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_16.page'">$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_17.page'">$gxperformList.passcount_s ( $gxperformList.passcount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_20.page'">$gxperformList.signcount_s ( $gxperformList.signcount )</td>
+						<td class="titlefc3" onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_0.page'">$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
+						<td class="titlefc3">$gxperformList.money</td>
 						#else
 						<td>$gxperformList.name</td>
 						<td>$gxperformList.managerName</td>
 						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_4.page?userId=$gxperformList.manager_id'">$gxperformList.visitcount_s ( $gxperformList.visitcount )</td>
 						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_3.page?userId=$gxperformList.manager_id'">$gxperformList.applycount_s ( $gxperformList.applycount )</td>
-						<td>$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
-						<td>$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
-						<td>$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
-						<td>$gxperformList.realycount_s ( $gxperformList.realycount )</td>
-						<td>$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
-						<td>$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
-						<td>$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
-						<td>$gxperformList.passcount_s ( $gxperformList.passcount )</td>
-						<td>$gxperformList.signcount_s ( $gxperformList.signcount )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_2.page?userId=$gxperformList.manager_id'">$gxperformList.applyrefuse_s ( $gxperformList.applyrefuse )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_5.page?userId=$gxperformList.manager_id'">$gxperformList.creditcount_s ( $gxperformList.creditcount )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_6.page?userId=$gxperformList.manager_id'">$gxperformList.creditrefuse_s ( $gxperformList.creditrefuse )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_7.page?userId=$gxperformList.manager_id'">$gxperformList.realycount_s ( $gxperformList.realycount )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_8.page?userId=$gxperformList.manager_id'">$gxperformList.reportcount_s ( $gxperformList.reportcount )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_15.page?userId=$gxperformList.manager_id'">$gxperformList.internalcount_s ( $gxperformList.internalcount )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_16.page?userId=$gxperformList.manager_id'">$gxperformList.meetingcout_s ( $gxperformList.meetingcout )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_17.page?userId=$gxperformList.manager_id'">$gxperformList.passcount_s ( $gxperformList.passcount )</td>
+						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_20.page?userId=$gxperformList.manager_id'">$gxperformList.signcount_s ( $gxperformList.signcount )</td>
 						<td onclick="location.href='${contextPath}/manager/otherinfoinput/iframe_0.page?userId=$gxperformList.manager_id'">$gxperformList.givemoneycount_s ( $gxperformList.givemoneycount )</td>
 						<td>$gxperformList.money</td>
 						#end

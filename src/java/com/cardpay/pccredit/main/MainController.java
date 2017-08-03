@@ -139,12 +139,6 @@ public class MainController {
 	@RequestMapping(value = "/main.page", method = { RequestMethod.GET })
 	public AbstractModelAndView mainPage(HttpServletRequest request) {
 		JRadModelAndView mv = new JRadModelAndView("/main", request);
-		// 查询前10条聊天记录
-		/*List<ChatMessage> msglist = chatMessageService.findMsg("",0,10);
-		mv.addObject("msglist",msglist);
-		mv.addObject("count",chatMessageService.findCountByApplicationId(""));
-		mv.addObject("currentPage",chatMessageService.findCountByApplicationId("")/10 + 1);*/
-		
 		
 		if (globalSetting.isSuperAdminMode(request)) {
 			mv.addObject("menuList", menuMgr.getAllUiMenus());
@@ -242,33 +236,35 @@ public class MainController {
 		
 		//if(level =="MANA005" || level =="MANA003" ){
 		if(user.getUserType()!=1){
-			/*  // 当前进件状况
-				mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
-				// 当前贷款状况
-				mv.addObject("creditStatusJson",statisticalCommonService.getCreditStatusJson());
-				// 当前卡片状况
-				mv.addObject("cardStatusCategoriesJson",statisticalCommonService.getCardStatusCategoriesJson(cardList));
-			    mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));
-			*/
+			/*
+			// 当前进件状况
+			mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
+			// 当前贷款状况
+			mv.addObject("creditStatusJson",statisticalCommonService.getCreditStatusJson());
+			// 当前卡片状况
+			mv.addObject("cardStatusCategoriesJson",statisticalCommonService.getCardStatusCategoriesJson(cardList));
+		    mv.addObject("cardStatusValuesJson",statisticalCommonService.getCardStatusValuesJson(cardList));*/
+			
 			long start = System.currentTimeMillis();
-			// 1.当前进件状况 济南 sj 20160804
+			// 1.当前进件状况 (统计图1)
 		    mv.addObject("applicationStatusJson",statisticalCommonService.getApplicationStatusJson());
 		    
-		    // 2.统计各行已申请和通过进件数量  济南 sj 20160809
+		    // 2.统计各行已申请和通过进件数量 (统计图2)
 		    mv.addObject("organApplicationNumJson",statisticalCommonService.getOrganApplicationNumJson());
 		    mv.addObject("organApplicationAuditNumJson",statisticalCommonService.getOrganApplicationAuditNumJson());
 		    mv.addObject("organApplicationApprovedNumJson",statisticalCommonService.getOrganApplicationApprovedNumJson());
 		    
-		    // 3.放款总金额 逾期总金额 不良总金额  sj 20160810
+		    // 3.授信总金额 逾期总金额 不良总金额  (统计图3)
 		    mv.addObject("organApplicationjineJson",statisticalCommonService.statisticaljine());
 		    
-		    // 4.放款总金额 逾期总金额 不良总金额 按支行汇总 sj 20160810
+		    // 4.放款总金额 逾期总金额 不良总金额 按支行汇总(统计图4)
 		    mv.addObject("organApplicationsxJson",statisticalCommonService.statisticalsxorgan());
 		    mv.addObject("organApplicationyqJson",statisticalCommonService.statisticalyqorgan());
 		    mv.addObject("organApplicationblJson",statisticalCommonService.statisticalblorgan());
-		    //放款排名
+		    // 5.放款排名
 		    List<FkRankingFilter> fk=statisticalCommonService.queryFkRanking();
 		    mv.addObject("fk",fk);
+		    
 		    long end = System.currentTimeMillis();
 			logger.info("查询时间花费：" + (end - start) + "毫秒");
 		}

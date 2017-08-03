@@ -105,8 +105,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		
 		filter.setRequest(request);
@@ -227,8 +231,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		
 		filter.setRequest(request);
@@ -348,8 +356,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		
 		filter.setRequest(request);
@@ -457,8 +469,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setManagerId(userId);
 		//standingBookFilter.setState("0");//非申请拒绝的
@@ -651,9 +667,14 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
+		
 		standingBookFilter.setState("1");//申请拒绝的
 		standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
@@ -714,9 +735,14 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
+		
 		//standingBookFilter.setState("2");//申请征信
 		standingBookFilter.setStates(2);
 		standingBookFilter.setManagerId(userId);
@@ -777,9 +803,14 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
+		
 		standingBookFilter.setState("3");//征信拒绝
 		standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
@@ -838,9 +869,14 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
+		
 		//standingBookFilter.setState("4");//征信通过实调
 		standingBookFilter.setStates(4);
 		standingBookFilter.setManagerId(userId);
@@ -901,9 +937,14 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
+		
 		//standingBookFilter.setState("5");//报告
 		standingBookFilter.setStates(5);//报告
 		standingBookFilter.setManagerId(userId);
@@ -969,9 +1010,14 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
+		
 		standingBookFilter.setState("5");//报告
 		//standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
@@ -1050,8 +1096,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setState("6");//内审通过待登记上会
 		//standingBookFilter.setManagerId(userId);
@@ -1129,8 +1179,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setState("7");//上会中
 		//standingBookFilter.setManagerId(userId);
@@ -1285,8 +1339,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		
 		String userId = request.getParameter("userId");
 		
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		//standingBookFilter.setManagerId(userId);
 		QueryResult<ApplyStandingBookModel> applyStandingBookModel=managerPerformmanceService.findApplyStandingBookByFilter(standingBookFilter);
@@ -1461,8 +1519,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_13", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setState("12");//审批审核通过待签约
 		standingBookFilter.setManagerId(userId);
@@ -1528,8 +1590,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_14", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setState("14");//已签约待放款
 		standingBookFilter.setManagerId(userId);
@@ -1632,8 +1698,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_query", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		if(user.getUserType()==1){
 			standingBookFilter.setManagerId(userId);	
@@ -1674,8 +1744,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_15", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setStates(5);//内审台账
 		standingBookFilter.setManagerId(userId);
@@ -1699,8 +1773,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_16", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setStates(7);//上会台帐
 		standingBookFilter.setManagerId(userId);
@@ -1724,8 +1802,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_17", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		//上会通过台帐
 		standingBookFilter.setIds(addState(new String[]{"8", "10","11","12","13","14","15"}));
@@ -1763,8 +1845,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_18", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setState("9");//上会拒绝台帐
 		standingBookFilter.setManagerId(userId);
@@ -1789,8 +1875,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_19", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		//审批台帐
 		standingBookFilter.setIds(addState(new String[]{"8", "10","11","12","13","14","15"}));
@@ -1816,8 +1906,12 @@ public class ManagerOtherInfoInputController extends BaseController {
 		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_20", request);
 		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 		String userId = request.getParameter("userId");
-		if(StringUtils.isEmpty(userId)){
-			userId = user.getId();
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
 		}
 		standingBookFilter.setStates(14);//签约台帐
 		standingBookFilter.setManagerId(userId);

@@ -66,8 +66,8 @@
             if ($(".checkbox :checked").length == 1) {
             	
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
-                var url = "${contextPath}//sys/user/creat.page?id="+rowid;
-                var url1 = "${contextPath}//sys/user/creat2.page?id="+rowid;
+                var url = "${contextPath}//sys/user/creat.page?id="+encodeURI(rowid);
+                var url1 = "${contextPath}//sys/user/creat2.page?id="+encodeURI(rowid);
                 $.ajax({
       				url : url1,
       				type : "get",
@@ -87,7 +87,7 @@
 		$("#ck").click(function() {
             if ($(".checkbox :checked").length == 1) {
                 var rowid = $($(".checkbox :checked")[0]).attr("value");
-                var url = "${contextPath}//sys/user/rwxq1.page?id="+rowid;
+                var url = "${contextPath}//sys/user/rwxq1.page?id="+encodeURI(rowid);
       					window.location.href=url;
             } else {
                 Dialog.message("请选择一行");

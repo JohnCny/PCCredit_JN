@@ -136,7 +136,11 @@
         #if($!lock)
        <!-- <a id="id_change_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.delete.hint')">拒绝</a> -->
        	#end	
-       		<a href="javascript:history.back();" class="btn_gr">返回</a>
+       
+		#if(!$!lock)
+       		<!-- <a href="javascript:history.back();" class="btn_gr">返回</a> -->
+       		<a href="${contextPath}/manager/performmance/browse.page"  class="btn_gr">返回</a>
+        #end       
         </div>
         #parse ("common/pagination.htm")
         <div class="clear"></div>

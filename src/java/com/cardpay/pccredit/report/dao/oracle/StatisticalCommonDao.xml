@@ -384,7 +384,11 @@ union all
            and a.keyeffectedstate in('1','2')
            and c.keyeffectedstate in('1','2')
 		union all
-		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle  
+		<!-- select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0) as value from circle   -->
+		select nvl(sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0)),0) as value
+          from circle a, t_cipersonbasinfo c
+         where a.custid = c.CUSTID
+           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
 		union all
 		select nvl(sum(DLAYAMT+INDEBTAMT+OUTDEBTAMT),0)  as value from circle  where FIVECLASS in ('1','2','3')
 	</select>
