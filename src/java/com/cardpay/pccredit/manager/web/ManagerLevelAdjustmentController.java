@@ -253,7 +253,34 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		return mv;
 	}
 	
-	
+	/**
+	 * 导出客户每月日均贷款余额excel
+	 * @param form
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "exportDataRj.json",method = { RequestMethod.GET })
+	public JRadReturnMap exportrjData(@ModelAttribute ManagerSalaryFilter filter, HttpServletRequest request,HttpServletResponse response) {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		filter.setRequest(request);
+		String date = request.getParameter("date");
+		if(date!=null&&date!=""){
+			filter.setYear(date.substring(0, 4));
+			filter.setMonth(date.substring(5, 7));
+		}
+		returnMap.setSuccess(true);
+		if (returnMap.isSuccess()) {
+			try {
+			    managerSalaryService.getExportRiJunData(filter,response);
+				
+			}
+			catch (Exception e) {
+				return WebRequestHelper.processException(e);
+			}
+		}
+		return returnMap;
+	}
 	
 	/**
 	 * 客户经理工资查询
@@ -521,5 +548,7 @@ public class ManagerLevelAdjustmentController extends BaseController{
 		}
 		return returnMap;
 	}
-
+	/**
+	 * 客户每月日均贷款余额
+	 */
 }

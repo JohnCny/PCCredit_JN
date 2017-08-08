@@ -91,7 +91,8 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 //		map.put("managerInfo", result);
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		map.put("evaResult", evaResult);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -221,7 +222,8 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
 		map.put("productList",productList);
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		map.put("evaResult", evaResult);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -254,7 +256,8 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		map.put("custManagerId", customerInfor.getUserId());
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		map.put("evaResult", evaResult);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -285,7 +288,8 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		map.put("custManagerId", customerInfor.getUserId());
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		map.put("evaResult", evaResult);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
@@ -318,7 +322,8 @@ public class JnpadIntopiecesDecisionController extends BaseController{
 		map.put("custManagerId", customerInfor.getUserId());
 		map.put("prodCreditRange",producAttribute.getProdCreditRange());
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		map.put("evaResult", evaResult);
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.cardpay.pccredit.jnpad.dao.JnpadRiskCustomerCollectionDao;
 import com.cardpay.pccredit.jnpad.model.DelayInfoForm;
+import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -85,7 +86,7 @@ public class JnpadRiskCustomerCollectionService {
 	}
 
 	//获取客户经理名下客户逾期信息
-	public List<DelayInfoForm> getCustomerRiskInfo(String managerId) {
+	public List<YqdktjbbForm> getCustomerRiskInfo(String managerId) {
 		// TODO Auto-generated method stub
 		return riskCustomerCollectionDao.getCustomerRiskInfo(managerId);
 	}

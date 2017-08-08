@@ -40,10 +40,23 @@
 		<result property="customerId" column="customerId" />
 		<result property="productName" column="productName" />
 		
-		 
-		
 		
 	</resultMap>
+	<resultMap id="YqdktjbbFormResultMap" type="com.cardpay.pccredit.report.model.YqdktjbbForm">
+		<result property="cname" column="cname" />
+		<result property="cardnum" column="cardnum" />
+		<result property="contactmobiletel" column="contactmobiletel" />
+		<result property="prodName" column="prodName" />
+		<result property="money" column="money" />
+		<result property="interest" column="interest" />
+		<result property="hkze" column="hkze" />
+		<result property="hkbj" column="hkbj" />
+		<result property="yhlx" column="yhlx" />
+		<result property="busimanager" column="busimanager" />
+		<result property="instcode" column="instcode" />
+		<result property="rowIndex" column="row_index" />
+	</resultMap>
+	
 	<resultMap type="com.cardpay.pccredit.jnpad.model.DelayInfoForm" id="delayInfo">
 	    <result property="name" column="chinese_name" />
 	    <result property="cardId" column="card_id" />
@@ -197,8 +210,8 @@
            AND c.id=#{customerId}
            </if>
 	</select>
-	<select id="getCustomerRiskInfo" resultMap="delayInfo">
-	    with circle as (
+	<select id="getCustomerRiskInfo" resultMap="YqdktjbbFormResultMap">
+	    <!-- with circle as (
 	     SELECT *
 		  FROM (select T.BUSICODE,T.CUSTID,T.CNAME,T.CUSTIDNO,T.DEPTCODE,T.TELEPHONE,T.MAINASSURE,T.REQLMT,T.BUSIMANAGER,T.LOANDATE,T.STARTDATE,T.ORIENDDATE,T.ENDDATE,T.INTEREST,T.MONEY,T.BALAMT,T.ACCOUNTSTATE,T.CLOSEDATE,T.FIVECLASS,T.DELAYAMTDAYS,T.DELAYINTERESTDAYS,T.FIRSTINTERESTDATE,T.DEBTINTEREST,T.DEBTINTERESTTIMES,T.NORMALAMT,T.DLAYAMT,T.DLAYDT,T.PAYDEBT,T.INDEBTAMT,T.OUTDEBTAMT,T.BAILAMT,T.CREATE_TIME,ROW_NUMBER() OVER(PARTITION BY busicode ORDER BY OPERDATETIME desc) RN
 		          from t_mibusidata T)
@@ -208,10 +221,17 @@
 	    select c.id,c.CARD_ID,c.CHINESE_NAME,c.USER_ID, nvl(sum(nvl(a.DLAYAMT,0) + nvl(a.INDEBTAMT,0) + nvl(a.OUTDEBTAMT,0)),0) AS dlaymat,nvl(sum(a.DELAYINTERESTDAYS),0) AS DELAYINTERESTDAYS,
 		sum(a.money) as money,nvl(sum(a.DELAYAMTDAYS),0) AS DELAYAMTDAYS from circle a, basic_customer_information c
           where a.custid = c.ty_customer_id
+          and a.ACCOUNTSTATE!='5'
           and (nvl(a.DELAYINTERESTDAYS,0) <![CDATA[ >  ]]> 0 or nvl(a.DELAYAMTDAYS,0) <![CDATA[ >  ]]> 0)
+          and a.DLAYDT <![CDATA[ <= ]]> to_char(sysdate,'yyyy-MM-dd')
            GROUP BY c.id,c.CARD_ID,c.CHINESE_NAME,c.USER_ID
            <if test="managerId != null and managerId != '' "> 
            having c.USER_ID=#{managerId} 
-	   	   </if>
+	   	   </if> -->
+	   	   select * from yqdktjbb a WHERE 1=1 
+	   	   <if test="managerId != null and managerId != '' ">
+		      			AND a.id =#{managerId}
+		  			</if>
+	   	   
 	</select>
 	</mapper>

@@ -864,6 +864,9 @@ public class IntoPiecesService {
 	public EvaResult findEvaResult(String id) {
 		return intoPiecesComdao.findEvaResult(id);
 	}
+	public EvaResult findEvaResultByCardId(String id) {
+		return intoPiecesComdao.findEvaResultByCardId(id);
+	}
 
 	/* 查询申请的某一笔进件申请单中上传的产品的附件 */
 	public List<AddressAccessories> findAddressAccessories(

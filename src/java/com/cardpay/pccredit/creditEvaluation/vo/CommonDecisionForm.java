@@ -10,6 +10,8 @@ import com.wicresoft.jrad.base.web.form.BaseForm;
  */
 public class CommonDecisionForm extends BaseForm{
 	
+	private String userName;// 客户经理userName
+	private String userId;// 客户经理id
 	private String excelId;// 调查模板id
 	private String prodType;// 贷款类型
 	
@@ -121,6 +123,23 @@ public class CommonDecisionForm extends BaseForm{
 
     // 抵押物估值，单位：元
     private String collateralValuation;
+
+    
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getModelType() {
 		return modelType;

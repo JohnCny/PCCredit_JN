@@ -21,6 +21,7 @@ import com.cardpay.pccredit.jnpad.model.DelayInfoForm;
 import com.cardpay.pccredit.jnpad.service.JnpadRiskCustomerCollectionService;
 import com.cardpay.pccredit.manager.service.ManagerBelongMapService;
 import com.cardpay.pccredit.manager.web.AccountManagerParameterForm;
+import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.riskControl.constant.RiskCustomerCollectionConstant;
 import com.cardpay.pccredit.riskControl.constant.RiskCustomerCollectionEndResultEnum;
 import com.cardpay.pccredit.riskControl.constant.RiskCustomerCollectionEnum;
@@ -276,7 +277,7 @@ public class JnpadRiskCustomerCollectionController extends BaseController{
 		if(userType.equals("1")){
 			managerId = RequestHelper.getStringValue(request, "managerId");
 		}
-		List<DelayInfoForm> cunstomerList =JnpadriskCustomerCollectionService.getCustomerRiskInfo(managerId);
+		List<YqdktjbbForm> cunstomerList =JnpadriskCustomerCollectionService.getCustomerRiskInfo(managerId);
 		JSONArray json = new JSONArray();
 		json = JSONArray.fromObject(cunstomerList);
 		return json.toString(); 
