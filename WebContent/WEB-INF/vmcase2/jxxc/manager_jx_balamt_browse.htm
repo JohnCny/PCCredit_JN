@@ -21,8 +21,10 @@
                 <span>所属机构：<select id="organName" name="organName"><option value="">请选择</option>#dict("ORGANJN","")</select></span>
               </li>
               <li class="search_button">
-                <input id="id_browse_button" type="button" value="#i18n('button.browse')" class="search_button_inquiry"
-                  title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" />
+                <input id="id_browse_button" type="button" value="筛选" class="search_button_inquiry"
+                  title="筛选" style="height: 26px; line-height: 24px;" />
+                <input id="id_export_button" type="button" value="导出EXCEL" class="search_button_inquiry"
+                  title="导出EXCEL" style="height: 26px; line-height: 24px;" />
               </li>
             </ul>
           </form>
@@ -108,10 +110,10 @@
 	window.top.currentWindow.setLayout(layout);
 	$(document).ready(function() {
 		var opsObj = new Object();
-		opsObj.formObj = $("#submitForm");
+	/* 	opsObj.formObj = $("#submitForm");
 		opsObj.changeUrl = "${modulePath}/change.page";
 		opsObj.browseUrl = "${modulePath}/browse.page";
-		prepareOperations(opsObj);
+		prepareOperations(opsObj); */
 		
 		//修改
 		 $("#id_change_button").click(function() {
@@ -146,12 +148,24 @@
 
 		//查询
 		$("#id_browse_button").click(function() {
-            var url = opsObj.browseUrl;
+           /*  var url = opsObj.browseUrl;
             if (opsObj.formObj) {
                 opsObj.formObj.action = opsObj.browseUrl;
                 opsObj.formObj.submit();
-            }
+            } */
+            var url = "${modulePath}/browseCustDayBalamt.page";
+            document.getElementById("submitForm").action = url;
+      		document.getElementById("submitForm").submit();
         });
+		
+		//导出
+		$("#id_export_button").click(function() {
+				//行编及外聘客户经理
+   				var url = "${modulePath}/exportDataRj.json";
+          		document.getElementById("submitForm").action = url;
+          		document.getElementById("submitForm").submit();
+	    	
+	    }); 
 	});
 </script>
 #parse ("common/iframe_page_footer.htm")

@@ -242,8 +242,10 @@
 		</div>
 	  </form>
 	  <div class="submit" style="margin-top:-20px;">
-	    <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
-        <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a>
+	    <!-- <a id="id_pre_button" class="btn_g" href="javascript:history.back();" title="上一步">上一步</a>
+        <a id="id_next_button" class="btn_g" href="javascript:void(0);" title="下一步">下一步</a> -->
+	    <input id="id_save_button" type="button" value="保&nbsp;&nbsp;存" class="current" />
+	    <input type="button" onclick="javascript:history.go(-1);" value="返回" />
       </div>
 	</div>
 </div>
@@ -261,24 +263,25 @@
 		var opsObj = new Object();
 		prepareOperations(opsObj);
 		
-		$("#id_next_button").click(function() {
-			if(submitFlag == 1){
+		$("#id_save_button").click(function() {
+			/* if(submitFlag == 1){
 				alert("请勿重复提交!")
 				return;
 			}
-			submitFlag = 1;
+			submitFlag = 1; */
 			if ($($formName).valid()) {
 				 var formjson = $($formName).serialize();
 				 $.ajax({
-						url : "${contextPath}/intopieces/addIntopieces/doCommonDecisionModel.json",
+						url : "${contextPath}/intopieces/addIntopieces/modelFormInsert.json",
 						type : "get",
 						data : formjson,
 						success : function(data) { 
-							if (data.success) {
-					             var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
-					             window.location.href = url;
+							if (data.issuccess) {
+					             //var url = "${contextPath}/intopieces/addIntopieces/imageImport.page?excelId=$!result.filter.excelId&customerId=$!result.filter.customerId&productId=$!result.filter.productId";
+					             //window.location.href = url;
+								window.top.Dialog.message("建议授信额度为："+data.evaresult.money+"元");
 							}else{
-								window.top.Dialog.message("系统出现异常,请联系管理员");
+								window.top.Dialog.message(data.mess);
 					    	}
 						}
 			    });

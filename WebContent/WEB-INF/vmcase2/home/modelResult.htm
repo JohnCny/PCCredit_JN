@@ -1,0 +1,74 @@
+#parse ("common/iframe_page_header.htm")
+#parse ("common/customerInfor.htm")
+<body>
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">模型评估结果</div>
+      </div>
+      <div class="inquiry">
+       <div class="search_tag">模型评估结果</div>
+        <div class="search">
+          <form id="submitForm" action="${contextPath}/intopieces/addIntopieces/modelFormSelect.page" onkeydown="javascript:if(event.keyCode==13) this.submit();">
+          <ul>
+              <li>
+                <span>客户经理：<select id="userId" name="userId"><option value="">请选择</option>#dict("ALLMANAGER","")</select></span>
+              </li>
+              <li class="search_button">
+                <input type="button" value="筛选" class="search_button_inquiry" title="#i18n('button.browse.hint')" style="height: 26px; line-height: 24px;" onclick="javascript:this.form.submit();"/>
+              </li>
+          </ul>
+          </form>
+        </div>
+        <div id="topDiv" class="inquiry_list inquiry_top">
+          <table>
+           <colgroup>
+              <col width="40" />
+              </colgroup>
+            <tr class="title">
+              <th nowrap="nowrap"></th>
+              <th nowrap="nowrap">客户姓名</th>
+              <th nowrap="nowrap">证件号码</th>
+              <th nowrap="nowrap">评估结果</th>
+              <th nowrap="nowrap">评估额度</th>
+              <th nowrap="nowrap">评估时间</th>
+              <th nowrap="nowrap">拒绝原因</th>
+              <th nowrap="nowrap">所属客户经理</th>
+            </tr>
+          </table>
+        </div>
+        <div id="downDiv" class="inquiry_list inquiry_down">
+          <table>
+            <colgroup>
+              <col width="40" />
+              </colgroup>
+           #foreach ($wait in $result.items)
+            <tr ondblclick="javascript:$('#id_change_button').click();">
+              <td class="checkbox"><input type="radio" name="checkbox" value="$!wait.serialNumber@$!wait.customerId@$!wait.id@$!wait.applyQuota"/></td>
+              <td nowrap="nowrap">$!wait.cname</td>
+              <td nowrap="nowrap">$!wait.cardNo</td>
+              <td nowrap="nowrap">$!wait.result</td>
+              <td nowrap="nowrap">$!wait.money</td>
+              <td nowrap="nowrap">$!date.format("yyyy-MM-dd HH:mm:ss",$!wait.createdTime)</td>
+              <td nowrap="nowrap">$!wait.refuseReason</td>
+              <td nowrap="nowrap">$!wait.userName</td>
+            </tr>
+            #end
+
+          </table>
+        </div>
+      </div>
+      <div class="pagebar">
+        <div class="controlbtn">
+        	<a id="id_sy_button" class="btn_g" href="${contextPath}/intopieces/addIntopieces/modelFormBrowse.page" title="评估新客户">评估新客户</a>
+        </div>
+        #parse ("common/pagination.htm")
+        <div class="clear"></div>
+        	
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" src="${contextPath}/common/js/common/jquery.json-2.3.js"></script>
+</body>
+</html>
+#parse ("common/iframe_page_footer.htm")
