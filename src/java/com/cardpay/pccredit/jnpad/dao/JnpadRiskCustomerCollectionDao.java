@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.cardpay.pccredit.jnpad.model.DelayInfoForm;
+import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerCollectionPlanFilter;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
 import com.cardpay.pccredit.riskControl.model.RiskCustomer;
@@ -29,7 +30,7 @@ public interface JnpadRiskCustomerCollectionDao {
 	//客户逾期信息
 	public DelayInfoForm getDelayInfoByCustomerId(@Param("customerId") String customerId);
 	//获取客户经理名下客户逾期信息
-	public List<DelayInfoForm> getCustomerRiskInfo(@Param("managerId")String managerId);
+	public List<YqdktjbbForm> getCustomerRiskInfo(@Param("managerId")String managerId);
 	
 	
 

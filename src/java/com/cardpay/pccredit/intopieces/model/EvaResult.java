@@ -1,5 +1,7 @@
 package com.cardpay.pccredit.intopieces.model;
 
+import java.util.Date;
+
 import com.wicresoft.jrad.base.database.model.BusinessModel;
 import com.wicresoft.jrad.base.database.model.ModelParam;
 
@@ -26,8 +28,30 @@ public class EvaResult extends BusinessModel {
 	 private String  project;
 	 private String  liveScore;
 	 private String refuseReason;
+	 private Date createdTime;
+	 private String userId;
+	 private String userName;
 	 
 	 
+	 
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getRefuseReason() {
 		return refuseReason;
 	}

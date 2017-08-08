@@ -412,6 +412,15 @@ public class IntoPiecesComdao {
 			return null;
 		}
 	}
+	public EvaResult findEvaResultByCardId(String id) {//app_id
+		String sql ="select * from EVA_RESULT t where  t.card_no='"+id+"'";
+		List<EvaResult> list = commonDao.queryBySql(EvaResult.class,sql, null);
+		if(list!=null&&!list.isEmpty()){
+			return list.get(0);
+		}else{
+			return null;
+		}
+	}
 	
 	/* 查询申请的某一笔进件申请单中上传的产品的附件*/
 	public List<AddressAccessories> findAddressAccessories(

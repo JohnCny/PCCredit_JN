@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.calcuation.enums.ModelType;
+import com.cardpay.pccredit.common.IdCardValidate;
 import com.cardpay.pccredit.creditEval.CommonDecisionModel;
 import com.cardpay.pccredit.creditEval.CreditBusinessModel;
 import com.cardpay.pccredit.creditEval.JNCreditBusinessModel;
@@ -79,6 +81,8 @@ import com.cardpay.pccredit.intopieces.service.AddIntoPiecesService;
 import com.cardpay.pccredit.intopieces.service.ChatMessageService;
 import com.cardpay.pccredit.intopieces.service.IntoPiecesService;
 import com.cardpay.pccredit.ipad.util.JsonDateValueProcessor;
+import com.cardpay.pccredit.jnpad.filter.ModelFormFilter;
+import com.cardpay.pccredit.jnpad.service.JnpadModelFormService;
 import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.cardpay.pccredit.product.filter.ProductFilter;
 import com.cardpay.pccredit.product.model.ProductAttribute;
@@ -135,6 +139,8 @@ public class AddIntoPiecesControl extends BaseController {
 	
 	@Autowired
 	private ChatMessageService chatMessageService;
+	@Autowired
+	JnpadModelFormService jnpadmodelformservice;
 	
 	//选择产品
 	@ResponseBody
@@ -3468,4 +3474,84 @@ public class AddIntoPiecesControl extends BaseController {
 		
 		
 		
+		/**
+		 * 四维授信评估模型跳转页面
+		 * @param filter
+		 * @param request
+		 * @author sealy
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "modelFormBrowse.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView modelform(HttpServletRequest request) {
+			
+			JRadModelAndView mv = new JRadModelAndView("/home/evaluateCommonDecision",request);
+			return mv;
+		}
+		/**
+		 * 四维授信评估模型插入页面
+		 * @param filter
+		 * @param request
+		 * @author sealy
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "modelFormInsert.json", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public JRadReturnMap modelformInsert(@ModelAttribute CommonDecisionForm commondecisionform,HttpServletRequest request) {
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			JRadReturnMap returnMap=new JRadReturnMap();
+			try {
+				String msg = IdCardValidate.IDCardValidate(commondecisionform.getCardNo());
+			
+			if(msg !="" && msg != null){
+				returnMap.put("mess", msg);
+				returnMap.put("issuccess", false);
+				return returnMap;
+			}
+			} catch (ParseException e) {
+				returnMap.put("mess", "身份证验证出现未知错误");
+				returnMap.put("issuccess", false);
+				return returnMap;
+			}
+			commondecisionform.setUserId(user.getId());
+			commondecisionform.setUserName(user.getDisplayName());
+			EvaResult evaresult=jnpadmodelformservice.saveEvaModelResult(commondecisionform);
+			returnMap.put("evaresult", evaresult);
+			returnMap.put("issuccess", true);
+			OperationLog ol = new OperationLog();
+			ol.setUser_id(user.getId());
+		    ol.setUser_login(user.getDisplayName());
+		    ol.setModule("管理端模型评估");
+		    ol.setOperation_result("SUCCESS");
+		    ol.setOperation_name("ADD");
+		    ol.setIp_address(request.getRemoteAddr());
+			userLogService.addUserLog(ol);
+			return returnMap;
+		}
+		/**
+		 * 四维授信评估模型结果查询
+		 * @param filter
+		 * @param request
+		 * @author sealy
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value = "modelFormSelect.page", method = { RequestMethod.GET })
+		@JRadOperation(JRadOperation.BROWSE)
+		public AbstractModelAndView modelformSelect(@ModelAttribute ModelFormFilter filter,HttpServletRequest request) {
+			filter.setRequest(request);
+			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
+			String userId=user.getId();
+			Integer userType=user.getUserType();
+			if(userType==1){
+				filter.setUserId(userId);
+			}
+			QueryResult<EvaResult> queryResult=jnpadmodelformservice.getEvaModelResultPC(filter);
+			JRadPagedQueryResult<EvaResult>  pagedResult = new JRadPagedQueryResult<EvaResult>(filter, queryResult);
+			JRadModelAndView mv = new JRadModelAndView("/home/modelResult",request);
+			mv.addObject(PAGED_RESULT, pagedResult);
+			return mv;
+		}
 }

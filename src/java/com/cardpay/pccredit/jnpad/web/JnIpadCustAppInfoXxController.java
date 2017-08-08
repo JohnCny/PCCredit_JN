@@ -45,6 +45,7 @@ import com.cardpay.pccredit.manager.filter.RetrainingFilter;
 import com.cardpay.pccredit.manager.model.AccountManagerRetraining;
 import com.cardpay.pccredit.manager.model.Retraining;
 import com.cardpay.pccredit.notification.model.NotificationMessage;
+import com.cardpay.pccredit.report.model.YqdktjbbForm;
 import com.cardpay.pccredit.riskControl.constant.RiskControlRole;
 import com.cardpay.pccredit.riskControl.constant.RiskCreateTypeEnum;
 import com.cardpay.pccredit.riskControl.filter.RiskCustomerFilter;
@@ -378,7 +379,7 @@ public class JnIpadCustAppInfoXxController {
 		if(userType.equals("1")){
 			managerId = request.getParameter("userId");
 		}
-		List<DelayInfoForm> cunstomerList =JnpadriskCustomerCollectionService.getCustomerRiskInfo(managerId);
+		List<YqdktjbbForm> cunstomerList =JnpadriskCustomerCollectionService.getCustomerRiskInfo(managerId);
 		int yq_remind_message = cunstomerList.size();
 		int sum=count1+count3+count5+refuseCount+returnCount+risk+count6+yq_remind_message;
 		NotifyMsgListVo vo  = new NotifyMsgListVo();

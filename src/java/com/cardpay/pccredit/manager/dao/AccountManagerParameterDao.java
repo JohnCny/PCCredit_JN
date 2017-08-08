@@ -50,5 +50,6 @@ public interface AccountManagerParameterDao {
 	public int findCountMonthJx(ManagerSalaryFilter filter);
 	
 	public List<TJxSpecificParameters> findCustDayBalamt(ManagerSalaryFilter filter);
+	public List<TJxSpecificParameters> findCustDayBalamtExportDate(ManagerSalaryFilter filter);
 	public int findCountCustDayBalamt(ManagerSalaryFilter filter);
 }

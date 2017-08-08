@@ -152,7 +152,8 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("custManagerId", customerInfor.getUserId());
 		
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		mv.addObject("evaResult", evaResult);
 		return mv;
 	}
@@ -173,7 +174,8 @@ public class IntopiecesDecisionController extends BaseController {
 		mv.addObject("custManagerId", customerInfor.getUserId());
 		
 		//查询评估结果
-		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//		EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+		EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 		mv.addObject("evaResult", evaResult);
 		return mv;
 	}
@@ -265,7 +267,8 @@ public class IntopiecesDecisionController extends BaseController {
 			mv.addObject("custManagerId", customerInfor.getUserId());
 			
 			//查询评估结果
-			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+			EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 			mv.addObject("evaResult", evaResult);
 			return mv;
 		}
@@ -295,7 +298,8 @@ public class IntopiecesDecisionController extends BaseController {
 			mv.addObject("custManagerId", customerInfor.getUserId());
 			
 			//查询评估结果
-			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+			EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());
 			mv.addObject("evaResult", evaResult);
 			return mv;
 		}
@@ -326,7 +330,8 @@ public class IntopiecesDecisionController extends BaseController {
 			mv.addObject("custManagerId", customerInfor.getUserId());
 			
 			//查询评估结果
-			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+//			EvaResult   evaResult =intoPiecesService.findEvaResult(appId);
+			EvaResult   evaResult =intoPiecesService.findEvaResultByCardId(customerInfor.getCardId());			
 			mv.addObject("evaResult", evaResult);
 			return mv;
 		}
