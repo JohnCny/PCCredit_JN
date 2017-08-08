@@ -199,10 +199,12 @@ public class AddIntoPiecesService {
 		}else{
 		    localExcel.setApproveValue(sheet[12]);
 		}
-		
+		if(sheet[12].contains(",")){
+			localExcel.setApproveValue(sheet[12].replaceAll(",", ""));
+		}
 		//判断申请金额格式是否正确
 		if(!IsNum(localExcel.getApproveValue())){
-			throw new RuntimeException("申请金额:"+localExcel.getApproveValue()+",格式有误,请重新填写！");
+			throw new RuntimeException("申请金额:["+localExcel.getApproveValue()+"],格式有误,请重新填写！");
 		}
 		
 		//删除旧模板  update2017年6月23日09:01:50 解决续贷转贷问题
