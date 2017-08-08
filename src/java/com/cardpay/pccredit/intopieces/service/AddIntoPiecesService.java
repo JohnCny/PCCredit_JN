@@ -289,7 +289,9 @@ public class AddIntoPiecesService {
 		}else{
 		    localExcel.setApproveValue(sheet[12]);
 		}
-		
+		if(sheet[12].contains(",")){
+			localExcel.setApproveValue(sheet[12].replaceAll(",", ""));
+		}
 		
 		//判断申请金额格式是否正确
 		if(!IsNum(localExcel.getApproveValue())){
