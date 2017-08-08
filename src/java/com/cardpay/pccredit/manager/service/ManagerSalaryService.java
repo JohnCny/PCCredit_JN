@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import com.cardpay.pccredit.common.Arith;
 import com.cardpay.pccredit.customer.model.CustomerInfor;
 import com.cardpay.pccredit.manager.constant.ReturnReceiptConstant;
+import com.cardpay.pccredit.manager.dao.AccountManagerParameterDao;
 import com.cardpay.pccredit.manager.dao.ManagerSalaryDao;
 import com.cardpay.pccredit.manager.filter.ManagerCashConfigurationFilter;
 import com.cardpay.pccredit.manager.filter.ManagerSalaryFilter;
@@ -83,6 +84,9 @@ public class ManagerSalaryService {
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;  
+	
+	@Autowired
+	private AccountManagerParameterDao accountManagerParameterDao;
 	/**
 	 * 过滤查询
 	 * @param filter
@@ -1883,6 +1887,157 @@ public class ManagerSalaryService {
 	        wb.write(out);
 	        out.close();
 		}
+		
+		  /**
+		   * 济南客户每月日均贷款余额导出
+		   * @param filter
+		   * @param response
+		   * @throws Exception
+		   */
+			public void getExportRiJunData(ManagerSalaryFilter filter,HttpServletResponse response) throws Exception{
+				String year  = filter.getYear();// 年份
+				String month = filter.getMonth();// 月份
+				
+				String title ="济南农商行小微信贷中心客户日均贷款余额表("+year+"年"+month+"月)";
+				
+				// 查询日军贷款余额
+				List<TJxSpecificParameters> jxSpecificParameters = accountManagerParameterDao.findCustDayBalamtExportDate(filter);
+				
+				// 第一步，创建一个webbook，对应一个Excel文件  
+		        HSSFWorkbook wb = new HSSFWorkbook();  
+		        // 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
+		        HSSFSheet sheet = wb.createSheet("sheet1");  
+		        // 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
+		        HSSFRow row = sheet.createRow((int) 0);  
+		        HSSFCell cellTmp = row.createCell((short) 0);
+				cellTmp.setCellValue(title);  //设置表格标题 For Example :济南农商行小微信贷中心外聘客户经理薪酬测算表（2016年09月）
+				
+				// 设置标题字体
+				HSSFFont font16 = wb.createFont();
+				font16.setFontHeightInPoints((short) 20);
+				font16.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+				font16.setFontName("华文楷体");
+				
+				// 设置标题字体
+				HSSFFont font1 = wb.createFont();
+				font1.setFontHeightInPoints((short) 12);
+				font1.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+				font1.setFontName("宋体");
+				
+				// 设置单元格居中
+				HSSFCellStyle styleCenter = wb.createCellStyle();
+				styleCenter.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				styleCenter.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+				styleCenter.setFont(font16);
+				
+				// 设置居右
+				HSSFCellStyle styleFirst = wb.createCellStyle();
+				styleFirst.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+				styleFirst.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+				styleFirst.setFont(font1);
+				
+				// 合并单元格
+				CellRangeAddress region = new CellRangeAddress(0, 0, 0,8);
+				sheet.addMergedRegion(region);
+				cellTmp.setCellStyle(styleCenter);
+				
+		        // 第四步，创建单元格，并设置值表头 设置表头居中  
+		        HSSFCellStyle style = wb.createCellStyle();  
+		        // 创建一个居中格式
+		        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		        style.setWrapText(true);
+		        style.setFillForegroundColor(HSSFColor.LIGHT_ORANGE.index);
+		        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		        
+		        // 设置第二行 制表日期
+		        row = sheet.createRow((int) 1);
+		        HSSFCell tmp = row.createCell((short) 5);
+		        tmp.setCellValue("制表日期："+new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+		        CellRangeAddress reg = new CellRangeAddress(1, 1, 5,8);
+		        sheet.addMergedRegion(reg);
+		        tmp.setCellStyle(styleFirst);
+		        
+		        // excel 正文内容
+		        row = sheet.createRow((int) 2);
+		        // row
+		        HSSFCell cell = row.createCell((short) 0);  
+		        cell.setCellValue("序号");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(0, 10*256);
+		        
+		        cell = row.createCell((short) 1);  
+		        cell.setCellValue("年份");  
+		        cell.setCellStyle(style);  
+		        sheet.setColumnWidth(1, 20*256);
+		        
+		        cell = row.createCell((short) 2);  
+		        cell.setCellValue("月份");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(2, 20*256);
+		        
+		        cell = row.createCell((short) 3);  
+		        cell.setCellValue("客户当月日均贷款余额");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(3, 30*256);
+		        
+		        cell = row.createCell((short) 4);  
+		        cell.setCellValue("产品利率(%)");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(4, 30*256);
+		        
+		        cell = row.createCell((short) 5);  
+		        cell.setCellValue("产品类型");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(5, 30*256);
+		        
+		        cell = row.createCell((short) 6);  
+		        cell.setCellValue("客户姓名");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(6, 40*256);
+		        
+		        cell = row.createCell((short) 7);  
+		        cell.setCellValue("客户经理姓名");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(7, 40*256);
+		        
+		        cell = row.createCell((short) 8);  
+		        cell.setCellValue("所属机构");  
+		        cell.setCellStyle(style);
+		        sheet.setColumnWidth(8, 40*256);
+		        
+		        for(int i=0;i<jxSpecificParameters.size();i++){
+		        	row = sheet.createRow((int) i + 3);
+		        	TJxSpecificParameters salary = jxSpecificParameters.get(i);
+		        	row.createCell((short) 0).setCellValue(i+1);  
+		        	row.createCell((short) 1).setCellValue(salary.getYear());            																	    
+		        	row.createCell((short) 2).setCellValue(salary.getMonth());        																               
+		        	row.createCell((short) 3).setCellValue(salary.getMonthDayAverageCustLoanamt());     						          																	        
+		        	row.createCell((short) 4).setCellValue(salary.getProdLimit());  
+		        	if(salary.getProdType().equals("C101")){
+		        		salary.setProdType("保证");
+		        	}else if(salary.getProdType().equals("C102")){
+		        		salary.setProdType("抵押");
+		        	}else if(salary.getProdType().equals("C100")){
+		        		salary.setProdType("信用");
+		        	}else if(salary.getProdType().equals("0")){
+		        		salary.setProdType("");
+		        	}
+		        	row.createCell((short) 5).setCellValue(salary.getProdType());																      
+		        	row.createCell((short) 6).setCellValue(salary.getCustomerId());																      
+		        	row.createCell((short) 7).setCellValue(salary.getCustomerManagerId());																      
+		        	row.createCell((short) 8).setCellValue(salary.getInstcode());																      
+		        										  																		  //9月实发薪酬（元）        待确定      
+		        }
+		        title = title+".xls";
+		        response.setHeader("Connection", "close");
+		        response.setHeader("Content-Type", "application/vnd.ms-excel;charset=GBK");
+		        response.setHeader("Content-Disposition", "attachment;filename="
+		        + new String("济南农商行小微信贷中心客户日均贷款余额表.xls".getBytes(), "iso-8859-1"));
+		        OutputStream out = response.getOutputStream();  
+		        wb.write(out);
+		        out.close();
+			}
 	//----------------------------------------------济南绩效end----------------------------------------------------//
 	
 }

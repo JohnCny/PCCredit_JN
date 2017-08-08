@@ -320,6 +320,50 @@
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
 	</select>
+	<!-- 2.客户每月日均贷款余额导出EXCEL -->
+	<select id="findCustDayBalamtExportDate" resultMap="resultMap2" parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
+		select * from(
+			select a.id,
+				   a.year,
+			       a.month,
+			       a.month_day_average_cust_loanamt,
+			       a.prod_limit,
+			       a.prod_type,
+			       c.chinese_name as customer_id,
+			       b.display_name as customer_manager_id,
+			       b.id as manger_id,
+			       (select org.name
+          from sys_organization org
+         where id in (select t.org_id
+                        from sys_department t
+                       where t.id in (select tt.dept_id
+                                        from sys_dept_user tt
+                                       where tt.user_id = b.id))) as instcode
+			 from 
+			       t_jx_specific_parameters a,
+			       sys_user b,
+			       basic_customer_information c
+			where a.CUSTOMER_MANAGER_ID= b.id
+			  and c.id = a.customer_id )
+	     where 1=1 
+		<if test="managerName != null and managerName != '' ">
+			AND CUSTOMER_MANAGER_ID =#{managerName}
+		</if>
+		<if test="organName != null and organName != '' ">
+			AND instcode=#{organName}
+		</if>
+		<if test="year != null and year != '' ">
+			AND YEAR=#{year}
+		</if>
+		<if test="month != null and month != '' ">
+			AND MONTH=#{month}
+		</if>
+		<if test="customerId != null and customerId != '' ">
+			AND MANGER_ID=#{customerId}
+		</if>
+		order by instcode
+		
+	</select>
 	
 	
 	<select id="findCountCustDayBalamt" resultType="int" parameterType="com.cardpay.pccredit.manager.filter.ManagerSalaryFilter">
