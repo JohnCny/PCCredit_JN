@@ -3483,7 +3483,6 @@ public class AddIntoPiecesControl extends BaseController {
 		 */
 		@ResponseBody
 		@RequestMapping(value = "modelFormBrowse.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView modelform(HttpServletRequest request) {
 			
 			JRadModelAndView mv = new JRadModelAndView("/home/evaluateCommonDecision",request);
@@ -3498,7 +3497,6 @@ public class AddIntoPiecesControl extends BaseController {
 		 */
 		@ResponseBody
 		@RequestMapping(value = "modelFormInsert.json", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public JRadReturnMap modelformInsert(@ModelAttribute CommonDecisionForm commondecisionform,HttpServletRequest request) {
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 			JRadReturnMap returnMap=new JRadReturnMap();
@@ -3539,7 +3537,6 @@ public class AddIntoPiecesControl extends BaseController {
 		 */
 		@ResponseBody
 		@RequestMapping(value = "modelFormSelect.page", method = { RequestMethod.GET })
-		@JRadOperation(JRadOperation.BROWSE)
 		public AbstractModelAndView modelformSelect(@ModelAttribute ModelFormFilter filter,HttpServletRequest request) {
 			filter.setRequest(request);
 			IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
