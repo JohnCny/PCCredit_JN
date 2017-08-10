@@ -415,7 +415,7 @@ public class SFTPUtil {
 		}
 	}
 	
-	public  synchronized static void  downloadjn(HttpServletResponse response,
+	public   static void  downloadjn(HttpServletResponse response,
 			String filePath, String fileName) {
 		try {
 			byte[] buff = new byte[2048];
@@ -471,7 +471,7 @@ public class SFTPUtil {
 	}
 	
 	
-	public  synchronized static void  downloadjnpad(HttpServletResponse response,
+	public   static void  downloadjnpad(HttpServletResponse response,
 			String filePath, String fileName) {
 		try {
 			byte[] buff = new byte[2048];
