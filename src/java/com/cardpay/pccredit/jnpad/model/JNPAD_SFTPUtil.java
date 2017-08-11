@@ -387,7 +387,7 @@ public class JNPAD_SFTPUtil {
 		}
 	}
 	
-	public synchronized static void downloadjn(HttpServletResponse response,
+	public  static void downloadjn(HttpServletResponse response,
 			String filePath, String fileName) {
 		try {
 			byte[] buff = new byte[2048];
