@@ -557,6 +557,34 @@
 					WHERE ROWNUM_ > #{limit}*#{page}
 					]]>
 	</select>
+	<select id="findCustomerInforByFilterAndProductIdPAD" resultType="com.cardpay.pccredit.customer.model.CustomerInfor">
+			select 
+			id,
+			chinese_name as chineseName,
+			card_type as cardType,
+			card_id as cardId,
+			TY_CUSTOMER_ID as tyCustomerId
+			from BASIC_CUSTOMER_INFORMATION T1 where 1 = 1
+				AND user_id=#{userId}
+				<if test="chineseName != null and chineseName != '' ">
+					AND chinese_name=#{chineseName}
+				</if>
+				<if test="cardType != null and cardType != '' ">
+					AND card_type=#{cardType}
+				</if>
+				<if test="cardId != null and cardId != '' ">
+					AND card_id=#{cardId}
+				</if>
+		       
+		       	
+		       	and  not exists 
+		       	(
+		       		select 1 from CUSTOMER_APPLICATION_INFO T2 where T1.id = T2.customer_id 
+ 		       		and T2.REPAY_STATUS  != '1' and status !='refuse'
+		       	) 
+		       	order by created_time desc
+	
+	</select>
 
 	<select id="findCustomerInforCountByFilterAndProductId"
 		resultType="int">

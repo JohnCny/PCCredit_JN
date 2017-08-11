@@ -227,6 +227,7 @@ public interface CustomerInforDao {
 	public void updateCustomerSafe(Map<String, Object> map);
 	
 	public List<CustomerInfor> findCustomerInforByFilterAndProductId(CustomerInforFilter filter);
+	public List<CustomerInfor> findCustomerInforByFilterAndProductIdPAD(CustomerInforFilter filter);
 	public int findCustomerInforCountByFilterAndProductId(CustomerInforFilter filter);
 	
 	public List<MaintenanceLog> findCustomerByFilter(CustomerInforFilter filter);
