@@ -218,6 +218,13 @@ public class CustomerInforService {
 		QueryResult<CustomerInfor> qr = new QueryResult<CustomerInfor>(size,ls);
 		return qr;
 	}
+	//查询未办理过该产品的客户--pad
+	public QueryResult<CustomerInfor> findCustomerInforByFilterAndProductIdPAD(CustomerInforFilter filter) {
+		List<CustomerInfor> ls = customerInforDao.findCustomerInforByFilterAndProductIdPAD(filter);
+		int size = customerInforDao.findCustomerInforCountByFilterAndProductId(filter);
+		QueryResult<CustomerInfor> qr = new QueryResult<CustomerInfor>(size,ls);
+		return qr;
+	}
 	
 	/**
 	 * 过滤查询影像资料
