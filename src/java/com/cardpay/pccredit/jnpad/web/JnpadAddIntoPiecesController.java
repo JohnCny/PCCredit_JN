@@ -79,7 +79,7 @@ public class JnpadAddIntoPiecesController {
       
 		filter.setUserId(request.getParameter("userId"));
 		filter.setProductId(request.getParameter("productId"));
-		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductId(filter);
+		QueryResult<CustomerInfor> result = customerInforservice.findCustomerInforByFilterAndProductIdPAD(filter);
 		
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
