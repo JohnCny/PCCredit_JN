@@ -141,12 +141,18 @@
       SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
 		FROM (
-		    select t.*,bci.chinese_name,pa.product_name
+		   select * from( select t.*,bci.chinese_name,pa.product_name
 		    from local_image t
 		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
 		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
 		    where 
 		    product_id=#{productId} and customer_id=#{customerId}
+		    ) sd
+		    where sd.uri like '%.pdf%'
+		 	or sd.uri like '%.amr'
+		 	or sd.uri like '%.m4a'
+		 	or sd.uri like '%.xls'
+		 	or sd.uri like '%.xlsx'
 		    
 		    <![CDATA[		
 							) ROW_
@@ -155,9 +161,15 @@
 					]]>
   </select>
   <select id="findCountByProductAndCustomer" resultType="int">
-    select count(0) from local_image
+  select count(*) from (  select * from local_image
     where 
     product_id=#{productId} and customer_id=#{customerId}
+    )
+    where uri like '%.pdf%'
+	or uri like '%.amr'
+	or uri like '%.m4a'
+	or uri like '%.xls'
+	or uri like '%.xlsx'
   </select>
   <select id="findAllByProductAndCustomer" resultType="com.cardpay.pccredit.intopieces.model.LocalImage">
       select t.*
@@ -175,12 +187,17 @@
     SELECT * FROM
 		(SELECT ROW_.*,ROWNUM ROWNUM_
 		FROM (
-		    select t.*,bci.chinese_name,pa.product_name
+		   select * from ( select t.*,bci.chinese_name,pa.product_name
     from local_image t
 		    left join BASIC_CUSTOMER_INFORMATION bci on t.customer_id = bci.id
 		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
 		    where application_id=#{applicationId}
-		    and uri like '%.pdf%'
+		    ) sd
+		    where sd.uri like '%.pdf%'
+		    or sd.uri like '%.amr'
+		    or sd.uri like '%.m4a'
+			or sd.uri like '%.xls'
+			or sd.uri like '%.xlsx'
 		    
 		    <![CDATA[		
 							) ROW_
@@ -189,9 +206,15 @@
 					]]>
   </select>
   <select id="findCountByApplication" resultType="int">
-    select count(0) from local_image
+    select count(*) from (select * from local_image
     where application_id=#{applicationId}
-    and uri like '%.pdf%'
+    )
+    where uri like '%.pdf%'
+    or uri like '%.amr'
+	or uri like '%.m4a'
+	or uri like '%.xls'
+	or uri like '%.xlsx'
+		    
   </select>
   
   
@@ -441,6 +464,10 @@
 			and uri not like '%.zip%'
 			and uri not like '%.pdf%'
 			and uri not like '%.txt%'
+			and uri not like '%.amr'
+			and uri not like '%.m4a'
+			and uri not like '%.xls'
+			and uri not like '%.xlsx'
 			<if test="imageClasses != null and imageClasses != '' ">
 			AND image_Classes=#{imageClasses}
 		</if>
@@ -456,6 +483,10 @@
 		and uri not like '%.zip%'
 		and uri not like '%.pdf%'
 		and uri not like '%.txt%'
+		and uri not like '%.amr'
+		and uri not like '%.m4a'
+		and uri not like '%.xls'
+		and uri not like '%.xlsx'
 		<if test="imageClasses != null and imageClasses != '' ">
 			AND image_Classes=#{imageClasses}
 		</if>
