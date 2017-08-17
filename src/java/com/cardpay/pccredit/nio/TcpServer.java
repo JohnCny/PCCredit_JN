@@ -36,11 +36,10 @@ public class TcpServer implements InitializingBean,DisposableBean{
 			@Override
 			public void run() {
 				try {
-					initServer();
+					//initServer();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-
 			}
 		});
 		t.start();

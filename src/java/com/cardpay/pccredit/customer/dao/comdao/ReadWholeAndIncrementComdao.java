@@ -635,6 +635,7 @@ public class ReadWholeAndIncrementComdao {
 	            return shopsList.size();
 	           }
 	     });
+	      shopsList.clear();
 	}
 	
 	
@@ -931,6 +932,7 @@ public class ReadWholeAndIncrementComdao {
 	           }
 	           
 	     });
+	      shopsList.clear();
 	      
 	}
 	
@@ -1698,6 +1700,7 @@ public class ReadWholeAndIncrementComdao {
 		            return shopsList.size();
 		           }
 		     });
+		      shopsList.clear();
 		}
 		
 		
@@ -2145,6 +2148,7 @@ public class ReadWholeAndIncrementComdao {
 		            return shopsList.size();
 		           }
 		     });
+		      shopsList.clear();
 		}
 		
 		
@@ -2993,6 +2997,7 @@ public class ReadWholeAndIncrementComdao {
 		            return shopsList.size();
 		           }
 		     });
+		      shopsList.clear();
 		}
 		
 		
@@ -3210,6 +3215,7 @@ public class ReadWholeAndIncrementComdao {
 		            return shopsList.size();
 		           }
 		     });
+		      shopsList.clear();
 		}
 		
 		
@@ -3299,6 +3305,7 @@ public class ReadWholeAndIncrementComdao {
 	            return shopsList.size();
 	           }
 	     });
+	      shopsList.clear();
 	}
 	
 	
@@ -3454,6 +3461,7 @@ public class ReadWholeAndIncrementComdao {
 	            return shopsList.size();
 	           }
 	     });
+	      shopsList.clear();
 	}
 	
 	
@@ -3659,6 +3667,7 @@ public class ReadWholeAndIncrementComdao {
 		            return shopsList.size();
 		           }
 		     });
+		      shopsList.clear();
 		}
 	
 
