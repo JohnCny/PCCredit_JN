@@ -697,6 +697,7 @@ public class ManagerSalaryService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     

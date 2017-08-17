@@ -2470,6 +2470,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     
@@ -2532,6 +2533,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     /**
@@ -2874,6 +2876,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     
@@ -3067,6 +3070,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     
@@ -3187,6 +3191,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     
@@ -3255,6 +3260,7 @@ public class CustomerInforService {
                  return shopsList.size();
              }
          });
+         shopsList.clear();
      }
 
     
@@ -3509,6 +3515,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     
@@ -3815,6 +3822,7 @@ public class CustomerInforService {
                 return shopsList.size();
             }
         });
+        shopsList.clear();
     }
     
     

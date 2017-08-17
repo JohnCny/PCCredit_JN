@@ -76,6 +76,12 @@ public class SFTPUtil {
     private static ChannelSftp sftp = null;  
     private static String directory = "/usr/pccreditFile/";  
     
+    
+    /** 
+     * sftp连接池. 
+     */  
+    private static final Map<String, Channel> SFTP_CHANNEL_POOL = new HashMap<String, Channel>();  
+    
     /** 
      * connect server via sftp 
      */  
@@ -105,6 +111,52 @@ public class SFTPUtil {
             e.printStackTrace();  
         }  
     }
+    
+    //==============================================================//
+    /** 
+     * 获取sftp协议连接. 
+     * @param host 主机名 
+     * @param port 端口 
+     * @param username 用户名 
+     * @param password 密码 
+     * @return 连接对象 
+     * @throws JSchException 异常 
+     */  
+    public static void getSftpConnect() throws Exception {  
+        Session sshSession = null;  
+        Channel channel = null;  
+        String key = host + "," + port + "," + username + "," + password;  
+        if (null == SFTP_CHANNEL_POOL.get(key)) {  
+            JSch jsch = new JSch();  
+            jsch.getSession(username, host, port);  
+            sshSession = jsch.getSession(username, host, port);
+            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+            password = dailyReportScheduleService.findServer2();
+            sshSession.setPassword(password);  
+            Properties sshConfig = new Properties();  
+            sshConfig.put("StrictHostKeyChecking", "no");  
+            sshSession.setConfig(sshConfig);
+            sshSession.setTimeout(20000);
+            sshSession.connect();  
+            channel = sshSession.openChannel("sftp");  
+            channel.connect();
+            System.out.println("创立新连接Connected to " + host + ".");
+            SFTP_CHANNEL_POOL.put(key, channel);  
+        } else {
+        	System.out.println("从连接池中寻找Connected to " + host + ".");
+            channel = SFTP_CHANNEL_POOL.get(key);  
+            sshSession = channel.getSession();
+            if (!sshSession.isConnected()){  
+                sshSession.connect();
+            }
+            if (!channel.isConnected()){ 
+                channel.connect();  
+            }
+        }  
+        sftp = (ChannelSftp) channel;  
+    } 
+    
+    //==============================================================//
     /** 
      * Disconnect with server 
      */  
@@ -816,12 +868,14 @@ public class SFTPUtil {
             	sheet[12] = approveValue;
             }
             System.out.println("导入调查模板结束");
-            disconnect();
+            //disconnect();
         } catch (Exception e) {
             e.printStackTrace();
         }finally{
             try {
                 is.close();
+                disconnect();// 断开连接
+                map.clear();
             } catch (IOException e) {
                 e.printStackTrace();
             }
