@@ -980,6 +980,7 @@ public class JXLReadExcel {
         }finally{
             try {
                 is.close();
+                map.clear();
             } catch (IOException e) {
                 e.printStackTrace();
             }
