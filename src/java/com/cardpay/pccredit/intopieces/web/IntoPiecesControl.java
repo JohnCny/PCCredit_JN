@@ -1781,6 +1781,7 @@ public class IntoPiecesControl extends BaseController {
 			mv.addObject("rowNum1", page+1);
 			mv.addObject("totalCount",totalCount);
 			mv.addObject("appId", appId);
+			mv.addObject("imageClasses", imageClasses);
 			return mv;
 		}
 		

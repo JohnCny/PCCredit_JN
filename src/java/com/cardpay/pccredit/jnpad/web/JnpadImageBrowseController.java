@@ -48,7 +48,7 @@ public class JnpadImageBrowseController {
 	@RequestMapping(value = "/ipad/JnpadImageBrowse/uploadYx.json", method = { RequestMethod.GET })
 	public String display_server(HttpServletRequest request) {
 		
-		List<LocalImageForm> imagerList = jnpadImageBrowseService.findLocalImage(request.getParameter("imageClasses"),request.getParameter("customerId"),request.getParameter("productId"));
+		List<LocalImageForm> imagerList = jnpadImageBrowseService.findLocalImage(request.getParameter("imageClasses"),request.getParameter("customerId"),request.getParameter("productId"),request.getParameter("applicationId"));
 		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put("imagerList",imagerList);
 		map.put("size",imagerList.size());

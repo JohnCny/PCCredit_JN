@@ -176,6 +176,7 @@
 	    from local_image t
 	    where 
 	    product_id=#{productId} and customer_id=#{customerId}
+	    and application_id is null
   </select>
   <select id="findById" resultType="com.cardpay.pccredit.intopieces.model.LocalImage">
       select t.*
