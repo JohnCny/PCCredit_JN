@@ -8,7 +8,7 @@ import com.wicresoft.util.annotation.Mapper;
 @Mapper
 public interface JnpadImageBrowseDao {
 
-	public List<LocalImageForm> findLocalImage(@Param("imageClass") String imageClass,@Param("customerId") String id,@Param("productId") String productId);
+	public List<LocalImageForm> findLocalImage(@Param("imageClass") String imageClass,@Param("customerId") String id,@Param("productId") String productId,@Param("applicationId") String applicationId);
 	public List<String> findLocalImagePc(@Param("customerId") String id,@Param("productId") String productId,@Param("batchId")String batchId) ;
 
 	//删除图片

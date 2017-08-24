@@ -71,7 +71,7 @@
 		    left join PRODUCT_ATTRIBUTE pa on t.product_id = pa.id
 		    where 
 		    product_id=#{productId} and customer_id=#{customerId}
-		    
+			and APPLICATION_ID is null		    
 		    <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 

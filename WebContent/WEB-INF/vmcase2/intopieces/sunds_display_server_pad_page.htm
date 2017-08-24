@@ -96,6 +96,7 @@ function rotate(o,p){
 	
 	$(document).ready(function() {
 		var appId ='$!appId';
+		var imageClasses ='$!imageClasses';
 		//上一张
 		$("#id_beer_button").click(function() {
 			var currentPage = Number($!rowNum) - Number(1);
@@ -103,7 +104,7 @@ function rotate(o,p){
 				alert("已经是第一张");
 			    return;
 			}
-			var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?currentPage="+currentPage+"&appId="+appId;
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?currentPage="+currentPage+"&appId="+appId+"&imageClasses="+imageClasses;
 			window.location.href = url;
 		});
 		
@@ -114,7 +115,7 @@ function rotate(o,p){
 		    	alert("已经是最后一张");
 		    	return;
 		    }
-			var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?currentPage="+currentPage+"&appId="+appId;
+			var url = "${contextPath}/intopieces/intopiecesquery/display_server_pad.page?currentPage="+currentPage+"&appId="+appId+"&imageClasses="+imageClasses;
 			window.location.href = url;
 		});
 	});

@@ -36,9 +36,9 @@ public class JnpadImageBrowseService {
 	
 	
 	
-	public List<LocalImageForm> findLocalImage(String imageClass,String customerId,String productId ) {
+	public List<LocalImageForm> findLocalImage(String imageClass,String customerId,String productId, String applicationId ) {
 		// TODO Auto-generated method stub
-		return jnpadImageBrowseDao.findLocalImage(imageClass,customerId,productId);
+		return jnpadImageBrowseDao.findLocalImage(imageClass,customerId,productId,applicationId);
 	}
 	
 	public List<String> findLocalImagePc(String customerId,String productId, String batchId ) {
