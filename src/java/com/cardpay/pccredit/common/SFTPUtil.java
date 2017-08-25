@@ -54,6 +54,7 @@ import com.cardpay.pccredit.tools.ImportParameter;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -73,7 +74,8 @@ public class SFTPUtil {
     private static String username="root";  
     private static String password="1";  
     private static int port = 22;  
-    private static ChannelSftp sftp = null;  
+    private static ChannelSftp sftp = null;
+    private static Session sshSession = null;
     private static String directory = "/usr/pccreditFile/";  
     
     
@@ -92,7 +94,7 @@ public class SFTPUtil {
             }  
             JSch jsch = new JSch();  
             jsch.getSession(username, host, port);  
-            Session sshSession = jsch.getSession(username, host, port);  
+            sshSession = jsch.getSession(username, host, port);  
             System.out.println("Session created.");
             DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
             password = dailyReportScheduleService.findServer2();
@@ -122,7 +124,11 @@ public class SFTPUtil {
      * @return 连接对象 
      * @throws JSchException 异常 
      */  
-    public static void getSftpConnect() throws Exception {  
+    public static void getSftpConnect() throws Exception {
+    	// 查询密码
+    	DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
+        password = dailyReportScheduleService.findServer2();
+        
         Session sshSession = null;  
         Channel channel = null;  
         String key = host + "," + port + "," + username + "," + password;  
@@ -130,13 +136,11 @@ public class SFTPUtil {
             JSch jsch = new JSch();  
             jsch.getSession(username, host, port);  
             sshSession = jsch.getSession(username, host, port);
-            DailyReportScheduleService dailyReportScheduleService =Beans.get(DailyReportScheduleService.class);
-            password = dailyReportScheduleService.findServer2();
             sshSession.setPassword(password);  
             Properties sshConfig = new Properties();  
             sshConfig.put("StrictHostKeyChecking", "no");  
             sshSession.setConfig(sshConfig);
-            sshSession.setTimeout(20000);
+            //sshSession.setTimeout(20000);
             sshSession.connect();  
             channel = sshSession.openChannel("sftp");  
             channel.connect();
@@ -161,14 +165,14 @@ public class SFTPUtil {
      * Disconnect with server 
      */  
     public static void disconnect() {  
-        if(sftp != null){  
-            if(sftp.isConnected()){  
-                sftp.disconnect();  
-            }else if(sftp.isClosed()){  
-                System.out.println("sftp is closed already");  
-            }  
-        }  
-  
+		if (sftp != null) {
+			try {
+				sftp.getSession().disconnect();
+			} catch (JSchException e) {
+				e.printStackTrace();
+			}
+			sftp.disconnect();
+		}
     }
     
     /** 
