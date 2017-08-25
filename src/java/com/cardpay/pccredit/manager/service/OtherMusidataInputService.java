@@ -63,7 +63,7 @@ public class OtherMusidataInputService {
 	}
 	
 	public List<VisitRegistLedger> findVisitRegistLedgerParameterByVisitId(String id) {
-		String sql="select * FROM VISIT_REGIST_LEDGER WHERE id not in (select visted_id from ApplyStandingBook ) and VISIT_ID = '"+id+"'";
+		String sql="select * FROM VISIT_REGIST_LEDGER WHERE id not in (select visted_id from ApplyStandingBook ) and VISIT_ID = '"+id+"' order by visit_date desc";
 		Map<String, Object> params = new HashMap<String, Object>();
 		return commonDao.queryBySql( VisitRegistLedger.class,sql, params);
 	}
