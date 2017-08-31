@@ -133,7 +133,7 @@
 		<if test="organName != null and organName != '' ">
 			AND instcode=#{organName}
 		</if>
-		order by instcode
+		order by instcode,id
 		 <![CDATA[		
 							) ROW_
 						WHERE ROWNUM <= #{limit}*#{page} + #{limit}) 
