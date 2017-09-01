@@ -1,7 +1,11 @@
 package com.cardpay.pccredit.manager.web;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +18,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -394,6 +408,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		VisitRegistLedger vreg = new VisitRegistLedger();
 		vreg.setVisitId(user.getId());
 		mv.addObject("vreg", vreg);
+		mv.addObject("playclass", "create");
 		return mv;
 	}
 
@@ -427,6 +442,24 @@ public class ManagerOtherInfoInputController extends BaseController {
 					String id = otherMusidataInputService.insertVisitRegistLedgerParameter(vreg);
 					returnMap.put(RECORD_ID, id);
 				}
+				if(request.getParameter("play").equals("create")){
+				//查询业绩进度表当天业绩是否存在
+				ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(form.getVisitId(),form.getVisitDate());
+				if(managerperformmance!=null){
+					//拜访数+1
+					managerperformmance.setVisitcount(managerperformmance.getVisitcount()+1);
+					otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+				}else{
+					//不存在插入一条
+					managerperformmance=new ManagerPerformmanceModel();
+					managerperformmance.setManager_id(form.getVisitId());
+					managerperformmance.setVisitcount(1);
+					String id = IDGenerator.generateID();
+					managerperformmance.setId(id);
+					managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(form.getVisitDate()+" 12:00:00"));
+					otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+				}
+			}
 				returnMap.addGlobalMessage(CHANGE_SUCCESS);
 			} catch (Exception e) {
 				return WebRequestHelper.processException(e);
@@ -451,6 +484,7 @@ public class ManagerOtherInfoInputController extends BaseController {
 		if (StringUtils.isNotEmpty(id)) {
 			VisitRegistLedger vreg = otherMusidataInputService.findVisitRegistLedgerParameterById(id);
 			mv.addObject("vreg", vreg);
+			mv.addObject("playclass", "change");
 		}
 		return mv;
 	}
@@ -529,6 +563,23 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setManagerName(sys.getDisplayName());
 			
 			managerPerformmanceService.insertapplyStandingBook(applyStandingBook); 
+			
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),new SimpleDateFormat("yyyy-MM-dd").format(applyStandingBook.getApplyDate()));
+			if(managerperformmance!=null){
+				//申请数+1
+				managerperformmance.setApplycount(managerperformmance.getApplycount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setApplycount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(applyStandingBook.getApplyDate());
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -710,6 +761,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 		try {
 			applyStandingBook.setState("1");//拒绝
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getApplyRefuseDate());
+			if(managerperformmance!=null){
+				//申请拒绝数+1
+				managerperformmance.setApplyrefuse(managerperformmance.getApplyrefuse()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setApplyrefuse(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getApplyRefuseDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -779,6 +846,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setQueryReason(applyStandingBook.getQueryReason());
 			applyStandingBook.setSignDate(applyStandingBook.getSignDate());
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getQueryDate());
+			if(managerperformmance!=null){
+				//征信数+1
+				managerperformmance.setCreditcount(managerperformmance.getCreditcount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setCreditcount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getQueryDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -846,6 +929,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setQueryReason(applyStandingBook.getQueryReason());
 			applyStandingBook.setSignDate(applyStandingBook.getSignDate());*/
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getCreditRefuseDate());
+			if(managerperformmance!=null){
+				//征信数+1
+				managerperformmance.setCreditrefuse(managerperformmance.getCreditrefuse()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setCreditrefuse(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getCreditRefuseDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -913,6 +1012,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setAssistManager(applyStandingBook.getAssistManager());
 			applyStandingBook.setActualDate(applyStandingBook.getActualDate());
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getActualDate());
+			if(managerperformmance!=null){
+				//实调数+1
+				managerperformmance.setRealycount(managerperformmance.getRealycount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setRealycount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getActualDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -979,6 +1094,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setState("5");//报告
 			applyStandingBook.setTabulaTime(applyStandingBook.getTabulaTime());// 制表时间
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getTabulaTime());
+			if(managerperformmance!=null){
+				//报告数+1
+				managerperformmance.setReportcount(managerperformmance.getReportcount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setReportcount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getTabulaTime()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -1065,7 +1196,23 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setAppInterest(applyStandingBook.getAppInterest());
 			applyStandingBook.setAppPeriod(applyStandingBook.getAppPeriod());
 			applyStandingBook.setAppRepayMethod(applyStandingBook.getAppRepayMethod());
-			managerPerformmanceService.changeapplyStandingBook(applyStandingBook); 
+			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getInternalAuditDate());
+			if(managerperformmance!=null){
+				//内审数+1
+				managerperformmance.setInternalcount(managerperformmance.getInternalcount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setInternalcount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getInternalAuditDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -1148,6 +1295,25 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setThreeMeetDate(applyStandingBook.getThreeMeetDate());
 			applyStandingBook.setAuditUser(applyStandingBook.getAuditUser());
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			//如果是首次上会+1
+			if(StringUtils.isEmpty(applyStandingBook.getTwoMeetDate())&&StringUtils.isEmpty(applyStandingBook.getThreeMeetDate())){
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getOneMeetDate());
+			if(managerperformmance!=null){
+				//上会数+1
+				managerperformmance.setMeetingcout(managerperformmance.getMeetingcout()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setMeetingcout(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getOneMeetDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -1243,6 +1409,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setApprovedPeriod(applyStandingBook.getApprovedPeriod());
 			applyStandingBook.setApprovedRepayMethod(applyStandingBook.getApprovedRepayMethod());
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getApprovedMeetDate());
+			if(managerperformmance!=null){
+				//上会通过数+1
+				managerperformmance.setPasscount(managerperformmance.getPasscount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setPasscount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getApprovedMeetDate()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -1564,6 +1746,22 @@ public class ManagerOtherInfoInputController extends BaseController {
 			applyStandingBook.setSignPerson(applyStandingBook.getSignPerson());
 			applyStandingBook.setSignPlace(applyStandingBook.getSignPlace());
 			managerPerformmanceService.changeapplyStandingBook(applyStandingBook);
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(applyStandingBook.getManagerId(),applyStandingBook.getDateSign());
+			if(managerperformmance!=null){
+				//签约数+1
+				managerperformmance.setSigncount(managerperformmance.getSigncount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(applyStandingBook.getManagerId());
+				managerperformmance.setSigncount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(applyStandingBook.getDateSign()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
 			returnMap.addGlobalMessage(CREATE_SUCCESS);
 			returnMap.put("mess", "提交成功");
 		} catch (Exception e) {
@@ -1632,6 +1830,30 @@ public class ManagerOtherInfoInputController extends BaseController {
 		loanApproved.setCreatedBy(Beans.get(LoginManager.class).getLoggedInUser(request).getId());
 		
 		try {
+			//查询是已放款（分多笔放款）
+//			List<ApplyStandingBookModel> ApplyStandingBookModel =managerPerformmanceService.queryapplyStandingBook(loanApproved.getAppId());
+			DimensionalFilter filter = new DimensionalFilter();
+			filter.setRequest(request);
+			filter.setAppId(loanApproved.getAppId());
+			QueryResult<LoanApproved> result = managerOtherInfoInputService.findLoanApprovedByFilter(filter);
+			if(result.getItems().isEmpty()){
+			//查询业绩进度表当天业绩是否存在
+			ManagerPerformmanceModel managerperformmance= managerPerformmanceService.finManagerPerformmanceByDateAndId(request.getParameter("managerId"),loanApproved.getLoanBeginTime());
+			if(managerperformmance!=null){
+				//放款数+1
+				managerperformmance.setGivemoneycount(managerperformmance.getGivemoneycount()+1);
+				otherMusidataInputService.updatemanagerPerformmance(managerperformmance); 
+			}else{
+				//不存在插入一条
+				managerperformmance=new ManagerPerformmanceModel();
+				managerperformmance.setManager_id(loanApproved.getChiefManager());
+				managerperformmance.setGivemoneycount(1);
+				String ids = IDGenerator.generateID();
+				managerperformmance.setId(ids);
+				managerperformmance.setCrateday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(loanApproved.getLoanBeginTime()+" 12:00:00"));
+				otherMusidataInputService.insertmanagerPerformmance(managerperformmance);
+			}
+		}
 			managerOtherInfoInputService.insertLoanApproved(loanApproved);
 			returnMap.setSuccess(true);
 		} catch (Exception e) {
@@ -1927,4 +2149,270 @@ public class ManagerOtherInfoInputController extends BaseController {
 		mv.addObject(PAGED_RESULT, pagedResult);
 		return mv;
 	}
+	
+	/*******************************导入历史数据******************************************/
+	@ResponseBody
+	@RequestMapping(value = "historydata.page")
+	public AbstractModelAndView iframe_insert_create(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/historydata", request);
+		return mv;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "historydata.json")
+	public JRadReturnMap insert(HttpServletRequest request) {        
+		JRadReturnMap returnMap = new JRadReturnMap();
+	    InputStream is = null;
+	    String path = request.getParameter("filepath");
+	    try {
+	        File sourcefile = new File(path);
+	        is = new FileInputStream(sourcefile);
+	        Workbook wb = WorkbookFactory.create(is);
+	        for(int j=0;j<wb.getNumberOfSheets();j++)
+            {
+	        if (wb instanceof XSSFWorkbook) {
+	        	VisitRegistLedgerForm visitregistledgerform= new VisitRegistLedgerForm();
+	        	int i=1;
+	        	while(true){
+	        	Sheet st1 = wb.getSheetAt(j);
+	        	Row row1= st1.getRow(i);
+	        	if(row1==null){
+	        		break;
+	        	}
+	          //拜访日期
+	            Cell cell1 = row1.getCell(1);
+	            String str1=getCellValue(cell1);
+	            visitregistledgerform.setVisitDate(str1);
+	            //商户名称
+	            Cell cell2 = row1.getCell(2);
+	            String str2=getCellValue(cell2);
+	            visitregistledgerform.setMerchantName(str2);
+	            //客户姓名
+	            Cell cell3 = row1.getCell(3);
+	            String str3=getCellValue(cell3);
+	            visitregistledgerform.setCustomerName(str3);
+	            //联系方式
+	            Cell cell4 = row1.getCell(4);
+	            String str4=getCellValue(cell4);
+	            visitregistledgerform.setContactInfor(str4);
+	            //性别
+	            Cell cell5 = row1.getCell(5);
+	            String str5=getCellValue(cell5);
+	            visitregistledgerform.setSex(str5);
+	            //户籍
+	            Cell cell6 = row1.getCell(6);
+	            String str6=getCellValue(cell6);
+	            visitregistledgerform.setRegistence(str6);
+	            //有无房产
+	            Cell cell7 = row1.getCell(7);
+	            String str7=getCellValue(cell7);
+	            visitregistledgerform.setRealEstate(str7);
+	            //经营范围
+	            Cell cell8 = row1.getCell(1);
+	            String str8=getCellValue(cell8);
+	            visitregistledgerform.setScopeOfBusiness(str8);
+	            //经营地址
+	            Cell cell9 = row1.getCell(9);
+	            String str9=getCellValue(cell9);
+	            visitregistledgerform.setScopeOfAddress(str9);
+	            //资金需求（金额、期限、用途）
+	            Cell cell10 = row1.getCell(10);
+	            String str10=getCellValue(cell10);
+	            visitregistledgerform.setFundDemand(str10);
+	            //资金需求时间
+	            Cell cell11 = row1.getCell(11);
+	            String str11=getCellValue(cell11);
+	            visitregistledgerform.setFundDemandDate(str11);
+	            //融资经历（贷款银行、贷款余额、到期时间）
+	            Cell cell12 = row1.getCell(12);
+	            String str12=getCellValue(cell12);
+	            visitregistledgerform.setFinanceExp(str12);
+	            //拜访客户经理
+	            Cell cell13 = row1.getCell(13);
+	            String str13=getCellValue(cell13);
+	            visitregistledgerform.setVisitManager(str13);
+	            //所属管辖行
+	            Cell cell14 = row1.getCell(14);
+	            String str14=getCellValue(cell14);
+	            visitregistledgerform.setOrgan(str14);
+	            //备注
+	            Cell cell15 = row1.getCell(15);
+	            String str15=getCellValue(cell15);
+	            visitregistledgerform.setRemark(str15);
+	            VisitRegistLedger regt = visitregistledgerform.createModel(VisitRegistLedger.class);
+	            List<SystemUser> ls =otherMusidataInputService.selectManagerIdByName(regt.getVisitManager().replace(" ", ""));
+	            if(!ls.isEmpty()){
+	            	regt.setVisitId(ls.get(0).getId());
+	            }
+	            regt.setCreatedBy("002");
+	            otherMusidataInputService.insertVisitRegistLedgerParameter(regt);
+	            i++;
+	        	}
+	        }else if(wb instanceof HSSFWorkbook){
+	        	int i=1;
+	        	while(true){
+	        	VisitRegistLedgerForm visitregistledgerform= new VisitRegistLedgerForm();
+	        	Sheet st1 = wb.getSheetAt(j);
+	        	Row row1= st1.getRow(i);
+	        	if(row1==null){
+	        		break;
+	        	}
+	          //拜访日期
+	            Cell cell1 = row1.getCell(1);
+	            String str1=getCellValue(cell1);
+	            visitregistledgerform.setVisitDate(str1);
+	            //商户名称
+	            Cell cell2 = row1.getCell(2);
+	            String str2=getCellValue(cell2);
+	            visitregistledgerform.setMerchantName(str2);
+	            //客户姓名
+	            Cell cell3 = row1.getCell(3);
+	            String str3=getCellValue(cell3);
+	            visitregistledgerform.setCustomerName(str3);
+	            //联系方式
+	            Cell cell4 = row1.getCell(4);
+	            String str4=getCellValue(cell4);
+	            visitregistledgerform.setContactInfor(str4);
+	            //性别
+	            Cell cell5 = row1.getCell(5);
+	            String str5=getCellValue(cell5);
+	            visitregistledgerform.setSex(str5);
+	            //户籍
+	            Cell cell6 = row1.getCell(6);
+	            String str6=getCellValue(cell6);
+	            visitregistledgerform.setRegistence(str6);
+	            //有无房产
+	            Cell cell7 = row1.getCell(7);
+	            String str7=getCellValue(cell7);
+	            visitregistledgerform.setRealEstate(str7);
+	            //经营范围
+	            Cell cell8 = row1.getCell(1);
+	            String str8=getCellValue(cell8);
+	            visitregistledgerform.setScopeOfBusiness(str8);
+	            //经营地址
+	            Cell cell9 = row1.getCell(9);
+	            String str9=getCellValue(cell9);
+	            visitregistledgerform.setScopeOfAddress(str9);
+	            //资金需求（金额、期限、用途）
+	            Cell cell10 = row1.getCell(10);
+	            String str10=getCellValue(cell10);
+	            visitregistledgerform.setFundDemand(str10);
+	            //资金需求时间
+	            Cell cell11 = row1.getCell(11);
+	            String str11=getCellValue(cell11);
+	            visitregistledgerform.setFundDemandDate(str11);
+	            //融资经历（贷款银行、贷款余额、到期时间）
+	            Cell cell12 = row1.getCell(12);
+	            String str12=getCellValue(cell12);
+	            visitregistledgerform.setFinanceExp(str12);
+	            //拜访客户经理
+	            Cell cell13 = row1.getCell(13);
+	            String str13=getCellValue(cell13);
+	            visitregistledgerform.setVisitManager(str13);
+	            //所属管辖行
+	            Cell cell14 = row1.getCell(14);
+	            String str14=getCellValue(cell14);
+	            visitregistledgerform.setOrgan(str14);
+	            //备注
+	            Cell cell15 = row1.getCell(15);
+	            String str15=getCellValue(cell15);
+	            visitregistledgerform.setRemark(str15);
+	            VisitRegistLedger regt = visitregistledgerform.createModel(VisitRegistLedger.class);
+	            List<SystemUser> ls =otherMusidataInputService.selectManagerIdByName(regt.getVisitManager().replace(" ", ""));
+	            if(!ls.isEmpty()){
+	            	regt.setVisitId(ls.get(0).getId());
+	            }
+	            regt.setCreatedBy("003");
+	            otherMusidataInputService.insertVisitRegistLedgerParameter(regt);
+	            i++;
+	        	}
+	        }
+            }
+//	        OutputStream out =new FileOutputStream("/home/sealy/excel/抵押类模型测试数据.xlsx");  
+//	        workBook.write(out);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }finally{
+	        try {
+	            is.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
+		
+		return returnMap;
+	}
+	
+	private static String getCellValue(Cell cell) {
+        String result = new String(); 
+        if(cell==null||cell.equals("")||cell.getCellType() ==HSSFCell.CELL_TYPE_BLANK){
+        	result=null;
+        }else{
+        	try {
+	        switch (cell.getCellType()) {  
+	        case Cell.CELL_TYPE_NUMERIC:  
+	        case Cell.CELL_TYPE_FORMULA:
+  		if (HSSFDateUtil.isCellDateFormatted(cell)) { 
+  			SimpleDateFormat sdf = null;  
+  			if (cell.getCellStyle().getDataFormat() == HSSFDataFormat.getBuiltinFormat("h:mm")) {  
+  				sdf = new SimpleDateFormat("HH:mm");  
+  			} else {
+  				sdf = new SimpleDateFormat("yyyy-MM-dd");  
+  			}  
+  			Date date = cell.getDateCellValue();  
+  			result = sdf.format(date);  
+  		} else if (cell.getCellStyle().getDataFormat() == 14 
+  				|| cell.getCellStyle().getDataFormat() == 20
+  				|| cell.getCellStyle().getDataFormat() == 31 
+  				|| cell.getCellStyle().getDataFormat() == 32 
+  				|| cell.getCellStyle().getDataFormat() == 57 
+  				|| cell.getCellStyle().getDataFormat() == 58) {  
+  			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");  
+  			double value = cell.getNumericCellValue();  
+  			Date date = org.apache.poi.ss.usermodel.DateUtil.getJavaDate(value);  
+  			result = sdf.format(date);  
+  		} else {  
+  			double value = cell.getNumericCellValue();  
+  			DecimalFormat format = new DecimalFormat();  
+  			result = format.format(value);  
+  		}  
+  		break;  
+			
+	        case Cell.CELL_TYPE_STRING:
+	            result = cell.getStringCellValue().toString(); 
+	            break;  
+	        case Cell.CELL_TYPE_BLANK:  
+	            result = null;  
+	            break; 
+	        default:  
+	            result = null;  
+	            break;  
+	        }  
+        } catch (Exception e) {
+        	System.out.println("第"+(cell.getRowIndex()+1)+"行"+(cell.getColumnIndex()+1)+"列");
+        }
+        }
+		return getNewString(result);
+}
+ public static String getNewString( String str){
+	 if(str!=null){
+	 if(str.indexOf(",")!=-1){
+		 str=str.replace(",", "");
+	 }
+//	 if(str.indexOf("元")!=-1){
+//		 str=str.replace("元", "");
+//	 }
+//	 if(str.indexOf("万")!=-1){
+//		 str=str.replace("万", "");
+//		 long st = Integer.parseInt(str);
+//		 st=st*10000;
+//		 str=st+"";
+//	 }
+	 }
+	 
+	return str;
+	 
+ }
 }

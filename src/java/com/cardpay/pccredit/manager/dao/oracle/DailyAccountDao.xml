@@ -43,10 +43,10 @@
 			AND s.DISPLAY_NAME = #{displayName}
 		</if>
 		<if test="startDate != null and startDate != '' ">
-			AND d.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+			AND d.MODIFIED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
 		</if>
 	    <if test="endDate != null and endDate != '' ">
-			AND d.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+			AND d.MODIFIED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
 		</if>   
 		order by d.created_time desc 
 		 <![CDATA[		
@@ -81,10 +81,10 @@
 			AND s.DISPLAY_NAME = #{displayName}
 		</if>
 		<if test="startDate != null and startDate != '' ">
-			AND d.CREATED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
+			AND d.MODIFIED_TIME &gt; to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss') 
 		</if>
 	    <if test="endDate != null and endDate != '' ">
-			AND d.CREATED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
+			AND d.MODIFIED_TIME &lt; to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss') 
 		</if> 
 		
 		)

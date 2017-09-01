@@ -17,11 +17,20 @@ public class DimensionalFilter extends BaseQueryFilter {
 	private String customerManagerName;
 	
 	private String userId;
+	private String appId;;
 	
 	
 	private String startDate;
 	private String endDate;
 	
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
 	public String getStartDate() {
 		return startDate;

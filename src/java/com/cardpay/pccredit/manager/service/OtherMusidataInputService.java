@@ -1,5 +1,6 @@
 package com.cardpay.pccredit.manager.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,8 @@ import com.cardpay.pccredit.manager.dao.AccountManagerParameterDao;
 import com.cardpay.pccredit.manager.dao.OtherMusidataInputDao;
 import com.cardpay.pccredit.manager.dao.comdao.AccountManagerParameterComdao;
 import com.cardpay.pccredit.manager.model.ApplyStandingBookModel;
+import com.cardpay.pccredit.manager.model.ManagerPerformmance;
+import com.cardpay.pccredit.manager.model.ManagerPerformmanceModel;
 import com.cardpay.pccredit.manager.model.VisitRegistLedger;
 import com.cardpay.pccredit.product.model.ProductAttribute;
 import com.cardpay.pccredit.system.model.SystemUser;
@@ -51,6 +54,12 @@ public class OtherMusidataInputService {
 	    commonDao.insertObject(vreg);
 	    return vreg.getId();
 	}
+	public List<SystemUser> selectManagerIdByName(String vreg){
+		
+		String sql="select * from sys_user where display_name='"+vreg+"'";
+		
+		return commonDao.queryBySql(SystemUser.class, sql, null);
+	}
 	
 	
 	public int updateVisitRegistLedgerParameter(VisitRegistLedger vreg) {
@@ -71,5 +80,15 @@ public class OtherMusidataInputService {
 	
 	public SystemUser  queryCustomer(String id) {
 		return commonDao.findObjectById(SystemUser.class,id);
+	}
+//插入业绩进度表
+	public void insertmanagerPerformmance(ManagerPerformmanceModel managerperformmance) {
+
+		commonDao.insertObject(managerperformmance);
+	}
+//更新业绩进度表
+	public void updatemanagerPerformmance(ManagerPerformmanceModel managerperformmance) {
+		
+		commonDao.updateObject(managerperformmance);
 	}
 }
