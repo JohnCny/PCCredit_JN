@@ -105,4 +105,9 @@ public class JnpadZongBaoCustomerInsertService {
 		return commonDao.queryBySqlInPagination(IntoPieces.class, sql.toString(), params,
 				filter.getStart(),sum);
 	}
+
+	public CustomerInfo selectCustomerById(String customerId) {
+		// TODO Auto-generated method stub
+		return jnpadZongBaoCustomerInsertDao.selectCustomerById(customerId);
+	}
 }

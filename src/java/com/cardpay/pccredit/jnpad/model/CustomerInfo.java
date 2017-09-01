@@ -37,7 +37,16 @@ public class CustomerInfo extends BusinessModel{
 	private String spmc;
 	
 	private String tyUserId;
+	private String iszbjj;
 
+
+	public String getIszbjj() {
+		return iszbjj;
+	}
+
+	public void setIszbjj(String iszbjj) {
+		this.iszbjj = iszbjj;
+	}
 
 	public String getCode() {
 		return code;

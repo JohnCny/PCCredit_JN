@@ -80,4 +80,6 @@ public interface ManagerPerformmanceDao {
 	
 	List<ApplyStandingBookModel> findApplyStandingBookByFilter(StandingBookFilter standingBookFilter);
 	int findApplyStandingBookByFilterCount(StandingBookFilter standingBookFilter);
+	//指定日期客户经理业绩进度
+	ManagerPerformmanceModel finManagerPerformmanceByDateAndId(@Param(value="managerId")String visitId, @Param(value="visitDate")String visitDate);
 }

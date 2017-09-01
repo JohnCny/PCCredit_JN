@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,10 +96,10 @@ public class ManagerPerformmanceController extends BaseController {
 		String satrtDate = request.getParameter("startdate");
 		String endDate = request.getParameter("enddate");
 		String orgId = request.getParameter("orgId");
-		if(satrtDate!=null&&satrtDate!=""){
+		if(satrtDate!=null&&!StringUtils.isEmpty(satrtDate)){
 			satrtDate+=" 00:00:00";
 		}
-		if(endDate!=null&&endDate!=""){
+		if(endDate!=null&&!StringUtils.isEmpty(endDate)){
 			endDate+=" 23:59:59";
 		}
 		long start = System.currentTimeMillis();

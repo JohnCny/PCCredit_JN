@@ -129,6 +129,7 @@ public class JnIpadCustAppInfoXxController {
 		//approved
 //		String status3=request.getParameter("status3");
 		String status3="approved";
+		String status4="end";
 		Integer s =new Integer(userType);
 		if(s!=1){
 			userId="";
@@ -137,11 +138,12 @@ public class JnIpadCustAppInfoXxController {
 		filter.setUserId(userId);
 		int refuse = appInfoXxService.findCustAppInfoXxCount(userId,null,status2, null,null);
 		int approved = appInfoXxService.findCustAppInfoXxCount(userId,null,null, status3,null);
+		int end = appInfoXxService.findCustAppInfoXxCount(userId,null,null, status4,null);
 		int sum = intoPiecesComdao.findintoPiecesByFilterCount(filter);
 		Map<String,Object> result = new LinkedHashMap<String,Object>();
 		
 		AppInfoListVo vo = new AppInfoListVo();
-		vo.setApprovedNum(approved);
+		vo.setApprovedNum(approved+end);
 		vo.setRefuseNum(refuse);
 		
 		result.put("result", vo);

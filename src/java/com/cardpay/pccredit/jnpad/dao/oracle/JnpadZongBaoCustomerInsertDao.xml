@@ -53,5 +53,11 @@
     
    UPDATE  BASIC_CUSTOMER_INFORMATION  SET  user_id =#{userId} WHERE id =#{customerId}
 </update>
-
+<select id="selectCustomerById" resultMap="selectCustomerinfo">
+		select *
+		from BASIC_CUSTOMER_INFORMATION c
+		where 
+		c.id=#{customerId}
+		and c.user_id is null
+</select>
 </mapper>
