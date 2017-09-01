@@ -68,6 +68,9 @@
 					<if test="userId != null and userId != '' ">
 					AND CREATED_BY =#{userId}
 					</if>
+					<if test="appId != null and appId != '' ">
+					AND app_Id =#{appId}
+					</if>
 					<if test="endDate != null and endDate != '' ">
 					and LOAN_BEGIN_TIME <![CDATA[ <=  ]]> #{endDate}
 				    </if>

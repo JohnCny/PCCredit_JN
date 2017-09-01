@@ -540,6 +540,11 @@ public class ManagerPerformmanceService {
 			info.setState("6");//6-内审通过待上会
 			commonDao.updateObject(info);
 		}
+//查询指定日期业绩进度
+		public ManagerPerformmanceModel finManagerPerformmanceByDateAndId(String visitId, String visitDate) {
+			// TODO Auto-generated method stub
+			return managerPerformmanceDao.finManagerPerformmanceByDateAndId(visitId,visitDate);
+		}
 }
 
 

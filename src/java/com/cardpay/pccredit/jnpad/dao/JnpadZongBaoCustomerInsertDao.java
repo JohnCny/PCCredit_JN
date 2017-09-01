@@ -14,5 +14,7 @@ public interface JnpadZongBaoCustomerInsertDao {
 	List<CustomerInfo> selectCustomerInfo(@Param (value ="userId") String userId);
 	//抢单
 	Object updateCustomerInfo(@Param (value ="customerId")String customerId,@Param (value ="userId")String userId);
+	//查找客户
+	CustomerInfo selectCustomerById(@Param (value ="customerId")String customerId);
 	
 }

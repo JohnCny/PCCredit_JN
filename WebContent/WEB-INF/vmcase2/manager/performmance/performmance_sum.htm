@@ -147,7 +147,7 @@
      document.getElementById("submitForm").action = url;
      document.getElementById("submitForm").submit();
  });
- $("#export_button").click(function() {
+ $("#export_button").click(function(){
      var exporturl = "${contextPath}/manager/performmance/performexport.json?startdate="+$("#date").val()+"&enddate="+$("#enddate").val()+"&orgId="+$("#orgId").val();
      window.location.href = exporturl;
 

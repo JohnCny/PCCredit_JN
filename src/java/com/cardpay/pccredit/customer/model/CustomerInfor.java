@@ -44,6 +44,15 @@ public class CustomerInfor extends BusinessModel{
 	private String tyUserId;
 	private String islook;
 	private Date MODIFIED_TIME;
+	private String iszbjj;
+	
+	
+	public String getIszbjj() {
+		return iszbjj;
+	}
+	public void setIszbjj(String iszbjj) {
+		this.iszbjj = iszbjj;
+	}
 	public Date getMODIFIED_TIME() {
 		return MODIFIED_TIME;
 	}

@@ -58,47 +58,45 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 		JRadReturnMap returnMap = new JRadReturnMap();
 		if (returnMap.isSuccess()) {
 			try {
-				CustomerInforFilter filter = new CustomerInforFilter();
-				filter.setCardId(customerinfoForm.getCardId());
-				//身份证号码验证
-				if(customerinfoForm.getCardType()=="0"||customerinfoForm.getCardType().equals("0")){
-				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId());
-				if(msg !="" && msg != null){
-					returnMap.put(JRadConstants.MESSAGE, msg);
-					returnMap.put(JRadConstants.SUCCESS, false);
-					
-					JsonConfig jsonConfig = new JsonConfig();
-					jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
-					JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
-					return json.toString();
-				}
-				}
-				CustomerInfo ls = jnpadCustomerSelectService.selectCustomerInfoByCardId(filter.getCardId());
-				if(ls != null ){
-					String message = "";
-					String gId = ls.getUserId();
-					String managerName = jnpadCustomerSelectService.selectManagerNameById(gId);
-					if(gId==null){
-						message = "保存失败，此客户已存在，请线下及时联系!";
-					}else{
-						message = "保存失败，此客户已挂在客户经理【"+managerName+"】名下!";
-					}
-					returnMap.put(JRadConstants.MESSAGE, message);
-					}else{
-					returnMap.put(JRadConstants.SUCCESS, true);
-
-				
+//				CustomerInforFilter filter = new CustomerInforFilter();
+//				filter.setCardId(customerinfoForm.getCardId());
+//				//身份证号码验证
+//				if(customerinfoForm.getCardType()=="0"||customerinfoForm.getCardType().equals("0")){
+//				String msg = IdCardValidate.IDCardValidate(customerinfoForm.getCardId());
+//				if(msg !="" && msg != null){
+//					returnMap.put(JRadConstants.MESSAGE, msg);
+//					returnMap.put(JRadConstants.SUCCESS, false);
+//					
+//					JsonConfig jsonConfig = new JsonConfig();
+//					jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+//					JSONObject json = JSONObject.fromObject(returnMap, jsonConfig);
+//					return json.toString();
+//				}
+//				}
+//				CustomerInfo ls = jnpadCustomerSelectService.selectCustomerInfoByCardId(filter.getCardId());
+//				if(ls != null ){
+//					String message = "";
+//					String gId = ls.getUserId();
+//					String managerName = jnpadCustomerSelectService.selectManagerNameById(gId);
+//					if(gId==null){
+//						message = "保存失败，此客户已存在，请线下及时联系!";
+//					}else{
+//						message = "保存失败，此客户已挂在客户经理【"+managerName+"】名下!";
+//					}
+//					returnMap.put(JRadConstants.MESSAGE, message);
+//					}else{
+				returnMap.put(JRadConstants.SUCCESS, true);
 				CustomerInfo customerinfor = customerinfoForm.createModel(CustomerInfo.class);
 //				User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
 				User user = new User();
-				
 				user.setId(request.getParameter("userId"));
 				customerinfor.setCreatedBy(user.getId());
+				customerinfor.setIszbjj("1");
 //				customerinfor.setUserId(user.getId());
 				String id =  JnpadCustomerInfoInsertServ‎ice.customerInforInsert(customerinfor);
 				returnMap.put(RECORD_ID, id);
 				returnMap.put(JRadConstants.MESSAGE, "添加成功");
-					}
+//					}
 			}catch (Exception e) {
 				returnMap.put(JRadConstants.MESSAGE, DataPriConstants.SYS_EXCEPTION_MSG);
 				returnMap.put(JRadConstants.SUCCESS, false);
@@ -145,10 +143,22 @@ public class JnpadZongBaoCustomerInsertController  extends BaseController{
 		try {
 			String customerId =request.getParameter("customerId");
 			String userId =request.getParameter("userId");
+			CustomerInfo customerlist=jnpadZongBaoCustomerInsertService.selectCustomerById(customerId);
+			if(customerlist==null){
+				result.put("mess", "该客户已被抢！");
+				JsonConfig jsonConfig = new JsonConfig();
+				jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			    JSONObject json = JSONObject.fromObject(result, jsonConfig);
+				return json.toString();
+			}
 			jnpadZongBaoCustomerInsertService.updateCustomerInfo(customerId,userId);
 		} catch (Exception e) {
 			// TODO: handle exception
 			result.put("mess", "抢单失败！");
+			 JsonConfig jsonConfig = new JsonConfig();
+			 jsonConfig.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+			 JSONObject json = JSONObject.fromObject(result, jsonConfig);
+			 return json.toString();
 		}
 
 	    result.put("mess", "抢单成功！");
