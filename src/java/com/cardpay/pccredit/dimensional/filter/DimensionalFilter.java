@@ -22,7 +22,16 @@ public class DimensionalFilter extends BaseQueryFilter {
 	
 	private String startDate;
 	private String endDate;
+	private String ishope;
 	
+
+	public String getIshope() {
+		return ishope;
+	}
+
+	public void setIshope(String ishope) {
+		this.ishope = ishope;
+	}
 
 	public String getAppId() {
 		return appId;
