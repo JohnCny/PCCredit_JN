@@ -36,19 +36,29 @@
               	  </select>
               </td>
             </tr>
-            
+            #if($!customerInfor.iszbjj==1)
             <tr>
               <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
-              <td><select id="cardtype" name="cardtype" class="rinpsty" disabled="disabled"> 
+              <td><select id="cardtype" name="cardType" class="rinpsty" > 
               		<option value=""></option>
               		#dict("CARDTYPE", $!customerInfor.cardType)
               	  </select>
               </td>
               <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
-              <td><input class="rinpsty"  type="text" id="cardnum" name="cardnum" value="$!customerInfor.cardId" disabled="disabled"/></td>
+              <td><input class="rinpsty"  type="text" id="cardnum" name="cardId" value="$!customerInfor.cardId"/></td>
             </tr>
-            
-            
+            #else
+             <tr>
+              <td class="titlefc3"><label for="zjlx">证件类型:</label></td>
+              <td><select id="cardtype" name="cardType" class="rinpsty" disabled="disabled"> 
+              		<option value=""></option>
+              		#dict("CARDTYPE", $!customerInfor.cardType)
+              	  </select>
+              </td>
+              <td class="titlefc3"><label for="zjhm">证件号码:</label></td>
+              <td><input class="rinpsty"  type="text" id="cardnum" name="cardId" value="$!customerInfor.cardId" disabled="disabled"/></td>
+            </tr>
+            #end
             <tr>
               <td class="titlefc3"><label for="qfjg">手机:</label></td>
               <td><input class="rinpsty"  type="text" id="telephone" name="telephone" value="$!customerInfor.telephone" /></td>
