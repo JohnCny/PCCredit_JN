@@ -1,0 +1,135 @@
+#parse ("common/iframe_page_header.htm")
+<link rel="stylesheet" type="text/css" href="${uicasePath}/css/specialtab.css" />
+<body class="whitebg">
+  <div class="content_main">
+    <div class="contentinner">
+      <div class="place">
+        <div class="title">客户信息采集>潜在客户修改</div>
+      </div>
+      <form id="id_module_form" action="${contextPath}/manager/otherinfoinput/iframe_4_insert.json" method="post">
+        <input type="hidden" name="id" value="$!vreg.id" />
+        <div class="forms" id="formsId">
+          <table class="rule" border="1" bordercolor="#CCCCCC" >
+          <caption>潜在客户修改</caption>
+            <colgroup>
+              <col width="10%" />
+              <col width="40%" />
+              <col width="10%" />
+              <col width="40%" />
+            </colgroup>
+            
+            <td class="titlefc3"><label for="">拜访客户经理：</label></td>
+              <td><select class="rinpsty" id="visitId" name="visitId" value="">
+                  <option value=""></option>
+                  #dict("MANAGERUSERS","$!vreg.visitId")
+                  </select>
+              </td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="">拜访日期:</label></td>
+              <td><input class="rinpsty" type="text" id="visitDate" name="visitDate" value="$!vreg.visitDate" onmouseover="_calendar({format:'yyyy-MM-dd'})" style="width:300px" readonly/></td>
+              <td class="titlefc3"><label for="">商户名称:</label></td>
+              <td><input class="rinpsty" type="text" id="merchantName" name="merchantName" value="$!vreg.merchantName" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="">客户姓名:</label></td>
+              <td><input class="rinpsty" type="text" id="customerName" name="customerName" value="$!vreg.customerName" /></td>
+              <td class="titlefc3"><label for="">联系方式:</label></td>
+              <td><input class="rinpsty" type="text" id="contactInfor" name="contactInfor" value="$!vreg.contactInfor" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="">性别:</label></td>
+              <td><input class="rinpsty" type="text" id="sex" name="sex" value="$!vreg.sex" /></td>
+              <td class="titlefc3"><label for="">户籍:</label></td>
+              <td><input class="rinpsty" type="text" id="registence" name="registence" value="$!vreg.registence" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="">有无房产:</label></td>
+              <td><input class="rinpsty" type="text" id="realEstate" name="realEstate" value="$!vreg.realEstate" /></td>
+              <td class="titlefc3"><label for="">经营范围:</label></td>
+              <td><input class="rinpsty" type="text" id="scopeOfBusiness" name="scopeOfBusiness" value="$!vreg.scopeOfBusiness" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="">经营地址:</label></td>
+              <td><input class="rinpsty" type="text" id="scopeOfAddress" name="scopeOfAddress" value="$!vreg.scopeOfAddress" /></td>
+              <td class="titlefc3"><label for="">资金需求:</label></td>
+              <td><input class="rinpsty" type="text" id="fundDemand" name="fundDemand" value="$!vreg.fundDemand" /></td>
+            </tr>
+            
+            <tr>
+              <td class="titlefc3"><label for="">资金需求时间:</label></td>
+              <td><input class="rinpsty" type="text" id="fundDemandDate" name="fundDemandDate" value="$!vreg.fundDemandDate" /></td>
+              <td class="titlefc3"><label for="">融资经历:</label></td>
+              <td><input class="rinpsty" type="text" id="financeExp" name="financeExp" value="$!vreg.financeExp" /></td>
+            </tr>
+            
+            <tr>
+             <!--  <td class="titlefc3"><label for="">拜访客户经理:</label></td>
+              <td><input class="rinpsty" type="text" id="visitManager" name="visitManager" value="$!vreg.visitManager" /></td> -->
+              <td class="titlefc3"><label for="">所属管辖行:</label></td>
+              <td><input class="rinpsty" type="text" id="organ" name="organ" value="$!vreg.organ" /></td>
+              <td class="titlefc3"><label for="">备注:</label></td>
+              <td><textarea style="width: 300px; height:50px" name="remark" id="remark">$!vreg.remark</textarea></td>
+            </tr>
+            <tr>
+              <td style="display:none;"><label for="">操作类型:</label></td>
+              <td style="display:none;"><input class="rinpsty" type="text" id="play" name="play" value="$!playclass" /></td>
+            </tr>
+            
+          </table>
+        
+        </div>
+      </form>
+      <div class="submit">
+        <input id="id_save_button" type="button" value="#i18n("button.save")" class="current" />
+        <input type="button" onclick="javascript:history.go(-1);" value="#i18n("button.cancel")" />
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+	var layout=new FormsLayout("formsId");	
+	window.top.currentWindow.setLayout(layout);
+	#set ($formName = "'#id_module_form'")
+	#parse ("/manager/otherinfoinput/iframe4_create_validation.js")
+	
+	
+	// save and update
+	$("#id_save_button").click(function() {
+		if(submitFlag == 1){
+			topWin.Dialog.message("请勿重复提交!")
+			return;
+		}
+		
+		submitFlag = 1;
+		
+		if ($($formName).valid()) {
+			var formjson = $($formName).serialize();
+   	       var url = "${modulePath}/iframe_4_insert.json";
+			$.ajax({
+				url : url,
+				type : "get",
+				data : formjson,
+				success : function(data) {
+					if (data.success) {
+						topWin.Dialog.message("保存成功！");
+						window.location.href= contextPath+"/manager/otherinfoinput/iframe_qianzai.page" ;
+					}else{
+						topWin.Dialog.message(data.message);
+				    }
+					submitFlag = 0;
+				}
+			});
+				
+		}else{
+			submitFlag = 0;
+		}
+		
+    });
+	</script>
+</body>
+#parse ("common/iframe_page_footer.htm")

@@ -2415,4 +2415,83 @@ public class ManagerOtherInfoInputController extends BaseController {
 	return str;
 	 
  }
+ 
+ /**
+	 * 潜在客户查询页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_qianzai.page")
+	public AbstractModelAndView iframe_qianzai(@ModelAttribute DimensionalFilter filter,HttpServletRequest request) {        
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_hope", request);
+		User user = (User) Beans.get(LoginManager.class).getLoggedInUser(request);
+		String userId = request.getParameter("userId");
+		if(StringUtils.isEmpty(userId)){//if null
+			if(user.getUserType()== 1){
+				userId = user.getId();
+			}else{
+				userId = "";
+			}
+		}
+		
+		filter.setRequest(request);
+		
+		filter.setUserId(userId);
+		filter.setIshope("1");
+		QueryResult<VisitRegistLedger> result = otherMusidataInputService.findVisitRegistLedgerByFilter(filter);
+		JRadPagedQueryResult<VisitRegistLedger> pagedResult = new JRadPagedQueryResult<VisitRegistLedger>(filter, result);
+		boolean lock =false;
+		if(userId.equals(user.getId())){
+			lock=true;
+		}
+		mv.addObject("userId", userId);	
+		mv.addObject("lock", lock);	
+		mv.addObject(PAGED_RESULT, pagedResult);
+		return mv;
+	}
+	/**
+	 * 潜在客户修改页面
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "iframe_hope_update.page")
+	@JRadOperation(JRadOperation.CREATE)
+	public AbstractModelAndView iframe_hope_update(HttpServletRequest request) {
+		JRadModelAndView mv = new JRadModelAndView("/manager/otherinfoinput/iframe_hope_update", request);
+		String id = RequestHelper.getStringValue(request, ID);
+		if (StringUtils.isNotEmpty(id)) {
+			VisitRegistLedger vreg = otherMusidataInputService.findVisitRegistLedgerParameterById(id);
+			mv.addObject("vreg", vreg);
+			mv.addObject("playclass", "change");
+		}
+		return mv;
+	}
+	/**
+	 * 潜在客户更改
+	 * @param loanApproved
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(value = "changeHope.json", method = { RequestMethod.GET })
+	public JRadReturnMap changeHope(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		JRadReturnMap returnMap = new JRadReturnMap();
+		
+		try {
+			String id=request.getParameter("id");
+			String ishope=request.getParameter("ishope");
+			otherMusidataInputService.updateHopeCustomer(id,ishope);
+			returnMap.setSuccess(true);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			returnMap.setSuccess(false);
+			returnMap.addGlobalMessage(Beans.get(I18nHelper.class).getMessageNotNull(Constant.FAIL_MESSAGE));
+		}
+
+		return returnMap;
+	}
 }
