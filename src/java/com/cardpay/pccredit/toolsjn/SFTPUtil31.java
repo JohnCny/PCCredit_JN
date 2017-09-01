@@ -22,6 +22,7 @@ import com.cardpay.pccredit.manager.service.DailyReportScheduleService;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 import com.wicresoft.jrad.base.database.id.IDGenerator;
@@ -74,14 +75,14 @@ public class SFTPUtil31 {
      * Disconnect with server 
      */  
     public  void disconnect() {  
-        if(csftp != null){  
-            if(csftp.isConnected()){  
-                csftp.disconnect();  
-            }else if(csftp.isClosed()){  
-                System.out.println("sftp is closed already");  
-            }  
-        }  
-  
+        if (csftp != null) {
+			try {
+				csftp.getSession().disconnect();
+			} catch (JSchException e) {
+				e.printStackTrace();
+			}
+			csftp.disconnect();
+		}
     }
     
     /** 
