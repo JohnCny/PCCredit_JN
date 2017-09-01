@@ -144,6 +144,7 @@
         #if($!lock)
          	<a id="id_create_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.create.hint')">新增</a>
          	<a id="id_update_button" class="btn_g" href="javascript:void(0);" title="#i18n('button.update.hint')">修改</a>
+        		<a id="id_changes_button" class="btn_g" href="javascript:void(0);" title="">加入潜在客户名单</a>
         #end	
          
         #if(!$!lock)
@@ -261,7 +262,35 @@
             }
         });
 	});
-	
+	 //移除潜在客户名单
+	  $("#id_changes_button").click(function() {
+      if ($(".checkbox :checked").length == 1) {
+      	var url ="${contextPath}/manager/otherinfoinput/changeHope.json";
+          var rowid = $($(".checkbox :checked")[0]).attr("value");
+          var ishope="1";
+          Dialog.confirm("确定加入潜在客户名单吗？", "提示",
+          function() {
+          	$.ajax({
+  				url : url,
+  				type : "get",
+  				data : "id=" + rowid+"&ishope="+ishope,//要发送的数据
+  				success : function(data) {
+  					if (data.success) {
+  						topWin.Dialog.message("保存成功！");
+  						window.location.href= "${contextPath}/manager/otherinfoinput/iframe_4.page" ;
+  					}
+  					else{
+  						topWin.Dialog.message(data.message);
+  				    }
+  					submitFlag = 0;
+  				}
+  			});
+           
+          });
+      } else {
+          Dialog.message("请选择一行");
+      }
+  });
   </script>
   
 </body>
