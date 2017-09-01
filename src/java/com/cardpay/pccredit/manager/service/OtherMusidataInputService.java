@@ -91,4 +91,10 @@ public class OtherMusidataInputService {
 		
 		commonDao.updateObject(managerperformmance);
 	}
+
+	public void updateHopeCustomer(String id, String ishope) {
+		String sql="update VISIT_REGIST_LEDGER set is_hope='"+ishope+"'" +"where id='"+id+"'";
+		Map<String, Object> params = new HashMap<String, Object>();
+		commonDao.queryBySql(sql, params);
+	}
 }

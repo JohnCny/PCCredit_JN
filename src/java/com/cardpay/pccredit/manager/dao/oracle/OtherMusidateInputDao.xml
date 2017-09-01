@@ -37,6 +37,9 @@
 			<if test="userId != null and userId != '' ">
 				and VISIT_ID=#{userId}
 			</if>
+			<if test="ishope != null and ishope != '' ">
+				and is_hope=#{ishope}
+			</if>
 			<if test="endDate != null and endDate != '' ">
 				and VISIT_DATE <![CDATA[ <=  ]]> #{endDate}
 			</if>
@@ -66,6 +69,9 @@
 		<if test="userId != null and userId != '' ">
 				and VISIT_ID=#{userId}
 		</if>
+		<if test="ishope != null and ishope != '' ">
+				and is_hope=#{ishope}
+			</if>
 		<if test="endDate != null and endDate != '' ">
 				and VISIT_DATE <![CDATA[ <=  ]]> #{endDate}
 		</if>

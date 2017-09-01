@@ -13,10 +13,16 @@
 			<menu id="030007" name="intopiecesdecisionhz" title="行长审批"         url="/intopieces/intopiecesdecision/hzBrowse.page" img="" operations="create|change|display|browse"/>
 		</menu>
 		
+		<menu id="050000" name="customerInfo" title="客户信息采集" operations="">
+			<menu id="050001" name="basiccustomerinforCreate"      title="客户信息新增"       	url="/customer/basiccustomerinforCreate/insert.page" 		img="" operations="create|browse"/>
+			<menu id="050002" name="basiccustomerinfor"            title="客户原始信息"   	    url="/customer/firsthend/browse.page"                		img="" operations="create|browse"/>
+			<menu id="050003" name="hopecustomerinfor"            title="潜在客户信息"   	    url="/manager/otherinfoinput/iframe_qianzai.page"                		img="" operations="create|browse"/>
+			<menu id="050004" name="customer_wh_ty"                title="客户维护信息"       	url="/customer/customerInfor_wh_ty/browse.page"      		img="" operations="create|change|browse"/>
+		</menu>
 		<menu id="040000" name="customer" title="客户管理" operations="">
-			<menu id="040001" name="basiccustomerinfor"            title="客户原始信息"   	    url="/customer/firsthend/browse.page"                		img="" operations="create|browse"/>
+			<!--<menu id="040001" name="basiccustomerinfor"            title="客户原始信息"   	    url="/customer/firsthend/browse.page"                		img="" operations="create|browse"/>
 			<menu id="040002" name="basiccustomerinforCreate"      title="客户信息新增"       	url="/customer/basiccustomerinforCreate/insert.page" 		img="" operations="create|browse"/>
-			<menu id="040003" name="customer_wh_ty"                title="客户维护信息"       	url="/customer/customerInfor_wh_ty/browse.page"      		img="" operations="create|change|browse"/>
+			<menu id="040003" name="customer_wh_ty"                title="客户维护信息"       	url="/customer/customerInfor_wh_ty/browse.page"      		img="" operations="create|change|browse"/> -->
 			<menu id="040004" name="maintenance"                   title="客户维护计划列表"    	url="/customer/maintenance/browse.page"               		img="" operations="create|change|display|browse"/>
 			<menu id="040005" name="customermaintenancelog"        title="客户维护信息日志列表"  	url="/customer/maintenance/log.page"                   		img="" operations="display|browse|change"/>
 			<menu id="040006" name="basiccustomerinforMove"        title="客户移交申请"       	url="/customer/basiccustomerinforMove/browse.page"        	img="" operations="create|browse"/>
@@ -59,6 +65,7 @@
 			<menu id="071009" name="otherinfoinputDfk" 		title="待放款台账(客户经理)" 			url="/manager/otherinfoinput/iframe_14.page" 			 img="" operations="create|change|browse"/>
 			<menu id="071010" name="performmanceinput" 		title="业绩进度录入" 			url="/manager/performmance/insert.page" 			 		 img="" operations="checked|display|browse"/>		    
  			<menu id="071011" name="performmancebrowse" 	title="业绩进度查询" 			url="/manager/performmance/browse.page" 			 		 img="" operations="checked|display|browse"/>
+			<!-- <menu id="071012" name="historydata" 		title="历史数据处理" 			url="/manager/otherinfoinput/historydata.page" 			 img="" operations="create|change|browse"/> -->
 		</menu>
 		
 		<menu id="080000" name="riskcontrol" title="综合风控管理" operations=""> 
