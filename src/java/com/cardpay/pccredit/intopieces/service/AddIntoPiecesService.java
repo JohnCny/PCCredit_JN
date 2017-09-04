@@ -48,6 +48,7 @@ import com.cardpay.pccredit.intopieces.model.DhApplnAttachmentList;
 import com.cardpay.pccredit.intopieces.model.Dzjbzk;
 import com.cardpay.pccredit.intopieces.model.Dzjy;
 import com.cardpay.pccredit.intopieces.model.Dzjyzt;
+import com.cardpay.pccredit.intopieces.model.EvaResult;
 import com.cardpay.pccredit.intopieces.model.LocalExcel;
 import com.cardpay.pccredit.intopieces.model.LocalImage;
 import com.cardpay.pccredit.intopieces.model.Pic;
@@ -370,6 +371,13 @@ public class AddIntoPiecesService {
 		}
 		
 		commonDao.insertObject(localImage);
+	}
+	
+	public  List<EvaResult> checkIsDoModelAssess(String customerId){
+		String sql = "select id from EVA_RESULT where card_no = (select CARD_ID from basic_customer_information where id ='"+customerId+"')";
+		Map<String, Object> params = new HashMap<String, Object>();
+		List<EvaResult> list = commonDao.queryBySql(EvaResult.class,sql, params);
+		return list;
 	}
 
 	public void addIntopieces(AddIntoPiecesForm addIntoPiecesForm,String userId) {

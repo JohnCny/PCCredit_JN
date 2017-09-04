@@ -268,6 +268,14 @@ public class AddIntoPiecesControl extends BaseController {
 		IUser user = Beans.get(LoginManager.class).getLoggedInUser(request);
 		String loginId = user.getId();
 		try {
+			// check 提交进件前是否进行过 模型评估
+			List<EvaResult> list = addIntoPiecesService.checkIsDoModelAssess(addIntoPiecesForm.getCustomerId());
+			if(list == null || list.size() ==0){
+				returnMap.put("message", "您尚未进行模型评估，请评估后再提交进件!");
+				returnMap.put("success", false);
+				return returnMap;
+			}
+			
 			addIntoPiecesService.addIntopieces(addIntoPiecesForm,loginId);
 			//日志记录
 			OperationLog ol = new OperationLog();
